@@ -1,5 +1,5 @@
-Task1
-  property:
+Task
+  property:   
 	deadline [99999999]
 	priority [0] -10~10
 	description
