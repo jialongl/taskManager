@@ -1,0 +1,138 @@
+class Task{
+
+	deadline [99999999]
+	priority [0] -10~10
+	description
+	cronFreq [0]
+	cronTill  
+	bool isFinished [false]
+	int serialNumber
+	int group
+
+	setPriority()
+	setDescription()
+	setDeadline()
+	setGroup()
+	setCron()
+	setSerialNumber()
+	setIsFinished()
+	bool matchKeyword() //ls <*keyword?>
+
+	getDeadline()
+	getPriority()
+	getDescription()
+	getCronFreq()
+	getCronTill()
+	getIsFinished()
+	getSerialNumber()
+	getGroup()
+}
+
+class CronTask inherits Task{
+	int cronIdx
+}
+
+class Command{
+	method		enum
+	taskDescription	string
+	deadline	datetime
+	priority	int
+	group		string
+	cronFreq	int //second
+	sortKeyword 	vector of enum Field
+	serialNumberList	vector of int
+	finished	bool
+	filename	string
+	html		bool
+}
+
+class Paser{
+	intputToCommand()
+	resultToOutput()
+}
+
+class Shell{
+	start()
+}
+
+class CommandExecutor{
+	executeCommand()
+}
+
+class MainCmdExecutor implements CommandExecutor{
+	commandExecutorList
+	Map <method, commandExecutor>
+
+	executeCommand(method, commandExecutorList) //choose subCommandExecutor
+}
+
+class SubCommandExecutor implements CommandExecutor{
+	executeCommand(subCommandExecutor, Command) 
+}
+
+class TaskList{
+	private taskList	vector of Tasks
+	
+	addTask()
+	removeTask()
+	TaskList getTask(filter)
+	editTask()
+	getTaskVector() //return taskList
+}
+
+class Result inherits TaskList{
+	bool detailed	//task -n true
+	bool null
+}
+
+class CronManager{
+	cronList //TaskList * cronlist = new TaskList();
+	lastTIme
+	
+	newTasks(timeStart, timeEnd) //add new Task to TaskList from timeStar to timeEnd
+				     //set lastTime to currentTime
+	setLastTime()
+}
+
+class Filter{
+	filterType	enum
+}
+
+class GFilter inherits Filter{
+	groupNums
+}
+
+class KFilter inherits Filter{
+	keyword
+}
+
+class FFilter inherits Filter{
+	finished
+}
+
+class OFilter inherits Fliter{
+}
+
+class NFilter inherits Filter{
+	serialNumber
+}
+
+mainLoop(){
+	for(;;){
+		cin >> cmd;
+		Command = Parse->inputToCommand(cmd);
+		Result = CommandExecutor(Command);
+		Output = Parse->resultToOutput(Result);
+		cout << output << endl;
+	}
+}
+	
+int main(){
+	init() //read data from XML 
+		//new objects
+	shell->start(); 
+	CronManager->newTasks(CronManager->lastTime, currentTime);
+	setLastTime(currentTime);
+}
+
+everytime after editting export to XML

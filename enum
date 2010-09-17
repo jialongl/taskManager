@@ -1,0 +1,8 @@
+method
+{add, edit, rm, ls, task, pri, cron, finish, export, import}
+
+sortKeyword
+{deadline, priority, serialNumber}
+
+filterType
+{k, s, f, g, overdue}
