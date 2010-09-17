@@ -46,7 +46,7 @@ class Command{
 	html		bool
 }
 
-class Paser{
+class Parser {
 	intputToCommand()
 	resultToOutput()
 }
@@ -120,9 +120,9 @@ class NFilter inherits Filter{
 mainLoop(){
 	for(;;){
 		cin >> cmd;
-		Command = Parse->inputToCommand(cmd);
+		Command = Parser->inputToCommand(cmd);
 		Result = CommandExecutor(Command);
-		Output = Parse->resultToOutput(Result);
+		Output = Parser->resultToOutput(Result);
 		cout << output << endl;
 	}
 }
