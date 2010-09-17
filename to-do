@@ -1,12 +1,31 @@
 Task
   property:
-	time [99999999]
+	deadline [99999999]
 	priority [0] -10~10
-	content
-	frequency [0]
-	end  
-	bool completed [false]
-	int sn
+	description
+	cronFreq [0]
+	cronTill  
+	bool isFinished [false]
+	int serialNumber
+	int group
+
+	setPriority
+	setDescription
+	setDeadline
+	setGroup
+	setCron
+	setSerialNumber
+	setIsFinished
+	bool matchKeyword //ls <*keyword?>
+
+	getDeadline
+	getPriority
+	getDescription
+	getCronFreq
+	getCronTill
+	getIsFinished
+	getSerialNumber
+	getGroup
 	
 add 	[-option ...] "<task_description>"
 	-t <time>
@@ -25,11 +44,14 @@ rm	[-option ...] [<taskNumber1>] [<taskNumber2>] [<taskNumber3>]...
 	-g "<group>"
 
 ls	[-option ...] 
-	-k <keyword>
-	-s [firstKeyWord][secondKeyWord][thirdKeyWord].... //sort by	
-	-n <taskNumber>		
+	-k <*keyword?>
+	-s "[firstKeyWord] [secondKeyWord] [thirdKeyWord]...." //sort by	
 	-f Yes/No/All
 	-g "<group>"
+	-overdue
+	-cflag onlyThis/All/AllFromThis
+
+task 	-n <taskNumber> //show specific task
 
 pri	<taskNumber> <priority>
 
