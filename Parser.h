@@ -26,7 +26,7 @@ class Parser{
   /* } */
 
   void add_parse () {
-    cmd->method = "add";
+    cmd->method = ADD;
     cmd->taskDescription = args[1];
   }
 
