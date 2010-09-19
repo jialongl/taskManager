@@ -15,14 +15,19 @@ public:
 		
 	void mainLoop(){
 		for (;;){
-			cout<<"> ";
-			char str[MAX_LEN];
-			cin.getline(str,MAX_LEN);
-			cronManager->newTasks(cronManager->lastTime,currentTime());
-			command = parser->inputToCommand(str);
-			result = mainCommandExecutor->executeCommand(command);
-			output = parser->resultToOutput(result);
-			cout<< output << endl;
+			try{
+				cout<<"> ";
+				char str[MAX_LEN];
+				cin.getline(str,MAX_LEN);
+				cronManager->newTasks(cronManager->lastTime,currentTime());
+				command = parser->inputToCommand(str);
+				result = mainCommandExecutor->executeCommand(command);
+				output = parser->resultToOutput(result);
+				cout<< output << endl;
+			}
+			catch (exception_e except){
+				if (except == EXCEPTION_HALT) break;
+			}
 		}
 	}
 

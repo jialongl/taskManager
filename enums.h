@@ -24,3 +24,8 @@ enum filterType{
 	G_FILTER,
 	OVERDUE_FILTER
 };
+
+enum exception_e{
+	EXCEPTION_NOT_A_NUMBER,
+	EXCEPTION_HALT
+};
