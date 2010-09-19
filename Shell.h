@@ -1,3 +1,5 @@
+// For debugging!!!!!!!
+#include "debug.h"
 class Shell{
 public:
 
@@ -24,6 +26,7 @@ public:
 				result = mainCommandExecutor->executeCommand(command);
 				output = parser->resultToOutput(result);
 				cout<< output << endl;
+				print();
 			}
 			catch (exception_e except){
 				if (except == EXCEPTION_HALT) break;
