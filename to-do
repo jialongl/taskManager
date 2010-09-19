@@ -22,7 +22,7 @@ ls	[-option ...]
 	-overdue
 	-cflag onlyThis/All/AllFromThis
 
-task 	-n <taskNumber> //show specific task
+task 	<taskNumber> //show specific task
 
 pri	<taskNumber> <priority>
 
