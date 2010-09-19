@@ -15,6 +15,7 @@ public:
 	}
 
 	Command(){
+	  deadline = 0;
 	  pri = 0;
 	  group = NULL;
 	  cronFreq = 0;
