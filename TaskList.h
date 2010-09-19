@@ -15,6 +15,7 @@ public:
 	}
 	void removeTask(int serialNumber){
 		if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
+		delete (taskList.find(serialNumber))->second;
 		taskList.erase(taskList.find(serialNumber));	
 	}
 	void editTaskDeadline(int serialNumber, time_t deadline){
