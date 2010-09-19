@@ -19,8 +19,6 @@ public:
 	  priority = 0;
 	  group = "";
 	  cronFreq = 0;
-	  sortKeyword = new vector<sortKeyword_e>;
-	  serialNumberList = new vector<int>;
 	  finished = false;
 	  html = false;
 	}
