@@ -1,10 +1,12 @@
 class MainCommandExecutor:public CommandExecutor{
+private:
+	map<commandMethod, CommandExecutor*> executors;
 public:
+	MainCommandExecutor(){
+		executors[ADD] = new AddCommandExecutor();
+	}
 	Result *executeCommand(Command *command){
-		if (command->method == ADD){
-			mainTaskList->addTask(new Task(command->deadline,command->priority,command->taskDescription,command->cronFreq,command->finished,0,command->group));
-		}
-		return new Result();
+		return executors[command->method]->executeCommand(command);
 	}
 };
 

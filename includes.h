@@ -28,7 +28,6 @@ using namespace std;
 #include "TaskList.h"
 
 #include "commandExecutors/CommandExecutor.h"
-#include "commandExecutors/MainCommandExecutor.h"
 #include "commandExecutors/AddCommandExecutor.h"
 #include "commandExecutors/EditCommandExecutor.h"
 #include "commandExecutors/RmCommandExecutor.h"
@@ -39,6 +38,7 @@ using namespace std;
 #include "commandExecutors/FinishCommandExecutor.h"
 #include "commandExecutors/ExportCommandExecutor.h"
 #include "commandExecutors/ImportCommandExecutor.h"
+#include "commandExecutors/MainCommandExecutor.h"
 
 #include "Shell.h"
 
