@@ -7,3 +7,8 @@ sortKeyword_e
 
 filterType
 {k_filter, s_filter, f_filter, g_filter, overdue_filter}
+
+exception_e{
+	EXCEPTION_NOT_A_NUMBER,
+	EXCEPTION_HALT
+}
