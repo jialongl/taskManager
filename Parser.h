@@ -21,16 +21,17 @@ class Parser{
   }
 
 
-  /* Command ls_parse (vector<string> args) { */
-
-  /* } */
+  Command ls_parse () {
+    cmd->method = LS;
+    /* cmd->sortKeyword.push_back(); */
+  }
 
   void add_parse () {
     cmd->method = ADD;
     cmd->taskDescription = args[1];
   }
 
-  Command *inputToCommand (char *input){
+  Command *inputToCommand (char *input) {
     string s = string(input);
     tokenize(s);
 
@@ -43,8 +44,8 @@ class Parser{
     /* else if (args[0] == "rm") */
     /*   return rm_parse(); */
 
-    /* else if (args[0] == "ls") */
-    /*   return ls_parse(); */
+    else if (args[0] == "ls")
+      ls_parse();
 
     /* else if (args[0] == "pri") */
     /*   return pri_parse(); */
@@ -63,6 +64,7 @@ class Parser{
 
     return cmd;
   }
+
   string resultToOutput(Result *result){
     return string("Test");
   }
