@@ -23,31 +23,37 @@ class Parser{
     while (pos < s.size()) {
       if (!isspace(s[pos])) {
 
-	buf += s[pos];
-
 	if (s[pos] == '"') {
 	  if(inInvertedCommas == 0)
 	    inInvertedCommas = 1;
+
 	  else {
 	    inInvertedCommas = 0;
 	    args.push_back(buf);
 	    buf = "";
 	  }
 	}
-      }
 
-      else {
-	if (inInvertedCommas == 0) {
-	  args.push_back(buf);
-	  buf = "";
-	}
 	else
 	  buf += s[pos];
       }
 
+      else {
+	if (inInvertedCommas == 1)
+	/* } */
+	/* else */
+	  buf += s[pos];
+	else if (buf != "") {
+	  args.push_back(buf);
+	  buf = "";
+	}
+      }
+
       pos++;
     }
-    args.push_back(buf); // push in the last argument
+
+    if (buf != "")
+      args.push_back(buf); // push in the last argument
 
     for(vector <string>::iterator i = args.begin(); i < args.end(); i++ )
       cout << "args[" << *i << "] = " << *i << endl;
@@ -152,6 +158,9 @@ class Parser{
 
     else if (args[0] == "task")
       task_parse();
+
+    else
+      throw EXCEPTION_NO_SUCH_COMMAND;
 
     args.clear();
     return cmd;
