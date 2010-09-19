@@ -66,7 +66,7 @@ class MainCmdExecutor implements CommandExecutor{
 	executeCommand(method, commandExecutorList) //choose subCommandExecutor
 }
 
-class SubCommandExecutor implements CommandExecutor{
+class SubCommandExecutor implements CommandExecutor{ // Done: Add,Finish
 	executeCommand(subCommandExecutor, Command) 
 }
 
