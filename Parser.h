@@ -57,6 +57,7 @@ class Parser{
 
   void task_parse() {
     cmd->method = TASK;
+    cmd->serialNumberList.push_back(StringToNum(args[1]));
   }
 
 
