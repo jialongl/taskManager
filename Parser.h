@@ -77,9 +77,9 @@ class Parser{
 	cmd->group = *(iter + 1);
       }
 
-      /* else if ( *iter. == '"') { */
-      /* 	cmd->taskDescription = *iter; */
-      /* } */
+      else if ( (*iter)[0] == '"') {
+      	cmd->taskDescription = *iter;
+      }
 
       /* else if ( *iter == "-c" ) */
     }
