@@ -1,7 +1,9 @@
+#define TIMEZONE 8
 
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+using namespace std;
 
 #include "enums.h"
 #include "Task.h"
@@ -33,4 +35,7 @@
 #include "commandExecutors/ExportCommandExecutor.h"
 #include "commandExecutors/ImportCommandExecutor.h"
 
+#include "util.h"
+
 #include "init.h"
+
