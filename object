@@ -4,7 +4,7 @@ class Task{
 	priority [0] -10~10
 	description
 	cronFreq [0]
-	cronTill  
+	cronTill  // deprecated -- every cron task is added upon completion of the previous cron task
 	bool isFinished [false]
 	int serialNumber
 	int group
@@ -22,7 +22,7 @@ class Task{
 	getPriority()
 	getDescription()
 	getCronFreq()
-	getCronTill()
+	getCronTill()  // deprecated -- every cron task is added upon completion of the previous cron task
 	getIsFinished()
 	getSerialNumber()
 	getGroup()
