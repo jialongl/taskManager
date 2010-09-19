@@ -27,5 +27,6 @@ enum filterType{
 
 enum exception_e{
 	EXCEPTION_NOT_A_NUMBER,
-	EXCEPTION_HALT
+	EXCEPTION_HALT,
+	EXCEPTION_NO_SUCH_TASK
 };
