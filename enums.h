@@ -11,7 +11,7 @@ enum commandMethod {
 	IMPORT
 };
 
-enum sortKeyword{
+enum sortKeyword_e{
 	DEADLINE,
 	PRIORITY,
 	SERIAL_NUMBER
