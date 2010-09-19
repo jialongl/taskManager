@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
+#include <vector>
 using namespace std;
 
 #include "util.h"
