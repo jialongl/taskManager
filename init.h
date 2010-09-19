@@ -1,5 +1,6 @@
 void init(){
-	cronManager = new CronManager();
-	shell = new Shell();	
-	mainCommandExecutor = new MainCommandExecutor();
+  cronManager = new CronManager();
+  shell = new Shell();	
+  mainCommandExecutor = new MainCommandExecutor();
+  parser = new Parser();
 }
