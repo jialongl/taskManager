@@ -13,8 +13,15 @@ public:
 		filename = fn;
 		html = h;
 	}
-	Command(){
 
+	Command(){
+	  pri = 0;
+	  group = NULL;
+	  cronFreq = 0;
+	  sortKeyword = new vector<sortKeyword_e>;
+	  serialNumberList = new vector<int>;
+	  finished = false;
+	  html = false;
 	}
 
 	commandMethod method;
