@@ -65,7 +65,10 @@ class Parser{
     string s = string(input);
     tokenize(s);
 
-    if (args[0] == "add")
+    if (args[0] == "exit")
+      throw EXCEPTION_HALT;
+
+    else if (args[0] == "add")
       add_parse();
 
     else if (args[0] == "edit")
