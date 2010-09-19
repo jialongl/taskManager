@@ -21,15 +21,44 @@ class Parser{
   }
 
 
-  Command ls_parse () {
+  void add_parse() {
+    cmd->method = ADD;
+    cmd->taskDescription = args[1];
+  }
+
+  void edit_parse() {
+    cmd->method = EDIT;
+  }
+
+  void rm_parse() {
+    cmd->method = RM;
+  }
+
+  void ls_parse() {
     cmd->method = LS;
     /* cmd->sortKeyword.push_back(); */
   }
 
-  void add_parse () {
-    cmd->method = ADD;
-    cmd->taskDescription = args[1];
+  void pri_parse() {
+    cmd->method = PRI;
   }
+
+  void finish_parse() {
+    cmd->method = FINISH;
+  }
+
+  void export_parse() {
+    cmd->method = EXPORT;
+  }
+
+  void import_parse() {
+    cmd->method = IMPORT;
+  }
+
+  void task_parse() {
+    cmd->method = TASK;
+  }
+
 
   Command *inputToCommand (char *input) {
     string s = string(input);
@@ -38,29 +67,29 @@ class Parser{
     if (args[0] == "add")
       add_parse();
 
-    /* else if (args[0] == "edit") */
-    /*   return edit_parse(); */
+    else if (args[0] == "edit")
+      edit_parse();
 
-    /* else if (args[0] == "rm") */
-    /*   return rm_parse(); */
+    else if (args[0] == "rm")
+      rm_parse();
 
     else if (args[0] == "ls")
       ls_parse();
 
-    /* else if (args[0] == "pri") */
-    /*   return pri_parse(); */
+    else if (args[0] == "pri")
+      pri_parse();
 
-    /* else if (args[0] == "finish") */
-    /*   return finish_parse(); */
+    else if (args[0] == "finish")
+      finish_parse();
 
-    /* else if (args[0] == "export") */
-    /*   return export_parse(); */
+    else if (args[0] == "export")
+      export_parse();
 
-    /* else if (args[0] == "import") */
-    /*   return import_parse(); */
+    else if (args[0] == "import")
+      import_parse();
 
-    /* else if (args[0] == "task") */
-    /*   return task_parse(); */
+    else if (args[0] == "task")
+      task_parse();
 
     return cmd;
   }
