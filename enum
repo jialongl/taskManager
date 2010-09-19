@@ -2,7 +2,7 @@
 commandMethod
 {add, edit, rm, ls, task, pri, cron, finish, export, import}
 
-sortKeyword
+sortKeyword_e
 {deadline, priority, serialNumber}
 
 filterType
