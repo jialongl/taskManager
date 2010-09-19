@@ -3,4 +3,5 @@ void init(){
   shell = new Shell();	
   mainCommandExecutor = new MainCommandExecutor();
   parser = new Parser();
+  mainTaskList = new TaskList();
 }

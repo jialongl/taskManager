@@ -70,13 +70,15 @@ class SubCommandExecutor implements CommandExecutor{
 	executeCommand(subCommandExecutor, Command) 
 }
 
-class TaskList{
+class TaskList{ //Done!! Not tested
 	private taskList	map from serialNumber to Tasks
 	
-	addTask()
+	int addTask() // returns serial number
 	removeTask()
-	TaskList getTask(filter)
-	editTask()
+	TaskList getTasks(filter)
+	editTaskDescription(serialNum,newDescription)
+	editTask...
+	...
 	getTaskMap() //return taskMap
 }
 
@@ -94,10 +96,10 @@ class CronManager{
 	setLastTime()
 }
 
-class Filter{
+class Filter{//Done!!!
 	filterType	enum
 	bool filter(Task* task)
-}
+} 
 
 class GFilter inherits Filter{
 	groupNums

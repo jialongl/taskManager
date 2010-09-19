@@ -7,9 +7,11 @@ public:
 		serialNumberLargest = 0;
 		taskList.clear();
 	}
-	void addTask(Task *task){
+	int addTask(Task *task){
 		serialNumberLargest++;
 		taskList[serialNumberLargest] = task;
+		task->setSerialNumber(serialNumberLargest);
+		return serialNumberLargest;
 	}
 	void removeTask(int serialNumber){
 		if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
@@ -47,7 +49,7 @@ public:
 		map<int, Task*> ans (taskList);
 		return ans;
 	}
-	map<int, Task*> getTask(Filter* filter){
+	map<int, Task*> getTasks(Filter* filter){
 		map<int, Task*> ans;
 		ans.clear();
 		for (map<int,Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
@@ -56,3 +58,4 @@ public:
 		return ans;
 	}
 };
+TaskList *mainTaskList;
