@@ -13,16 +13,46 @@ class Parser{
   /* } */
 
   void tokenize(string s) {
-    stringstream ss(s);
-    string buf;
-    while ( ss >> buf ) {
-      if (buf[0] == '"')
-	continue;
+    int pos = 0;
+    string buf = "";
+    short inInvertedCommas = 0;
 
-      args.push_back(buf);
+    while (pos < s.size() && isspace(s[pos]))
+      pos++;
+
+    while (pos < s.size()) {
+      if (!isspace(s[pos])) {
+
+	buf += s[pos];
+
+	if (s[pos] == '"') {
+	  if(inInvertedCommas == 0)
+	    inInvertedCommas = 1;
+	  else {
+	    inInvertedCommas = 0;
+	    args.push_back(buf);
+	    buf = "";
+	  }
+	}
+      }
+
+      else {
+	if (inInvertedCommas == 0) {
+	  args.push_back(buf);
+	  buf = "";
+	}
+	else
+	  buf += s[pos];
+      }
+
+      pos++;
     }
-  }
+    args.push_back(buf); // push in the last argument
 
+    for(vector <string>::iterator i = args.begin(); i < args.end(); i++ )
+      cout << "args[" << *i << "] = " << *i << endl;
+    
+  }
 
   void add_parse() {
     cmd->method = ADD;
@@ -41,6 +71,10 @@ class Parser{
 	cmd->group = *(iter + 1);
       }
 
+      /* else if ( *iter. == '"') { */
+      /* 	cmd->taskDescription = *iter; */
+      /* } */
+
       /* else if ( *iter == "-c" ) */
     }
   }
@@ -55,12 +89,12 @@ class Parser{
 
   void ls_parse() {
     cmd->method = LS;
-    cmd->serialNumberList.push_back(StringToNum(args[1]));
+    /* cmd->serialNumberList.push_back(StringToNum(args.at(1))); */
   }
 
   void pri_parse() {
     cmd->method = PRI;
-    cmd->serialNumberList.push_back(StringToNum(args[1]));
+    cmd->serialNumberList.push_back(StringToNum(args.at(1)));
     cmd->priority = StringToNum(args[2]);
   }
 
@@ -78,7 +112,7 @@ class Parser{
 
   void task_parse() {
     cmd->method = TASK;
-    cmd->serialNumberList.push_back(StringToNum(args[1]));
+    cmd->serialNumberList.push_back(StringToNum(args.at(1)));
   }
 
 
