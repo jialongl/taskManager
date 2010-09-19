@@ -7,7 +7,7 @@ class Task{
 	cronTill  // deprecated -- every cron task is added upon completion of the previous cron task
 	bool isFinished [false]
 	int serialNumber
-	int group
+	string group
 
 	setPriority()
 	setDescription()
