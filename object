@@ -82,9 +82,9 @@ class TaskList{ //Done!!
 	getTaskMap() //return taskMap
 }
 
-class Result inherits TaskList{
+class Result inherits TaskList{//Done!!
 	bool detailed	//task -n true
-	bool null
+	bool isNull
 }
 
 class CronManager{
@@ -101,22 +101,22 @@ class Filter{//Done!!!
 	bool filter(Task* task)
 } 
 
-class GFilter inherits Filter{
+class GFilter inherits Filter{//Done
 	groupNums
 }
 
-class KFilter inherits Filter{
+class KFilter inherits Filter{//Done
 	keyword
 }
 
-class FFilter inherits Filter{
+class FFilter inherits Filter{//Done
 	finished
 }
 
-class OFilter inherits Fliter{
+class OFilter inherits Fliter{//Done
 }
 
-class NFilter inherits Filter{
+class NFilter inherits Filter{//Done
 	serialNumber
 }
 

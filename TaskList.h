@@ -1,11 +1,14 @@
 class TaskList{
-private:
+protected:
 	map<int,Task*> taskList;
 	int serialNumberLargest;
 public:
 	TaskList(){
 		serialNumberLargest = 0;
 		taskList.clear();
+	}
+	int getSerial(){
+		return serialNumberLargest;
 	}
 	int addTask(Task *task){
 		serialNumberLargest++;

@@ -14,8 +14,6 @@ using namespace std;
 #include "Task.h"
 #include "CronTask.h"
 #include "Command.h"
-#include "Result.h"
-#include "Parser.h"
 #include "CronManager.h"
 
 #include "filters/Filter.h"
@@ -26,6 +24,8 @@ using namespace std;
 #include "filters/NFilter.h"
 
 #include "TaskList.h"
+#include "Result.h"
+#include "Parser.h"
 
 #include "commandExecutors/CommandExecutor.h"
 #include "commandExecutors/AddCommandExecutor.h"
