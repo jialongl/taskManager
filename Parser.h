@@ -4,18 +4,21 @@ class Parser{
 
  private:
   vector <string> args;
+  vector <string>::iterator iter;
   Command *cmd;
 
  public:
 
-  Parser() {
-    cmd = new Command();
-  }
+  /* Parser() { */
+  /* } */
 
   void tokenize(string s) {
     stringstream ss(s);
     string buf;
     while ( ss >> buf ) {
+      if (buf[0] == '"')
+	continue;
+
       args.push_back(buf);
     }
   }
@@ -24,6 +27,22 @@ class Parser{
   void add_parse() {
     cmd->method = ADD;
     cmd->taskDescription = args[1];
+
+    for(iter = args.begin(); iter < args.end(); iter++ ) {
+      if ( *iter == "-t" ) {
+	cmd->deadline = StringToNum(*(iter + 1));
+      }
+
+      else if ( *iter == "-p" ) {
+	cmd->priority = StringToNum(*(iter + 1));
+      }
+
+      else if ( *iter == "-g" ) {
+	cmd->group = *(iter + 1);
+      }
+
+      /* else if ( *iter == "-c" ) */
+    }
   }
 
   void edit_parse() {
@@ -36,11 +55,13 @@ class Parser{
 
   void ls_parse() {
     cmd->method = LS;
-    /* cmd->sortKeyword.push_back(); */
+    cmd->serialNumberList.push_back(StringToNum(args[1]));
   }
 
   void pri_parse() {
     cmd->method = PRI;
+    cmd->serialNumberList.push_back(StringToNum(args[1]));
+    cmd->priority = StringToNum(args[2]);
   }
 
   void finish_parse() {
@@ -64,6 +85,9 @@ class Parser{
   Command *inputToCommand (char *input) {
     string s = string(input);
     tokenize(s);
+
+    delete cmd;
+    cmd = new Command();
 
     if (args[0] == "exit")
       throw EXCEPTION_HALT;
@@ -95,6 +119,7 @@ class Parser{
     else if (args[0] == "task")
       task_parse();
 
+    args.clear();
     return cmd;
   }
 
