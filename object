@@ -13,7 +13,7 @@ class Task{
 	setDescription()
 	setDeadline()
 	setGroup()
-	setCron()
+	setCronFreq()
 	setSerialNumber()
 	setIsFinished()
 	bool matchKeyword() //ls <*keyword?>
