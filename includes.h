@@ -6,6 +6,7 @@
 #include <ctime>
 #include <string>
 #include <vector>
+#include <map>
 using namespace std;
 
 #include "enums.h"
@@ -15,7 +16,6 @@ using namespace std;
 #include "Command.h"
 #include "Result.h"
 #include "Parser.h"
-#include "TaskList.h"
 #include "CronManager.h"
 
 #include "filters/Filter.h"
@@ -24,6 +24,8 @@ using namespace std;
 #include "filters/FFilter.h"
 #include "filters/OFilter.h"
 #include "filters/NFilter.h"
+
+#include "TaskList.h"
 
 #include "commandExecutors/CommandExecutor.h"
 #include "commandExecutors/MainCommandExecutor.h"
