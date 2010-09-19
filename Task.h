@@ -12,8 +12,8 @@ private:
 		return (i<0 || j<0);
 	}
 	
-	bool matchKeyword(string st1, string st2){
-		vector<vector<bool>> match;
+	bool tryMatch(string st1, string st2){
+		vector< vector<bool> > match;
 		for (int i=0;i<st1.length();i++){
 			for (int j=0;j<st2.length();j++){
 				if (st2[j] == '*') match[i][j] = vv(i-1,j) || match[i - 1][j]; else
@@ -25,7 +25,7 @@ private:
 		return match[st1.length()-1][st2.length()-1];
 	}
 public:
-	Task(time_t deadline, int priority, string description, int cronFreq, bool isFinished, int serialNumber, int group){
+	Task(time_t deadline, int priority, string description, int cronFreq, bool isFinished, int serialNumber, string group){
 		setDeadline(deadline);
 		setPriority(priority);
 		setDescription(description);
@@ -64,19 +64,19 @@ public:
 		return priority;
 	}
 	string getDescription(){
-		return description.clone();
+		return string(description);
 	}
 	int getCronFreq(){
 		return cronFreq;
 	}
-	bool isFinished(){
+	bool getIsFinished(){
 		return isFinished;
 	}
 	int getSerialNumber(){
 		return serialNumber;
 	}
 	string getGroup(){
-		return group.clone();
+		return string(group);
 	}
 
 	bool matchKeyword(string keyword){
