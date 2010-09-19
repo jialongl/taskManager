@@ -16,8 +16,8 @@ public:
 
 	Command(){
 	  deadline = 0;
-	  pri = 0;
-	  group = NULL;
+	  priority = 0;
+	  group = "";
 	  cronFreq = 0;
 	  sortKeyword = new vector<sortKeyword_e>;
 	  serialNumberList = new vector<int>;

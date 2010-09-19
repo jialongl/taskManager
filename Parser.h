@@ -1,5 +1,6 @@
-class Parser{
+#include <stringstream>
 
+class Parser{
 
  private:
   vector <string> args;
@@ -24,8 +25,8 @@ class Parser{
 
   /* } */
 
-  void add_parse (vector<string> args) {
-    cmd->commandMethod = "add";
+  void add_parse () {
+    cmd->method = "add";
     cmd->taskDescription = args[1];
   }
 
