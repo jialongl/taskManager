@@ -33,3 +33,4 @@
 #include "commandExecutors/ExportCommandExecutor.h"
 #include "commandExecutors/ImportCommandExecutor.h"
 
+#include "init.h"
