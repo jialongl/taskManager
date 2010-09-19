@@ -1,17 +1,20 @@
 #define TIMEZONE 8
+#define MAX_LEN 1024
 
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <string>
 using namespace std;
+
+#include "util.h"
 #include "enums.h"
 #include "Task.h"
 #include "CronTask.h"
 #include "Command.h"
-#include "Parser.h"
-#include "Shell.h"
-#include "TaskList.h"
 #include "Result.h"
+#include "Parser.h"
+#include "TaskList.h"
 #include "CronManager.h"
 
 #include "filters/Filter.h"
@@ -34,7 +37,7 @@ using namespace std;
 #include "commandExecutors/ExportCommandExecutor.h"
 #include "commandExecutors/ImportCommandExecutor.h"
 
-#include "util.h"
+#include "Shell.h"
 
 #include "init.h"
 
