@@ -8,8 +8,8 @@
 #include <vector>
 using namespace std;
 
-#include "util.h"
 #include "enums.h"
+#include "util.h"
 #include "Task.h"
 #include "CronTask.h"
 #include "Command.h"
