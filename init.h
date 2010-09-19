@@ -1,5 +1,5 @@
-CronManager * cronManager;
-Shell * shell;
+CronManager *cronManager;
+Shell *shell;
 
 void init(){
 	cronManager = new CronManager();

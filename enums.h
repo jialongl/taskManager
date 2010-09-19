@@ -9,13 +9,13 @@ enum commandMethod {
 	FINISH,
 	EXPORT,
 	IMPORT
-}
+};
 
 enum sortKeyword{
 	DEADLINE,
 	PRIORITY,
 	SERIAL_NUMBER
-}
+};
 
 enum filterType{
 	K_FILTER,
@@ -23,4 +23,4 @@ enum filterType{
 	F_FILTER,
 	G_FILTER,
 	OVERDUE_FILTER
-}
+};

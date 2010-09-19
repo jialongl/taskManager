@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <ctime>
 using namespace std;
-
 #include "enums.h"
 #include "Task.h"
 #include "CronTask.h"
