@@ -1,11 +1,11 @@
 add 	[-option ...] "<task_description>"
-	-t <time>
+	-t <deadline>
 	-p <priority>
 	-g "<group>"
 	-c [<number>week][<number>day][<number>hour][<number>min][<number>sec]
 
 edit	[-option ...] <taskNumber>	 
-	-d <description>
+	-d "<task_description>"
 	-t <time>
 	-p <priority>
 	-g "<group>"
