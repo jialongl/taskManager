@@ -5,8 +5,7 @@ public:
 			delete mainTaskList;
 			mainTaskList = new TaskList();
 
-//			ifstream record("record.xml");//
-			ifstream record((command->filename).c_str());
+			ifstream record("test.xml");//((command->filename).c_str());
 
 			string data;
 			int serialNumber;	
@@ -24,38 +23,38 @@ public:
 						getline(record, data); //serialNumber
 						start = data.find("<serialNumber>") + 14;
 						end = data.find("</serialNumber>");
-						serialNumber = StringToNum(data.substr(start, end-start));
+						serialNumber = StringToNum(restoreString(data.substr(start, end-start)));
 
 						getline(record, data); //deadline
 						start = data.find("<deadline>") + 10;
 						end = data.find("</deadline>");
-						deadline = StringToNum(data.substr(start, end-start));
+						deadline = StringToNum(restoreString(data.substr(start, end-start)));
 
 						getline(record, data); //priority
 						start = data.find("<priority>") + 10;
 						end = data.find("</priority>");
-						priority = StringToNum(data.substr(start, end-start));
+						priority = StringToNum(restoreString(data.substr(start, end-start)));
 	
 						getline(record, data); //description
 						start = data.find("<description>") + 13;
 						end = data.find("</description>");
-						description = data.substr(start, end-start);
+						description = restoreString(data.substr(start, end-start));
 
 						getline(record, data); //cronFreq
 						start = data.find("<cronFreq>") + 10;
 						end = data.find("</cronFreq>"); 
-						cronFreq = StringToNum(data.substr(start, end-start));
+						cronFreq = StringToNum(restoreString(data.substr(start, end-start)));
 
 						getline(record, data); //isFinished
 						start = data.find("<isFinished>") + 12;
 						end = data.find("</isFinished>");
-						if(data.substr(start, end-start) == string("true")) isFinished = true;
+						if(restoreString(data.substr(start, end-start)) == string("true")) isFinished = true;
 						else isFinished = false;
 
 						getline(record, data); //group
 						start = data.find("<group>") + 7;
 						end = data.find("</group>");
-						group = data.substr(start, end-start);
+						group = restoreString(data.substr(start, end-start));
 
 						Task* task = new Task(deadline, priority, description, cronFreq, isFinished, serialNumber, group);
 						mainTaskList->addTask(task->getSerialNumber(),task);
@@ -67,6 +66,18 @@ public:
 			
 		}
 		return new Result();
+	}
+
+	string restoreString (string s){
+		int i = 0;
+		while (i != s.size()){
+			if (s.at(i) == '\\'){
+				s.replace (i, i+1, "");
+				i++;
+			}
+			i++;
+		}
+		return s;
 	}
 };
 
