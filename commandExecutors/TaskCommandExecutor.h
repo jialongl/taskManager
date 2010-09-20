@@ -5,5 +5,6 @@ public:
 			int taskNum = (command->serialNumberList)[0];
 			return new Result(mainTaskList->getTasks(new NFilter(taskNum)), true);
 		}
+		return new Result();
 	}
 };

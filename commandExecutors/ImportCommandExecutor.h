@@ -1,7 +1,7 @@
 class ImportCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(Command *command){
-		if (command->method == IMPORT){
+/*		if (command->method == IMPORT){
 			delete mainTaskList();
 			XMLNode taskListNode = XMLNode::openFileHelper("record.xml","taskList");
 			XMLNode taskNode = taskListNode.getChildNode("task");
@@ -23,7 +23,7 @@ public:
 				mainTaskList->addTask(task);			
 			}
 			
-		}
+		}*/
 		return new Result();
 	}
 };
