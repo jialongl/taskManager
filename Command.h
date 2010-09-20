@@ -1,6 +1,6 @@
 class Command{
 public:
-	Command(commandMethod mtd, string tskD, time_t dl,int pri, string grp, int cF, vector<sortKeyword_e> sK, vector<int> sNL, bool f, string fn, bool h){
+	/*Command(commandMethod mtd, string tskD, time_t dl,int pri, string grp, int cF, vector<sortKeyword_e> sK, vector<int> sNL, bool f, string fn, bool h){
 		method = mtd;
 		taskDescription = tskD;
 		deadline = dl;
@@ -12,7 +12,7 @@ public:
 		finished = f;
 		filename = fn;
 		html = h;
-	}
+	}*/
 
 	Command(){
 	  deadline = 0;
@@ -21,6 +21,9 @@ public:
 	  cronFreq = 0;
 	  finished = false;
 	  html = false;
+	  keyword = "";
+	  finishFlag = ALL;
+	  overdue = false;
 	}
 
 	commandMethod method;
