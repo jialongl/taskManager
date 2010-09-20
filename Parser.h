@@ -236,6 +236,8 @@ class Parser{
 
       for (unsigned i = 0; i < ret.size(); i++)
 	ss << ret.at(i)->getDescription() << endl;
+
+      return ss.str();
     }
   }
 };
