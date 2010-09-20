@@ -73,7 +73,7 @@ class Parser{
 	cmd->group = *(iter++);
       }
 
-      else if ( (*iter)[0] == '"' ) {
+      else if ( (*iter)[0] == '"' && *(iter - 1)[0] != "-g") {
       	cmd->taskDescription = *iter;
       }
 
@@ -125,7 +125,7 @@ class Parser{
 	cmd->group = *(iter++);
       }
 
-      else if ( (*iter)[0] == '"' ) {
+      else if ( (*iter)[0] == '"' && *(iter - 1)[0] != '"') {
       	cmd->taskDescription = *iter;
       }
     }
@@ -136,11 +136,12 @@ class Parser{
   void pri_parse() {
     cmd->method = PRI;
     cmd->serialNumberList.push_back(StringToNum(args.at(1)));
-    cmd->priority = StringToNum(args[2]);
+    cmd->priority = StringToNum(args.at(2));
   }
 
   void finish_parse() {
     cmd->method = FINISH;
+    cmd->serialNumberList.push_back(StringToNum(args.at(1)));
   }
 
   void export_parse() {
