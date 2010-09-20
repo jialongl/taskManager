@@ -130,7 +130,8 @@ class Parser{
       }
 
       else if ( *iter == "-f" ) {
-	cmd->finished = *(iter++);
+	string s = *(iter++);
+	cmd->finished = (s == "true");
       }
 
       else if ( *iter == "-k") { // got to change later so this "-k" is not necessary
@@ -143,7 +144,12 @@ class Parser{
 	stringstream ss(keywords);
 
 	while ( ss >> buf ) {
-	  cmd->sortKeyword.push_back(buf);
+	  if( buf[0] == 'd')
+	    cmd->sortKeyword.push_back(DEADLINE);
+	  else if( buf[0] == 's')
+	    cmd->sortKeyword.push_back(SERIAL_NUMBER);
+	  else if( buf[0] == 'p')
+	    cmd->sortKeyword.push_back(PRIORITY);
 	}
       }
     }
