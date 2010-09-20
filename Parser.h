@@ -131,7 +131,13 @@ class Parser{
 
       else if ( *iter == "-f" ) {
 	string s = *(++iter);
-	cmd->finished = (s == "true");
+
+	if (s == "yes")
+	  cmd->finishFlag = YES;
+	else if (s == "no")
+	  cmd->finishFlag = NO;
+	else
+	  cmd->finishFlag = ALL;
       }
 
       else if ( *iter == "-k") { // got to change later so this "-k" is not necessary
@@ -234,9 +240,16 @@ class Parser{
       vector<Task *> ret = result->sort(result->comparer);
       stringstream ss("");
 
-      for (unsigned i = 0; i < ret.size(); i++)
-	ss << ret.at(i)->getDescription() << endl;
+      if (result->detailed == false) {
+	for (unsigned i = 0; i < ret.size(); i++)
+	  ss << ret.at(i)->getDescription() << endl;
 
+      } else {
+	ss << "No.\tDeadline\tPriority\tDescription\tFinished\t";
+	for (unsigned i = 0; i < ret.size(); i++) {
+	  ss << ret.at(i)->getSerialNumber()  << "\t" << ret.at(i)->getDeadline() << "\t" << ret.at(i)->getPriority() << "\t" << ret.at(i)->getDescription() << "\t" << ret.at(i)->getIsFinished();
+	}
+      }
       return ss.str();
     }
   }

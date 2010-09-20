@@ -5,6 +5,9 @@ time_t currentTime(){
 }
 
 int StringToNum(string s){
+  if (s[0] == '-')
+    return -StringToNum(s.substr(1, s.length()));
+
   int ans = 0;
   for (unsigned i=0; i < s.size(); i++){
     if (s[i] >= 48 && s[i] <= 57)
