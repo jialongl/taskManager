@@ -21,7 +21,7 @@ public:
 	}
 	Result *executeCommand(Command *command){
 		Result* ans =  executors[command->method]->executeCommand(command);
-		delete command;
+//		delete command;
 		return ans;
 	}
 };
