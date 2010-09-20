@@ -1,29 +1,69 @@
 class ImportCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(Command *command){
-/*		if (command->method == IMPORT){
-			delete mainTaskList();
-			XMLNode taskListNode = XMLNode::openFileHelper("record.xml","taskList");
-			XMLNode taskNode = taskListNode.getChildNode("task");
-			XMLNode deadlineNode = taskNode.getChildNode("deadline");
-			XMLNode priorityNode = taskNode.getChildNode("priority");
-			XMLNode descriptionNode = taskNode.getChildNode("description");
-			XMLNode cronFreqNode = taskNode.getChildNode("cronFreq");
-			XMLNode isFinishedNode = taskNode.getChildNode("isFinished");
-			XMLNode serialNumberNode = taskNode.getChildNode("serialNumber");
-			XMLNode groupNode = taskNode.getChildNode("group");
-			while(taskNode){
-				Task* task = new Task();
-				int taskNum = StringToNumber(serialNumberNode.getText());
-				if (descriptionNode.getText() != "") mainTaskList->editTaskDescription(taskNum, descriptionNode.getText());
-				if (StringToNumber(deadlineNode.getText()) != 0) mainTaskList->editTaskDeadline(taskNum, StringToNumber(deadlineNode.getText()));
-				if (StringToNumber(priorityNode.getText()) != -100) mainTaskList->editTaskPriority(taskNum, StringToNumber(priorityNode.getText()));
-				if (groupNode.getText() != "") mainTaskList->editTaskGroup(taskNum, groupNode.getText());
-				if (StringToNumber(cronFreqNode.getText()) != -1) mainTaskList->editTaskCronFreq(taskNum,StringToNumber(cronFreqNode.getText()));
-				mainTaskList->addTask(task);			
+		if (command->method == IMPORT){
+			delete mainTaskList;
+
+			ifstream record(command->filename);
+
+			string data;
+			int serialNumber;	
+			int deadline;
+			int priority;
+			string description;
+			int cronFreq;
+			bool isFinished;
+			string group;
+			int start, end;
+
+			if (record.is_open() && getline(record, data)) {
+				while (getline(record, data) && data.find("</taskList>") == string::npos) { //<task>
+					if(data.find("<task>")){
+						getline(record, data); //serialNumber
+						start = data.find("<serialNumber>") + 14;
+						end = data.find("</serialNumber>");
+						serialNumber = StringToNum(data.substr(start, end-start));
+
+						getline(record, data); //deadline
+						start = data.find("<deadline>") + 10;
+						end = data.find("</deadline>");
+						deadline = StringToNum(data.substr(start, end-start));
+
+						getline(record, data); //priority
+						start = data.find("<priority>") + 10;
+						end = data.find("</priority>");
+						priority = StringToNum(data.substr(start, end-start));
+	
+						getline(record, data); //description
+						start = data.find("<description>") + 13;
+						end = data.find("</description>");
+						description = data.substr(start, end-start);
+
+						getline(record, data); //cronFreq
+						start = data.find("<cronFreq>") + 10;
+						end = data.find("</cronFreq>"); 
+						cronFreq = StringToNum(data.substr(start, end-start));
+
+						getline(record, data); //isFinished
+						start = data.find("<isFinished>") + 12;
+						end = data.find("</isFinished>");
+						if(data.substr(start, end-start) == string("true")) isFinished = true;
+						else isFinished = false;
+
+						getline(record, data); //group
+						start = data.find("<group>") + 7;
+						end = data.find("</group>");
+						group = data.substr(start, end-start);
+
+						Task* task = new Task(deadline, priority, description, cronFreq, isFinished, serialNumber, group);
+						mainTaskList->addTask(task);
+
+						getline(record, data); //</task>
+					}			
+				}
 			}
 			
-		}*/
+		}
 		return new Result();
 	}
 };
