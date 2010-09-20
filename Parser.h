@@ -83,6 +83,7 @@ class Parser{
 
   void edit_parse() {
     cmd->method = EDIT;
+    cmd->serialNumberList.push_back( StringToNum(args.at(1)) );
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-t" ) {
