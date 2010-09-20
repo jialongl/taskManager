@@ -26,6 +26,9 @@ public:
 				result = mainCommandExecutor->executeCommand(command);
 				output = parser->resultToOutput(result);
 				cout<< output << endl;
+				command = new Command();
+				command->method = EXPORT;
+				mainCommandExecutor->executeCommand(command);
 			}
 			catch (exception_e except){
 				if (except == EXCEPTION_HALT) break;

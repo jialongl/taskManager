@@ -5,7 +5,7 @@ public:
 			delete mainTaskList;
 			mainTaskList = new TaskList();
 
-			ifstream record("test.xml");//((command->filename).c_str());
+			ifstream record((command->filename).c_str());
 
 			string data;
 			int serialNumber;	

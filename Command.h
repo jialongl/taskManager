@@ -28,6 +28,7 @@ public:
 	  sortKeyword.clear();
 	  taskDescription = "";
 	  filename = "record.xml";
+	  deadline = currentTime();
 	}
 
 	commandMethod method;

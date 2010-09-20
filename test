@@ -1,0 +1,7 @@
+add "This is my first Task"  -t 0
+add "Ok, this can be my second Task"  -t 12 -p 13
+add "I have to do laundry~!!" -g "life" -t 14
+add "cs3241 lab2" -g "study" -p 19 -t 19
+add "cs3230 tutorial" -g "study" -t 20
+add "cs3243 aTaxx1!!!!!!" -g "study" -t 15
+add "go supermarket" -g "life"
