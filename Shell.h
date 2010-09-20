@@ -26,10 +26,10 @@ public:
 				result = mainCommandExecutor->executeCommand(command);
 				output = parser->resultToOutput(result);
 				cout<< output << endl;
-				print();
 			}
 			catch (exception_e except){
 				if (except == EXCEPTION_HALT) break;
+				if (except == EXCEPTION_NO_SUCH_COMMAND) cout<<"TaskManager: command not found"<<endl;
 			}
 		}
 	}
