@@ -121,7 +121,7 @@ class Parser{
 	cmd->group = *(iter + 1);
       }
 
-      else if ( (*iter)[0] == '"' && *(iter - 1) != "-g" )) {
+      else if ( (*iter)[0] == '"' && *(iter - 1) != "-g" ) {
       	cmd->taskDescription = *iter;
       }
     }
