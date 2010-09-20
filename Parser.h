@@ -226,8 +226,10 @@ class Parser{
     else if (args[0] == "task")
       task_parse();
 
-    else
+    else {
+      args.clear();
       throw EXCEPTION_NO_SUCH_COMMAND;
+    }
 
     args.clear();
     return cmd;
