@@ -62,15 +62,15 @@ class Parser{
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-t" ) {
-	cmd->deadline = currentTime() + StringToNum(*(iter++));
+	cmd->deadline = currentTime() + StringToNum(*(++iter));
       }
 
       else if ( *iter == "-p" ) {
-	cmd->priority = StringToNum(*(iter++));
+	cmd->priority = StringToNum(*(++iter));
       }
 
       else if ( *iter == "-g" ) {
-	cmd->group = *(iter++);
+	cmd->group = *(++iter);
       }
 
       else if ( (*iter)[0] == '"' && *(iter - 1) != "-g") {
@@ -87,19 +87,19 @@ class Parser{
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-t" ) {
-	cmd->deadline = currentTime() + StringToNum(*(iter++));
+	cmd->deadline = currentTime() + StringToNum(*(++iter));
       }
 
       else if ( *iter == "-p" ) {
-	cmd->priority = StringToNum(*(iter++));
+	cmd->priority = StringToNum(*(++iter));
       }
 
       else if ( *iter == "-g" ) {
-	cmd->group = *(iter++);
+	cmd->group = *(++iter);
       }
 
       else if ( *iter == "-d" ) {
-      	cmd->taskDescription = *(iter++);
+      	cmd->taskDescription = *(++iter);
       }
     }
   }
@@ -109,7 +109,7 @@ class Parser{
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-g" ) {
-	cmd->group = *(iter++);
+	cmd->group = *(++iter);
 
       } else {
 	cmd->serialNumberList.push_back( StringToNum(args.at(1)) );
@@ -122,7 +122,7 @@ class Parser{
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-g" ) {
-	cmd->group = *(iter++);
+	cmd->group = *(++iter);
       }
 
       else if ( (*iter)[0] == '"' ) { //&& *(iter - 1) != "-g") {
@@ -130,16 +130,16 @@ class Parser{
       }
 
       else if ( *iter == "-f" ) {
-	string s = *(iter++);
+	string s = *(++iter);
 	cmd->finished = (s == "true");
       }
 
       else if ( *iter == "-k") { // got to change later so this "-k" is not necessary
-	cmd->keyword = *(iter++);
+	cmd->keyword = *(++iter);
       }
 
       else if ( *iter == "-s" ) {
-	string keywords = *(iter++);
+	string keywords = *(++iter);
 	string buf;
 	stringstream ss(keywords);
 
