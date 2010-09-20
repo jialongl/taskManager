@@ -150,12 +150,16 @@ class Parser{
 	string buf;
 	stringstream ss(keywords.substr(1, keywords.length() - 2));
 
+	string deadline = "deadline";
+	string serialnumber = "serialnumber";
+	string priority = "priority";
+
 	while ( ss >> buf ) {
-	  if( buf[0] == 'd')
+	  if( deadline.find(buf) != string::npos )
 	    cmd->sortKeyword.push_back(DEADLINE);
-	  else if( buf[0] == 's')
+	  else if( serialnumber.find(buf) != string::npos )
 	    cmd->sortKeyword.push_back(SERIAL_NUMBER);
-	  else if( buf[0] == 'p')
+	  else if( priority.find(buf) != string::npos )
 	    cmd->sortKeyword.push_back(PRIORITY);
 	}
       }
