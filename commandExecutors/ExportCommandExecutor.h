@@ -27,12 +27,12 @@ public:
 				writeFile<<"	<task>"<<endl;
 
 				//task body
+				writeFile<<"		<serialNumber>"<<iter->second->getSerialNumber()<<"</serialNumber>"<<endl;
 				writeFile<<"		<deadline>"<<iter->second->getDeadline()<<"</deadline>"<<endl;
 				writeFile<<"		<priority>"<<iter->second->getPriority()<<"</priority>"<<endl;
 				writeFile<<"		<description>"<<description_dist<<"</description>"<<endl;
 				writeFile<<"		<cronFreq>"<<iter->second->getCronFreq()<<"</cronFreq>"<<endl;
 				writeFile<<"		<isFinished>"<<iter->second->getIsFinished()<<"</isFinished>"<<endl;
-				writeFile<<"		<serialNumber>"<<iter->second->getSerialNumber()<<"</serialNumber>"<<endl;
 				writeFile<<"		<group>"<<group_dist<<"</group>"<<endl;
 
 				//task end
