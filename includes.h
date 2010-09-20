@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "xmlParser.h"
 using namespace std;
 
 #include "enums.h"
