@@ -16,6 +16,12 @@ public:
 		task->setSerialNumber(serialNumberLargest);
 		return serialNumberLargest;
 	}
+	int addTask(int serialNumber, Task* task){
+		if (taskList.find(serialNumber) != taskList.end()) throw EXCEPTION_TASK_EXIST;
+		taskList[serialNumber] = task;
+		if (serialNumber > serialNumberLargest) serialNumberLargest = serialNumber;
+		return serialNumber;
+	}
 	void removeTask(int serialNumber){
 		if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
 		delete (taskList.find(serialNumber))->second;
@@ -65,6 +71,22 @@ public:
 			}
 		}
 		
+		return ans;
+	}
+	vector<Task*> sort(Comparer* comp){
+		vector<Task*> ans;	
+		for (map<int,Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
+			ans.push_back(it->second);
+		}
+		for (vector<Task*>::iterator it1 = ans.begin(); it1 != ans.end(); it1++){
+			for (vector<Task*>::iterator it2 = it1 + 1; it2 < ans.end(); it2++){
+				if (!comp->compare(*it1, *it2)) {
+					Task* tmp = *it1;
+					*it1 = *it2;
+					*it2 = tmp;
+				}
+			}
+		}
 		return ans;
 	}
 };
