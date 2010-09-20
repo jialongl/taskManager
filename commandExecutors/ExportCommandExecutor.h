@@ -55,7 +55,7 @@ public:
 		{
 			if (s.at(i) == '<' || s.at(i) == '>')
 			{
-				s[i] = '¡õ';
+				s[i] = 134;
 			}
 		}
 		return s;
