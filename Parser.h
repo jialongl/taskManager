@@ -58,6 +58,7 @@ class Parser{
 
   void add_parse() {
     cmd->method = ADD;
+    cmd->group = "default";
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-t" ) {
@@ -72,7 +73,7 @@ class Parser{
 	cmd->group = *(iter + 1);
       }
 
-      else if ( (*iter)[0] == '"') {
+      else if ( (*iter)[0] == '"' && *(iter - 1) != "-g" ) {
       	cmd->taskDescription = *iter;
       }
 
@@ -114,6 +115,17 @@ class Parser{
 
   void ls_parse() {
     cmd->method = LS;
+
+    for(iter = args.begin(); iter < args.end(); iter++ ) {
+      if ( *iter == "-g" ) {
+	cmd->group = *(iter + 1);
+      }
+
+      else if ( (*iter)[0] == '"' && *(iter - 1) != "-g" )) {
+      	cmd->taskDescription = *iter;
+      }
+    }
+
     /* cmd->serialNumberList.push_back(StringToNum(args.at(1))); */
   }
 
