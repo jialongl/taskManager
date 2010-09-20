@@ -32,3 +32,9 @@ enum exception_e{
 	EXCEPTION_NO_SUCH_COMMAND,
 	EXCEPTION_TASK_EXIST
 };
+
+enum finishFlag_e{
+	YES,
+	NO,
+	ALL
+};

@@ -34,4 +34,7 @@ public:
 	bool finished;
 	string filename;
 	bool html;
+	string keyword;
+	finishFlag_e finishFlag;
+	bool overdue;
 };
