@@ -24,6 +24,9 @@ public:
 	  keyword = "";
 	  finishFlag = ALL;
 	  overdue = false;
+	  serialNumberList.clear();
+	  sortKeyword.clear();
+	  taskDescription = "";
 	}
 
 	commandMethod method;

@@ -5,10 +5,10 @@ public:
 			for (vector<int>::iterator it = command->serialNumberList.begin(); it < command->serialNumberList.end();  it++){
 				int x=*it;
 				mainTaskList->removeTask(x);
-				map<int, Task*> tmp = mainTaskList->getTaskMap();
-				for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
-					if ((it->second)->getGroup() == command->group) mainTaskList->removeTask(it->first);
-				}
+			}
+			map<int, Task*> tmp = mainTaskList->getTaskMap();
+			for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
+				if ((it->second)->getGroup() == command->group) mainTaskList->removeTask(it->first);
 			}
 				
 		}
