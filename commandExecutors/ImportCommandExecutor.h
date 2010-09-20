@@ -3,8 +3,10 @@ public:
 	Result *executeCommand(Command *command){
 		if (command->method == IMPORT){
 			delete mainTaskList;
+			mainTaskList = new TaskList();
 
-			ifstream record("record.xml");//(command->filename);
+//			ifstream record("record.xml");//
+			ifstream record((command->filename).c_str());
 
 			string data;
 			int serialNumber;	
@@ -56,7 +58,7 @@ public:
 						group = data.substr(start, end-start);
 
 						Task* task = new Task(deadline, priority, description, cronFreq, isFinished, serialNumber, group);
-						mainTaskList->addTask(task);
+						mainTaskList->addTask(task->getSerialNumber(),task);
 
 						getline(record, data); //</task>
 					}			

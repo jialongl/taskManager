@@ -27,6 +27,7 @@ public:
 	  serialNumberList.clear();
 	  sortKeyword.clear();
 	  taskDescription = "";
+	  filename = "record.xml";
 	}
 
 	commandMethod method;

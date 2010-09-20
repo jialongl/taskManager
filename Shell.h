@@ -29,6 +29,7 @@ public:
 			}
 			catch (exception_e except){
 				if (except == EXCEPTION_HALT) break;
+				if (except == EXCEPTION_NO_SUCH_TASK) cout<<"TaskManager: no such task"<<endl;
 				if (except == EXCEPTION_NO_SUCH_COMMAND) cout<<"TaskManager: command not found"<<endl;
 			}
 		}
