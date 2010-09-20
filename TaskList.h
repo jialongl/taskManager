@@ -43,8 +43,11 @@ public:
 	}
 	void editTaskSerialNumber(int serialNumber, int newSerialNumber){
 		if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
-		taskList[serialNumber]->setSerialNumber(newSerialNumber);
-		if (serialNumber > serialNumberLargest) serialNumberLargest = serialNumber;
+		Task* task = taskList[serialNumber];
+		taskList.erase(taskList.find(serialNumber));
+		taskList[newSerialNumber] = task;
+		task->setSerialNumber(newSerialNumber);
+		if (newSerialNumber > serialNumberLargest) serialNumberLargest = newSerialNumber;
 	}
 	void editTaskGroup(int serialNumber, string group){
 		if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
