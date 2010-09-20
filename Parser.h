@@ -58,22 +58,22 @@ class Parser{
 
   void add_parse() {
     cmd->method = ADD;
-    cmd->group = "default";
+    cmd->group = "\"default\"";
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-t" ) {
-	cmd->deadline = currentTime() + StringToNum(*(iter + 1));
+	cmd->deadline = currentTime() + StringToNum(*(iter++));
       }
 
       else if ( *iter == "-p" ) {
-	cmd->priority = StringToNum(*(iter + 1));
+	cmd->priority = StringToNum(*(iter++));
       }
 
       else if ( *iter == "-g" ) {
-	cmd->group = *(iter + 1);
+	cmd->group = *(iter++);
       }
 
-      else if ( (*iter)[0] == '"' && *(iter - 1) != "-g" ) {
+      else if ( (*iter)[0] == '"' ) {
       	cmd->taskDescription = *iter;
       }
 
@@ -87,19 +87,19 @@ class Parser{
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-t" ) {
-	cmd->deadline = currentTime() + StringToNum(*(iter + 1));
+	cmd->deadline = currentTime() + StringToNum(*(iter++));
       }
 
       else if ( *iter == "-p" ) {
-	cmd->priority = StringToNum(*(iter + 1));
+	cmd->priority = StringToNum(*(iter++));
       }
 
       else if ( *iter == "-g" ) {
-	cmd->group = *(iter + 1);
+	cmd->group = *(iter++);
       }
 
       else if ( *iter == "-d" ) {
-      	cmd->taskDescription = *(iter + 1);
+      	cmd->taskDescription = *(iter++);
       }
     }
   }
@@ -109,7 +109,10 @@ class Parser{
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-g" ) {
-	cmd->group = *(iter + 1);
+	cmd->group = *(iter++);
+
+      } else {
+	cmd->serialNumberList.push_back( StringToNum(args.at(1)) );
       }
     }
   }
@@ -119,10 +122,10 @@ class Parser{
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-g" ) {
-	cmd->group = *(iter + 1);
+	cmd->group = *(iter++);
       }
 
-      else if ( (*iter)[0] == '"' && *(iter - 1) != "-g" ) {
+      else if ( (*iter)[0] == '"' ) {
       	cmd->taskDescription = *iter;
       }
     }
