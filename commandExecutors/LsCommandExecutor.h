@@ -14,7 +14,8 @@ public:
 				//delete list;
 				list = tmp;
 			}
-			return new Result(list, false);
+			if ((command->sortKeyword).size()==0) return new Result(list, false);
+			else return new Result(list,new Comparer(command->sortKeyword));
 		}
 		return new Result();
 	}
