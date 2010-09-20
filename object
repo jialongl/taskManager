@@ -73,7 +73,8 @@ class SubCommandExecutor implements CommandExecutor{ // Done: Add,Finish
 class TaskList{ //Done!!
 	private taskList	map from serialNumber to Tasks
 	
-	int addTask() // returns serial number
+	int addTask(Task*) // returns serial number
+	int addTask(SerialNumber, Task*)
 	removeTask()
 	TaskList getTasks(filter)
 	editTaskDescription(serialNum,newDescription)
