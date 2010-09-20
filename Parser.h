@@ -9,8 +9,9 @@ class Parser{
 
  public:
 
-  /* Parser() { */
-  /* } */
+  Parser() {
+    cmd = new Command();
+  }
 
   void tokenize(string s) {
     int pos = 0;
@@ -22,6 +23,7 @@ class Parser{
 
     while (pos < s.size()) {
       if (!isspace(s[pos])) {
+	buf += s[pos];
 
 	if (s[pos] == '"') {
 	  if(inInvertedCommas == 0)
@@ -33,15 +35,10 @@ class Parser{
 	    buf = "";
 	  }
 	}
-
-	else
-	  buf += s[pos];
       }
 
       else {
 	if (inInvertedCommas == 1)
-	/* } */
-	/* else */
 	  buf += s[pos];
 	else if (buf != "") {
 	  args.push_back(buf);
@@ -55,9 +52,8 @@ class Parser{
     if (buf != "")
       args.push_back(buf); // push in the last argument
 
-    for(vector <string>::iterator i = args.begin(); i < args.end(); i++ )
-      cout << "args[" << *i << "] = " << *i << endl;
-    
+    /* for(vector <string>::iterator i = args.begin(); i < args.end(); i++ ) */
+    /*   cout << "args[" << *i << "] = " << *i << endl; */
   }
 
   void add_parse() {
