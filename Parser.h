@@ -227,15 +227,15 @@ class Parser{
   }
 
   string resultToOutput(Result *result){
-    if (result->null == true)
+    if (result->isNull == true)
       return string("");
 
     else {
-      vector<*Task> ret = result->sort(result->comparer);
+      vector<Task *> ret = result->sort(result->comparer);
       stringstream ss("");
 
       for (unsigned i = 0; i < ret.size(); i++)
-	ss << ret.at(i)->description << endl;
+	ss << ret.at(i)->getDescription() << endl;
     }
   }
 };
