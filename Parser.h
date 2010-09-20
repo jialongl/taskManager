@@ -248,9 +248,9 @@ class Parser{
 	  ss << ret.at(i)->getDescription() << endl;
 
       } else {
-	ss << "No.\tDeadline\tPriority\tDescription\tFinished\t" << endl;
+	ss << endl << "No.\tfinished\tby\tpri\tdesc" << endl;
 	for (unsigned i = 0; i < ret.size(); i++) {
-	  ss << ret.at(i)->getSerialNumber()  << "\t" << ret.at(i)->getDeadline() << "\t" << ret.at(i)->getPriority() << "\t" << ret.at(i)->getDescription() << "\t" << ret.at(i)->getIsFinished();
+	  ss << ret.at(i)->getSerialNumber()  << "\t" << ret.at(i)->getIsFinished() << "\t" << ret.at(i)->getDeadline() << "\t" << ret.at(i)->getPriority() << "\t" << ret.at(i)->getDescription();
 	}
       }
       return ss.str();
