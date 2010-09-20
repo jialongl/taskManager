@@ -44,6 +44,7 @@ public:
 	void editTaskSerialNumber(int serialNumber, int newSerialNumber){
 		if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
 		taskList[serialNumber]->setSerialNumber(newSerialNumber);
+		if (serialNumber > serialNumberLargest) serialNumberLargest = serialNumber;
 	}
 	void editTaskGroup(int serialNumber, string group){
 		if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
@@ -53,12 +54,14 @@ public:
 		map<int, Task*> ans (taskList);
 		return ans;
 	}
-	map<int, Task*> getTasks(Filter* filter){
-		map<int, Task*> ans;
-		ans.clear();
+	TaskList* getTasks(Filter* filter){
+		TaskList* ans = new TaskList();
 		for (map<int,Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
-			if (filter->filter(it->second)) ans[it->first] = it->second;
+			if (filter->filter(it->second)){
+				ans->editTaskSerialNumber(ans->addTask(it->second),it->first);
+			}
 		}
+		
 		return ans;
 	}
 };

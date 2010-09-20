@@ -6,8 +6,13 @@ public:
 				int x=*it;
 				mainTaskList->editTaskIsFinished(x, true);
 			}
+			map<int, Task*> tmp = mainTaskList->getTaskMap();
+			for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
+				if ((it->second)->getGroup() == command->group) mainTaskList->editTaskIsFinished(it->first,true);
+			}
 		}
 		//cron!!!!!!!!!
 		return new Result();
 	}
+
 };
