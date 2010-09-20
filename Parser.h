@@ -112,7 +112,8 @@ class Parser{
 	cmd->group = *(++iter);
 
       } else {
-	cmd->serialNumberList.push_back( StringToNum(args.at(1)) );
+	if ( *iter != "rm")
+	  cmd->serialNumberList.push_back( StringToNum(*iter) );
       }
     }
   }
