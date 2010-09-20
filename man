@@ -16,7 +16,7 @@ rm	[-option ...] [<taskNumber1>] [<taskNumber2>] [<taskNumber3>]...
 
 ls	[-option ...] 
 	-k <*keyword?>
-	-s "[firstKeyWord] [secondKeyWord] [thirdKeyWord]...." //sort by	
+	-s "[firstKeyWord] [secondKeyWord] [thirdKeyWord]...." // sort
 	-f Yes/No/All
 	-g "<group>"
 	-overdue
