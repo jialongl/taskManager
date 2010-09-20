@@ -49,14 +49,15 @@ public:
 
 	string distortString (string s)
 	{
-		int size = s.size();
-
-		for (int i=0; i<size; i++)
+		int i = 0;
+		while (i != s.size())
 		{
-			if (s.at(i) == '<' || s.at(i) == '>')
+			if (s.at(i) == '<' || s.at(i) == '>' || s.at(i) == '\\')
 			{
-				s[i] = 134;
+				s.insert (i, "\\");
+				i++;
 			}
+			i++;
 		}
 		return s;
 	}
