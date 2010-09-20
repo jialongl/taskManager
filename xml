@@ -1,0 +1,18 @@
+<tasklist>
+	<task>	
+		<deadline></deadline>
+		<priority></priority>
+		<description></description>
+		<cronFreq></cronFreq>
+		<isFinished></isFinshed>
+		<serialNumber></serialNumber>
+		<group></group>
+	</task>
+	<task>
+	...
+	</task>
+	<task>
+	...
+	</task>
+	...
+</tasklist>
