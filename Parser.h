@@ -252,7 +252,7 @@ class Parser{
       } else {
 	ss << endl << "No.\tfinished?\tdeadline\tpriority\tdetails" << endl;
 	for (unsigned i = 0; i < ret.size(); i++) {
-	  ss << ret.at(i)->getSerialNumber()  << "\t" << (ret.at(i)->getIsFinished() ? "yes" : "no") << "\t\t" << ret.at(i)->getDeadline() << "\t\t" << ret.at(i)->getPriority() << "\t" << ret.at(i)->getDescription();
+	  ss << ret.at(i)->getSerialNumber()  << "\t" << (ret.at(i)->getIsFinished() ? "yes" : "no") << "\t\t" << ret.at(i)->getDeadline() << "\t" << ret.at(i)->getPriority() << "\t\t" << ret.at(i)->getDescription() << endl;
 	}
       }
       return ss.str();
