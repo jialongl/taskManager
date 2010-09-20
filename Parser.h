@@ -148,7 +148,7 @@ class Parser{
       else if ( *iter == "-s" ) {
 	string keywords = *(++iter);
 	string buf;
-	stringstream ss(keywords);
+	stringstream ss(keywords.substr(1, keywords.length() - 2);
 
 	while ( ss >> buf ) {
 	  if( buf[0] == 'd')
