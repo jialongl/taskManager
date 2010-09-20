@@ -18,42 +18,42 @@ public:
 			int start, end;
 
 			if (record.is_open() && getline(record, data)) {
-				while (getline(record, data) && data.find("</taskList>") == string::npos) { //<task>
-					if(data.find("<task>")){
+				while (getline(record, data) && data.find(" </taskList>") == string::npos) { //<task>
+					if(data.find(" <task>")){
 						getline(record, data); //serialNumber
-						start = data.find("<serialNumber>") + 14;
-						end = data.find("</serialNumber>");
+						start = data.find(" <serialNumber>") + 15;
+						end = data.find(" </serialNumber>");
 						serialNumber = StringToNum(restoreString(data.substr(start, end-start)));
 
 						getline(record, data); //deadline
-						start = data.find("<deadline>") + 10;
-						end = data.find("</deadline>");
+						start = data.find(" <deadline>") + 11;
+						end = data.find(" </deadline>");
 						deadline = StringToNum(restoreString(data.substr(start, end-start)));
 
 						getline(record, data); //priority
-						start = data.find("<priority>") + 10;
-						end = data.find("</priority>");
+						start = data.find(" <priority>") + 11;
+						end = data.find(" </priority>");
 						priority = StringToNum(restoreString(data.substr(start, end-start)));
 	
 						getline(record, data); //description
-						start = data.find("<description>") + 13;
-						end = data.find("</description>");
+						start = data.find(" <description>") + 14;
+						end = data.find(" </description>");
 						description = restoreString(data.substr(start, end-start));
 
 						getline(record, data); //cronFreq
-						start = data.find("<cronFreq>") + 10;
-						end = data.find("</cronFreq>"); 
+						start = data.find(" <cronFreq>") + 11;
+						end = data.find(" </cronFreq>"); 
 						cronFreq = StringToNum(restoreString(data.substr(start, end-start)));
 
 						getline(record, data); //isFinished
-						start = data.find("<isFinished>") + 12;
-						end = data.find("</isFinished>");
+						start = data.find(" <isFinished>") + 13;
+						end = data.find(" </isFinished>");
 						if(restoreString(data.substr(start, end-start)) == string("true")) isFinished = true;
 						else isFinished = false;
 
 						getline(record, data); //group
-						start = data.find("<group>") + 7;
-						end = data.find("</group>");
+						start = data.find(" <group>") + 8;
+						end = data.find(" </group>");
 						group = restoreString(data.substr(start, end-start));
 
 						Task* task = new Task(deadline, priority, description, cronFreq, isFinished, serialNumber, group);
