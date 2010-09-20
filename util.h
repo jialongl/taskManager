@@ -15,19 +15,18 @@ int StringToNum(string s){
   return ans;
 }
 
-	bool vv(int i, int j){
-		return (i<0 || j<0);
-	}
 	
 	bool tryMatch(string st1, string st2){
-		vector< vector<bool> > match(st1.length());
-		for (int i=0;i<st1.length();i++){
-			for (int j=0;j<st2.length();j++){
-				if (st2[j] == '*') match[i].push_back(vv(i-1,j) || match[i - 1][j]); else
-				if (st2[j] == '?') match[i].push_back(vv(i-1,j-1) || match[i - 1][j - 1]); else
-				if (st2[j] == st1[i]) match[i].push_back(vv(i-1,j-1) ||  match[i - 1][j - 1]); else
-					match[i].push_back(false);
+		vector< vector<bool> > match(st1.length()+1, vector<bool> (st2.length()+1));
+		for (int i = 0; i<st1.length()+1; i++){
+			for (int j = 0; j<st2.length()+1; j++){
+				if (i<=0&&j<=0) match[i][j] = true; else
+				if (i<=0||j<=0) match[i][j] = false; else
+				if (st2[j-1] == '*') match[i][j] = match[i][j - 1] || match[i - 1][j]; else
+				if (st2[j-1] == '?') match[i][j] =  match[i - 1][j - 1]; else
+				if (st2[j-1] == st1[i-1]) match[i][j] =  match[i - 1][j - 1]; else
+					match[i][j]=false;
 			}
 		}
-		return match[st1.length()-1][st2.length()-1];
+		return match[st1.length()][st2.length()];
 	}

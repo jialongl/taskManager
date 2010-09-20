@@ -11,7 +11,7 @@ public:
 			TaskList* list = mainTaskList;
 			for (vector<Filter*>::iterator it = filters.begin(); it != filters.end(); it++){
 				TaskList* tmp = list->getTasks(*it);
-				delete list;
+				//delete list;
 				list = tmp;
 			}
 			return new Result(list, false);
