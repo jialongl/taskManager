@@ -31,7 +31,7 @@ public:
 		detailed = false;
 		taskList = list->getTaskMap();
 		serialNumberLargest = list->getSerial();
-		delete list;
+//		delete list;
 	}	
 
 };
