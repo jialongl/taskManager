@@ -73,7 +73,7 @@ class Parser{
 	cmd->group = *(iter++);
       }
 
-      else if ( (*iter)[0] == '"' && *(iter - 1)[0] != "-g") {
+      else if ( (*iter)[0] == '"' && *(iter - 1) != "-g") {
       	cmd->taskDescription = *iter;
       }
 
@@ -125,8 +125,26 @@ class Parser{
 	cmd->group = *(iter++);
       }
 
-      else if ( (*iter)[0] == '"' && *(iter - 1)[0] != '"') {
+      else if ( (*iter)[0] == '"' ) { //&& *(iter - 1) != "-g") {
       	cmd->taskDescription = *iter;
+      }
+
+      else if ( *iter == "-f" ) {
+	cmd->finished = *(iter++);
+      }
+
+      else if ( *iter == "-k") { // got to change later so this "-k" is not necessary
+	cmd->keyword = *(iter++);
+      }
+
+      else if ( *iter == "-s" ) {
+	string keywords = *(iter++);
+	string buf;
+	stringstream ss(keywords);
+
+	while ( ss >> buf ) {
+	  cmd->sortKeyword.push_back(buf);
+	}
       }
     }
 
