@@ -80,11 +80,14 @@ class TaskList{ //Done!!
 	editTask...
 	...
 	getTaskMap() //return taskMap
+	
+	vector<Task*> sort(Comparer*);
 }
 
 class Result inherits TaskList{//Done!!
 	bool detailed	//task -n true
 	bool isNull
+	Comparer* comparer
 }
 
 class CronManager{
@@ -118,6 +121,10 @@ class OFilter inherits Fliter{//Done
 
 class NFilter inherits Filter{//Done
 	serialNumber
+}
+
+class Comparer{
+	bool compare(task1*, task2*);// return whether task1 should be in front of task2.
 }
 
 mainLoop(){

@@ -12,6 +12,7 @@ using namespace std;
 #include "enums.h"
 #include "util.h"
 #include "Task.h"
+#include "Comparer.h"
 #include "CronTask.h"
 #include "Command.h"
 #include "CronManager.h"
