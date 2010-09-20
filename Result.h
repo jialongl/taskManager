@@ -20,7 +20,7 @@ public:
 		detailed = detail;
 		taskList = list->getTaskMap();
 		serialNumberLargest = list->getSerial(); 
-		delete list;
+//		delete list;
 		comparer = new Comparer();
 	}
 
