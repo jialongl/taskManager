@@ -35,6 +35,8 @@ public:
 				if (task1->getSerialNumber() == task2->getSerialNumber()) return 0;
 				if (task1->getSerialNumber() > task2->getSerialNumber()) return 1;
 				break;
+			default:
+				return 0;
 		}
 	}
 
