@@ -4,7 +4,7 @@ public:
 		if (command->method == IMPORT){
 			delete mainTaskList;
 
-			ifstream record(command->filename);
+			ifstream record("record.xml");//(command->filename);
 
 			string data;
 			int serialNumber;	
