@@ -2,6 +2,11 @@ class MainCommandExecutor:public CommandExecutor{
 private:
 	map<commandMethod, CommandExecutor*> executors;
 public:
+	~MainCommandExecutor(){
+		for (map<commandMethod, CommandExecutor*>::iterator it = executors.begin(); it != executors.end(); it++){
+			delete it->second;
+		}
+	}
 	MainCommandExecutor(){
 		executors[ADD] = new AddCommandExecutor();
 		executors[FINISH] = new FinishCommandExecutor();
@@ -15,7 +20,9 @@ public:
 		//executors[CRON] = new CronCommandExecutor();
 	}
 	Result *executeCommand(Command *command){
-		return executors[command->method]->executeCommand(command);
+		Result* ans =  executors[command->method]->executeCommand(command);
+		delete command;
+		return ans;
 	}
 };
 

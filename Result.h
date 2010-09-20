@@ -3,9 +3,17 @@ public:
 	bool detailed;
 	bool isNull;
 	Comparer* comparer;
+
+	~Result(){
+		deleteList();
+		delete comparer;
+	}
+
 	Result(){
 		isNull = true;
+		comparer = new Comparer();
 	}
+
 	Result(TaskList* list, bool detail){
 		isNull = false;
 		TaskList();
@@ -15,6 +23,7 @@ public:
 		delete list;
 		comparer = new Comparer();
 	}
+
 	Result(TaskList* list, Comparer *comp){
 		comparer = comp;
 		isNull = false;

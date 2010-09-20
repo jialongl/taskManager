@@ -3,12 +3,19 @@ private:
 	vector<sortKeyword_e> *keywords;
 public:
 	Comparer(vector<sortKeyword_e> keys){
-		keywords = &keys;
+		keywords = new vector<sortKeyword_e>;
+		for (int i=0;i<keys.size();i++){
+			keywords->push_back(keys[i]);
+		}
 	}
 
 	Comparer(){
 		keywords = new vector<sortKeyword_e>;
 		keywords->push_back(SERIAL_NUMBER);
+	}
+
+	~Comparer(){
+		delete keywords;
 	}
 
 	int compareWithKeyword(Task* task1, Task* task2, sortKeyword_e sk){

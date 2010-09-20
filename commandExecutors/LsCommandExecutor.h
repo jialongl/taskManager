@@ -10,7 +10,9 @@ public:
 			if (command->overdue) filters.push_back(new OFilter());
 			TaskList* list = mainTaskList;
 			for (vector<Filter*>::iterator it = filters.begin(); it != filters.end(); it++){
-				list = list->getTasks(*it);
+				TaskList* tmp = list->getTasks(*it);
+				delete list;
+				list = tmp;
 			}
 			return new Result(list, false);
 		}

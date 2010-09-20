@@ -7,6 +7,16 @@ public:
 		serialNumberLargest = 0;
 		taskList.clear();
 	}
+	~TaskList(){
+		deleteList();
+	}
+
+	void deleteList(){
+		for (map<int, Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
+			delete it->second;
+		}
+	}
+
 	int getSerial(){
 		return serialNumberLargest;
 	}
@@ -67,7 +77,7 @@ public:
 		TaskList* ans = new TaskList();
 		for (map<int,Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
 			if (filter->filter(it->second)){
-				ans->editTaskSerialNumber(ans->addTask(it->second),it->first);
+				ans->editTaskSerialNumber(ans->addTask(new Task(*(it->second))),it->first);
 			}
 		}
 		
