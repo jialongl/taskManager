@@ -8,10 +8,8 @@ public:
 		//export to file record.xml
 		if (command->method == EXPORT)
 		{
-			//int numberOfTasks = mainTaskList->getSerial();
-
 			map<int, Task*> tasks = mainTaskList->getTaskMap();
-
+			
 			ofstream writeFile("record.xml");
 
 			//file head
