@@ -58,11 +58,10 @@ class Parser{
 
   void add_parse() {
     cmd->method = ADD;
-    cmd->taskDescription = args[1];
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-t" ) {
-	cmd->deadline = StringToNum(*(iter + 1));
+	cmd->deadline = currentTime() + StringToNum(*(iter + 1));
       }
 
       else if ( *iter == "-p" ) {
@@ -83,10 +82,34 @@ class Parser{
 
   void edit_parse() {
     cmd->method = EDIT;
+
+    for(iter = args.begin(); iter < args.end(); iter++ ) {
+      if ( *iter == "-t" ) {
+	cmd->deadline = currentTime() + StringToNum(*(iter + 1));
+      }
+
+      else if ( *iter == "-p" ) {
+	cmd->priority = StringToNum(*(iter + 1));
+      }
+
+      else if ( *iter == "-g" ) {
+	cmd->group = *(iter + 1);
+      }
+
+      else if ( *iter == "-d" ) {
+      	cmd->taskDescription = *(iter + 1);
+      }
+    }
   }
 
   void rm_parse() {
     cmd->method = RM;
+
+    for(iter = args.begin(); iter < args.end(); iter++ ) {
+      if ( *iter == "-g" ) {
+	cmd->group = *(iter + 1);
+      }
+    }
   }
 
   void ls_parse() {
