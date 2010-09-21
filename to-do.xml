@@ -1,0 +1,65 @@
+<taskList>
+	 <task>
+		 <serialNumber>1 </serialNumber>
+		 <deadline>1285081213 </deadline>
+		 <priority>0 </priority>
+		 <description>"Enable Help/Man" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>2 </serialNumber>
+		 <deadline>1285081263 </deadline>
+		 <priority>0 </priority>
+		 <description>"Enable shell style auto-completion with tab" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>3 </serialNumber>
+		 <deadline>1285081282 </deadline>
+		 <priority>0 </priority>
+		 <description>"Enable cron" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>4 </serialNumber>
+		 <deadline>1285081331 </deadline>
+		 <priority>0 </priority>
+		 <description>"Test and strengthen Parser to strange Inputs" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>5 </serialNumber>
+		 <deadline>1285081413 </deadline>
+		 <priority>0 </priority>
+		 <description>"Parser strip double quote from token, i.e. quote a quote should be tokenized as a without quotes " </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>6 </serialNumber>
+		 <deadline>1285081450 </deadline>
+		 <priority>0 </priority>
+		 <description>"Parser enable slash double quote to let user type double quote in description" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>7 </serialNumber>
+		 <deadline>1285081518 </deadline>
+		 <priority>0 </priority>
+		 <description>"Parser enable single token to be without quote , i.e. enable edit -g a to be the same as edit -g (quote)a(quote)" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+ </taskList>
