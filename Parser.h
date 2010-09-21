@@ -185,6 +185,7 @@ class Parser{
 
   void import_parse() {
     cmd->method = IMPORT;
+    if (args.size()!=1) cmd->filename = args[1];
   }
 
   void task_parse() {
