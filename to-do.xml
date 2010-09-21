@@ -62,4 +62,40 @@
 		 <isFinished>0 </isFinished>
 		 <group>"default" </group>
 	 </task>
+	 <task>
+		 <serialNumber>8 </serialNumber>
+		 <deadline>1285081800 </deadline>
+		 <priority>0 </priority>
+		 <description>"Resolve memory leak and security concern" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>9 </serialNumber>
+		 <deadline>1285081820 </deadline>
+		 <priority>0 </priority>
+		 <description>"Enable man taskManager for linux and macos" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>10 </serialNumber>
+		 <deadline>1285081909 </deadline>
+		 <priority>0 </priority>
+		 <description>"Fix export bug: cannot export to replace existing file" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>11 </serialNumber>
+		 <deadline>1285081974 </deadline>
+		 <priority>0 </priority>
+		 <description>"Add a input module to handle user interaction, enable command executor to do further interaction with user e.g. confirm? yes/no" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
  </taskList>
