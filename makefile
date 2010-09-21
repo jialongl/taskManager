@@ -11,5 +11,8 @@ clean:
 
 install:
 	cp taskManager /usr/bin
+	cp taskManager.1 /usr/share/man/man1
+
 uninstall:
 	rm /usr/bin/taskManager
+	rm /usr/share/man/man1/taskManager.1
