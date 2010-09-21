@@ -10,6 +10,7 @@ int StringToNum(string s){
 
   int ans = 0;
   for (unsigned i=0; i < s.size(); i++){
+    if (s[i] == ' ') continue;
     if (s[i] >= 48 && s[i] <= 57)
       ans = ans*10 + ((int) s[i]) - 48;
     else

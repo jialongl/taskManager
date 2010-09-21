@@ -61,11 +61,15 @@ public:
 		string content;
 		int start, end;
 		
+		/*if(text.find("<" + node + ">") == sting::npos || text.find("</" + node + ">") == string::npos)
+		//throw EXCEPTION_TAG_NOT_FOUND;*/
+
 		start = text.find("<" + node + ">") + node.size() + 2;
 		end = text.find("</" + node + ">");
 
 		content = restoreString(text.substr(start, end - start));
 
+//		cout<<node<<"!"<<content<<"!"<<endl;
 		return content;
 	}
 };
