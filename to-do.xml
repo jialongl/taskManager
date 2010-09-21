@@ -109,9 +109,18 @@
 	 </task>
 	 <task>
 		 <serialNumber>13 </serialNumber>
-		 <deadline>1285082408 </deadline>
+		 <deadline>1285082660 </deadline>
 		 <priority>0 </priority>
-		 <description>"Enable pipe e.g ls -k cs2103* | finish , this will finish all tasks matching cs2103* keyword" </description>
+		 <description>"Enable pipe e.g ls -k Parser* | edit -g Parser, this will edit all tasks maching keyword Parser* to be in group Parser" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>14 </serialNumber>
+		 <deadline>1285082517 </deadline>
+		 <priority>0 </priority>
+		 <description>"Enable export -html" </description>
 		 <cronFreq>0 </cronFreq>
 		 <isFinished>0 </isFinished>
 		 <group>"default" </group>
