@@ -170,4 +170,31 @@
 		<isFinished>0</isFinished>
 		<group>"default" </group>
 	</task>
+	<task>
+		<serialNumber>20</serialNumber>
+		<deadline>1285116444</deadline>
+		<priority>0</priority>
+		<description>"Default path of conf and xml should be absolute path, can be otherwise indicated in configuration file"</description>
+		<cronFreq>0</cronFreq>
+		<isFinished>0</isFinished>
+		<group>"default"</group>
+	</task>
+	<task>
+		<serialNumber>21</serialNumber>
+		<deadline>1285116641</deadline>
+		<priority>0</priority>
+		<description>"Restructurize the code to : seperate implementation of class methods from .h file to .cpp file, use #ifndefine in class definition, remove includes.h and write includes inside each file to make a proper dependency tree. Thus make a better makefile."</description>
+		<cronFreq>0</cronFreq>
+		<isFinished>0</isFinished>
+		<group>"default"</group>
+	</task>
+	<task>
+		<serialNumber>22</serialNumber>
+		<deadline>1285116681</deadline>
+		<priority>0</priority>
+		<description>"Paser cut at some length when showing tasks with no-detail mode."</description>
+		<cronFreq>0</cronFreq>
+		<isFinished>0</isFinished>
+		<group>"default"</group>
+	</task>
 </taskList>
