@@ -93,7 +93,7 @@
 		 <serialNumber>11 </serialNumber>
 		 <deadline>1285081974 </deadline>
 		 <priority>0 </priority>
-		 <description>"Add a input module to handle user interaction, enable command executor to do further interaction with user e.g. confirm? yes/no" </description>
+		 <description>"Add a input module to handle user interaction, enable command executor to do further interaction with user e.g. confirm? yes(slash)no" </description>
 		 <cronFreq>0 </cronFreq>
 		 <isFinished>0 </isFinished>
 		 <group>"default" </group>
@@ -102,7 +102,7 @@
 		 <serialNumber>12 </serialNumber>
 		 <deadline>1285082255 </deadline>
 		 <priority>0 </priority>
-		 <description>"Add I/O module with changable i/ostream. Means later if we do gui, we can stream from gui to backend and execute command and stream output back to gui." </description>
+		 <description>"Add I(slash)O module with changable i(slash)ostream. Means later if we do gui, we can stream from gui to backend and execute command and stream output back to gui." </description>
 		 <cronFreq>0 </cronFreq>
 		 <isFinished>0 </isFinished>
 		 <group>"default" </group>
@@ -121,6 +121,15 @@
 		 <deadline>1285082517 </deadline>
 		 <priority>0 </priority>
 		 <description>"Enable export -html" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>15 </serialNumber>
+		 <deadline>1285082517 </deadline>
+		 <priority>0 </priority>
+		 <description>"Fix import bugs. Through a proper exception that can be caught by our program instead of system exception when error." </description>
 		 <cronFreq>0 </cronFreq>
 		 <isFinished>0 </isFinished>
 		 <group>"default" </group>
