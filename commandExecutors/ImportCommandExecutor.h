@@ -5,7 +5,7 @@ public:
 			delete mainTaskList;
 			mainTaskList = new TaskList();
 
-			ifstream record("to-do.xml");//((command->filename).c_str());
+			ifstream record((command->filename).c_str());
 
 			string line;
 			string data;
