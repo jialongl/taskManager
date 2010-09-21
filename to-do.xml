@@ -128,10 +128,19 @@
 	 <task>
 		 <serialNumber>15 </serialNumber>
 		 <deadline>1285082517 </deadline>
-		 <priority>0 </priority>
+		 <priority>20 </priority>
 		 <description>"Fix import bugs. Through a proper exception that can be caught by our program instead of system exception when error." </description>
 		 <cronFreq>0 </cronFreq>
 		 <isFinished>0 </isFinished>
-		 <group>"default" </group>
+		 <group>"urgent" </group>
+	 </task>
+	 <task>
+		 <serialNumber>16 </serialNumber>
+		 <deadline>1285082517 </deadline>
+		 <priority>20 </priority>
+		 <description>"Use XML standard entity references to cope with symbols. " </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"urgent" </group>
 	 </task>
  </taskList>
