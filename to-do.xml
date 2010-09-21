@@ -98,4 +98,22 @@
 		 <isFinished>0 </isFinished>
 		 <group>"default" </group>
 	 </task>
+	 <task>
+		 <serialNumber>12 </serialNumber>
+		 <deadline>1285082255 </deadline>
+		 <priority>0 </priority>
+		 <description>"Add I/O module with changable i/ostream. Means later if we do gui, we can stream from gui to backend and execute command and stream output back to gui." </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
+	 <task>
+		 <serialNumber>13 </serialNumber>
+		 <deadline>1285082408 </deadline>
+		 <priority>0 </priority>
+		 <description>"Enable pipe e.g ls -k cs2103* | finish , this will finish all tasks matching cs2103* keyword" </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
  </taskList>
