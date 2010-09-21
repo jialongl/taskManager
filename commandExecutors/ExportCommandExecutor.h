@@ -24,40 +24,19 @@ public:
 				string group_dist = distortString (group);
 				string description_dist = distortString (description);
 				//task head
-				writeFile<<"	 <task>"<<endl;
+				writeFile<<"	<task>"<<endl;
 
 				//task body
-				//write SN
-				writeFile<<"		 <serialNumber>"<<endl;
-				writeFile<<"			"<<iter->second->getSerialNumber()<<endl;
-				writeFile<<"		 </serialNumber>"<<endl;
-				//write deadline
-				writeFile<<"		 <deadline>"<<endl;
-				writeFile<<"			"<<iter->second->getDeadline()<<endl;
-				writeFile<<"		 </deadline>"<<endl;
-				//write priority
-				writeFile<<"		 <priority>"<<endl;
-				writeFile<<"			"<<iter->second->getPriority()<<endl;
-				writeFile<<"		 </priority>"<<endl;
-				//write description
-				writeFile<<"		 <description>"<<endl;
-				writeFile<<"			"<<description_dist<<endl;
-				writeFile<<"		 </description>"<<endl;
-				//write cronFreq
-				writeFile<<"		 <cronFreq>"<<endl;
-				writeFile<<"			"<<iter->second->getCronFreq()<<endl;
-				writeFile<<"		 </cronFreq>"<<endl;
-				//write isFinished
-				writeFile<<"		 <isFinished>"<<endl;
-				writeFile<<"			"<<iter->second->getIsFinished()<<endl;
-				writeFile<<"		 </isFinished>"<<endl;
-				//write group
-				writeFile<<"		 <group>"<<endl;
-				writeFile<<"			"<<group_dist<<endl;
-				writeFile<<"		 </group>"<<endl;
+				writeFile<<"		<serialNumber>"<<iter->second->getSerialNumber()<<"</serialNumber>"<<endl;
+				writeFile<<"		<deadline>"<<iter->second->getDeadline()<<"</deadline>"<<endl;
+				writeFile<<"		<priority>"<<iter->second->getPriority()<<"</priority>"<<endl;
+				writeFile<<"		<description>"<<description_dist<<"</description>"<<endl;
+				writeFile<<"		<cronFreq>"<<iter->second->getCronFreq()<<"</cronFreq>"<<endl;
+				writeFile<<"		<isFinished>"<<iter->second->getIsFinished()<<"</isFinished>"<<endl;
+				writeFile<<"		<group>"<<group_dist<<"</group>"<<endl;
 
 				//task end
-				writeFile<<"	 </task>"<<endl;
+				writeFile<<"	</task>"<<endl;
 			}
 			
 			//file end
