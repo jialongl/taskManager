@@ -29,7 +29,7 @@ public:
 					priority = StringToNum(getNodeContent("priority", data));
 					description = getNodeContent("description", data);
 					cronFreq = StringToNum(getNodeContent("cronFreq", data));
-					if(getNodeContent("isFinished", data) == string("true")) isFinished = true;
+					if(StringToNum(getNodeContent("isFinished", data))) isFinished = true;
 					else isFinished = false;
 					group = getNodeContent("group", data);
 

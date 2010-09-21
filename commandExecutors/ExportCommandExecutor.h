@@ -10,7 +10,11 @@ public:
 		{
 			map<int, Task*> tasks = mainTaskList->getTaskMap();
 			
-			ofstream writeFile("record.xml");
+			ofstream writeFile;
+			if (command->filename == "")
+				writeFile.open("record.xml");
+			else
+				writeFile.open((command->filename).c_str());
 
 			//file head
 			writeFile<<"<taskList>"<<endl;

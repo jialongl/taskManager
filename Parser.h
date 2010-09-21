@@ -133,9 +133,9 @@ class Parser{
       else if ( *iter == "-f" ) {
 	string s = *(++iter);
 
-	if (s == "yes")
+	if (s == "yes" || s == "YES" || s == "Yes" || s == "y" || s == "Y")
 	  cmd->finishFlag = YES;
-	else if (s == "no")
+	else if (s == "no"|| s == "NO" || s == "No" || s == "n" || s == "N")
 	  cmd->finishFlag = NO;
 	else
 	  cmd->finishFlag = ALL;
@@ -181,6 +181,7 @@ class Parser{
 
   void export_parse() {
     cmd->method = EXPORT;
+    if (args.size()!=1) cmd->filename = args[1];
   }
 
   void import_parse() {
@@ -249,8 +250,11 @@ class Parser{
       stringstream ss("");
 
       if (result->detailed == false) {
-	for (unsigned i = 0; i < ret.size(); i++)
-	  ss << endl << ret.at(i)-> getSerialNumber() << "\t" << ret.at(i)->getDescription();
+	for (unsigned i = 0; i < ret.size(); i++){
+	  ss << endl << ret.at(i)-> getSerialNumber();
+	  if (ret.at(i)->getIsFinished()) ss<<" f";
+       	  ss<< "\t" << ret.at(i)->getDescription();
+	}
 
 	ss<< endl;
 
