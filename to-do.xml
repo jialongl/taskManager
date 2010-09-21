@@ -161,4 +161,13 @@
 		 <isFinished>0 </isFinished>
 		 <group>"default" </group>
 	 </task>
+	 <task>
+		 <serialNumber>19 </serialNumber>
+		 <deadline>1285082517 </deadline>
+		 <priority>0 </priority>
+		 <description>"Parser to be able to read meaningful time format " </description>
+		 <cronFreq>0 </cronFreq>
+		 <isFinished>0 </isFinished>
+		 <group>"default" </group>
+	 </task>
  </taskList>
