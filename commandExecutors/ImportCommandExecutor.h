@@ -73,7 +73,6 @@ public:
 		while (i < s.size()){
 			if (s.at(i) == '\\'){
 				s.replace (i, 1, "");
-				i += 2;
 			}
 			i++;
 		}
