@@ -204,6 +204,11 @@ class Parser{
 
     if (args[0] == "exit")
       throw EXCEPTION_HALT;
+    
+    else if (args[0] == "help"){
+      args.clear();
+      throw EXCEPTION_HELP;
+    }
 
     else if (args[0] == "add")
       add_parse();

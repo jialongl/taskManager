@@ -1,3 +1,4 @@
+#include <cstdio>
 time_t currentTime(){
         time_t curTime;
         time(&curTime);
@@ -34,3 +35,11 @@ int StringToNum(string s){
 		}
 		return match[st1.length()][st2.length()];
 	}
+
+void displayHelp(){
+	FILE* inf = fopen("man","r");
+	char ch;
+	while (fscanf(inf,"%c",&ch) == 1){
+		cout<<ch;
+	}
+}
