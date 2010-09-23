@@ -3,7 +3,7 @@ all : taskManager
 taskManager : main.o
 	g++ -o taskManager main.o
 
-main.o : main.cpp includes.h enums.h util.h Task.h Comparer.h CronTask.h Command.h CronManager.h filters/Filter.h filters/GFilter.h filters/KFilter.h filters/FFilter.h filters/OFilter.h filters/NFilter.h TaskList.h Result.h Parser.h commandExecutors/COmmandExecutor.h commandExecutors/AddCommandExecutor.h commandExecutors/EditCommandExecutor.h commandExecutors/RmCommandExecutor.h commandExecutors/LsCommandExecutor.h commandExecutors/TaskCommandExecutor.h commandExecutors/PriCommandExecutor.h commandExecutors/CronCommandExecutor.h commandExecutors/FinishCommandExecutor.h commandExecutors/ExportCommandExecutor.h commandExecutors/ImportCommandExecutor.h commandExecutors/MainCommandExecutor.h Shell.h init.h 
+main.o : main.cpp includes.h enums.h util.h Task.h Comparer.h CronTask.h Command.h CronManager.h filters/Filter.h filters/GFilter.h filters/KFilter.h filters/FFilter.h filters/OFilter.h filters/NFilter.h TaskList.h Result.h Parser.h commandExecutors/CommandExecutor.h commandExecutors/AddCommandExecutor.h commandExecutors/EditCommandExecutor.h commandExecutors/RmCommandExecutor.h commandExecutors/LsCommandExecutor.h commandExecutors/TaskCommandExecutor.h commandExecutors/PriCommandExecutor.h commandExecutors/CronCommandExecutor.h commandExecutors/FinishCommandExecutor.h commandExecutors/ExportCommandExecutor.h commandExecutors/ImportCommandExecutor.h commandExecutors/MainCommandExecutor.h Shell.h init.h 
 	g++ -c main.cpp
 
 clean:
