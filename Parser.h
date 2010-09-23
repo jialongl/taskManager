@@ -202,10 +202,10 @@ class Parser{
     delete cmd;
     cmd = new Command();
 
-    if (args[0] == "exit")
+    if (args[0] == "exit" || args[0] =="")
       throw EXCEPTION_HALT;
     
-    else if (args[0] == "help"){
+    else if (args[0] == "help") {
       args.clear();
       throw EXCEPTION_HELP;
     }
