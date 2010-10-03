@@ -8,8 +8,7 @@ public:
 	string output;		
 
 	void start(){
-		cout<<endl;
-		cout<<" Task Manager V 0.0 "<<endl;
+		cout<<" Task Manager V 0.1 "<<endl;
 		cout<<" exit<enter> to quit. help<enter> for more instructions"<<endl;
 		cout<<"====================================================================="<<endl;
 		mainLoop();
