@@ -4,7 +4,10 @@ time_t currentTime(){
         time(&curTime);
         return curTime + TIMEZONE * 60 * 60;
 }
-
+string formatTime(int x){
+	time_t  t = x;
+	return (string)ctime(&t);	
+}
 int StringToNum(string s){
   if (s[0] == '-')
     return -StringToNum(s.substr(1, s.length()));

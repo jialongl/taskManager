@@ -258,15 +258,24 @@ class Parser{
 	for (unsigned i = 0; i < ret.size(); i++){
 	  ss << endl << ret.at(i)-> getSerialNumber();
 	  if (ret.at(i)->getIsFinished()) ss<<" f";
-       	  ss<< "\t" << ret.at(i)->getDescription();
+	  string s = ret.at(i)->getDescription();
+	  if (s.length()>50) s = s.substr(0,50) + "...";
+       	  ss<< "\t" << s;
 	}
 
 	ss<< endl;
 
       } else {
-	ss << endl << "No.\tfinished?\tdeadline\tpriority\tdetails" << endl;
+//	ss << endl << "No.\tfinished?\tdeadline\tpriority\tdetails" << endl;
+	ss << endl;
 	for (unsigned i = 0; i < ret.size(); i++) {
-	  ss << ret.at(i)->getSerialNumber()  << "\t" << (ret.at(i)->getIsFinished() ? "yes" : "no") << "\t\t" << ret.at(i)->getDeadline() << "\t" << ret.at(i)->getPriority() << "\t\t" << ret.at(i)->getDescription() << endl;
+		ss << " Serial Number:\t" << ret.at(i)->getSerialNumber() << "\t\tDeadline:\t" << formatTime(ret.at(i)->getDeadline()) ;
+		ss << "      Priority:\t"<< ret.at(i)->getPriority()<< "\t\t  Status:\t";
+		if (ret.at(i)->getIsFinished()) ss<<"Finished"<<endl;	
+		else ss<<"Doing"<<endl;
+		ss << " Details: " << endl;
+		ss << "\t" << ret.at(i)->getDescription()<<endl;
+//	  ss << ret.at(i)->getSerialNumber()  << "\t" << (ret.at(i)->getIsFinished() ? "yes" : "no") << "\t\t" << formatTime(ret.at(i)->getDeadline()) << "\t" << ret.at(i)->getPriority() << "\t\t" << ret.at(i)->getDescription() << endl;
 	}
       }
       return ss.str();
