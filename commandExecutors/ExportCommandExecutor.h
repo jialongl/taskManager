@@ -58,12 +58,22 @@ public:
 	string distortString (string s)
 	{
 		int i = 0;
-		while (i != s.size())
-		{
-			if (s.at(i) == '<' || s.at(i) == '>' || s.at(i) == '\\')
-			{
-				s.insert (i, "\\");
-				i++;
+		while (i != s.size()){
+			if (s.at(i) == '<'){
+				s.replace(i, 1, "&lt;");
+			        i += 3;
+			}else if(s.at(i) == '>'){
+				s.replace(i, 1, "&gt;");
+			        i += 3;
+			}else if(s.at(i) == '&'){
+				s.replace(i, 1, "&amp;");
+				i += 4;
+			}else if(s.at(i) == '\''){
+				s.replace(i, 1, "&apos;");
+				i += 4;
+			}else if(s.at(i) == '\"'){
+				s.replace(i, 1, "&quot;");
+				i += 5;
 			}
 			i++;
 		}
