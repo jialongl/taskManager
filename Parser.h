@@ -99,7 +99,11 @@ class Parser{
       }
 
       else if ( *iter == "-g" ) {
-	cmd->group = *(++iter);
+    string temp = *(++iter);
+    if (temp[0] = '"')
+        cmd->group = temp.substr(1, temp.length() - 2);
+    else
+        cmd->group = temp;
       }
 
       else if ( *iter == "-d" ) {
@@ -174,8 +178,6 @@ class Parser{
 	}
       }
     }
-
-    /* cmd->serialNumberList.push_back(StringToNum(args.at(1))); */
   }
 
   void pri_parse() {
@@ -191,8 +193,12 @@ class Parser{
 
   void export_parse() {
     cmd->method = EXPORT;
-    if (args.size()!=1) cmd->filename = args[1];
-  }
+    if (args.size() == 2 && args[1] != "-html" )
+        cmd->filename = args[1];
+ 
+    else if (args.size() == 3 && args[1] == "-html")
+        cmd->filename = args[2];
+ }
 
   void import_parse() {
     cmd->method = IMPORT;
@@ -212,7 +218,7 @@ class Parser{
     delete cmd;
     cmd = new Command();
 
-    if (args[0] == "exit" || args[0] =="")
+    if (args[0] == "exit" || args[0] == "")
       throw EXCEPTION_HALT;
     
     else if (args[0] == "help") {
@@ -276,7 +282,6 @@ class Parser{
 	ss<< endl;
 
       } else {
-//	ss << endl << "No.\tfinished?\tdeadline\tpriority\tdetails" << endl;
 	ss << endl;
 	for (unsigned i = 0; i < ret.size(); i++) {
 		ss << " Serial Number:\t" << ret.at(i)->getSerialNumber() << "\t\tDeadline:\t" << formatTime(ret.at(i)->getDeadline()) ;
