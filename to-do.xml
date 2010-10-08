@@ -3,127 +3,127 @@
 		<serialNumber>1</serialNumber>
 		<deadline>1285081213</deadline>
 		<priority>0</priority>
-		<description>"Enable Help/Man" </description>
+		<description>"Enable Help/Man"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>2</serialNumber>
 		<deadline>1285081263</deadline>
 		<priority>0</priority>
-		<description>"Enable shell style auto-completion with tab" </description>
+		<description>"Enable shell style auto-completion with tab"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>3</serialNumber>
 		<deadline>1285081282</deadline>
 		<priority>0</priority>
-		<description>"Enable cron" </description>
+		<description>"Enable cron"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>4</serialNumber>
 		<deadline>1285081331</deadline>
 		<priority>0</priority>
-		<description>"Test and strengthen Parser to strange Inputs" </description>
+		<description>"Test and strengthen Parser to strange Inputs"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>5</serialNumber>
 		<deadline>1285081413</deadline>
 		<priority>0</priority>
-		<description>"Parser strip double quote from token, i.e. quote a quote should be tokenized as a without quotes " </description>
+		<description>"Parser strip double quote from token, i.e. quote a quote should be tokenized as a without quotes "</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>6</serialNumber>
 		<deadline>1285081450</deadline>
 		<priority>0</priority>
-		<description>"Parser enable slash double quote to let user type double quote in description" </description>
+		<description>"Parser enable slash double quote to let user type double quote in description"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>7</serialNumber>
 		<deadline>1285081518</deadline>
 		<priority>0</priority>
-		<description>"Parser enable single token to be without quote , i.e. enable edit -g a to be the same as edit -g (quote)a(quote)" </description>
+		<description>"Parser enable single token to be without quote , i.e. enable edit -g a to be the same as edit -g (quote)a(quote)"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>8</serialNumber>
 		<deadline>1285081800</deadline>
 		<priority>0</priority>
-		<description>"Resolve memory leak and security concern" </description>
+		<description>"Resolve memory leak and security concern"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>9</serialNumber>
 		<deadline>1285081820</deadline>
 		<priority>0</priority>
-		<description>"Enable man taskManager for linux and macos" </description>
+		<description>"Enable man taskManager for linux and macos"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>10</serialNumber>
 		<deadline>1285081909</deadline>
 		<priority>0</priority>
-		<description>"Fix export bug: cannot export to replace existing file" </description>
+		<description>"Fix export bug: cannot export to replace existing file"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>1</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>11</serialNumber>
 		<deadline>1285081974</deadline>
 		<priority>0</priority>
-		<description>"Add a input module to handle user interaction, enable command executor to do further interaction with user e.g. confirm? yes(slash)no" </description>
+		<description>"Add a input module to handle user interaction, enable command executor to do further interaction with user e.g. confirm? yes(slash)no"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>12</serialNumber>
 		<deadline>1285082255</deadline>
 		<priority>0</priority>
-		<description>"Add I(slash)O module with changable i(slash)ostream. Means later if we do gui, we can stream from gui to backend and execute command and stream output back to gui." </description>
+		<description>"Add I(slash)O module with changable i(slash)ostream. Means later if we do gui, we can stream from gui to backend and execute command and stream output back to gui."</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>13</serialNumber>
 		<deadline>1285082660</deadline>
 		<priority>0</priority>
-		<description>"Enable pipe e.g ls -k Parser* | edit -g Parser, this will edit all tasks maching keyword Parser* to be in group Parser" </description>
+		<description>"Enable pipe e.g ls -k Parser* | edit -g Parser, this will edit all tasks maching keyword Parser* to be in group Parser"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>14</serialNumber>
 		<deadline>1285082517</deadline>
 		<priority>0</priority>
-		<description>"Enable export -html" </description>
+		<description>"Enable export -html"</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>15</serialNumber>
@@ -132,43 +132,43 @@
 		<description>"Fix import bugs. Throw a proper exception that can be caught by our program instead of system exception when error."</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"urgent" </group>
+		<group>"urgent"</group>
 	</task>
 	<task>
 		<serialNumber>16</serialNumber>
 		<deadline>1285082517</deadline>
 		<priority>20</priority>
-		<description>"Use XML standard entity references to cope with symbols. " </description>
+		<description>"Use XML standard entity references to cope with symbols. "</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"urgent" </group>
+		<group>"urgent"</group>
 	</task>
 	<task>
 		<serialNumber>17</serialNumber>
 		<deadline>1285082517</deadline>
 		<priority>0</priority>
-		<description>"Configuration reader " </description>
+		<description>"Configuration reader "</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>18</serialNumber>
 		<deadline>1285082517</deadline>
 		<priority>0</priority>
-		<description>"Enable args e.g. ./taskManager -conf my.conf " </description>
+		<description>"Enable args e.g. ./taskManager -conf my.conf "</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>19</serialNumber>
 		<deadline>1285082517</deadline>
 		<priority>0</priority>
-		<description>"Parser to be able to read meaningful time format " </description>
+		<description>"Parser to be able to read meaningful time format "</description>
 		<cronFreq>0</cronFreq>
 		<isFinished>0</isFinished>
-		<group>"default" </group>
+		<group>"default"</group>
 	</task>
 	<task>
 		<serialNumber>20</serialNumber>

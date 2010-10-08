@@ -4,18 +4,19 @@
 class Shell{
 public:
 
-	Command *command;
-	Result *result;
-	string output;		
-
-	void start(){
+	static void start(){
 		cout<<" Task Manager V 0.1 "<<endl;
 		cout<<" exit<enter> to quit. help<enter> for more instructions"<<endl;
 		cout<<"====================================================================="<<endl;
-		mainLoop();
+        mainLoop();
 	}
 		
-	void mainLoop(){
+	static void mainLoop(){
+
+	    Command *command;
+	    Result *result;
+	    string output;		
+
 		for (;;){
 			try{
 				cout<<"> ";
@@ -43,4 +44,4 @@ public:
 
 };
 
-Shell *shell;
+//Shell *shell;

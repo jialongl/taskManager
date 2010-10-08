@@ -29,7 +29,7 @@ public:
 		comparer = comp;
 		isNull = false;
 		TaskList();
-		detailed = true;
+		detailed = false;
 		taskList = list->getTaskMap();
 		serialNumberLargest = list->getSerial();
 //		delete list;

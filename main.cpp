@@ -4,6 +4,6 @@
 int main(int argc, char* argv[]){
 	init();
 	cronManager->newTasks(cronManager->lastTime, currentTime());
-	shell->start();
+    Shell::start();
 	return 1;
 }

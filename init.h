@@ -1,7 +1,7 @@
 /* Author: He Haocong */
 void init(){
   cronManager = new CronManager();
-  shell = new Shell();	
+  //shell = new Shell();	
   mainCommandExecutor = new MainCommandExecutor();
   parser = new Parser();
   mainTaskList = new TaskList();
