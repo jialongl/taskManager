@@ -205,8 +205,8 @@ class Parser{
   }
 
 
-  Command *inputToCommand (char *input) {
-    string s = string(input);
+  Command *inputToCommand (string input) {
+    string s = input;//string(input);
     tokenize(s);
 
     delete cmd;

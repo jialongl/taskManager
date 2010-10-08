@@ -28,6 +28,8 @@ using namespace std;
 #include "TaskList.h"
 #include "Result.h"
 #include "Parser.h"
+#include "IOModule/TM_IOModule.h"
+#include "IOModule/KeyboardIOModule.h"
 
 #include "commandExecutors/CommandExecutor.h"
 #include "commandExecutors/AddCommandExecutor.h"
