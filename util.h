@@ -1,6 +1,7 @@
 /* Author: Liu Jialong */
 /* Author: He Haocong */
 #include <cstdio>
+#include <fstream>
 time_t currentTime(){
         time_t curTime;
         time(&curTime);
@@ -42,9 +43,12 @@ int StringToNum(string s){
 	}
 
 void displayHelp(){
-	FILE* inf = fopen("man","r");
+	ifstream inf("man");
+	//FILE* inf = fopen("man","r");
 	char ch;
-	while (fscanf(inf,"%c",&ch) == 1){
+	//while (fscanf(inf,"%c",&ch) == 1){
+	while (inf.get(ch))
+	{
 		cout<<ch;
 	}
 }
