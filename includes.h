@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 #define TIMEZONE 8
 #define MAX_LEN 1024
 

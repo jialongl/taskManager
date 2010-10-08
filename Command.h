@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class Command{
 public:
 	/*Command(commandMethod mtd, string tskD, time_t dl,int pri, string grp, int cF, vector<sortKeyword_e> sK, vector<int> sNL, bool f, string fn, bool h){

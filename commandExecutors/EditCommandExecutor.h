@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class EditCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(Command *command){

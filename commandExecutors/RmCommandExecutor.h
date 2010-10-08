@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class RmCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(Command *command){

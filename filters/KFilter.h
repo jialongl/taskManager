@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class KFilter: public Filter{
 private:
 	string kString;

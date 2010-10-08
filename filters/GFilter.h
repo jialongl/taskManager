@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class GFilter: public Filter{
 private:
 	string groups;

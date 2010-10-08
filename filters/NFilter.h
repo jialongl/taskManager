@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class NFilter: public Filter{
 private:
 	int n;

@@ -1,3 +1,6 @@
+# Author: Liu Jialong
+# Author: He Haocong
+
 all : taskManager
 
 taskManager : main.o

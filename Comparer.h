@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class Comparer{
 private:
 	vector<sortKeyword_e> *keywords;

@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class LsCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(Command *command){

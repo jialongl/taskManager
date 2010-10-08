@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class Result:public TaskList{
 public:
 	bool detailed;

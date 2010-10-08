@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class Task{
 private:
 	time_t deadline;

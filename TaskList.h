@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class TaskList{
 protected:
 	map<int,Task*> taskList;

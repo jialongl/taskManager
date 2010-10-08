@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 #include <cstdio>
 time_t currentTime(){
         time_t curTime;

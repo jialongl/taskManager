@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class CronManager{
 public:
 	CronManager(){

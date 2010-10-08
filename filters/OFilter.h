@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class OFilter: public Filter{
 public:
 	bool filter(Task* task){

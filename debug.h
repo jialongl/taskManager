@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 void print(){
 	        map<int, Task*> theMap = mainTaskList->getTaskMap();
 		        for (map<int, Task*>::iterator it = theMap.begin();it!=theMap.end();it++){

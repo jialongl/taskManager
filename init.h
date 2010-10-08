@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 void init(){
   cronManager = new CronManager();
   shell = new Shell();	

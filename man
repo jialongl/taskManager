@@ -1,3 +1,5 @@
+/* Author: Zhou Biyan */
+
 add 	[-option ...] "<task_description>"
 	-t <deadline>
 	-p <priority>

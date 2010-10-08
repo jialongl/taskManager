@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 enum commandMethod {
 	ADD,
 	EDIT,

@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class MainCommandExecutor:public CommandExecutor{
 private:
 	map<commandMethod, CommandExecutor*> executors;

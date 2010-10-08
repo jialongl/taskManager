@@ -1,3 +1,4 @@
+/* Author: He Haocong */
 class FFilter: public Filter{
 private:
 	bool finished;
