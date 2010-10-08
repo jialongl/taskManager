@@ -53,9 +53,6 @@ class Parser{
 
     if (buf != "")
       args.push_back(buf); // push in the last argument
-
-    /* for(vector <string>::iterator i = args.begin(); i < args.end(); i++ ) */
-    /*   cout << "args[" << *i << "] = " << *i << endl; */
   }
 
   void add_parse() {
@@ -72,11 +69,16 @@ class Parser{
       }
 
       else if ( *iter == "-g" ) {
-	cmd->group = *(++iter);
+        string temp = *(++iter);
+	if (temp[0] = '"')
+	  cmd->group = temp.substr(1, temp.length() - 2);
+	else
+	  cmd->group = temp;
       }
 
       else if ( (*iter)[0] == '"' && *(iter - 1) != "-g") {
-      	cmd->taskDescription = *iter;
+        string temp = *iter;
+	cmd->taskDescription = temp.substr(1, temp.length() - 2);
       }
 
       /* else if ( *iter == "-c" ) */
@@ -125,11 +127,17 @@ class Parser{
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-g" ) {
-	cmd->group = *(++iter);
+        string temp = *(++iter);
+
+        if (temp[0] = '"')
+	  cmd->group = temp.substr(1, temp.length() - 2);
+        else
+          cmd->group = temp; 
       }
 
       else if ( (*iter)[0] == '"' ) { //&& *(iter - 1) != "-g") {
-      	cmd->taskDescription = *iter;
+	string temp = *iter;
+	cmd->taskDescription = temp.substr(1, temp.length() - 2);
       }
 
       else if ( *iter == "-f" ) {
