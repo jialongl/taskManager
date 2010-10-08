@@ -6,6 +6,7 @@ class ExportCommandExecutor: public CommandExecutor
 public:
 	Result *executeCommand (Command* command)
 	{
+		string filename;
 		//export to file record.xml
 		if (command->method == EXPORT)
 		{
@@ -14,9 +15,11 @@ public:
 			ofstream writeFile;
 			if (command->filename == "")
 				writeFile.open("record.xml");
-			else
-				writeFile.open((command->filename).c_str());
-
+			else{
+				filename = command->filename;
+				//writeFile.open((command->filename).c_str());
+				writeFile.open(filename.c_str());
+			}
 			//file head
 			writeFile<<"<taskList>"<<endl;
 
