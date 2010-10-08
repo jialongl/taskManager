@@ -1,5 +1,3 @@
-/* Author: Zhou Biyan */
-
 add 	[-option ...] "<task_description>"
 	-t <deadline>
 	-p <priority>
@@ -23,6 +21,7 @@ ls	[-option ...]
 	-g "<group>"
 	-overdue
 	-cflag onlyThis/All/AllFromThis
+//to do : auto detect field
 
 task 	<taskNumber> //show specific task
 
@@ -42,3 +41,41 @@ export	[-option ...] ["<fileName>"]
 	-g "<group>"
 
 import "<fileName>" 
+
+// to do
+
+read "<fileName>"
+
+set command [-option ...] [-option ...] [-option ...]
+
+lsformat "[field1] [field2] [field3] ..."
+
+//export and import address should be absolute
+
+loadbackup // before import, old tasklist will be autosaved for future load backup. when import, prompt for user confirmation
+
+//io module add a confirmation method for rm and import commands.
+
+// use task like finish and rm , suport sn list & group
+
+// task display group
+
+map <customCommand> <command>
+
+lsnf alias ls -f no
+lsf alias ls -f yes 
+lsg alias ls -g
+
+// pipe
+
+// up: last command in history , down ,left ,right
+
+// import option 
+    -mode append/overwrite/peek
+
+import -mode peek hisToDo.xml | grep -g cs2103 | add
+
+import -overwrite hisToDo.xml
+export -g cs2103 temp.xml
+loadbackup
+import -mode append temp.xml
