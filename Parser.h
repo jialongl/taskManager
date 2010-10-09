@@ -170,10 +170,10 @@ class Parser{
           cmd->group = temp; 
       }
 
-      else if ( (*iter)[0] == '"' ) { //&& *(iter - 1) != "-g") {
-	string temp = *iter;
-	cmd->taskDescription = temp.substr(1, temp.length() - 2);
-      }
+      /* else if ( (*iter)[0] == '"' ) { //&& *(iter - 1) != "-g") { */
+      /* 	string temp = *iter; */
+      /* 	cmd->taskDescription = temp.substr(1, temp.length() - 2); */
+      /* } */
 
       else if ( *iter == "-f" ) {
 	string s = *(++iter);
