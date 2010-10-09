@@ -247,13 +247,15 @@ class Parser{
 
 
   Command *inputToCommand (string input) {
-    string s = input;
-    tokenize(s);
-
+    tokenize(input);
+    
     delete cmd;
     cmd = new Command();
 
-    if (args[0] == "exit" || args[0] == "")
+    if (input.length() == 0) {
+
+    }
+    else if (args[0] == "exit")
       throw EXCEPTION_HALT;
     
     else if (args[0] == "help") {

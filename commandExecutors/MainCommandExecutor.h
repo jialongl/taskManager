@@ -21,8 +21,10 @@ public:
 		//executors[CRON] = new CronCommandExecutor();
 	}
 	Result *executeCommand(Command *command){
-	  Result* ans = executors[command->method]->executeCommand(command);
-	  return ans;
+	  if ( command->method != NULLCOMMAND)
+	    return executors[command->method]->executeCommand(command);
+	  else
+	    return new Result();
 	}
 };
 
