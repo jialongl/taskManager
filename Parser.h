@@ -247,7 +247,7 @@ class Parser{
 
 
   Command *inputToCommand (string input) {
-    string s = input;//string(input);
+    string s = input;
     tokenize(s);
 
     delete cmd;
@@ -325,7 +325,7 @@ class Parser{
 	  else ss<<"Doing"<<endl;
 	  ss << " Details: " << endl;
 	  ss << "\t" << ret.at(i)->getDescription()<<endl;
-	  //	  ss << ret.at(i)->getSerialNumber()  << "\t" << (ret.at(i)->getIsFinished() ? "yes" : "no") << "\t\t" << formatTime(ret.at(i)->getDeadline()) << "\t" << ret.at(i)->getPriority() << "\t\t" << ret.at(i)->getDescription() << endl;
+	  // ss << ret.at(i)->getSerialNumber()  << "\t" << (ret.at(i)->getIsFinished() ? "yes" : "no") << "\t\t" << formatTime(ret.at(i)->getDeadline()) << "\t" << ret.at(i)->getPriority() << "\t\t" << ret.at(i)->getDescription() << endl;
 	}
       }
       return ss.str();
