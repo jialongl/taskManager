@@ -30,6 +30,7 @@ public:
 	  taskDescription = "";
 	  filename = "record.xml";
 	  deadline = currentTime();
+	  method = NULLCOMMAND;
 	}
 
 	commandMethod method;

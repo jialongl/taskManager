@@ -9,7 +9,8 @@ enum commandMethod {
 	CRON,
 	FINISH,
 	EXPORT,
-	IMPORT
+	IMPORT,
+	NULLCOMMAND
 };
 
 enum sortKeyword_e{
