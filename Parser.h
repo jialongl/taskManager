@@ -55,13 +55,30 @@ class Parser{
       args.push_back(buf); // push in the last argument
   }
 
+  void parse_date(string s, long *seconds) {
+    for (int j = 0; j < s.length(); j++) {
+      if (s[j] == 'w')
+	*seconds += ( s[j-1] - 48 ) * 604800;
+      else if (s[j] == 'd')
+	*seconds += ( s[j-1] - 48 ) * 86400;
+      else if (s[j] == 'h')
+	*seconds += ( s[j-1] - 48 ) * 3600;
+      else if (s[j] == 'm')
+	*seconds += ( s[j-1] - 48 ) * 60;
+    }
+  }
+
   void add_parse() {
     cmd->method = ADD;
     cmd->group = "\"default\"";
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-t" ) {
-	cmd->deadline = currentTime() + StringToNum(*(++iter));
+	string temp = *(++iter);
+	long seconds = 0;
+
+	parse_date(temp, &seconds);
+	cmd->deadline = currentTime() + seconds;
       }
 
       else if ( *iter == "-p" ) {
@@ -70,7 +87,7 @@ class Parser{
 
       else if ( *iter == "-g" ) {
         string temp = *(++iter);
-	if (temp[0] = '"')
+	if (temp[0] == '"' && temp[temp.length()-1] == '"')
 	  cmd->group = temp.substr(1, temp.length() - 2);
 	else
 	  cmd->group = temp;
@@ -99,11 +116,11 @@ class Parser{
       }
 
       else if ( *iter == "-g" ) {
-    string temp = *(++iter);
-    if (temp[0] = '"')
-        cmd->group = temp.substr(1, temp.length() - 2);
-    else
-        cmd->group = temp;
+	string temp = *(++iter);
+	if (temp[0] == '"' && temp[temp.length()-1] == '"')
+	  cmd->group = temp.substr(1, temp.length() - 2);
+	else
+	  cmd->group = temp;
       }
 
       else if ( *iter == "-d" ) {
@@ -133,7 +150,7 @@ class Parser{
       if ( *iter == "-g" ) {
         string temp = *(++iter);
 
-        if (temp[0] = '"')
+	if (temp[0] == '"' && temp[temp.length()-1] == '"')
 	  cmd->group = temp.substr(1, temp.length() - 2);
         else
           cmd->group = temp; 
@@ -156,7 +173,11 @@ class Parser{
       }
 
       else if ( *iter == "-k") { // got to change later so this "-k" is not necessary
-	cmd->keyword = *(++iter);
+	string temp = *(++iter);
+	if (temp[0] == '"' && temp[temp.length()-1] == '"')
+	  cmd->keyword = temp.substr(1, temp.length() - 2);
+	else
+	  cmd->keyword = temp;
       }
 
       else if ( *iter == "-s" ) {
@@ -194,11 +215,11 @@ class Parser{
   void export_parse() {
     cmd->method = EXPORT;
     if (args.size() == 2 && args[1] != "-html" )
-        cmd->filename = args[1];
+      cmd->filename = args[1];
  
     else if (args.size() == 3 && args[1] == "-html")
-        cmd->filename = args[2];
- }
+      cmd->filename = args[2];
+  }
 
   void import_parse() {
     cmd->method = IMPORT;
@@ -284,13 +305,13 @@ class Parser{
       } else {
 	ss << endl;
 	for (unsigned i = 0; i < ret.size(); i++) {
-		ss << " Serial Number:\t" << ret.at(i)->getSerialNumber() << "\t\tDeadline:\t" << formatTime(ret.at(i)->getDeadline()) ;
-		ss << "      Priority:\t"<< ret.at(i)->getPriority()<< "\t\t  Status:\t";
-		if (ret.at(i)->getIsFinished()) ss<<"Finished"<<endl;	
-		else ss<<"Doing"<<endl;
-		ss << " Details: " << endl;
-		ss << "\t" << ret.at(i)->getDescription()<<endl;
-//	  ss << ret.at(i)->getSerialNumber()  << "\t" << (ret.at(i)->getIsFinished() ? "yes" : "no") << "\t\t" << formatTime(ret.at(i)->getDeadline()) << "\t" << ret.at(i)->getPriority() << "\t\t" << ret.at(i)->getDescription() << endl;
+	  ss << " Serial Number:\t" << ret.at(i)->getSerialNumber() << "\t\tDeadline:\t" << formatTime(ret.at(i)->getDeadline()) ;
+	  ss << "      Priority:\t"<< ret.at(i)->getPriority()<< "\t\t  Status:\t";
+	  if (ret.at(i)->getIsFinished()) ss<<"Finished"<<endl;	
+	  else ss<<"Doing"<<endl;
+	  ss << " Details: " << endl;
+	  ss << "\t" << ret.at(i)->getDescription()<<endl;
+	  //	  ss << ret.at(i)->getSerialNumber()  << "\t" << (ret.at(i)->getIsFinished() ? "yes" : "no") << "\t\t" << formatTime(ret.at(i)->getDeadline()) << "\t" << ret.at(i)->getPriority() << "\t\t" << ret.at(i)->getDescription() << endl;
 	}
       }
       return ss.str();
