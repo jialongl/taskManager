@@ -118,7 +118,11 @@ class Parser{
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-t" ) {
-	cmd->deadline = currentTime() + StringToNum(*(++iter));
+	string temp = *(++iter);
+	long seconds = 0;
+
+	parse_date(temp, &seconds);
+	cmd->deadline = currentTime() + seconds;
       }
 
       else if ( *iter == "-p" ) {
