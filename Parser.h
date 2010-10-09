@@ -55,16 +55,26 @@ class Parser{
       args.push_back(buf); // push in the last argument
   }
 
-  void parse_date(string s, long *seconds) {
+  void parse_date (string s, long *seconds) {
+    int num_pos = 0; // to record the position in the string where it is a number (i.e '0' ~ '9')
+
     for (int j = 0; j < s.length(); j++) {
-      if (s[j] == 'w')
-	*seconds += ( s[j-1] - 48 ) * 604800;
-      else if (s[j] == 'd')
-	*seconds += ( s[j-1] - 48 ) * 86400;
-      else if (s[j] == 'h')
-	*seconds += ( s[j-1] - 48 ) * 3600;
-      else if (s[j] == 'm')
-	*seconds += ( s[j-1] - 48 ) * 60;
+      if (s[j] == 'w') {
+	*seconds += StringToNum( s.substr(num_pos, j-num_pos) ) * 604800;
+	num_pos = j + 1;
+
+      } else if (s[j] == 'd') {
+	*seconds += StringToNum( s.substr(num_pos, j-num_pos) ) * 86400;
+	num_pos = j + 1;
+
+      } else if (s[j] == 'h') {
+	*seconds += StringToNum( s.substr(num_pos, j-num_pos) ) * 3600;
+	num_pos = j + 1;
+
+      } else if (s[j] == 'm') {
+	*seconds += StringToNum( s.substr(num_pos, j-num_pos) ) * 60;
+	num_pos = j + 1;
+      }
     }
   }
 
