@@ -29,6 +29,15 @@ public:
 				if (except == EXCEPTION_ILLEGAL_EXPRESSION) cout<<"TaskManager: illegal expression"<<endl;
 				if (except == EXCEPTION_HELP) displayHelp();
     }
+    bool confirm(string prompt){
+        cout<<prompt;
+        string keyIn;
+        cin>>keyIn;
+        if (keyIn == "Yes" || keyIn == "YES" || keyIn == "Y" || keyIn == "y"){
+            return true;
+        }
+        else return false;
+    }
 };
 
 #endif
