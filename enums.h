@@ -11,6 +11,7 @@ enum commandMethod {
 	FINISH,
 	EXPORT,
 	IMPORT,
+    SORT,
 	NULLCOMMAND
 };
 

@@ -43,6 +43,7 @@ using namespace std;
 #include "commandExecutors/FinishCommandExecutor.h"
 #include "commandExecutors/ExportCommandExecutor.h"
 #include "commandExecutors/ImportCommandExecutor.h"
+#include "commandExecutors/SortCommandExecutor.h"
 #include "commandExecutors/MainCommandExecutor.h"
 
 #include "Shell.h"

@@ -18,7 +18,8 @@ public:
 		executors[LS] = new LsCommandExecutor();// deprecated
 		executors[SELECT] = new SelectCommandExecutor();
 		executors[TASK] = new TaskCommandExecutor();
-		executors[RM] = new RmCommandExecutor();
+        executors[RM] = new RmCommandExecutor();
+		executors[SORT] = new SortCommandExecutor();
 		//executors[CRON] = new CronCommandExecutor();
 	}
 	Result *executeCommand(Command *command){

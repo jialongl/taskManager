@@ -2,7 +2,7 @@
 class LsCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(Command *command){
-		if (command->method = LS){
+		if (command->method == LS){
 			vector<Filter*> filters;
 			if (command->keyword != "") filters.push_back(new KFilter(command->keyword));
 			if (command->finishFlag == YES) filters.push_back(new FFilter(true));
@@ -23,7 +23,7 @@ public:
 		return new Result();
 	}
     Result *executeCommand(Result* result, Command *command){
-		if (command->method = LS){
+		if (command->method == LS){
 			vector<Filter*> filters;
 			if (command->keyword != "") filters.push_back(new KFilter(command->keyword));
 			if (command->finishFlag == YES) filters.push_back(new FFilter(true));
