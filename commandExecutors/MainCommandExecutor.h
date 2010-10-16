@@ -15,7 +15,8 @@ public:
 		executors[EXPORT] = new ExportCommandExecutor();
 		executors[IMPORT] = new ImportCommandExecutor();
 		executors[PRI] = new PriCommandExecutor();
-		executors[LS] = new LsCommandExecutor();
+		executors[LS] = new LsCommandExecutor();// deprecated
+		executors[SELECT] = new SelectCommandExecutor();
 		executors[TASK] = new TaskCommandExecutor();
 		executors[RM] = new RmCommandExecutor();
 		//executors[CRON] = new CronCommandExecutor();

@@ -3,7 +3,8 @@ enum commandMethod {
 	ADD,
 	EDIT,
 	RM,
-	LS,
+	LS,//deprecated
+    SELECT,
 	TASK,
 	PRI,
 	CRON,

@@ -15,5 +15,14 @@ public:
 		//cron!!!!!!!!!
 		return new Result();
 	}
+    Result *executeCommand(Result* result,Command *command){
+        if (command->method == FINISH){
+			map<int, Task*> tmp = mainTaskList->getTaskMap();
+			for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
+               mainTaskList->editTaskIsFinished((it->second)->getSerialNumber() , true);
+            }
+        }
+        return new Result();
+    }
 
 };

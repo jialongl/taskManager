@@ -15,4 +15,13 @@ public:
 		}
 		return new Result();
 	}
+    Result *executeCommand(Result* result, Command* command){
+        if (command->method == RM){
+			map<int, Task*> tmp = mainTaskList->getTaskMap();
+			for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
+               mainTaskList->removeTask((it->second)->getSerialNumber());
+            }
+        }
+        return new Result();
+    }
 };

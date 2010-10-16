@@ -35,7 +35,8 @@ using namespace std;
 #include "commandExecutors/AddCommandExecutor.h"
 #include "commandExecutors/EditCommandExecutor.h"
 #include "commandExecutors/RmCommandExecutor.h"
-#include "commandExecutors/LsCommandExecutor.h"
+#include "commandExecutors/LsCommandExecutor.h"//deprecated
+#include "commandExecutors/SelectCommandExecutor.h"
 #include "commandExecutors/TaskCommandExecutor.h"
 #include "commandExecutors/PriCommandExecutor.h"
 #include "commandExecutors/CronCommandExecutor.h"
