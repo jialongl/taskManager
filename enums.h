@@ -12,6 +12,7 @@ enum commandMethod {
 	EXPORT,
 	IMPORT,
     SORT,
+    RUN,
 	NULLCOMMAND
 };
 

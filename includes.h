@@ -32,6 +32,7 @@ using namespace std;
 #include "IOModule/KeyboardIOModule.h"
 
 #include "commandExecutors/CommandExecutor.h"
+#include "commandExecutors/MainCommandExecutor.h"
 #include "commandExecutors/AddCommandExecutor.h"
 #include "commandExecutors/EditCommandExecutor.h"
 #include "commandExecutors/RmCommandExecutor.h"
@@ -44,7 +45,8 @@ using namespace std;
 #include "commandExecutors/ExportCommandExecutor.h"
 #include "commandExecutors/ImportCommandExecutor.h"
 #include "commandExecutors/SortCommandExecutor.h"
-#include "commandExecutors/MainCommandExecutor.h"
+#include "commandExecutors/RunCommandExecutor.h"
+#include "commandExecutors/MainCommandExecutor.cpp"
 
 #include "Shell.h"
 
