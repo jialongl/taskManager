@@ -8,13 +8,17 @@ public:
                 string line;
                 while (getline(script, line)){
                   try{
+                    CommandList commandList;
                     Command *command;
                     Result *result;
-                    command = IOModule->getCommand();
-                    if (command->method != NULLCOMMAND){
-                        result = mainCommandExecutor->executeCommand(command);
-                        IOModule->showOutput(result);
-                    }
+
+                    commandList = parser->inputToCommandList(line);
+
+                    result = Shell::executeCommandList(commandList);
+
+			        if (!(result->isNull))
+                        IOModule->showOutput(result); 
+                    
 			        command = new Command();
 			        command->method = EXPORT;
 			        mainCommandExecutor->executeCommand(command);

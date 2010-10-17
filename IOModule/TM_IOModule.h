@@ -3,7 +3,7 @@
 
 class TM_IOModule{
 public:
-    virtual Command* getCommand() {return new Command();};
+    virtual CommandList getCommand() {};
     virtual void showOutput(Result* result) {};
     virtual void showWelcomeMessage() {};
     virtual void handleException(exception_e except) {};

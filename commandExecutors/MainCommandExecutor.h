@@ -6,6 +6,7 @@ public:
 	~MainCommandExecutor();
 	MainCommandExecutor();
 	Result *executeCommand(Command *command);
+	Result *executeCommand(Result* result, Command *command);
 };
 
 MainCommandExecutor *mainCommandExecutor;

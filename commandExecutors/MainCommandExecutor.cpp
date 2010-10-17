@@ -26,3 +26,9 @@ Result* MainCommandExecutor::executeCommand(Command *command){
 	    return new Result();
 	}
 
+Result* MainCommandExecutor::executeCommand(Result* result, Command *command){
+	  if ( command->method != NULLCOMMAND)
+	    return executors[command->method]->executeCommand(result, command);
+	  else
+	    return new Result();
+	}

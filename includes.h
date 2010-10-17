@@ -31,6 +31,8 @@ using namespace std;
 #include "IOModule/TM_IOModule.h"
 #include "IOModule/KeyboardIOModule.h"
 
+#include "Shell.h"
+
 #include "commandExecutors/CommandExecutor.h"
 #include "commandExecutors/MainCommandExecutor.h"
 #include "commandExecutors/AddCommandExecutor.h"
@@ -48,7 +50,7 @@ using namespace std;
 #include "commandExecutors/RunCommandExecutor.h"
 #include "commandExecutors/MainCommandExecutor.cpp"
 
-#include "Shell.h"
+#include "Shell.cpp"
 
 #include "init.h"
 

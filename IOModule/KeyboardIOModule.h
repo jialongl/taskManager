@@ -3,11 +3,11 @@
 
 class KeyboardIOModule: public TM_IOModule{
 public:
-    Command* getCommand(){
+    CommandList getCommand(){
         cout<<"> ";
         string str;
         getline(cin,str);
-        return parser->inputToCommand(str);
+        return parser->inputToCommandList(str);
  //       return new Command();
     }
 
