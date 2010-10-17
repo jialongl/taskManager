@@ -16,6 +16,7 @@ class Parser{
   }
 
   void tokenize (string s, char separator) {
+    args.clear();
     int pos = 0;
     string buf = "";
     short inInvertedCommas = 0;
@@ -225,7 +226,9 @@ class Parser{
 
   void finish_parse() {
     cmd->method = FINISH;
-    cmd->serialNumberList.push_back(StringToNum(args.at(1)));
+
+    if (args.size() >= 2)
+      cmd->serialNumberList.push_back(StringToNum(args.at(1)));
   }
 
   void export_parse() {
@@ -261,7 +264,6 @@ class Parser{
       throw EXCEPTION_HALT;
     
     else if (args[0] == "help") {
-      args.clear();
       throw EXCEPTION_HELP;
     }
 
@@ -293,11 +295,9 @@ class Parser{
       task_parse();
 
     else {
-      args.clear();
       throw EXCEPTION_NO_SUCH_COMMAND;
     }
 
-    args.clear();
     return cmd;
   }
 
@@ -307,10 +307,10 @@ class Parser{
 
     tokenize(s, '|');
     commands = args;
-    args.clear();
 
     for (int i = 0; i < commands.size(); i++) {
-	cl.push_back(inputToCommand(commands[i]));
+      cout<< "Command[i]=" << commands[i] << endl;
+      cl.push_back(inputToCommand(commands[i]));
     }
 
     return cl;
