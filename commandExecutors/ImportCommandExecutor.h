@@ -20,9 +20,7 @@ public:
 			
 			if (record.is_open()) {
 
-				while(getline(record, line)){
-					data = data + line;
-				}
+				while(getline(record, line)){data = data + line;}
 
 				while(data.find("<task>") != string::npos){
 					serialNumber = StringToNum(getNodeContent("serialNumber", data));
@@ -46,6 +44,14 @@ public:
 		}
 		return new Result();
 	}
+
+	Result *executeCommand(Result* result, Command *command){
+		if (command->method == IMPORT){
+			map<int, Task*> tmp = result->getTaskMap();
+			for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){mainTaskList->addTask(it->first, it->second);}
+		}
+		return new Result();
+    	}
 
 	string restoreString (string s){
 		int i = 0;
