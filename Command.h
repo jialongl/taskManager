@@ -48,3 +48,6 @@ public:
 	finishFlag_e finishFlag;
 	bool overdue;
 };
+
+typedef vector<Command*> CommandList ;
+
