@@ -10,6 +10,7 @@ main.o : main.cpp includes.h enums.h util.h Task.h Comparer.h CronTask.h Command
 	g++ -c main.cpp
 
 clean:
+	rm *.o
 	rm taskManager
 
 install:

@@ -9,6 +9,7 @@ void Shell::start(){
 Result* Shell::executeCommandList(CommandList commandList){
 
 	    Result *result;
+
         
         if (commandList.size() != 0 && commandList[0]->method != NULLCOMMAND)
     		  result = mainCommandExecutor->executeCommand(commandList[0]);
@@ -32,8 +33,6 @@ bool Shell::oneIteration(){
 			try{
 
 			  commandList = IOModule->getCommand();
-
-              cout<<commandList.size()<<" commands"<<endl;
 
               result = executeCommandList(commandList);
 

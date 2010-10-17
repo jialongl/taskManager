@@ -8,6 +8,7 @@ public:
         string str;
         getline(cin,str);
         return parser->inputToCommandList(str);
+        cout<<"YEAH!"<<endl;
  //       return new Command();
     }
 

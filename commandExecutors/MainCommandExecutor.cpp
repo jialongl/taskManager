@@ -21,7 +21,6 @@ MainCommandExecutor::MainCommandExecutor(){
 	}
 Result* MainCommandExecutor::executeCommand(Command *command){
 
-    cout<<command->method<<endl;
 
 	  if ( command->method != NULLCOMMAND)
 	    return executors[command->method]->executeCommand(command);
@@ -30,8 +29,9 @@ Result* MainCommandExecutor::executeCommand(Command *command){
 	}
 
 Result* MainCommandExecutor::executeCommand(Result* result, Command *command){
-    cout<<command->method<<endl;
-	  if ( command->method != NULLCOMMAND)
+    
+	  
+    if ( command->method != NULLCOMMAND)
 	    return executors[command->method]->executeCommand(result, command);
 	  else
 	    return new Result();

@@ -70,7 +70,7 @@ public:
 				i += 4;
 			}else if(s.at(i) == '\''){
 				s.replace(i, 1, "&apos;");
-				i += 4;
+				i += 5;
 			}else if(s.at(i) == '\"'){
 				s.replace(i, 1, "&quot;");
 				i += 5;
