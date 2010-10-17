@@ -83,7 +83,7 @@ class Parser{
 
   void add_parse() {
     cmd->method = ADD;
-    cmd->group = "\"default\"";
+    cmd->group = "default";
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-t" ) {
@@ -256,9 +256,14 @@ class Parser{
 
   void task_parse() {
     cmd->method = TASK;
-    cmd->serialNumberList.push_back(StringToNum(args.at(1)));
+
+    if (args.size() >= 2)
+      cmd->serialNumberList.push_back(StringToNum(args.at(1)));
   }
 
+  void map_parse() {
+    cmd->method = NULLCOMMAND;
+  }
 
   Command *inputToCommand (string input) {
     tokenize (input, 32);
@@ -345,18 +350,17 @@ class Parser{
       } else {
 	ss << endl;
 	for (unsigned i = 0; i < ret.size(); i++) {
-	  ss << " Serial Number:\t" << ret.at(i)->getSerialNumber() << "\t\tDeadline:\t" << formatTime(ret.at(i)->getDeadline()) ;
-	  ss << "      Priority:\t"<< ret.at(i)->getPriority()<< "\t\t  Status:\t";
+	  ss << "   Number:\t" << ret.at(i)->getSerialNumber() << "\t\tDeadline:\t" << formatTime(ret.at(i)->getDeadline()) ;
+	  ss << " Priority:\t"<< ret.at(i)->getPriority()<< "\t\t  Status:\t";
 
 	  if (ret.at(i)->getIsFinished())
 	    ss<<"Finished"<<endl;	
 	  else
 	    ss<<"Doing"<<endl;
 
-	  ss << "     Group:\t"<<ret.at(i)->getGroup();
-	  ss << " Details: " << endl;
+	  ss << "    Group:\t"<<ret.at(i)->getGroup()<<endl;
+	  ss << "  Details:" << endl;
 	  ss << "\t" << ret.at(i)->getDescription()<<endl;
-	  // ss << ret.at(i)->getSerialNumber()  << "\t" << (ret.at(i)->getIsFinished() ? "yes" : "no") << "\t\t" << formatTime(ret.at(i)->getDeadline()) << "\t" << ret.at(i)->getPriority() << "\t\t" << ret.at(i)->getDescription() << endl;
 	}
       }
       return ss.str();

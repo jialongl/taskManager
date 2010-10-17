@@ -3,16 +3,16 @@ enum commandMethod {
 	ADD,
 	EDIT,
 	RM,
-	LS,//deprecated
-    SELECT,
+	LS, // deprecated, replaced by "select"
+	SELECT,
 	TASK,
 	PRI,
 	CRON,
 	FINISH,
 	EXPORT,
 	IMPORT,
-    SORT,
-    RUN,
+	SORT,
+	RUN,
 	NULLCOMMAND
 };
 
