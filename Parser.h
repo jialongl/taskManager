@@ -117,7 +117,9 @@ class Parser{
 
   void edit_parse() {
     cmd->method = EDIT;
-    cmd->serialNumberList.push_back( StringToNum(args.at(1)) );
+
+    if (args.size() >= 2)
+      cmd->serialNumberList.push_back( StringToNum(args.at(1)) );
 
     for(iter = args.begin(); iter < args.end(); iter++ ) {
       if ( *iter == "-t" ) {
@@ -220,8 +222,15 @@ class Parser{
 
   void pri_parse() {
     cmd->method = PRI;
-    cmd->serialNumberList.push_back(StringToNum(args.at(1)));
-    cmd->priority = StringToNum(args.at(2));
+
+    if (args.size() == 2)
+      cmd->priority = StringToNum(args.at(1));
+
+    else if (args.size() == 3) {
+      cmd->priority = StringToNum(args.at(2));
+      cmd->serialNumberList.push_back(StringToNum(args.at(1)));
+    }
+
   }
 
   void finish_parse() {
@@ -254,7 +263,6 @@ class Parser{
   Command *inputToCommand (string input) {
     tokenize (input, 32);
     
-    delete cmd;
     cmd = new Command();
 
     if (input.length() == 0) {
@@ -309,7 +317,6 @@ class Parser{
     commands = args;
 
     for (int i = 0; i < commands.size(); i++) {
-      cout<< "Command[i]=" << commands[i] << endl;
       cl.push_back(inputToCommand(commands[i]));
     }
 
