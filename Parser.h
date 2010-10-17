@@ -15,16 +15,16 @@ class Parser{
     cmd = new Command();
   }
 
-  void tokenize_by_space (string s) {
+  void tokenize (string s, char separator) {
     int pos = 0;
     string buf = "";
     short inInvertedCommas = 0;
 
-    while (pos < s.size() && isspace(s[pos]))
+    while (pos < s.size() && s[pos] != separator)
       pos++;
 
     while (pos < s.size()) {
-      if (!isspace(s[pos])) {
+      if ( s[pos] != separator) {
 	buf += s[pos];
 
 	if (s[pos] == '"') {
@@ -42,6 +42,7 @@ class Parser{
       else {
 	if (inInvertedCommas == 1)
 	  buf += s[pos];
+
 	else if (buf != "") {
 	  args.push_back(buf);
 	  buf = "";
@@ -247,7 +248,7 @@ class Parser{
 
 
   Command *inputToCommand (string input) {
-    tokenize_by_space (input);
+    tokenize (input, ' ');
     
     delete cmd;
     cmd = new Command();
@@ -300,16 +301,14 @@ class Parser{
   }
 
   CommandList inputToCommandList (string s) {
-    string buf = "";
+    vector <string> commands;
     CommandList cl;
 
-    for (int pos = 0; pos < s.size(); pos++) {
-      if (s[pos] == '|') {
-	cl.push_back(inputToCommand(buf));
-	buf= "";
+    inputToCommand(tokenize(s, '|'));
+    commands = args;
 
-      } else
-	buf += s[pos];
+    for (int i = 0; i < commands.size(); i++)
+	cl.push_back(inputToCommand(commands[i]));
     }
 
     return cl;
