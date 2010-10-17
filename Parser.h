@@ -263,6 +263,15 @@ class Parser{
 
   void map_parse() {
     cmd->method = NULLCOMMAND;
+
+    string alias = args.at(1);
+    string origin = args.at(2);
+
+    // set up an array of maps
+
+    // insert (alias, origin);
+
+    // tokenize (alias, 32);
   }
 
   Command *inputToCommand (string input) {
