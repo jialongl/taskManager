@@ -8,4 +8,14 @@ public:
 		}
 		return new Result();
 	}
+	Result *executeCommand(Result *result, Command *command){
+		if (command->method == ADD){
+            vector<Task *> tasks = result->sort(result->comparer);
+            for (int i=0;i<tasks.size();i++){
+			    mainTaskList->addTask(tasks[i]);
+            }
+			// cron!!!!!!!!!!!! 
+		}
+		return new Result();
+	}
 };
