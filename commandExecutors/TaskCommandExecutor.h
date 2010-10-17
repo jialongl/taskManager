@@ -8,4 +8,10 @@ public:
 		}
 		return new Result();
 	}
+    Result *executeCommand(Result *result, Command *command){
+		if (command->method == TASK){
+			return new Result(result , true);
+		}
+		return new Result();
+    }
 };
