@@ -49,16 +49,16 @@ public:
 
 	string restoreString (string s){
 		int i = 0;
-		while (i + 4 < s.size()){
+		while (i + 3 < s.size()){
 			if(s.substr(i, 4) == "&lt;"){
 				s.replace(i, 4, "<");
 			}else if(s.substr(i, 4) == "&gt;"){
 				s.replace(i, 4, ">");
-			}else if(i + 5 < s.size() && s.substr(i, 5) == "&amp;"){
+			}else if(i + 4 < s.size() && s.substr(i, 5) == "&amp;"){
 				s.replace(i, 5, "&");
-			}else if(i + 6< s.size() && s.substr(i, 6) == "&apos;"){
+			}else if(i + 5< s.size() && s.substr(i, 6) == "&apos;"){
 				s.replace(i, 6, "\'");
-			}else if(i + 6< s.size() && s.substr(i, 6) == "&quot;"){
+			}else if(i + 5< s.size() && s.substr(i, 6) == "&quot;"){
 				s.replace(i, 6, "\"");
 			}
 			i++;
