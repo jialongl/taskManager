@@ -20,6 +20,9 @@ MainCommandExecutor::MainCommandExecutor(){
 		//executors[CRON] = new CronCommandExecutor();
 	}
 Result* MainCommandExecutor::executeCommand(Command *command){
+
+    cout<<command->method<<endl;
+
 	  if ( command->method != NULLCOMMAND)
 	    return executors[command->method]->executeCommand(command);
 	  else
@@ -27,6 +30,7 @@ Result* MainCommandExecutor::executeCommand(Command *command){
 	}
 
 Result* MainCommandExecutor::executeCommand(Result* result, Command *command){
+    cout<<command->method<<endl;
 	  if ( command->method != NULLCOMMAND)
 	    return executors[command->method]->executeCommand(result, command);
 	  else
