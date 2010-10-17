@@ -20,7 +20,7 @@ class Parser{
     string buf = "";
     short inInvertedCommas = 0;
 
-    while (pos < s.size() && s[pos] != separator)
+    while (pos < s.size() && s[pos] == separator)
       pos++;
 
     while (pos < s.size()) {
@@ -54,6 +54,7 @@ class Parser{
 
     if (buf != "")
       args.push_back(buf); // push in the last argument
+
   }
 
   void parse_date (string s, long *seconds) {
@@ -248,7 +249,7 @@ class Parser{
 
 
   Command *inputToCommand (string input) {
-    tokenize (input, ' ');
+    tokenize (input, 32);
     
     delete cmd;
     cmd = new Command();
@@ -304,10 +305,11 @@ class Parser{
     vector <string> commands;
     CommandList cl;
 
-    inputToCommand(tokenize(s, '|'));
+    tokenize(s, '|');
     commands = args;
+    args.clear();
 
-    for (int i = 0; i < commands.size(); i++)
+    for (int i = 0; i < commands.size(); i++) {
 	cl.push_back(inputToCommand(commands[i]));
     }
 
