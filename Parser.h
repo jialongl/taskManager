@@ -15,7 +15,7 @@ class Parser{
     cmd = new Command();
   }
 
-  void tokenize(string s) {
+  void tokenize_by_space (string s) {
     int pos = 0;
     string buf = "";
     short inInvertedCommas = 0;
@@ -247,7 +247,7 @@ class Parser{
 
 
   Command *inputToCommand (string input) {
-    tokenize(input);
+    tokenize_by_space (input);
     
     delete cmd;
     cmd = new Command();
@@ -297,6 +297,22 @@ class Parser{
 
     args.clear();
     return cmd;
+  }
+
+  CommandList inputToCommandList (string s) {
+    string buf = "";
+    CommandList cl;
+
+    for (int pos = 0; pos < s.size(); pos++) {
+      if (s[pos] == '|') {
+	cl.push_back(inputToCommand(buf));
+	buf= "";
+
+      } else
+	buf += s[pos];
+    }
+
+    return cl;
   }
 
   string resultToOutput(Result *result){
