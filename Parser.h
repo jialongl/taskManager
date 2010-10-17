@@ -347,8 +347,13 @@ class Parser{
 	for (unsigned i = 0; i < ret.size(); i++) {
 	  ss << " Serial Number:\t" << ret.at(i)->getSerialNumber() << "\t\tDeadline:\t" << formatTime(ret.at(i)->getDeadline()) ;
 	  ss << "      Priority:\t"<< ret.at(i)->getPriority()<< "\t\t  Status:\t";
-	  if (ret.at(i)->getIsFinished()) ss<<"Finished"<<endl;	
-	  else ss<<"Doing"<<endl;
+
+	  if (ret.at(i)->getIsFinished())
+	    ss<<"Finished"<<endl;	
+	  else
+	    ss<<"Doing"<<endl;
+
+	  ss << "     Group:\t"<<ret.at(i)->getGroup();
 	  ss << " Details: " << endl;
 	  ss << "\t" << ret.at(i)->getDescription()<<endl;
 	  // ss << ret.at(i)->getSerialNumber()  << "\t" << (ret.at(i)->getIsFinished() ? "yes" : "no") << "\t\t" << formatTime(ret.at(i)->getDeadline()) << "\t" << ret.at(i)->getPriority() << "\t\t" << ret.at(i)->getDescription() << endl;
