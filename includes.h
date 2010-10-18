@@ -3,12 +3,15 @@
 #define MAX_LEN 1024
 
 #include <iostream>
+#include <sstream>
 #include <cstdlib>
 #include <ctime>
 #include <string>
 #include <vector>
 #include <map>
 using namespace std;
+
+#include "curses.h"
 
 #include "enums.h"
 #include "util.h"
@@ -27,9 +30,13 @@ using namespace std;
 
 #include "TaskList.h"
 #include "Result.h"
-#include "Parser.h"
+
 #include "IOModule/TM_IOModule.h"
 #include "IOModule/KeyboardIOModule.h"
+#include "IOModule/PdcIO.h"
+#include "Parser.h"
+#include "IOModule/KeyboardIOModule.cpp"
+#include "IOModule/PdcIO.cpp"
 
 #include "Shell.h"
 

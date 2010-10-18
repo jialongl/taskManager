@@ -1,6 +1,5 @@
 /* Author: Liu Jialong */
 /* Author: He Haocong */
-#include <sstream>
 
 class Parser{
 
@@ -315,6 +314,20 @@ class Parser{
 
     else if (args[0] == "task")
       task_parse();
+
+    else if (args[0] == "tui"){
+        delete IOModule;
+        IOModule = new PdcIO();
+        IOModule->showWelcomeMessage();
+        cmd->method = NULLCOMMAND;
+    }
+
+    else if (args[0] == "notui"){
+        delete IOModule;
+        IOModule = new KeyboardIOModule();
+        IOModule->showWelcomeMessage();
+        cmd->method = NULLCOMMAND;
+    }
 
     else {
       throw EXCEPTION_NO_SUCH_COMMAND;
