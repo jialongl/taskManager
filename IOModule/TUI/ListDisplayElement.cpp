@@ -36,46 +36,66 @@ void ListDisplayElement::draw(){
     }
     wattroff(listWindow,A_BOLD);
     wrefresh(listWindow);
+    move(0,my-1);
 }
 void ListDisplayElement::handleKey(int ch){
     int mx,my;
     getmaxyx(listWindow,mx,my);
     string st;
     CommandList cl;
+    string newGrp,newDetail,newTime,newPri;
     switch (ch){
         case (int)'f':
-            st = "finish " + NumberToString(tasks[selectTask]->getSerialNumber());
-            cl = parser->inputToCommandList(st);
-            displayManager->setCommand(cl);
+            if (tasks.size() != 0){
+                st = "finish " + NumberToString(tasks[selectTask]->getSerialNumber());
+                cl = parser->inputToCommandList(st);
+                displayManager->setCommand(cl);
+            }
             break;
         case (int)'d':
-            st = "rm " + NumberToString(tasks[selectTask]->getSerialNumber());
-            cl = parser->inputToCommandList(st);
-            displayManager->setCommand(cl);
-            break;
-        case (int)'k':
-            if (navigateRow != 0) navigateRow--;
-            draw();
+            if (tasks.size() != 0){
+                st = "rm " + NumberToString(tasks[selectTask]->getSerialNumber());
+                cl = parser->inputToCommandList(st);
+                displayManager->setCommand(cl);
+                if (selectTask > tasks.size()) selectTask = tasks.size();
+            }
             break;
         case (int)'j':
+            if (navigateRow > 0) navigateRow--;
+            draw();
+            break;
+        case (int)'k':
             if (navigateRow+1 < lines.size()) navigateRow++;
             draw();
             break;
+        case (int)'e':
+            detailList[selectTask] = true;
+            draw();
+            newGrp = editArea(listWindow,taskStartAt[selectTask] - navigateRow,taskStartAt[selectTask] - navigateRow,13,23,tasks[selectTask]->getGroup());
+            newTime = editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
+            newPri = editArea(listWindow,taskStartAt[selectTask]+2- navigateRow,taskStartAt[selectTask]+2- navigateRow,25,27,NumberToString(tasks[selectTask]->getPriority()));
+            newDetail = editArea(listWindow,taskStartAt[selectTask]+4- navigateRow,taskStartAt[selectTask]+4- navigateRow,15,my-12,tasks[selectTask]->getDescription());
+            displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
+            break;
         case KEY_UP:
-            if (selectTask != 0) selectTask--;
-            if (selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
+            if (selectTask > 0) selectTask--;
+            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
             draw();
             break;
         case KEY_DOWN:
             if (selectTask+1 < tasks.size()) selectTask++;
-            if (selectTask < tasks.size() && taskStartAt[selectTask+1]>navigateRow+mx-2) navigateRow = taskStartAt[selectTask+1]-mx+2;
+            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask+1]>navigateRow+mx-2) navigateRow = taskStartAt[selectTask+1]-mx+2;
             draw();
             break;
         case (int)' ':
-            if (detailList[selectTask]) detailList[selectTask] = false;
-            else detailList[selectTask] = true;
-            reconstructLines();
-            draw();
+            if (tasks.size()!=0){
+                if (detailList[selectTask]) detailList[selectTask] = false;
+                else detailList[selectTask] = true;
+                reconstructLines();
+                if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
+                if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask+1]>navigateRow+mx-2) navigateRow = taskStartAt[selectTask+1]-mx+2;
+                draw();
+            }
             break;
         default:
             break;
@@ -155,4 +175,129 @@ void ListDisplayElement::reconstructLines(){
             lines.push_back("        "+string(my-16,'-'));
         }
     }
+    taskStartAt.push_back(lines.size());
+}
+
+string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int col1,string st0){
+    row0+=win->_begy+1;
+    row1+=win->_begy+1;
+    col0+=win->_begx+1;
+    col1+=win->_begx+1;
+    attron(A_UNDERLINE);
+    int msize = (row1-row0+1)*(col1-col0+1);
+    curs_set(1);
+    int curRow = row0, curCol = col0;
+    string newStr = st0;
+    int curPos = st0.size();
+    int tmp = 0;
+    for (int i=row0;i<=row1;i++)
+        for (int j=col0;j<=col1;j++){
+            if (tmp == newStr.size()) {curRow = i; curCol = j;tmp++;}
+            move(i,j);
+            addch(tmp<newStr.size()?newStr[tmp++]:' ');
+        }
+    move(curRow,curCol);
+    bool flag = false;
+    while (!flag){
+        int ch = getch();
+        switch (ch){
+            case 10:
+            case 13:
+                flag= true;
+                break;
+            case KEY_LEFT:
+                if (curPos!=0 && !(curRow == row0 && curCol == col0)){
+                    if (curCol == col0){ curCol = col1; curRow--;}
+                    else curCol--;
+                    curPos--;
+                    move(curRow,curCol);
+                }
+                break;
+            case KEY_RIGHT:
+                if (curPos!=newStr.size() && !(curRow == row1 && curCol == col1)){
+                    if (curCol == col1){ curCol = col0; curRow++;}
+                    else curCol++;
+                    curPos++;
+                    move(curRow,curCol);
+                }
+                break;
+            case KEY_UP:
+                if (curPos - (col1-col0+1) >=0 && curRow!=row0){
+                    curRow--;
+                    curPos-=col1-col0+1;
+                    move(curRow,curCol);
+                }
+                break;
+            case KEY_DOWN:
+                if (curPos + col1-col0+1 < newStr.size() && curRow!=row1){
+                    curRow++;
+                    curPos+=col1-col0+1;
+                    move(curRow,curCol);
+                }
+                break;
+            case KEY_BACKSPACE:
+            case 8:
+            case 127:
+                if (curPos!=0){
+                    newStr.erase(curPos - 1,1);
+                    if (curCol == col0){ curCol = col1; curRow--;}
+                    else curCol--;
+                    curPos--;
+                    int tmpRow = curRow, tmpCol = curCol;
+                    for (int i=curPos;i<newStr.size();i++){
+                        move(tmpRow,tmpCol);
+                        addch(newStr[i]);
+                        if (tmpCol == col1){ tmpCol = col0; tmpRow++;}
+                        else tmpCol++;
+                    }
+                    move(tmpRow,tmpCol);
+                    addch(' ');
+                    move(curRow,curCol);
+                }
+                break;
+            case KEY_ESC:
+                newStr = st0;
+                curRow = row0, curCol = col0;
+                curPos = st0.size();
+                tmp = 0;
+                for (int i=row0;i<=row1;i++)
+                    for (int j=col0;j<=col1;j++){
+                        if (tmp == newStr.size()) {curRow = i; curCol = j;}
+                         move(i,j);
+                         addch(tmp<newStr.size()?newStr[tmp++]:' ');
+                    }
+                flag = true;
+                break;
+            default:
+                if (newStr.size()+1<msize){
+                    newStr.insert(curPos,(char*)&ch,1);
+                    int tmpRow = curRow, tmpCol = curCol;
+                    for (int i=curPos;i<newStr.size();i++){
+                        move(tmpRow,tmpCol);
+                        addch(newStr[i]);
+                        if (tmpCol == col1) { tmpCol = col0; tmpRow++;}
+                        else tmpCol++;
+                    }
+                    move(tmpRow,tmpCol);
+                    addch(' ');
+                    if (curCol == col1){ curCol = col0; curRow++;}
+                    else curCol++;
+                    curPos++;
+                    move(curRow,curCol);
+                }
+                break;
+        }
+    }
+    curs_set(0);
+    attroff(A_UNDERLINE);
+    curRow = row0, curCol = col0;
+    tmp = 0;
+    for (int i=row0;i<=row1;i++)
+        for (int j=col0;j<=col1;j++){
+            if (tmp == newStr.size()) {curRow = i; curCol = j;}
+             move(i,j);
+             addch(tmp<newStr.size()?newStr[tmp++]:' ');
+        }
+    move(row0,col0);
+    return newStr;
 }

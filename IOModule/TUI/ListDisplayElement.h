@@ -21,5 +21,6 @@ public:
     void selectUp();
     void selectDown();
     void reconstructLines();
+    string editArea(WINDOW* win,int row0,int row1,int col0,int col1,string st0);
 };
 #endif

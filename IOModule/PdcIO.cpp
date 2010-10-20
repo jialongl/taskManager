@@ -17,9 +17,11 @@ CommandList PdcIO::getCommand(){
     commandReady = false;
     int ch;
     int mx=0, my=0;
+/*    
     getmaxyx(stdscr, mx, my);
     move(mx - 1,0);
     printw("> ");
+    */
     while (!commandReady){
         ch = getch();
         if (ch == 3)  setCommand(parser->inputToCommandList("exit"));
@@ -67,6 +69,7 @@ void PdcIO::setCommand(CommandList cl){
 }
 void PdcIO::echo(string s){
     move(0,0);
-    printw("%s",s.c_str());
+    printw("!!!echo: %s",s.c_str());
     refresh();
+    getch();
 }

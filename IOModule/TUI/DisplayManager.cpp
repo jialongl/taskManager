@@ -56,11 +56,14 @@ void DisplayManager::redraw(){
     clear();
     curs_set(0);
     mvprintw(0,0,"Task Manager V0.15     TUI with PDCurses");
-    mvprintw(1,0," <Ctrl-C> to exit");
+    mvprintw(1,0,"       <Ctrl-C> exit   <f> finish     <d> remove    <space> show detail");
+    mvprintw(2,0,"       <j> scroll down <k> scroll up  <up><down> select task");
+/*    
     move(3,0);
     int mx=0, my=0;
     getmaxyx(stdscr, mx, my);
     hline('=', my);
+*/
     refresh();
     for (int i=0;i<=escStackTop;i++){
         escStack[i] -> draw();
