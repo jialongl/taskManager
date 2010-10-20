@@ -316,16 +316,14 @@ class Parser{
       task_parse();
 
     else if (args[0] == "tui"){
-        delete IOModule;
-        IOModule = new PdcIO();
-        IOModule->showWelcomeMessage();
+        TM_IOModule* newIO = new PdcIO();
+        shell->changeIOModule(newIO);
         cmd->method = NULLCOMMAND;
     }
 
     else if (args[0] == "notui"){
-        delete IOModule;
-        IOModule = new KeyboardIOModule();
-        IOModule->showWelcomeMessage();
+        TM_IOModule* newIO = new KeyboardIOModule();
+        shell->changeIOModule(newIO);
         cmd->method = NULLCOMMAND;
     }
 

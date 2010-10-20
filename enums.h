@@ -45,3 +45,10 @@ enum finishFlag_e{
 	NO,
 	ALL
 };
+
+enum displayElementType{
+    LIST_DE,
+    EDIT_DE,
+    CMD_DE,
+    CONFIRM_DE
+};

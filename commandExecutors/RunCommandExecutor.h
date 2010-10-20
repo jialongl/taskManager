@@ -14,7 +14,7 @@ public:
 
                     commandList = parser->inputToCommandList(line);
 
-                    result = Shell::executeCommandList(commandList);
+                    result = shell->executeCommandList(commandList);
 
 			        if (!(result->isNull))
                         IOModule->showOutput(result); 

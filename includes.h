@@ -11,7 +11,13 @@
 #include <map>
 using namespace std;
 
-#include "curses.h"
+#ifndef WIN32
+    #include <ncurses.h>
+#endif
+
+#ifdef WIN32
+    #include "curses.h"
+#endif
 
 #include "enums.h"
 #include "util.h"
@@ -34,11 +40,17 @@ using namespace std;
 #include "IOModule/TM_IOModule.h"
 #include "IOModule/KeyboardIOModule.h"
 #include "IOModule/PdcIO.h"
+#include "IOModule/TUI/DisplayElement.h"
+#include "IOModule/TUI/ListDisplayElement.h"
+#include "IOModule/TUI/DisplayManager.h"
+#include "Shell.h"
 #include "Parser.h"
 #include "IOModule/KeyboardIOModule.cpp"
 #include "IOModule/PdcIO.cpp"
+#include "IOModule/TUI/DisplayElement.cpp"
+#include "IOModule/TUI/ListDisplayElement.cpp"
+#include "IOModule/TUi/DisplayManager.cpp"
 
-#include "Shell.h"
 
 #include "commandExecutors/CommandExecutor.h"
 #include "commandExecutors/MainCommandExecutor.h"
@@ -60,4 +72,4 @@ using namespace std;
 #include "Shell.cpp"
 
 #include "init.h"
-
+#include "cleanUp.cpp"

@@ -4,36 +4,40 @@ PdcIO::PdcIO(){
         raw();
         keypad(stdscr, TRUE);
         noecho();
+        displayManager = new DisplayManager(this);
     }
 PdcIO::~PdcIO(){
+        delete displayManager;
+        clear();
         endwin();
     }
 
 CommandList PdcIO::getCommand(){
+    displayManager->redraw();
+    commandReady = false;
     int ch;
-    string st;
-    for (;;){
+    int mx=0, my=0;
+    getmaxyx(stdscr, mx, my);
+    move(mx - 1,0);
+    printw("> ");
+    while (!commandReady){
         ch = getch();
-        if (ch == 'Q' || ch == 3)
-            return parser->inputToCommandList("exit");
-        else if (ch == 13 || ch == 10){
-            printw("\n");
-            return parser->inputToCommandList(st);
-        }else{
-            st = st.append(1,(char)ch);
-            printw("%c",ch);
-            refresh();
-        } 
+        if (ch == 3)  setCommand(parser->inputToCommandList("exit"));
+        else displayManager -> handleKey(ch);
     }
+
+    return commandList;
 }
 
 void PdcIO::showOutput(Result* result){
-    printw((parser->resultToOutput(result)).c_str());
-    }
+  //  printw((parser->resultToOutput(result)).c_str());
+  displayManager -> handleResult(result);
+//    IOModule->echo("show output!");
+}
 
 void PdcIO::showWelcomeMessage(){
-     printw("TaskManager V0.2  TUI with Pdcurses\n");
-     refresh();
+//     printw("TaskManager V0.2  TUI with Pdcurses\n");
+//     refresh();
 }
     
 void PdcIO::handleException(exception_e except){
@@ -57,4 +61,12 @@ bool PdcIO::confirm(string prompt){
         */
     return true;
     }
-
+void PdcIO::setCommand(CommandList cl){
+    commandReady = true;
+    commandList = cl;
+}
+void PdcIO::echo(string s){
+    move(0,0);
+    printw("%s",s.c_str());
+    refresh();
+}

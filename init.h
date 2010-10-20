@@ -2,7 +2,7 @@
 
 void init(){
   cronManager = new CronManager();
-  //shell = new Shell();	
+  shell = new Shell();	
   mainCommandExecutor = new MainCommandExecutor();
   parser = new Parser();
   IOModule = new KeyboardIOModule();

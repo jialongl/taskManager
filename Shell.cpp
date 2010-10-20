@@ -34,15 +34,25 @@ bool Shell::oneIteration(){
 
 			  commandList = IOModule->getCommand();
 
+//              IOModule->echo("number of command is !:"+ string(1,(char)(48 + commandList.size())));
+              
               result = executeCommandList(commandList);
 
 			  if (!(result->isNull))
                   IOModule->showOutput(result); 
 
+              if (toChangeIOModule){
+                  delete IOModule;
+                  IOModule = newIOModule;
+//                  IOModule->showWelcomeMessage();
+                  toChangeIOModule = false;
+              }
+
 			  command = new Command();
 			  command->method = EXPORT;
 			  mainCommandExecutor->executeCommand(command);
 			  delete command;
+
 			}
 			catch (exception_e except){
 				if (except == EXCEPTION_HALT) return false;
@@ -57,4 +67,10 @@ void Shell::mainLoop(){
     while (oneIteration()){};
 
 };
+
+void Shell::changeIOModule(TM_IOModule* newIO){
+    toChangeIOModule = true;
+    newIOModule = newIO;
+   // if (toChangeIOModule) IOModule -> echo("you dead!");
+}
 
