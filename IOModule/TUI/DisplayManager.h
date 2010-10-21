@@ -8,6 +8,7 @@ private:
     int escStackTop;
     string keyHistory;
     PdcIO* parent;
+    string echoHistory;
 public:
     void redraw();
     DisplayManager(PdcIO* parentIO);
@@ -17,6 +18,7 @@ public:
     void handleKey(int ch); 
     void handleResult(Result* result);
     void setCommand(CommandList cl);
+    void echo(string s);
 };
 DisplayManager* displayManager;
 #endif

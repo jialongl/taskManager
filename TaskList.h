@@ -35,7 +35,9 @@ public:
 	}
 	void removeTask(int serialNumber){
 		if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
-		delete (taskList.find(serialNumber))->second;
+		if ((taskList.find(serialNumber))->second) {
+            //delete (taskList.find(serialNumber))->second;
+        }
 		taskList.erase(taskList.find(serialNumber));	
 	}
 	void editTaskDeadline(int serialNumber, time_t deadline){
@@ -78,7 +80,7 @@ public:
 		TaskList* ans = new TaskList();
 		for (map<int,Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
 			if (filter->filter(it->second)){
-				ans->editTaskSerialNumber(ans->addTask(new Task(*(it->second))),it->first);
+				ans->addTask(it->first, it->second);
 			}
 		}
 		
@@ -100,5 +102,13 @@ public:
 		}
 		return ans;
 	}
+    TaskList* clone(){
+        TaskList* ans = new TaskList();
+        vector<Task*> tasks = sort(new Comparer);
+        for (int i=0;i<tasks.size();i++){
+            ans->addTask(tasks[i]->getSerialNumber(),tasks[i]);
+        }
+        return ans;
+    }
 };
 TaskList *mainTaskList;

@@ -4,6 +4,7 @@ DisplayManager::DisplayManager(PdcIO* parentIO){
     escStack[0] = new ListDisplayElement(mainTaskList);
     escStackTop = 0;
     escStack[0] -> setParent(escStack[0]);
+    echoHistory = "";
     redraw();
 }
 DisplayManager::~DisplayManager(){
@@ -29,6 +30,7 @@ void DisplayManager::handleKey(int ch){
         if (escStack[escStackTop] -> type == CONFIRM_DE) flag = true; 
         if (escStackTop != 0) delete escStack[escStackTop];
         releaseForcus();
+        if (escStackTop ==0) escStack[escStackTop] -> reset();
         escStack[escStackTop] -> draw();
         refresh();
         if (flag) escStack[escStackTop] -> handleConfirm( false );
@@ -53,11 +55,36 @@ void DisplayManager::handleKey(int ch){
 }
 
 void DisplayManager::redraw(){
+    int mx=0, my=0;
+    getmaxyx(stdscr, mx, my);
     clear();
     curs_set(0);
-    mvprintw(0,0,"Task Manager V0.15     TUI with PDCurses");
-    mvprintw(1,0,"       <Ctrl-C> exit   <f> finish     <d> remove    <space> show detail");
-    mvprintw(2,0,"       <j> scroll down <k> scroll up  <up><down> select task");
+    string title = "Task Manager V0.15     TUI with PDCurses";
+    int ypos = (my - title.length()) / 2;
+    attron(A_REVERSE);
+    mvhline(0,0,'-', my);
+    mvprintw(0,ypos,title.c_str());
+    attroff(A_REVERSE);
+    int numOfButtons = 13;
+    string buttons[] = {"Ctrl-C","f","d","e","a","SPACE","j","k","up","down","Q","s","ESC"};
+    string funcs[] = {"exit","finish","remove","edit","add","show/hide detail","scroll down","scroll up","select previous task","select next task","switch off TUI","search","main task list"};
+
+    int col = 0;
+    int row = 1;
+    int numOfSpace = 8;
+    for (int i=0;i<numOfButtons;i++){
+        if (col+numOfSpace+buttons[i].size()+funcs[i].size() >= my){ row++; col=0;}
+        move (row,col);
+        printw("    <");
+        attron(A_BOLD);
+        printw("%s",buttons[i].c_str());
+        attroff(A_BOLD);
+        printw(">: %s",funcs[i].c_str());
+        col =col+numOfSpace+buttons[i].size()+funcs[i].size(); 
+    }
+
+//    mvprintw(2,0,"  <f>: finish  <d>: remove  <e>: edit  <a>: add  <space>: show/hide detail");
+//    mvprintw(3,0,"  <Ctrl-C>: exit <j>: scroll down  <k>: scroll up  <up><down> select task");
 /*    
     move(3,0);
     int mx=0, my=0;
@@ -68,6 +95,7 @@ void DisplayManager::redraw(){
     for (int i=0;i<=escStackTop;i++){
         escStack[i] -> draw();
     }
+    echo(echoHistory);
 }
 
 void DisplayManager::handleResult(Result* result){
@@ -76,4 +104,17 @@ void DisplayManager::handleResult(Result* result){
 
 void DisplayManager::setCommand(CommandList cl){
     parent->setCommand(cl);
+}
+
+void DisplayManager::echo(string s){
+    echoHistory = s;
+    int my,mx;
+    getmaxyx(stdscr,mx,my);
+    move(mx - 1,0);
+    hline(' ',my);
+    move(mx - 1,0);
+    attron(A_BOLD);
+    printw("%s",s.c_str());
+    attroff(A_BOLD);
+    refresh();
 }

@@ -11,5 +11,6 @@ public:
     virtual void handleKey(int ch){};
     virtual void handleConfirm(bool flag){};
     virtual void handleResult(Result* result){};
+    virtual void reset(){};
 };
 #endif

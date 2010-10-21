@@ -409,6 +409,7 @@ class Parser{
   }
 
   CommandList inputToCommandList (string s) {
+      IOModule->echo(s);
     vector <string> commands;
     CommandList cl;
 

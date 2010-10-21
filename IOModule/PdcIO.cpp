@@ -25,6 +25,7 @@ CommandList PdcIO::getCommand(){
     while (!commandReady){
         ch = getch();
         if (ch == 3)  setCommand(parser->inputToCommandList("exit"));
+        else if (ch == (int)'Q') setCommand(parser->inputToCommandList("notui"));
         else displayManager -> handleKey(ch);
     }
 
@@ -68,8 +69,5 @@ void PdcIO::setCommand(CommandList cl){
     commandList = cl;
 }
 void PdcIO::echo(string s){
-    move(0,0);
-    printw("!!!echo: %s",s.c_str());
-    refresh();
-    getch();
+    displayManager->echo(s);    
 }

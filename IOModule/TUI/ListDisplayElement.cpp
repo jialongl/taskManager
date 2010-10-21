@@ -1,12 +1,13 @@
 ListDisplayElement::ListDisplayElement(TaskList* taskList){
+    originalList = taskList;
     list = taskList;
     navigateRow = 0;
     selectTask = 0;
     int mx=0, my=0;
     getmaxyx(stdscr, mx, my);
-    int height = mx - 5;
+    int height = mx - 6;
     int width = my;
-    int startx = 4;
+    int startx = 5;
     int starty = 0;
     listWindow = create_newwin(height, width, startx, starty); 
     //draw(); 
@@ -23,6 +24,25 @@ void ListDisplayElement::draw(){
     tasks = list->sort(new Comparer(keys));
     if (detailList.size() == 0)
         for (int i=0; i<tasks.size(); i++) detailList.push_back(false); 
+    if (selectTask >= tasks.size()) selectTask = tasks.size()-1;
+    reconstructLines();
+    werase(listWindow);
+    wborder(listWindow, '|', '|', '-','-','+','+','+','+');
+/*    string s = parser -> resultToOutput(new Result(list,false));
+    wprintw(listWindow, s.c_str());   */ 
+    for (int i=navigateRow;i<lines.size()&&i<navigateRow+mx-2;i++){
+        wmove(listWindow,i+1-navigateRow,1);
+        if (i >= taskStartAt[selectTask]) wattron(listWindow,A_BOLD);
+        if (selectTask != tasks.size()-1 && i >= taskStartAt[selectTask + 1]) wattroff(listWindow,A_BOLD);
+        wprintw(listWindow,lines[i].c_str());
+    }
+    wattroff(listWindow,A_BOLD);
+    wrefresh(listWindow);
+    move(0,my-1);
+}
+void ListDisplayElement::naiveDraw(){
+    int mx=0, my=0;
+    getmaxyx(listWindow, mx, my);
     reconstructLines();
     werase(listWindow);
     wborder(listWindow, '|', '|', '-','-','+','+','+','+');
@@ -44,6 +64,8 @@ void ListDisplayElement::handleKey(int ch){
     string st;
     CommandList cl;
     string newGrp,newDetail,newTime,newPri;
+    vector<string> editDetail;
+    int newTaskSerial;
     switch (ch){
         case (int)'f':
             if (tasks.size() != 0){
@@ -57,44 +79,61 @@ void ListDisplayElement::handleKey(int ch){
                 st = "rm " + NumberToString(tasks[selectTask]->getSerialNumber());
                 cl = parser->inputToCommandList(st);
                 displayManager->setCommand(cl);
-                if (selectTask > tasks.size()) selectTask = tasks.size();
+                if (list != originalList) list->removeTask(tasks[selectTask]->getSerialNumber());
             }
             break;
         case (int)'j':
             if (navigateRow > 0) navigateRow--;
-            draw();
+            naiveDraw();
             break;
         case (int)'k':
             if (navigateRow+1 < lines.size()) navigateRow++;
-            draw();
+            naiveDraw();
             break;
         case (int)'e':
-            detailList[selectTask] = true;
-            draw();
-            newGrp = editArea(listWindow,taskStartAt[selectTask] - navigateRow,taskStartAt[selectTask] - navigateRow,13,23,tasks[selectTask]->getGroup());
-            newTime = editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
-            newPri = editArea(listWindow,taskStartAt[selectTask]+2- navigateRow,taskStartAt[selectTask]+2- navigateRow,25,27,NumberToString(tasks[selectTask]->getPriority()));
-            newDetail = editArea(listWindow,taskStartAt[selectTask]+4- navigateRow,taskStartAt[selectTask]+4- navigateRow,15,my-12,tasks[selectTask]->getDescription());
-            displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
+            editDetail = editSelect();
+            if (tasks.size()!=0){
+                newGrp = editDetail[0];
+                newTime = editDetail[1];
+                newPri = editDetail[2];
+                newDetail = editDetail[3];
+                displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
+            }
+            break;
+        case (int)'a':
+            if (list!=originalList) break;
+            newTaskSerial = originalList->getSerial()+1;
+            tasks.push_back(new Task(currentTime(), 0, "New Task", 0, false,newTaskSerial, "default"));
+            selectTask = tasks.size()-1;
+            showDetail();
+            naiveDraw();
+            editDetail = editSelect();
+            newGrp = editDetail[0];
+            newTime = editDetail[1];
+            newPri = editDetail[2];
+            newDetail = editDetail[3];
+            if (tasks[tasks.size()-1]) delete tasks[tasks.size()-1];
+            displayManager->setCommand(parser->inputToCommandList("add -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
+            break;
+        case (int)'s':
+            search();
             break;
         case KEY_UP:
             if (selectTask > 0) selectTask--;
             if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
-            draw();
+            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask+1]>navigateRow+mx-2) navigateRow = taskStartAt[selectTask+1]-mx+2;
+            naiveDraw();
             break;
         case KEY_DOWN:
             if (selectTask+1 < tasks.size()) selectTask++;
+            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
             if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask+1]>navigateRow+mx-2) navigateRow = taskStartAt[selectTask+1]-mx+2;
-            draw();
+            naiveDraw();
             break;
         case (int)' ':
             if (tasks.size()!=0){
-                if (detailList[selectTask]) detailList[selectTask] = false;
-                else detailList[selectTask] = true;
-                reconstructLines();
-                if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
-                if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask+1]>navigateRow+mx-2) navigateRow = taskStartAt[selectTask+1]-mx+2;
-                draw();
+                if (detailList[selectTask]) hideDetail();
+                else showDetail();
             }
             break;
         default:
@@ -183,7 +222,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
     row1+=win->_begy+1;
     col0+=win->_begx+1;
     col1+=win->_begx+1;
-    attron(A_UNDERLINE);
+    attron(A_REVERSE);
     int msize = (row1-row0+1)*(col1-col0+1);
     curs_set(1);
     int curRow = row0, curCol = col0;
@@ -289,7 +328,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
         }
     }
     curs_set(0);
-    attroff(A_UNDERLINE);
+    attroff(A_REVERSE);
     curRow = row0, curCol = col0;
     tmp = 0;
     for (int i=row0;i<=row1;i++)
@@ -300,4 +339,86 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
         }
     move(row0,col0);
     return newStr;
+}
+vector<string> ListDisplayElement::editSelect(){
+    //detailList[selectTask] = true;
+    //naiveDraw();
+    showDetail();
+    int mx=0, my=0;
+    getmaxyx(listWindow, mx, my);
+    string newGrp = editArea(listWindow,taskStartAt[selectTask] - navigateRow,taskStartAt[selectTask] - navigateRow,13,23,tasks[selectTask]->getGroup());
+    string newTime = editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
+    string newPri = editArea(listWindow,taskStartAt[selectTask]+2- navigateRow,taskStartAt[selectTask]+2- navigateRow,25,27,NumberToString(tasks[selectTask]->getPriority()));
+    string newDetail = editArea(listWindow,taskStartAt[selectTask]+4- navigateRow,taskStartAt[selectTask+1] -2- navigateRow,15,my-13,tasks[selectTask]->getDescription());
+    //displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
+    vector<string> ans;
+    ans.push_back(newGrp);
+    ans.push_back(newTime);
+    ans.push_back(newPri);
+    ans.push_back(newDetail);
+    return ans;
+}
+void ListDisplayElement::showDetail(){
+    int mx,my;
+    getmaxyx(listWindow,mx,my);
+    if (tasks.size()!=0){
+//        if (detailList[selectTask]) detailList[selectTask] = false;
+        detailList[selectTask] = true;
+        reconstructLines();
+        if (detailList[selectTask]){
+            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
+            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask+1]>navigateRow+mx-2) navigateRow = taskStartAt[selectTask+1]-mx+2;
+        }
+        naiveDraw();
+    }
+}
+void ListDisplayElement::hideDetail(){
+    int mx,my;
+    getmaxyx(stdscr,mx,my);
+    if (tasks.size()!=0){
+//        if (detailList[selectTask]) detailList[selectTask] = false;
+        detailList[selectTask] = false;
+        naiveDraw();
+    }
+}
+
+void ListDisplayElement::reset(){
+    list = originalList;
+}
+
+void ListDisplayElement::search(){
+    bool flag = false;
+    searchKeyword = "";
+    IOModule->echo("Search: "+searchKeyword);
+    while (!flag){
+        selectTask = 0;
+        int ch = getch();
+        switch (ch){
+            case KEY_ESC:
+                reset();
+                draw();
+                flag =true;
+                break;
+            case 10:
+            case 13:
+                flag = true;
+                break;
+            case KEY_BACKSPACE:
+            case 8:
+            case 127:
+                if (searchKeyword.size()!=0) searchKeyword = searchKeyword.substr(0,searchKeyword.size() - 1);
+                reset();
+                IOModule->echo("Search: "+searchKeyword);
+                list = list -> getTasks(new KFilter("*"+searchKeyword+"*"));
+                draw(); 
+                break;
+            default:
+                searchKeyword.push_back((char)ch);
+                IOModule->echo("Search: "+searchKeyword);
+                list = list -> getTasks(new KFilter("*"+searchKeyword+"*"));
+                draw(); 
+                break;
+        }
+    }
+    IOModule->echo("Search finish");
 }
