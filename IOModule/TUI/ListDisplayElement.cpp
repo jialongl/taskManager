@@ -1,4 +1,6 @@
 ListDisplayElement::ListDisplayElement(TaskList* taskList){
+    detailList.clear();
+    lastSelectedSn = 0;
     originalList = taskList;
     list = taskList;
     navigateRow = 0;
@@ -22,8 +24,8 @@ void ListDisplayElement::draw(){
     vector<sortKeyword_e> keys;
     keys.push_back(DEADLINE);
     tasks = list->sort(new Comparer(keys));
-    if (detailList.size() == 0)
-        for (int i=0; i<tasks.size(); i++) detailList.push_back(false); 
+    if (detailList.empty() )
+        for (int i=0; i<tasks.size(); i++) detailList[tasks[i]->getSerialNumber()] = false; 
     if (selectTask >= tasks.size()) selectTask = tasks.size()-1;
     reconstructLines();
     werase(listWindow);
@@ -132,12 +134,16 @@ void ListDisplayElement::handleKey(int ch){
             break;
         case (int)' ':
             if (tasks.size()!=0){
-                if (detailList[selectTask]) hideDetail();
+                if (detailList[tasks[selectTask] -> getSerialNumber()]) hideDetail();
                 else showDetail();
             }
             break;
         default:
             break;
+    }
+    if (selectTask < tasks.size()){
+        lastSelectedSn = tasks[selectTask] -> getSerialNumber();
+        lastNavigateToSelect = taskStartAt[selectTask] - navigateRow;
     }
 }
 void ListDisplayElement::handleConfirm(bool flag){
@@ -162,7 +168,7 @@ void ListDisplayElement::reconstructLines(){
     taskStartAt.clear(); 
     for (int i=0; i<tasks.size(); i++){
         taskStartAt.push_back(lines.size());
-        if (! detailList[i] ){
+        if (! detailList[tasks[i] -> getSerialNumber()] ){
             lines.push_back("   ");
             string temps;
             temps = NumberToString(tasks[i]->getSerialNumber());
@@ -363,9 +369,9 @@ void ListDisplayElement::showDetail(){
     getmaxyx(listWindow,mx,my);
     if (tasks.size()!=0){
 //        if (detailList[selectTask]) detailList[selectTask] = false;
-        detailList[selectTask] = true;
+        detailList[tasks[selectTask]->getSerialNumber()] = true;
         reconstructLines();
-        if (detailList[selectTask]){
+        if (detailList[tasks[selectTask]->getSerialNumber()]){
             if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
             if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask+1]>navigateRow+mx-2) navigateRow = taskStartAt[selectTask+1]-mx+2;
         }
@@ -377,7 +383,7 @@ void ListDisplayElement::hideDetail(){
     getmaxyx(stdscr,mx,my);
     if (tasks.size()!=0){
 //        if (detailList[selectTask]) detailList[selectTask] = false;
-        detailList[selectTask] = false;
+        detailList[tasks[selectTask]->getSerialNumber()] = false;
         naiveDraw();
     }
 }
@@ -422,3 +428,15 @@ void ListDisplayElement::search(){
     }
     IOModule->echo("Search finish");
 }
+void ListDisplayElement::restoreLastView(){
+    for (int i=0;i<tasks.size();i++){
+        if (lastSelectedSn == tasks[i]->getSerialNumber()) {
+            selectTask = i;
+            navigateRow = taskStartAt[selectTask] - lastNavigateToSelect;
+            if (navigateRow < 0) navigateRow = 0;
+            break;
+        }
+    }
+    naiveDraw();
+}
+

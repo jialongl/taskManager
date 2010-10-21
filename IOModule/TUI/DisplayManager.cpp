@@ -30,8 +30,13 @@ void DisplayManager::handleKey(int ch){
         if (escStack[escStackTop] -> type == CONFIRM_DE) flag = true; 
         if (escStackTop != 0) delete escStack[escStackTop];
         releaseForcus();
-        if (escStackTop ==0) escStack[escStackTop] -> reset();
+        if (escStackTop ==0){ 
+            escStack[escStackTop] -> reset();
+        }
         escStack[escStackTop] -> draw();
+        if (escStackTop ==0){ 
+            (dynamic_cast<ListDisplayElement*>(escStack[0])) -> restoreLastView();
+        }
         refresh();
         if (flag) escStack[escStackTop] -> handleConfirm( false );
     }
@@ -95,6 +100,7 @@ void DisplayManager::redraw(){
     for (int i=0;i<=escStackTop;i++){
         escStack[i] -> draw();
     }
+    (dynamic_cast<ListDisplayElement*>(escStack[0])) -> restoreLastView();
     echo(echoHistory);
 }
 

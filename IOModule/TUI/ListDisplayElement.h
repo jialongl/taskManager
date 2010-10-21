@@ -6,10 +6,12 @@ private:
     string searchKeyword;
     WINDOW* listWindow;
     int navigateRow,selectTask;
-    vector<bool> detailList;
+    map<int,bool> detailList;
     vector<string> lines;
     vector<Task*> tasks;
     vector<int> taskStartAt;
+    int lastSelectedSn;
+    int lastNavigateToSelect;
 public:
     ListDisplayElement(TaskList* taskList);
     ~ListDisplayElement();
@@ -29,5 +31,6 @@ public:
     void hideDetail();
     void reset();
     void search();
+    void restoreLastView();
 };
 #endif
