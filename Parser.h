@@ -170,7 +170,7 @@ class Parser{
       }
 
       else if ( *iter == "-d" ) {
-     string temp = *(++iter);
+	string temp = *(++iter);
 	if (temp[0] == '"' && temp[temp.length()-1] == '"')
 	  cmd->taskDescription = temp.substr(1, temp.length() - 2);
 	else
@@ -293,30 +293,34 @@ class Parser{
   }
 
   string matchAlias (string alias) {
-    /* for ( iter2  = commandAliases.begin(); */
-    /* 	  iter2 != commandAliases.end(); */
-    /* 	  iter2++) { */
-    /*   if ( first token of "alias" is the same as the first token of iter2.first) { */
-    /* 	if (the number of args match) */
-    /* 	  return iter2.second;  // return the key */
-    /* 	else if (last token of iter2.first is "$0" and everything else matches) */
-    /* 	  return iter2.second;  // return the key */
-    /*   } */
-    /* } */
+
+    for ( iter2  = commandAliases.begin();
+    	  iter2 != commandAliases.end();
+    	  iter2++) {
+      if (alias == (*iter2).first) {
+	return (*iter2).second;
+      }
+      //(first token of "alias" is the same as the first token of iter2.first) {
+      /* if (the number of args match) */
+      /*   return iter2.second;  // return the key */
+      /* else if (last token of iter2.first is "$0" and everything else matches) */
+      /*   return iter2.second;  // return the key */
+    }
     return "";
   }
 
   void map_parse() {
 
-    string alias = args.at(1);
-    string origin = args.at(2);
+    string alias = trimHeadTailInvertedCommas( args.at(1) );
+    string origin = trimHeadTailInvertedCommas( args.at(2) );
+
+    /* cout << "a=" << alias << "o=" << origin << endl; */
 
     if (alias != "map")
-      commandAliases[trimHeadTailSpaces(alias)] = origin;
-
+      commandAliases[alias] = origin;
   }
 
-  string trimHeadTailSpaces(string s) {
+  string trimHeadTailInvertedCommas(string s) {
     int start = 0;
     int end = s.length() - 1;
 
@@ -326,20 +330,23 @@ class Parser{
     while (end > 0 && s[end] == ' ')
       end--;
 
-    return s.substr(start, end-start);
+    return s.substr(start+1, end-start-1); // the string has '"' at the beginning and the end.
   }
 
   Command *inputToCommand (string input) {
 
+    tokenize_by_space(input);
+
     //------ check if this command has been alias-ed. -----
 
-    string temp = matchAlias(input);
+    string temp = matchAlias(args[0]);
+
     if (temp != "")
-      input = temp;  //let input have the value of "temp", which is the original command, and let the following code work as usual
+      tokenize_by_space(temp);
 
-    //------------------------
+    //-----------------------------------------------------
 
-    tokenize_by_space(input);
+
     cmd = new Command();
 
     if (input.length() == 0) {
