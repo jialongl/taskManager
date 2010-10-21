@@ -170,7 +170,11 @@ class Parser{
       }
 
       else if ( *iter == "-d" ) {
-      	cmd->taskDescription = *(++iter);
+     string temp = *(++iter);
+	if (temp[0] == '"' && temp[temp.length()-1] == '"')
+	  cmd->taskDescription = temp.substr(1, temp.length() - 2);
+	else
+	  cmd->taskDescription= temp;
       }
     }
   }
