@@ -11,13 +11,13 @@
 #include <map>
 using namespace std;
 
-#ifndef WIN32
-    #include <ncurses.h>
-#endif
+//#ifndef WIN32
+//    #include <ncurses.h>
+//#endif
 
-#ifdef WIN32
+//#ifdef WIN32
     #include "curses.h"
-#endif
+//#endif
 
 #include "enums.h"
 #include "util.h"
@@ -49,7 +49,7 @@ using namespace std;
 #include "IOModule/PdcIO.cpp"
 #include "IOModule/TUI/DisplayElement.cpp"
 #include "IOModule/TUI/ListDisplayElement.cpp"
-#include "IOModule/TUi/DisplayManager.cpp"
+#include "IOModule/TUI/DisplayManager.cpp"
 
 
 #include "commandExecutors/CommandExecutor.h"
