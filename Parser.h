@@ -6,6 +6,10 @@ class Parser{
  private:
   vector <string> args;
   vector <string>::iterator iter;
+
+  map <string, string> commandAliases;
+  map <string, string>::iterator iter2;
+
   Command *cmd;
 
  public:
@@ -14,17 +18,41 @@ class Parser{
     cmd = new Command();
   }
 
-  void tokenize (string s, char separator) {
+  void tokenize_by_pipe (string s) {
+    args.clear();
+
+    int pos = 0;
+    string buf = "";
+
+    while (pos < s.size() && s[pos] == '|')
+      pos++;
+
+    while (pos < s.size()) {
+      if ( s[pos] != '|')
+	buf += s[pos];
+      
+      else {
+	args.push_back(buf);
+	buf = "";
+      }
+      pos++;
+    }
+
+    if (buf != "")
+      args.push_back(buf); // push in the last argument
+  }
+
+  void tokenize_by_space (string s) {
     args.clear();
     int pos = 0;
     string buf = "";
     short inInvertedCommas = 0;
 
-    while (pos < s.size() && s[pos] == separator)
+    while (pos < s.size() && s[pos] == ' ')
       pos++;
 
     while (pos < s.size()) {
-      if ( s[pos] != separator) {
+      if ( s[pos] != ' ') {
 	buf += s[pos];
 
 	if (s[pos] == '"') {
@@ -260,22 +288,54 @@ class Parser{
       cmd->serialNumberList.push_back(StringToNum(args.at(1)));
   }
 
+  string matchAlias (string alias) {
+    /* for ( iter2  = commandAliases.begin(); */
+    /* 	  iter2 != commandAliases.end(); */
+    /* 	  iter2++) { */
+    /*   if ( first token of "alias" is the same as the first token of iter2.first) { */
+    /* 	if (the number of args match) */
+    /* 	  return iter2.second;  // return the key */
+    /* 	else if (last token of iter2.first is "$0" and everything else matches) */
+    /* 	  return iter2.second;  // return the key */
+    /*   } */
+    /* } */
+    return "";
+  }
+
   void map_parse() {
-    cmd->method = NULLCOMMAND;
 
     string alias = args.at(1);
     string origin = args.at(2);
 
-    // set up an array of maps
+    if (alias != "map")
+      commandAliases[trimHeadTailSpaces(alias)] = origin;
 
-    // insert (alias, origin);
+  }
 
-    // tokenize (alias, 32);
+  string trimHeadTailSpaces(string s) {
+    int start = 0;
+    int end = s.length() - 1;
+
+    while (start < s.size() && s[start] == ' ')
+      start++;
+
+    while (end > 0 && s[end] == ' ')
+      end--;
+
+    return s.substr(start, end-start);
   }
 
   Command *inputToCommand (string input) {
-    tokenize (input, 32);
-    
+
+    //------ check if this command has been alias-ed. -----
+
+    string temp = matchAlias(input);
+    if (temp != "")
+      input = temp;  //let input have the value of "temp", which is the original command, and let the following code work as usual
+
+    //------------------------
+
+    tokenize_by_space(input);
     cmd = new Command();
 
     if (input.length() == 0) {
@@ -327,6 +387,9 @@ class Parser{
         cmd->method = NULLCOMMAND;
     }
 
+    else if (args[0] == "map")
+      map_parse();
+
     else {
       throw EXCEPTION_NO_SUCH_COMMAND;
     }
@@ -338,7 +401,7 @@ class Parser{
     vector <string> commands;
     CommandList cl;
 
-    tokenize(s, '|');
+    tokenize_by_pipe(s);
     commands = args;
 
     for (int i = 0; i < commands.size(); i++) {
