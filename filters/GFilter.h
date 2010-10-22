@@ -1,12 +1,13 @@
-/* Author: He Haocong */
+#ifndef GFilterH
+#define GFilterH
+
 class GFilter: public Filter{
 private:
-	string groups;
+  string groups;
+
 public:
-	GFilter(string s){
-		groups = s;
-	}
-	bool filter(Task* task){
-		return (task->getGroup() == groups);
-	}
+  GFilter(string s);
+  bool filter(Task* task);
 };
+
+#endif

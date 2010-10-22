@@ -1,7 +1,11 @@
-/* Author: He Haocong */
+/* Author: Liu Jialong */
+
+#ifndef OFilterH
+#define OFilterH
+
 class OFilter: public Filter{
-public:
-	bool filter(Task* task){
-		return (task->getDeadline() < currentTime() && task->getIsFinished() == false);
-	}
+ public:
+  bool filter(Task* task);
 };
+
+#endif

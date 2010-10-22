@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <fstring>
+
 using namespace std;
 
 #ifndef WIN32
@@ -16,7 +18,7 @@ using namespace std;
 #endif
 
 #ifdef WIN32
-    #include "curses.h"
+#include "curses.h"
 #endif
 
 #include "enums.h"
