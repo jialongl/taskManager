@@ -1,12 +1,15 @@
-/* Author: He Haocong */
+/* Author: Liu Jialong */
+
+#ifndef KFilterH
+#define KFilterH
+
 class KFilter: public Filter{
-private:
-	string kString;
-public:
-	KFilter(string k){
-		kString = k;
-	}
-	bool filter(Task* task){
-		return (task->matchKeyword(kString));
-	}
+ private:
+  string kString;
+
+ public:
+  KFilter(string k);
+  bool filter(Task* task);
 };
+
+#endif
