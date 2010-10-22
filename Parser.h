@@ -5,6 +5,11 @@
 
 #include "includes.h"
 #include "Command.h"
+#include "Result.h"
+#include "IOModule/TM_IOModule.h"
+#include "Shell.h"
+#include "IOModule/PdcIO.h"
+#include "IOModule/KeyboardIOModule.h"
 
 class Parser{
 
@@ -22,6 +27,7 @@ class Parser{
   string trimHeadTailInvertedCommas(string s);
 
  public:
+  Parser();
   void tokenize_by_pipe(string s);
   void tokenize_by_space (string s);
   void add_parse();

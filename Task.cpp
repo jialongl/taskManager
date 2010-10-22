@@ -6,7 +6,6 @@ Task::Task(time_t deadline, int priority, string description, int cronFreq, bool
   setDeadline(deadline);
   setPriority(priority);
   setDescription(description);
-  setCronFreq(cronFreq);
   setIsFinished(isFinished);
   setSerialNumber(serialNumber);
   setGroup(group);
@@ -24,9 +23,6 @@ void Task::setDeadline(time_t t){
 void Task::setGroup(string s){
   group = s;
 }
-void Task::setCronFreq(int x){
-  cronFreq = x;
-}
 void Task::setSerialNumber(int x){
   serialNumber = x;
 }
@@ -42,9 +38,6 @@ int Task::getPriority(){
 }
 string Task::getDescription(){
   return string(description);
-}
-int Task::getCronFreq(){
-  return cronFreq;
 }
 bool Task::getIsFinished(){
   return isFinished;

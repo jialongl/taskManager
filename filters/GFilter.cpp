@@ -1,4 +1,5 @@
 /* Author: He Haocong */
+#include "GFilter.h"
 
 GFilter::GFilter(string s){
   groups = s;

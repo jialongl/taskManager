@@ -1,4 +1,5 @@
 /* Author: He Haocong */
+#include "KFilter.h"
 
 KFilter::KFilter(string k){
   kString = k;

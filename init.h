@@ -8,6 +8,7 @@
 #include "Parser.h"
 #include "TaskList.h"
 #include "Command.h"
+#include "IOModule/KeyboardIOModule.h"
 
 void init(){
   shell = new Shell();	

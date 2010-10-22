@@ -5,6 +5,7 @@
 
 #include "includes.h"
 #include "Comparer.h"
+#include "filters/Filter.h"
 #include "Task.h"
 
 class TaskList{

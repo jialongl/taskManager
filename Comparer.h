@@ -11,10 +11,11 @@ class Comparer{
   vector<sortKeyword_e> *keywords;
 
  public:
+  Comparer(vector<sortKeyword_e> keys);
   Comparer();
   ~Comparer();
   int compareWithKeyword(Task* t1, Task* t2, sortKeyword_e sk);
-  bool comparer(Task* t1, Task* t2);
+  bool compare(Task* t1, Task* t2);
 };
 
 #endif

@@ -28,8 +28,7 @@ using namespace std;
 #endif
 
 #include "enums.cpp"
-#include "util.cpp"
-#include "init.h"
+#include "util.h"
 
 
 #endif

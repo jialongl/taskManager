@@ -5,6 +5,8 @@
 
 #include "Result.h"
 #include "IOModule/TM_IOModule.h"
+#include "Command.h"
+#include "commandExecutors/MainCommandExecutor.h"
 
 class Shell{
 

@@ -1,6 +1,7 @@
 /* Author: Liu Jialong */
 /* Author: He Haocong */
-
+#ifndef utilH
+#define utilH
 #include "includes.h"
 
 time_t currentTime(){
@@ -97,3 +98,4 @@ void destroy_win(WINDOW *local_win)
     wrefresh(local_win);
     delwin(local_win);
 }
+#endif

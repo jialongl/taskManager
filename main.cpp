@@ -1,9 +1,10 @@
 /* Author: He Haocong */
 #include "includes.h"
+#include "cleanUp.cpp"
+#include "init.h"
 
 int main(int argc, char* argv[]){
     init();
-	cronManager->newTasks(cronManager->lastTime, currentTime());
     shell->start();
     cleanUp();
 	return 0;

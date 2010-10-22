@@ -10,7 +10,6 @@ class Task{
   time_t deadline;
   int priority;
   string description;
-  int cronFreq;
   bool isFinished;
   int serialNumber;
   string group;

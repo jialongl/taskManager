@@ -1,5 +1,5 @@
 /* Author: He Haocong */
-
+#include "NFilter.h"
 NFilter::NFilter(int num){
   n = num;
 }

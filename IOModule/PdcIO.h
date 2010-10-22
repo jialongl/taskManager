@@ -8,7 +8,6 @@
     #include <ncurses.h>
 #endif
 #include "../Command.h"
-#include "TUI/DisplayManager.h"
 
 class PdcIO : public TM_IOModule{
 private:

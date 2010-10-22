@@ -1,5 +1,5 @@
 /* Author: He Haocong */
-
+#include "FFilter.h"
 FFilter::FFilter(bool finish){
   finished = finish;
 }

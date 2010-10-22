@@ -37,7 +37,6 @@ Result* ExportCommandExecutor::executeCommand (Command* command)
                 writeFile<<"		<div class='deadline'>"<<iter->second->getDeadline()<<"</div>"<<endl;
                 writeFile<<"		<div class='priority'>"<<iter->second->getPriority()<<"</div>"<<endl;
                 writeFile<<"		<div class='description'>"<<description_dist<<"</div>"<<endl;
-                writeFile<<"		<div class='cronFreq'>"<<iter->second->getCronFreq()<<"</div>"<<endl;
                 writeFile<<"		<div class='isFinished'>"<<iter->second->getIsFinished()<<"</div>"<<endl;
                 writeFile<<"		<div class='group'>"<<group_dist<<"</div>"<<endl;
 
@@ -68,7 +67,6 @@ Result* ExportCommandExecutor::executeCommand (Command* command)
                 writeFile<<"		<deadline>"<<iter->second->getDeadline()<<"</deadline>"<<endl;
                 writeFile<<"		<priority>"<<iter->second->getPriority()<<"</priority>"<<endl;
                 writeFile<<"		<description>"<<description_dist<<"</description>"<<endl;
-                writeFile<<"		<cronFreq>"<<iter->second->getCronFreq()<<"</cronFreq>"<<endl;
                 writeFile<<"		<isFinished>"<<iter->second->getIsFinished()<<"</isFinished>"<<endl;
                 writeFile<<"		<group>"<<group_dist<<"</group>"<<endl;
 
@@ -119,7 +117,6 @@ Result* ExportCommandExecutor::executeCommand(Result* result, Command *command){
                 writeFile<<"		<div class='deadline'>"<<iter->second->getDeadline()<<"</div>"<<endl;
                 writeFile<<"		<div class='priority'>"<<iter->second->getPriority()<<"</div>"<<endl;
                 writeFile<<"		<div class='description'>"<<description_dist<<"</div>"<<endl;
-                writeFile<<"		<div class='cronFreq'>"<<iter->second->getCronFreq()<<"</div>"<<endl;
                 writeFile<<"		<div class='isFinished'>"<<iter->second->getIsFinished()<<"</div>"<<endl;
                 writeFile<<"		<div class='group'>"<<group_dist<<"</div>"<<endl;
 
@@ -150,7 +147,6 @@ Result* ExportCommandExecutor::executeCommand(Result* result, Command *command){
                 writeFile<<"		<deadline>"<<iter->second->getDeadline()<<"</deadline>"<<endl;
                 writeFile<<"		<priority>"<<iter->second->getPriority()<<"</priority>"<<endl;
                 writeFile<<"		<description>"<<description_dist<<"</description>"<<endl;
-                writeFile<<"		<cronFreq>"<<iter->second->getCronFreq()<<"</cronFreq>"<<endl;
                 writeFile<<"		<isFinished>"<<iter->second->getIsFinished()<<"</isFinished>"<<endl;
                 writeFile<<"		<group>"<<group_dist<<"</group>"<<endl;
 

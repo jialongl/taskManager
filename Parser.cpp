@@ -322,7 +322,7 @@ string Parser::trimHeadTailInvertedCommas(string s) {
   return s.substr(start+1, end-start-1); // the string has '"' at the beginning and the end.
 }
 
-Command Parser::*inputToCommand (string input) {
+Command* Parser::inputToCommand (string input) {
 
   tokenize_by_space(input);
 

@@ -1,4 +1,5 @@
 #include "PdcIO.h"
+#include "TUI/DisplayManager.h"
 
 PdcIO::PdcIO(){
         initscr();

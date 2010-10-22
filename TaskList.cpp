@@ -57,10 +57,6 @@ void TaskList::editTaskDescription(int serialNumber, string description){
   taskList[serialNumber]->setDescription(description);
 }
 
-void TaskList::editTaskCronFreq(int serialNumber, int cronFreq){
-  if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
-  taskList[serialNumber]->setCronFreq(cronFreq);
-}
 
 void TaskList::editTaskIsFinished(int serialNumber, bool isFinished){
   if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;

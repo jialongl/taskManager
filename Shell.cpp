@@ -1,6 +1,6 @@
 /* Author: He Haocong */
-// For debugging!!!!!!!
 
+#include "Shell.h"
 void Shell::start(){
         IOModule->showWelcomeMessage();
         mainLoop();
