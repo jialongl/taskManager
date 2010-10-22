@@ -84,11 +84,11 @@ void ListDisplayElement::handleKey(int ch){
                 if (list != originalList) list->removeTask(tasks[selectTask]->getSerialNumber());
             }
             break;
-        case (int)'j':
+        case (int)'k':
             if (navigateRow > 0) navigateRow--;
             naiveDraw();
             break;
-        case (int)'k':
+        case (int)'j':
             if (navigateRow+1 < lines.size()) navigateRow++;
             naiveDraw();
             break;
@@ -225,7 +225,7 @@ void ListDisplayElement::reconstructLines(){
 
 void ListDisplayElement::refreshEditArea(WINDOW* win, int row0, int row1, int col0, int col1, string newStr, int startPos,int* cR, int* cC){
     int tmp = startPos;
-    int curRow = row1,curCol = col1;
+    int curRow = row0,curCol = col0;
     for (int i=row0;i<=row1;i++)
         for (int j=col0;j<=col1;j++){
             if (tmp == newStr.size()) {curRow = i; curCol = j;tmp++;}
@@ -246,7 +246,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
     string newStr = st0;
     int startPos = 0;
     int msize = (row1 - row0 + 1) * (col1 - col0 + 1);
-    if (newStr.size()>=msize) startPos = newStr.size() - msize + 1;
+//    if (newStr.size()>=msize) startPos = newStr.size() - msize + 1;
     int curPos = newStr.size();
     int curRow,curCol;
     refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&curRow,&curCol);
@@ -266,8 +266,9 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                     curPos--;
                     move(curRow,curCol);
                 }else if (curRow == row0 && curCol == col0 && !startPos ==0){
-                    startPos--;
+                    startPos-=col1-col0+1;
                     curPos--;
+                    curCol = col1;
                     refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
                     move(curRow,curCol);
                 }
@@ -279,8 +280,9 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                     curPos++;
                     move(curRow,curCol);
                 }else if (curRow == row1 && curCol == col1 && curPos<newStr.size()){
-                    startPos++;
+                    startPos+=col1-col0+1;
                     curPos++;
+                    curCol = col0;
                     refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
                     move(curRow,curCol);
                 }
@@ -319,26 +321,21 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
             case KEY_BACKSPACE:
             case 8:
             case 127:
-                if (curPos!=0 && (curCol!=col0 || curRow!=row0)){
+                if (!(curCol == col0 && curRow == row0) && curPos != 0){
                     newStr.erase(curPos - 1,1);
                     if (curCol == col0){ curCol = col1; curRow--;}
                     else curCol--;
                     curPos--;
-                    int tmpRow = curRow, tmpCol = curCol;
-                    for (int i=curPos;i<newStr.size();i++){
-                        if (tmpRow == row1 && tmpCol == col1) break;
-                        move(tmpRow,tmpCol);
-                        addch(newStr[i]);
-                        if (tmpCol == col1){ tmpCol = col0; tmpRow++;}
-                        else tmpCol++;
-                    }
-                    move(tmpRow,tmpCol);
-                    addch(' ');
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
                     move(curRow,curCol);
-                }else if (startPos !=0){
+                }else if (curPos !=0){
+                    startPos -= col1-col0+1;
                     newStr.erase(curPos - 1,1);
-                    startPos--;
+//                    startPos--;
                     curPos--;
+                    curCol = col1;
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                    move(curRow,curCol);
                 }
                 break;
             case KEY_ESC:
@@ -355,26 +352,17 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                 flag = true;
                 break;
             default:
-                if (curPos - startPos + 1<msize){
+                if (curCol < col1){//curPos - startPos + 1<msize){
                     newStr.insert(curPos,(char*)&ch,1);
-                    int tmpRow = curRow, tmpCol = curCol;
-                    for (int i=curPos;i<newStr.size();i++){
-                        if (tmpRow == row1 && tmpCol == col1) break;
-                        move(tmpRow,tmpCol);
-                        addch(newStr[i]);
-                        if (tmpCol == col1) { tmpCol = col0; tmpRow++;}
-                        else tmpCol++;
-                    }
-                    move(tmpRow,tmpCol);
-                    addch(' ');
-                    if (curCol == col1){ curCol = col0; curRow++;}
-                    else curCol++;
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
                     curPos++;
+                    curCol++;
                     move(curRow,curCol);
                 }else{
                     newStr.insert(curPos,(char*)&ch,1);
-                    startPos++;
+                    startPos+=col1-col0+1;
                     curPos++;
+                    curCol = col0;
                     refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
                 }
                 break;
@@ -486,4 +474,13 @@ void ListDisplayElement::restoreLastView(){
     }
     naiveDraw();
 }
-
+void ListDisplayElement::resize(int row0){
+    destroy_win(listWindow);
+    int mx=0, my=0;
+    getmaxyx(stdscr, mx, my);
+    int height = mx - row0 -1;
+    int width = my;
+    int startx = row0;
+    int starty = 0;
+    listWindow = create_newwin(height, width, startx, starty);  
+}

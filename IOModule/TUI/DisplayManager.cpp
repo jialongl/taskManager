@@ -25,6 +25,7 @@ void DisplayManager::newElement(DisplayElement* element){
     refresh();
 }
 void DisplayManager::handleKey(int ch){
+    //IOModule->echo(NumberToString(ch));
     if (ch == KEY_ESC) {
         bool flag = false;
         if (escStack[escStackTop] -> type == CONFIRM_DE) flag = true; 
@@ -39,6 +40,8 @@ void DisplayManager::handleKey(int ch){
         }
         refresh();
         if (flag) escStack[escStackTop] -> handleConfirm( false );
+    }else if(ch == -1){
+        redraw();
     }
     /*else{
         if (ch == 13 || ch == 10){
@@ -97,6 +100,7 @@ void DisplayManager::redraw(){
     hline('=', my);
 */
     refresh();
+    (dynamic_cast<ListDisplayElement*>(escStack[0])) -> resize(row+1);
     for (int i=0;i<=escStackTop;i++){
         escStack[i] -> draw();
     }

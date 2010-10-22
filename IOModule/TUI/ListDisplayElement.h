@@ -33,5 +33,6 @@ public:
     void reset();
     void search();
     void restoreLastView();
+    void resize(int row0);
 };
 #endif
