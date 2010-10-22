@@ -1,6 +1,7 @@
 /* Author: Liu Jialong */
 /* Author: He Haocong */
 
+#include "Parser.h"
 
 Parser::Parser() {
   cmd = new Command();
