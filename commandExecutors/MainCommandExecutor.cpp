@@ -1,4 +1,5 @@
 /* Author: He Haocong */
+#include "commandExecutors/MainCommandExecutor.h"
 MainCommandExecutor::~MainCommandExecutor(){
 		for (map<commandMethod, CommandExecutor*>::iterator it = executors.begin(); it != executors.end(); it++){
 			delete it->second;

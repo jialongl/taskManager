@@ -1,4 +1,9 @@
 /* Author: He Haocong */
+#ifndef EditCommandExecutorH
+#define EditCommandExecutorH
+
+#include "commandExecutors/CommandExecutor.h"
+
 class EditCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(Command *command){
@@ -13,3 +18,4 @@ public:
 		return new Result();
 	}
 };
+#endif

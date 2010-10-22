@@ -1,4 +1,8 @@
 /* Author: He Haocong */
+#ifndef MainCommandExecutorH
+#define MainCommandExecutorH
+
+#include "commandExecutors/CommandExecutor.h"
 class MainCommandExecutor:public CommandExecutor{
 private:
 	map<commandMethod, CommandExecutor*> executors;
@@ -10,3 +14,4 @@ public:
 };
 
 MainCommandExecutor *mainCommandExecutor;
+#endif

@@ -1,28 +1,11 @@
 /* Author: He Haocong */
+#ifndef FinishCommandExecutorH
+#define FinishCommandExecutorH
+
+#include "commandExecutors/CommandExecutor.h"
 class FinishCommandExecutor:public CommandExecutor{
 public:
-	Result *executeCommand(Command *command){
-		if (command->method == FINISH) {
-			for (vector<int>::iterator it = command->serialNumberList.begin(); it<command->serialNumberList.end(); it++){
-				int x=*it;
-				mainTaskList->editTaskIsFinished(x, true);
-			}
-			map<int, Task*> tmp = mainTaskList->getTaskMap();
-			for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
-				if ((it->second)->getGroup() == command->group) mainTaskList->editTaskIsFinished(it->first,true);
-			}
-		}
-		//cron!!!!!!!!!
-		return new Result();
-	}
-    Result *executeCommand(Result* result,Command *command){
-        if (command->method == FINISH){
-			map<int, Task*> tmp = mainTaskList->getTaskMap();
-			for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
-               mainTaskList->editTaskIsFinished((it->second)->getSerialNumber() , true);
-            }
-        }
-        return new Result();
-    }
-
+	Result *executeCommand(Command *command);
+    Result *executeCommand(Result* result,Command *command);
 };
+#endif

@@ -19,16 +19,14 @@ TaskList.h
 util.h
 
 
-AddCommandExecutor.h
-CommandExecutor.h
-CronCommandExecutor.h
-EditCommandExecutor.h
-ExportCommandExecutor.h
-FinishCommandExecutor.h
-ImportCommandExecutor.h
-LsCommandExecutor.h
-MainCommandExecutor.cpp
-MainCommandExecutor.h
+AddCommandExecutor.o :  commandExecutors/CommandExecutor.h 
+CommandExecutor.o : Command.o Result.o includes.h TaskList.o  
+EditCommandExecutor.o : commandExecutors/CommandExecutor.h 
+ExportCommandExecutor.o: commandExecutors/CommandExecutor.h
+FinishCommandExecutor.o: commandExecutors/CommandExecutor.h
+ImportCommandExecutor.o: commandExecutors/CommandExecutor.h
+LsCommandExecutor.o: commandExecutors/CommandExecutor.h filters/Filter.h filters/KFilter.o filters/FFilter.o filters/GFilter.o filters/OFilter.o Comparer.o
+MainCommandExecutor.o: commandExecutors/CommandExecutor.h
 PriCommandExecutor.h
 RmCommandExecutor.h
 RunCommandExecutor.h
