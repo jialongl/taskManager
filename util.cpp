@@ -1,7 +1,7 @@
 /* Author: Liu Jialong */
 /* Author: He Haocong */
-#include <cstdio>
-#include <fstream>
+
+
 time_t currentTime(){
         time_t curTime;
         time(&curTime);
