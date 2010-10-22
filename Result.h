@@ -3,6 +3,8 @@
 #ifndef ResultH
 #define ResultH
 
+#include "TaskList.h"
+
 class Result:public TaskList{
  public:
   bool detailed;

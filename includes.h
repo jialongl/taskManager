@@ -1,5 +1,9 @@
 /* Author: He Haocong */
 
+#ifndef includesH
+#define includesH
+
+
 #define TIMEZONE 8
 #define MAX_LEN 1024
 
@@ -23,9 +27,12 @@ using namespace std;
 
 #endif
 
-#include "enums.h"
-#include "util.h"
+#include "enums.cpp"
+#include "util.cpp"
 #include "init.h"
+
+
+#endif
 
 /*
 #include "Task.h"

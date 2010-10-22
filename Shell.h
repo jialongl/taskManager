@@ -3,6 +3,9 @@
 #ifndef ShellH
 #define ShellH
 
+#include "Result.h"
+#include "IOModule/TM_IOModule"
+
 class Shell{
 
  private:
