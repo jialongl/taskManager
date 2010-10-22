@@ -4,6 +4,7 @@
 #define TaskListH
 
 #include "includes.h"
+#include "Comparer.h"
 #include "Task.h"
 
 class TaskList{
