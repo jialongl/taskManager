@@ -2,7 +2,6 @@
 /* Author: He Haocong */
 #ifndef utilH
 #define utilH
-#include "includes.h"
 
 time_t currentTime(){
         time_t curTime;
