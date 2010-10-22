@@ -1,5 +1,7 @@
 /* Author: He Haocong */
 
+#include "Comparer.h"
+
 Comparer::Comparer(vector<sortKeyword_e> keys){
   keywords = new vector<sortKeyword_e>;
   for (int i=0;i<keys.size();i++){
