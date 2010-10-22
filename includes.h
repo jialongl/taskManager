@@ -11,13 +11,13 @@
 #include <map>
 using namespace std;
 
-#ifndef WIN32
-    #include <ncurses.h>
-#endif
+//#ifndef WIN32
+//    #include <ncurses.h>
+//#endif
 
-#ifdef WIN32
+//#ifdef WIN32
     #include "curses.h"
-#endif
+//#endif
 
 #include "enums.h"
 #include "util.h"

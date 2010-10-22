@@ -7,6 +7,8 @@ time_t currentTime(){
         time(&curTime);
         return curTime; // + TIMEZONE * 3600;
 }
+int min(int x,int y){ return x<y?x:y;}
+int max(int x,int y){ return x>y?x:y;}
 string formatTime(int x){
 	time_t  t = x;
 	return (string)ctime(&t);	

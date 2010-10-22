@@ -26,6 +26,7 @@ public:
     void selectDown();
     void reconstructLines();
     string editArea(WINDOW* win,int row0,int row1,int col0,int col1,string st0);
+    void refreshEditArea(WINDOW* win, int row0, int row1, int col0, int col1, string newStr, int startPos, int* cR,int* cC);
     vector<string> editSelect();
     void showDetail();
     void hideDetail();
