@@ -25,14 +25,14 @@ EditCommandExecutor.o : commandExecutors/CommandExecutor.h
 ExportCommandExecutor.o: commandExecutors/CommandExecutor.h
 FinishCommandExecutor.o: commandExecutors/CommandExecutor.h
 ImportCommandExecutor.o: commandExecutors/CommandExecutor.h
-LsCommandExecutor.o: commandExecutors/CommandExecutor.h filters/Filter.h filters/KFilter.o filters/FFilter.o filters/GFilter.o filters/OFilter.o Comparer.o
+LsCommandExecutor.o: commandExecutors/CommandExecutor.h filters/Filter.h KFilter.o FFilter.o GFilter.o OFilter.o Comparer.o
 MainCommandExecutor.o: commandExecutors/CommandExecutor.h
-PriCommandExecutor.h
-RmCommandExecutor.h
-RunCommandExecutor.h
-SelectCommandExecutor.h
-SortCommandExecutor.h
-TaskCommandExecutor.h
+PriCommandExecutor.o: commandExecutors/CommandExecutor.h
+RmCommandExecutor.o: commandExecutors/CommandExecutor.h
+RunCommandExecutor.o: commandExecutors/CommandExecutor.h IOModule/TM_IOModule.h Shell.o
+SelectCommandExecutor.o: commandExecutors/CommandExecutor.h filters/Filter.h KFilter.o FFilter.o GFilter.o OFilter.o Comparer.o
+SortCommandExecutor.o: commandExecutors/CommandExecutor.h Comparer.o
+TaskCommandExecutor.o: commandExecutors/CommandExecutor.h NFilter.o
 
 
 FFilter.h

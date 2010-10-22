@@ -1,40 +1,14 @@
 /* Author: He Haocong */
+#ifndef RunCommandExecutorH
+#define RunCommandExecutorH
+
+#include "commandExecutors/CommandExecutor.h"
+#include "IOModule/TM_IOModule.h"
+#include "Shell.h"
+
 class RunCommandExecutor:public CommandExecutor{
 public:
-    Result *executeCommand(Command *command){
-        if (command->method == RUN){
-            ifstream script((command->filename).c_str());
-            if (script.is_open()){
-                string line;
-                while (getline(script, line)){
-                  try{
-                    CommandList commandList;
-                    Command *command;
-                    Result *result;
-
-                    commandList = parser->inputToCommandList(line);
-
-                    result = shell->executeCommandList(commandList);
-
-			        if (!(result->isNull))
-                        IOModule->showOutput(result); 
-                    
-			        command = new Command();
-			        command->method = EXPORT;
-			        mainCommandExecutor->executeCommand(command);
-			        delete command;
-                  }  
-
-			      catch (exception_e except){
-				    if (except == EXCEPTION_HALT) break;
-				    IOModule->handleException(except);
-                  }
-                }
-            }
-        }
-        return new Result();
-    }
-    Result *executeCommand(Result* result, Command *command){
-        return new Result();
-    }
+    Result *executeCommand(Command *command);
+    Result *executeCommand(Result* result, Command *command);
 };
+#endif
