@@ -3,8 +3,7 @@
 #ifndef CommandH
 #define CommandH
 
-#include "enums.h"
-#include <ctime>
+#include "includes.h"
 
 class Command{
  public:

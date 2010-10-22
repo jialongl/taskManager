@@ -3,8 +3,13 @@
 #ifndef initH
 #define initH
 
+#include "Shell.h"
+#include "commandExecutors/MainCommandExecutor.h"
+#include "Parser.h"
+#include "TaskList.h"
+#include "Command.h"
+
 void init(){
-  cronManager = new CronManager();
   shell = new Shell();	
   mainCommandExecutor = new MainCommandExecutor();
   parser = new Parser();

@@ -1,4 +1,5 @@
 /* Author: He Haocong */
+
 #define TIMEZONE 8
 #define MAX_LEN 1024
 
@@ -9,20 +10,23 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <fstring>
+#include <fstream>
 
 using namespace std;
 
 #ifndef WIN32
-    #include <ncurses.h>
-#endif
+  #include <ncurses.h>
 
-#ifdef WIN32
-#include "curses.h"
+#else
+  #include "curses.h"
+
 #endif
 
 #include "enums.h"
 #include "util.h"
+#include "init.h"
+
+/*
 #include "Task.h"
 #include "Comparer.h"
 #include "CronTask.h"
@@ -73,5 +77,5 @@ using namespace std;
 
 #include "Shell.cpp"
 
-#include "init.h"
 #include "cleanUp.cpp"
+*/

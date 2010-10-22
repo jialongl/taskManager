@@ -1,5 +1,7 @@
 /* Author: He Haocong */
 
+#include "TaskList.h"
+
 TaskList::TaskList(){
   serialNumberLargest = 0;
   taskList.clear();

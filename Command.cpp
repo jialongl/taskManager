@@ -14,6 +14,8 @@
   html = h;
   }*/
 
+#include "Command.h"
+
 Command::Command(){
   deadline = 0;
   priority = 0;
