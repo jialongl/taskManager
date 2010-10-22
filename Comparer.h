@@ -1,3 +1,5 @@
+/* Author: Liu Jialong */
+
 #ifndef ComparerH
 #define ComparerH
 
@@ -13,6 +15,6 @@ class Comparer{
   ~Comparer();
   int compareWithKeyword(Task* t1, Task* t2, sortKeyword_e sk);
   bool comparer(Task* t1, Task* t2);
-}
+};
 
 #endif

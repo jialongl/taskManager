@@ -1,4 +1,4 @@
-/* Author: He Haocong */
+/* Author: Liu Jialong */
 
 #ifndef CommandH
 #define CommandH
@@ -25,7 +25,7 @@ class Command{
   bool overdue;
 
   Command();
-}
+};
 
 typedef vector<Command*> CommandList;
 

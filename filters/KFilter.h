@@ -3,6 +3,8 @@
 #ifndef KFilterH
 #define KFilterH
 
+#include "Filter.h"
+
 class KFilter: public Filter{
  private:
   string kString;

@@ -3,6 +3,8 @@
 #ifndef GFilterH
 #define GFilterH
 
+#include "Filter.h"
+
 class GFilter: public Filter{
  private:
   string groups;

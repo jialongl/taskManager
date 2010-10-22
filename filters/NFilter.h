@@ -3,6 +3,8 @@
 #ifndef NFilterH
 #define NFilterH
 
+#include "Filter.h"
+
 class NFilter: public Filter{
  private:
   int n;

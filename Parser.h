@@ -1,5 +1,10 @@
+/* Author: Liu Jialong */
+
 #ifndef ParserH
 #define ParserH
+
+#include "includes.h"
+#includes "Command.h"
 
 class Parser{
 
