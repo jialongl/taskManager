@@ -45,6 +45,6 @@ class Parser{
   string resultToOutput(Result *result);
 };
 
-Parser *parser;
+static Parser *parser;
 
 #endif

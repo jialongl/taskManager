@@ -1,3 +1,6 @@
+#include "DisplayManager.h"
+#include "ListDisplayElement.h"
+#include "DisplayElement.h"
 
 DisplayManager::DisplayManager(PdcIO* parentIO){
     parent = parentIO;

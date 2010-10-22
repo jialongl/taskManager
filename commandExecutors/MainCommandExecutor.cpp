@@ -13,12 +13,13 @@ MainCommandExecutor::MainCommandExecutor(){
 		executors[IMPORT] = new ImportCommandExecutor();
 		executors[PRI] = new PriCommandExecutor();
 		executors[LS] = new LsCommandExecutor();// deprecated
-		executors[SELECT] = new SelectCommandExecutor();
 		executors[TASK] = new TaskCommandExecutor();
-        executors[RM] = new RmCommandExecutor();
-		executors[SORT] = new SortCommandExecutor();
-		executors[RUN] = new RunCommandExecutor();
-		//executors[CRON] = new CronCommandExecutor();
+		executors[RM] = new RmCommandExecutor();
+
+		// executors[SELECT] = new SelectCommandExecutor();
+		// executors[SORT] = new SortCommandExecutor();
+		// executors[RUN] = new RunCommandExecutor();
+		// executors[CRON] = new CronCommandExecutor();
 	}
 Result* MainCommandExecutor::executeCommand(Command *command){
 	  if ( command->method != NULLCOMMAND)

@@ -24,6 +24,6 @@ class Shell{
 
 };
 
-Shell *shell;
+static Shell *shell;
 
 #endif

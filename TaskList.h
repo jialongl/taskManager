@@ -25,7 +25,6 @@ class TaskList{
   void editTaskDeadline(int serialNumber, time_t deadline);
   void editTaskPriority(int serialNumber, int priority);
   void editTaskDescription(int serialNumber, string description);
-  void editTaskCronFreq(int serialNumber, int cronFreq);
   void editTaskIsFinished(int serialNumber, bool isFinished);
   void editTaskSerialNumber(int serialNumber, int newSerialNumber);
   void editTaskGroup(int serialNumber, string group);
@@ -36,6 +35,6 @@ class TaskList{
 
 };
 
-TaskList *mainTaskList;
+static TaskList *mainTaskList;
 
 #endif

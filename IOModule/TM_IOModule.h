@@ -17,6 +17,6 @@ public:
     virtual void echo(string s){};
 };
 
-TM_IOModule* IOModule;
+static TM_IOModule* IOModule;
 
 #endif

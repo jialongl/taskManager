@@ -14,17 +14,19 @@
 
 #define StackSize 10
 #define KEY_ESC 27
+
 class DisplayManager{
-private:
+ private:
     DisplayElement* escStack[StackSize];
     int escStackTop;
     string keyHistory;
     PdcIO* parent;
     string echoHistory;
-public:
-    void redraw();
+
+ public:
     DisplayManager(PdcIO* parentIO);
     ~DisplayManager();
+    void redraw();
     void releaseForcus();
     void newElement(DisplayElement* element);
     void handleKey(int ch); 
@@ -32,5 +34,7 @@ public:
     void setCommand(CommandList cl);
     void echo(string s);
 };
-DisplayManager* displayManager;
+
+static DisplayManager* displayManager;
+
 #endif

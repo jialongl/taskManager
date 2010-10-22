@@ -26,5 +26,6 @@ public:
 	Result *executeCommand(Result* result, Command *command);
 };
 
-MainCommandExecutor *mainCommandExecutor;
+static MainCommandExecutor *mainCommandExecutor;
+
 #endif

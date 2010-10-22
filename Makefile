@@ -1,16 +1,13 @@
 # Author: Liu Jialong
 # Author: He Haocong
 
-OBJECTS= Task.o Comparer.o Command.o filters/GFilter.o filters/KFilter.o filters/FFilter.o filters/OFilter.o filters/NFilter.o TaskList.o Result.o Parser.o commandExecutors/AddCommandExecutor.o commandExecutors/EditCommandExecutor.o commandExecutors/RmCommandExecutor.o commandExecutors/LsCommandExecutor.o commandExecutors/TaskCommandExecutor.o commandExecutors/PriCommandExecutor.o commandExecutors/FinishCommandExecutor.o commandExecutors/ExportCommandExecutor.o commandExecutors/ImportCommandExecutor.o commandExecutors/MainCommandExecutor.o Shell.o IOModule/KeyboardIOModule.o includes.o
-CFLAGS=-g -Wall
+CC=g++
+OBJECTS=main.o Task.o Comparer.o Command.o filters/GFilter.o filters/KFilter.o filters/FFilter.o filters/OFilter.o filters/NFilter.o TaskList.o Result.o Parser.o commandExecutors/AddCommandExecutor.o commandExecutors/EditCommandExecutor.o commandExecutors/RmCommandExecutor.o commandExecutors/LsCommandExecutor.o commandExecutors/TaskCommandExecutor.o commandExecutors/PriCommandExecutor.o commandExecutors/FinishCommandExecutor.o commandExecutors/ExportCommandExecutor.o commandExecutors/ImportCommandExecutor.o commandExecutors/MainCommandExecutor.o Shell.o IOModule/KeyboardIOModule.o IOModule/PdcIO.o IOModule/TUI/DisplayManager.o IOModule/TUI/ListDisplayElement.o IOModule/TUI/DisplayElement.o
 
-all: taskManager
+FLAGS=-g -Wall -lcurses
 
-taskManager: $(OBJECTS)
+all: $(OBJECTS)
 	$(CC) $(FLAGS) -o taskManager $(OBJECTS)
-
-clean:
-	rm taskManager $(OBJECTS)
 
 install:
 	cp taskManager /usr/bin
@@ -19,3 +16,6 @@ install:
 uninstall:
 	rm /usr/bin/taskManager
 	rm /usr/share/man/man1/taskManager.1
+
+clean:
+	rm taskManager $(OBJECTS)

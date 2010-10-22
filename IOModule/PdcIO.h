@@ -7,7 +7,10 @@
 #else
     #include <ncurses.h>
 #endif
+
 #include "../Command.h"
+#include "../Result.h"
+#include "TM_IOModule.h"
 
 class PdcIO : public TM_IOModule{
 private:
