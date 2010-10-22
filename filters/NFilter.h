@@ -10,4 +10,6 @@ class NFilter: public Filter{
  public:
   NFilter(int num);
   bool filter(Task* task);
-}
+};
+
+#endif

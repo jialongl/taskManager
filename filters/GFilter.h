@@ -1,11 +1,13 @@
+/* Author: Liu Jialong */
+
 #ifndef GFilterH
 #define GFilterH
 
 class GFilter: public Filter{
-private:
+ private:
   string groups;
 
-public:
+ public:
   GFilter(string s);
   bool filter(Task* task);
 };
