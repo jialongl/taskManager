@@ -1,7 +1,7 @@
 # Author: Liu Jialong
 # Author: He Haocong
 
-OBJECTS= enums.o Task.o Comparer.o Command.o filters/GFilter.o filters/KFilter.o filters/FFilter.o filters/OFilter.o filters/NFilter.o TaskList.o Result.o Parser.o commandExecutors/AddCommandExecutor.o commandExecutors/EditCommandExecutor.o commandExecutors/RmCommandExecutor.o commandExecutors/LsCommandExecutor.o commandExecutors/TaskCommandExecutor.o commandExecutors/PriCommandExecutor.o commandExecutors/FinishCommandExecutor.o commandExecutors/ExportCommandExecutor.o commandExecutors/ImportCommandExecutor.o commandExecutors/MainCommandExecutor.o Shell.o IOModule/KeyboardIOModule.o
+OBJECTS= Task.o Comparer.o Command.o filters/GFilter.o filters/KFilter.o filters/FFilter.o filters/OFilter.o filters/NFilter.o TaskList.o Result.o Parser.o commandExecutors/AddCommandExecutor.o commandExecutors/EditCommandExecutor.o commandExecutors/RmCommandExecutor.o commandExecutors/LsCommandExecutor.o commandExecutors/TaskCommandExecutor.o commandExecutors/PriCommandExecutor.o commandExecutors/FinishCommandExecutor.o commandExecutors/ExportCommandExecutor.o commandExecutors/ImportCommandExecutor.o commandExecutors/MainCommandExecutor.o Shell.o IOModule/KeyboardIOModule.o includes.o
 CFLAGS=-g -Wall
 
 all: taskManager
