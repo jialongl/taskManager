@@ -2,8 +2,7 @@
 #ifndef ExportCommandExecutorH
 #define ExportCommandExecutorH
 
-#include "commandExecutors/CommandExecutor.h"
-#include "TaskList.h"
+#include "CommandExecutor.h"
 
 class ExportCommandExecutor: public CommandExecutor
 {

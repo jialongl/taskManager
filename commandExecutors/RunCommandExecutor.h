@@ -2,9 +2,9 @@
 #ifndef RunCommandExecutorH
 #define RunCommandExecutorH
 
-#include "commandExecutors/CommandExecutor.h"
-#include "IOModule/TM_IOModule.h"
-#include "Shell.h"
+#include "CommandExecutor.h"
+#include "../IOModule/TM_IOModule.h"
+#include "../Shell.h"
 
 class RunCommandExecutor:public CommandExecutor{
 public:

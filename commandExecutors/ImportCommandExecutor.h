@@ -2,7 +2,7 @@
 #ifndef ImportCommandExecutorH
 #define ImportCommandExecutorH
 
-#include "commandExecutors/CommandExecutor.h"
+#include "CommandExecutor.h"
 class ImportCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(Command *command);

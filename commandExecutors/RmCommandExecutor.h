@@ -2,7 +2,7 @@
 #ifndef RmCommandExecutorH
 #define RmCommandExecutorH
 
-#include "commandExecutors/CommandExecutor.h"
+#include "CommandExecutor.h"
 
 class RmCommandExecutor:public CommandExecutor{
 public:

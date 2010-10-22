@@ -1,4 +1,4 @@
-#include "commandExecutors/SortCommandExecutor.h"
+#include "SortCommandExecutor.h"
 
 Result* SortCommandExecutor::executeCommand(Command *command){
     return new Result();

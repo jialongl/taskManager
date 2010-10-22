@@ -1,4 +1,4 @@
-#include "commandExecutors/ExportCommandExecutor.h"
+#include "ExportCommandExecutor.h"
 
 Result* ExportCommandExecutor::executeCommand (Command* command)
 {

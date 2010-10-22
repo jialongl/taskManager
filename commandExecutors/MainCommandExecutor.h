@@ -2,7 +2,7 @@
 #ifndef MainCommandExecutorH
 #define MainCommandExecutorH
 
-#include "commandExecutors/CommandExecutor.h"
+#include "CommandExecutor.h"
 class MainCommandExecutor:public CommandExecutor{
 private:
 	map<commandMethod, CommandExecutor*> executors;

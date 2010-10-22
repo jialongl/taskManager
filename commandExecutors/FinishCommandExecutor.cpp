@@ -1,4 +1,4 @@
-#include "commandExecutors/FinishCommandExecutor.h"
+#include "FinishCommandExecutor.h"
 
 Result* FinishCommandExecutor::executeCommand(Command *command){
     if (command->method == FINISH) {

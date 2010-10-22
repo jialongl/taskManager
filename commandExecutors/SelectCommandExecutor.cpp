@@ -1,4 +1,4 @@
-#include "commandExecutors/SelectCommandExecutor.h"
+#include "SelectCommandExecutor.h"
 
 Result* SelectCommandExecutor::executeCommand(Command *command){
     if (command->method == SELECT){

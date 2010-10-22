@@ -1,4 +1,4 @@
-#include "commandExecutors/PriCommandExecutor.h"
+#include "PriCommandExecutor.h"
 Result* PriCommandExecutor::executeCommand(Command *command){
     if (command->method == PRI){
         int taskNum = (command->serialNumberList)[0];

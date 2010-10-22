@@ -1,4 +1,4 @@
-#include "commandExecutors/CommandExecutor.h"
+#include "CommandExecutor.h"
 
 Result* CommandExecutor::executeCommand(Command *command){
     if (command->method == EDIT){

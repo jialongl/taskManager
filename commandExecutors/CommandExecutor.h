@@ -2,10 +2,10 @@
 #ifndef CommandExecutorH
 #define CommandExecutorH
 
-#include "includes.h"
-#include "Command.h"
-#include "Result.h"
-#include "TaskList.h"
+#include "../includes.h"
+#include "../Command.h"
+#include "../Result.h"
+#include "../TaskList.h"
 
 class CommandExecutor{
 public:

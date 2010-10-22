@@ -1,4 +1,4 @@
-#include "commandExecutors/RunCommandExecutor.h"
+#include "RunCommandExecutor.h"
 
 Result* RunCommandExecutor::executeCommand(Result* result, Command *command){
     return new Result();

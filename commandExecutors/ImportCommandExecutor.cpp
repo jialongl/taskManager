@@ -1,4 +1,4 @@
-#include "commandExecutors/ImportCommandExecutor.h"
+#include "ImportCommandExecutor.h"
 
 Result* ImportCommandExecutor::executeCommand(Command *command){
     if (command->method == IMPORT){

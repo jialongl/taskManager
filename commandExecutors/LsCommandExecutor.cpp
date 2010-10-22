@@ -1,4 +1,4 @@
-#include "commandExecutors/LsCommandExecutor.h"
+#include "LsCommandExecutor.h"
 
 Result* LsCommandExecutor::executeCommand(Command *command){
     if (command->method == LS){

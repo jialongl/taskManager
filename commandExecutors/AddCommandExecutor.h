@@ -2,7 +2,7 @@
 #ifndef AddCommandExecutorH
 #define AddCommandExecutorH
 
-#include "commandExecutors/CommandExecutor.h"
+#include "CommandExecutor.h"
 
 class AddCommandExecutor:public CommandExecutor{
 public:

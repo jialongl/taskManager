@@ -2,7 +2,7 @@
 #ifndef FinishCommandExecutorH
 #define FinishCommandExecutorH
 
-#include "commandExecutors/CommandExecutor.h"
+#include "CommandExecutor.h"
 class FinishCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(Command *command);

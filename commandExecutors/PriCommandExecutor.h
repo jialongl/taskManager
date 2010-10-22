@@ -2,7 +2,7 @@
 #ifndef PriCommandExecutorH
 #define PriCommandExecutorH
 
-#include "commandExecutors/CommandExecutor.h"
+#include "CommandExecutor.h"
 class PriCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(Command *command);

@@ -1,4 +1,4 @@
-#include "commandExecutors/RmCommandExecutor.h"
+#include "RmCommandExecutor.h"
 Result* RmCommandExecutor::executeCommand(Command *command){
     if (command->method == RM){
         for (vector<int>::iterator it = command->serialNumberList.begin(); it < command->serialNumberList.end();  it++){

@@ -2,8 +2,8 @@
 #ifndef TaskCommandExecutorH
 #define TaskCommandExecutorH
 
-#include "commandExecutors/CommandExecutor.h"
-#include "filters/NFilter.h"
+#include "CommandExecutor.h"
+#include "../filters/NFilter.h"
 
 class TaskCommandExecutor:public CommandExecutor{
 public:

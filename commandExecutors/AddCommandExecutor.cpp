@@ -1,4 +1,4 @@
-#include "commandExecutors/AddCommandExecutor.h"
+#include "AddCommandExecutor.h"
 
 Result* AddCommandExecutor::executeCommand(Command *command){
     if (command->method == ADD){

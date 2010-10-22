@@ -2,8 +2,8 @@
 #ifndef SortCommandExecutorH
 #define SortCommandExecutorH
 
-#include "commandExecutors/CommandExecutor.h"
-#include "Comparer.h"
+#include "CommandExecutor.h"
+#include "../Comparer.h"
 
 class SortCommandExecutor:public CommandExecutor{
 public:
