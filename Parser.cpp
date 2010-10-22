@@ -2,6 +2,7 @@
 /* Author: He Haocong */
 
 #include "Parser.h"
+//#include "IOModule/TM_IOModule.h"
 
 Parser::Parser() {
   cmd = new Command();
@@ -376,15 +377,11 @@ Command* Parser::inputToCommand (string input) {
     task_parse();
 
   else if (args[0] == "tui"){
-    TM_IOModule* newIO = new PdcIO();
-    shell->changeIOModule(newIO);
-    cmd->method = NULLCOMMAND;
+    cmd->method = TUI;
   }
 
   else if (args[0] == "notui"){
-    TM_IOModule* newIO = new KeyboardIOModule();
-    shell->changeIOModule(newIO);
-    cmd->method = NULLCOMMAND;
+    cmd->method = NOTUI;
   }
 
   else if (args[0] == "map")
@@ -398,7 +395,7 @@ Command* Parser::inputToCommand (string input) {
 }
 
 CommandList Parser::inputToCommandList (string s) {
-  IOModule->echo(s);
+//  IOModule->echo(s);
   vector <string> commands;
   CommandList cl;
 
@@ -409,6 +406,7 @@ CommandList Parser::inputToCommandList (string s) {
     cl.push_back(inputToCommand(commands[i]));
   }
 
+  if (cl.size() != 0) cl[0]->originalCommand = s;
   return cl;
 }
 

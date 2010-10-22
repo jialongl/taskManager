@@ -9,8 +9,8 @@
 
 class CommandExecutor{
 public:
-	virtual Result *executeCommand(Command *command) =0;
-	virtual Result *executeCommand(Result* result, Command *command){};
+	virtual Result* executeCommand(TaskList* mainTaskList,Command *command) =0;
+	virtual Result* executeCommand(TaskList* mainTaskList, Result* result,Command *command){};
 	virtual ~CommandExecutor(){};
 };
 #endif

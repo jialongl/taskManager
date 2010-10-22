@@ -1,6 +1,6 @@
 #include "ExportCommandExecutor.h"
 
-Result* ExportCommandExecutor::executeCommand (Command* command)
+Result* ExportCommandExecutor::executeCommand (TaskList* mainTaskList,Command* command)
 {
     string filename;
     //export to file record.xml
@@ -83,7 +83,7 @@ Result* ExportCommandExecutor::executeCommand (Command* command)
     return new Result();
 }
 
-Result* ExportCommandExecutor::executeCommand(Result* result, Command *command){
+Result* ExportCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result,Command *command){
     string filename;
     if (command->method == EXPORT){
         map<int, Task*> tasks = result->getTaskMap();

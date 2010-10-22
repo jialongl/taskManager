@@ -6,7 +6,7 @@
 
 class EditCommandExecutor:public CommandExecutor{
 public:
-	Result *executeCommand(Command *command){
+	Result *executeCommand(TaskList* mainTaskList,Command *command){
 		if (command->method == EDIT){
 			int taskNum = (command->serialNumberList)[0];
 			if (command->taskDescription != "") mainTaskList->editTaskDescription(taskNum,command->taskDescription);

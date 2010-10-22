@@ -1,9 +1,9 @@
 #include "RunCommandExecutor.h"
 
-Result* RunCommandExecutor::executeCommand(Result* result, Command *command){
+Result* RunCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result,Command *command){
     return new Result();
 }
-Result* RunCommandExecutor::executeCommand(Command *command){
+Result* RunCommandExecutor::executeCommand(TaskList* mainTaskList,Command *command){
     if (command->method == RUN){
         ifstream script((command->filename).c_str());
         if (script.is_open()){

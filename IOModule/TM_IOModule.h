@@ -4,9 +4,12 @@
 #include "../includes.h"
 #include "../Command.h"
 #include "../Result.h"
+#include "../Parser.h"
 
 class TM_IOModule{
 public:
+    TM_IOModule(Parser* pser){};
+    TM_IOModule(){};
     virtual ~TM_IOModule(){};
 
     virtual CommandList getCommand() {};

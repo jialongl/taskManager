@@ -11,7 +11,7 @@
 #include "../Comparer.h"
 class SelectCommandExecutor:public CommandExecutor{
 public:
-	Result *executeCommand(Command *command);
-    Result *executeCommand(Result* result, Command *command);
+	Result *executeCommand(TaskList* mainTaskList,Command *command);
+    Result *executeCommand(TaskList* mainTaskList, Result* result,Command *command);
 };
 #endif

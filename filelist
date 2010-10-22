@@ -1,13 +1,8 @@
-cleanUp.cpp
 Command.h
 Comparer.h
-CronManager.h
-CronTask.h
 curses.h
-debug.h
 enums.h
 includes.h
-init.h
 main.cpp
 makefile
 Parser.h
@@ -17,8 +12,6 @@ Shell.h
 Task.h
 TaskList.h
 util.h
-
-
 AddCommandExecutor.o :  commandExecutors/CommandExecutor.h 
 CommandExecutor.h : Command.o Result.o includes.h TaskList.o  
 EditCommandExecutor.o : commandExecutors/CommandExecutor.h 
@@ -29,25 +22,18 @@ LsCommandExecutor.o: commandExecutors/CommandExecutor.h filters/Filter.h KFilter
 MainCommandExecutor.o: commandExecutors/CommandExecutor.h
 PriCommandExecutor.o: commandExecutors/CommandExecutor.h
 RmCommandExecutor.o: commandExecutors/CommandExecutor.h
-RunCommandExecutor.o: commandExecutors/CommandExecutor.h IOModule/TM_IOModule.h Shell.o
 SelectCommandExecutor.o: commandExecutors/CommandExecutor.h filters/Filter.h KFilter.o FFilter.o GFilter.o OFilter.o Comparer.o
 SortCommandExecutor.o: commandExecutors/CommandExecutor.h Comparer.o
 TaskCommandExecutor.o: commandExecutors/CommandExecutor.h NFilter.o
-
-
 FFilter.h
 Filter.h
 GFilter.h
 KFilter.h
 NFilter.h
 OFilter.h
-
-
 KeyboardIOModule.o: KeyboardIOModule.h ../includes.h ../Command.o ../Result.o ../Parser.o
 PdcIO.o: PdcIO.h ../includes.h ../curses.h ../Command.o TUI/DisplayManager.o
 TM_IOModule.h: ../includes.h ../Command.h ../Result.h
-
-
 DisplayElement.o : DisplayElement.h ../../includes.h ../../Result.o
 DisplayManager.o: DisplayManager.h ../../curses.h DisplayElement.o ListDisplayElement.o ../PdcIO.o
 ListDisplayElement.o: ../../includes.h ../../TaskList.h ../../curses.h ../../Result.h ../../Parser.h ../../Command.h ../../Comparer.h DisplayElement.h DisplayManager.h

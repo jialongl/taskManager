@@ -1,8 +1,11 @@
-#include "DisplayManager.h"
-ListDisplayElement::ListDisplayElement(TaskList* taskList){
+#include "ListDisplayElement.h"
+#include "../../filters/KFilter.h"
+ListDisplayElement::ListDisplayElement(TaskList* taskList, Parser* pser,DisplayManager* dm){
+    parser = pser;
+    displayManager = dm;
     detailList.clear();
     lastSelectedSn = 0;
-    originalList = taskList;
+    originalList = NULL;
     list = taskList;
     navigateRow = 0;
     selectTask = 0;
@@ -79,7 +82,7 @@ void ListDisplayElement::handleKey(int ch){
             break;
         case (int)'d':
             if (tasks.size() != 0){
-                st = "rm " + NumberToString(tasks[selectTask]->getSerialNumber());
+                st = "rm " + NumberToString(tasks[selectTask]->getSerialNumber()) + "|ls";
                 cl = parser->inputToCommandList(st);
                 displayManager->setCommand(cl);
                 if (list != originalList) list->removeTask(tasks[selectTask]->getSerialNumber());
@@ -100,7 +103,7 @@ void ListDisplayElement::handleKey(int ch){
                 newTime = editDetail[1];
                 newPri = editDetail[2];
                 newDetail = editDetail[3];
-                displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
+                displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri+"|ls"));
             }
             break;
         case (int)'a':
@@ -116,7 +119,7 @@ void ListDisplayElement::handleKey(int ch){
             newPri = editDetail[2];
             newDetail = editDetail[3];
             if (tasks[tasks.size()-1]) delete tasks[tasks.size()-1];
-            displayManager->setCommand(parser->inputToCommandList("add -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
+            displayManager->setCommand(parser->inputToCommandList("add -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri +"|ls"));
             break;
         case (int)'s':
             search();
@@ -151,6 +154,7 @@ void ListDisplayElement::handleConfirm(bool flag){
 }
 void ListDisplayElement::handleResult(Result* result){
     list = result;
+    originalList = result;
     draw();
 }
 void ListDisplayElement::selectUp(){
@@ -431,7 +435,7 @@ void ListDisplayElement::reset(){
 void ListDisplayElement::search(){
     bool flag = false;
     searchKeyword = "";
-    IOModule->echo("Search: "+searchKeyword);
+    displayManager->echo("Search: "+searchKeyword);
     while (!flag){
         selectTask = 0;
         int ch = getch();
@@ -450,19 +454,19 @@ void ListDisplayElement::search(){
             case 127:
                 if (searchKeyword.size()!=0) searchKeyword = searchKeyword.substr(0,searchKeyword.size() - 1);
                 reset();
-                IOModule->echo("Search: "+searchKeyword);
+                displayManager->echo("Search: "+searchKeyword);
                 list = list -> getTasks(new KFilter("*"+searchKeyword+"*"));
                 draw(); 
                 break;
             default:
                 searchKeyword.push_back((char)ch);
-                IOModule->echo("Search: "+searchKeyword);
+                displayManager->echo("Search: "+searchKeyword);
                 list = list -> getTasks(new KFilter("*"+searchKeyword+"*"));
                 draw(); 
                 break;
         }
     }
-    IOModule->echo("Search finish");
+    displayManager->echo("Search finish");
 }
 void ListDisplayElement::restoreLastView(){
     for (int i=0;i<tasks.size();i++){

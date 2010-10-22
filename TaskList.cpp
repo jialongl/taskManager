@@ -78,8 +78,7 @@ void TaskList::editTaskGroup(int serialNumber, string group){
 }
 
 map<int, Task*> TaskList::getTaskMap(){
-  map<int, Task*> ans (taskList);
-  return ans;
+  return taskList;
 }
 
 TaskList* TaskList::getTasks(Filter* filter){
@@ -115,4 +114,11 @@ TaskList* TaskList::clone(){
     ans->addTask(tasks[i]->getSerialNumber(),tasks[i]);
   }
   return ans;
+}
+
+void TaskList::clearEntries(){
+  for (map<int, Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
+    delete it->second;
+    taskList.erase(it);
+  }
 }

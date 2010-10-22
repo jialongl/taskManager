@@ -5,7 +5,7 @@
 #include "CommandExecutor.h"
 class PriCommandExecutor:public CommandExecutor{
 public:
-	Result *executeCommand(Command *command);
+	Result *executeCommand(TaskList* mainTaskList,Command *command);
 };
 
 #endif

@@ -1,10 +1,10 @@
 #include "DisplayManager.h"
 #include "ListDisplayElement.h"
-#include "DisplayElement.h"
 
 DisplayManager::DisplayManager(PdcIO* parentIO){
     parent = parentIO;
-    escStack[0] = new ListDisplayElement(mainTaskList);
+    setCommand((parent->parser)->inputToCommandList("ls"));
+    escStack[0] = new ListDisplayElement(new TaskList(),(parent->parser),this);
     escStackTop = 0;
     escStack[0] -> setParent(escStack[0]);
     echoHistory = "";
@@ -28,7 +28,6 @@ void DisplayManager::newElement(DisplayElement* element){
     refresh();
 }
 void DisplayManager::handleKey(int ch){
-    //IOModule->echo(NumberToString(ch));
     if (ch == KEY_ESC) {
         bool flag = false;
         if (escStack[escStackTop] -> type == CONFIRM_DE) flag = true; 
@@ -46,22 +45,6 @@ void DisplayManager::handleKey(int ch){
     }else if(ch == -1){
         redraw();
     }
-    /*else{
-        if (ch == 13 || ch == 10){
-            string st = keyHistory;
-            keyHistory.clear();
-            int mx=0, my=0;
-            getmaxyx(stdscr, mx, my);
-            move(mx - 1,0);
-            hline(' ', my);
-            CommandList cl =  parser->inputToCommandList(st);
-            parent->setCommand(cl);
-        }else{
-            keyHistory = keyHistory+string(1,(char)ch);
-            printw("%c",ch);
-            refresh();
-        } 
-    }*/
     else escStack[escStackTop] -> handleKey(ch);
 }
 
@@ -94,14 +77,6 @@ void DisplayManager::redraw(){
         col =col+numOfSpace+buttons[i].size()+funcs[i].size(); 
     }
 
-//    mvprintw(2,0,"  <f>: finish  <d>: remove  <e>: edit  <a>: add  <space>: show/hide detail");
-//    mvprintw(3,0,"  <Ctrl-C>: exit <j>: scroll down  <k>: scroll up  <up><down> select task");
-/*    
-    move(3,0);
-    int mx=0, my=0;
-    getmaxyx(stdscr, mx, my);
-    hline('=', my);
-*/
     refresh();
     (dynamic_cast<ListDisplayElement*>(escStack[0])) -> resize(row+1);
     for (int i=0;i<=escStackTop;i++){

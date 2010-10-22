@@ -1,9 +1,8 @@
 #include "ImportCommandExecutor.h"
 
-Result* ImportCommandExecutor::executeCommand(Command *command){
+Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList,Command *command){
     if (command->method == IMPORT){
-        delete mainTaskList;
-        mainTaskList = new TaskList();
+        mainTaskList->clearEntries();
 
         ifstream record((command->filename).c_str());
 
@@ -13,7 +12,6 @@ Result* ImportCommandExecutor::executeCommand(Command *command){
         int deadline;
         int priority;
         string description;
-        int cronFreq;
         bool isFinished;
         string group;
         
@@ -26,14 +24,13 @@ Result* ImportCommandExecutor::executeCommand(Command *command){
                 deadline = StringToNum(getNodeContent("deadline", data));
                 priority = StringToNum(getNodeContent("priority", data));
                 description = getNodeContent("description", data);
-                cronFreq = StringToNum(getNodeContent("cronFreq", data));
                 if(StringToNum(getNodeContent("isFinished", data))) isFinished = true;
                 else isFinished = false;
                 group = getNodeContent("group", data);
 
                 data.replace(0, data.find("</task>") + 8, " ");
 
-                Task* task = new Task(deadline, priority, description, cronFreq, isFinished, serialNumber, group);
+                Task* task = new Task(deadline, priority, description, 0, isFinished, serialNumber, group);
                 mainTaskList->addTask(task->getSerialNumber(),task);
             }
 
@@ -43,7 +40,7 @@ Result* ImportCommandExecutor::executeCommand(Command *command){
     }
     return new Result();
 }
-Result* ImportCommandExecutor::executeCommand(Result* result, Command *command){
+Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result,Command *command){
     if (command->method == IMPORT){
         map<int, Task*> tmp = result->getTaskMap();
         for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){mainTaskList->addTask(it->first, it->second);}

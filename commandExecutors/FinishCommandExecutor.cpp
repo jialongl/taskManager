@@ -1,6 +1,6 @@
 #include "FinishCommandExecutor.h"
 
-Result* FinishCommandExecutor::executeCommand(Command *command){
+Result* FinishCommandExecutor::executeCommand(TaskList* mainTaskList,Command *command){
     if (command->method == FINISH) {
         for (vector<int>::iterator it = command->serialNumberList.begin(); it<command->serialNumberList.end(); it++){
             int x=*it;
@@ -13,7 +13,7 @@ Result* FinishCommandExecutor::executeCommand(Command *command){
     }
     return new Result();
 }
-Result* FinishCommandExecutor::executeCommand(Result* result,Command *command){
+Result* FinishCommandExecutor::executeCommand(TaskList* mainTaskList,Result* result,Command *command){
     if (command->method == FINISH){
         map<int, Task*> tmp = mainTaskList->getTaskMap();
         for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){

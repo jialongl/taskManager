@@ -21,16 +21,16 @@ MainCommandExecutor::MainCommandExecutor(){
 		// executors[RUN] = new RunCommandExecutor();
 		// executors[CRON] = new CronCommandExecutor();
 	}
-Result* MainCommandExecutor::executeCommand(Command *command){
+Result* MainCommandExecutor::executeCommand(TaskList* mainTaskList,Command *command){
 	  if ( command->method != NULLCOMMAND)
-	    return executors[command->method]->executeCommand(command);
+	    return executors[command->method]->executeCommand(mainTaskList,command);
 	  else
 	    return new Result();
 	}
 
-Result* MainCommandExecutor::executeCommand(Result* result, Command *command){
+Result* MainCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result,Command *command){
     if ( command->method != NULLCOMMAND)
-	    return executors[command->method]->executeCommand(result, command);
+	    return executors[command->method]->executeCommand(mainTaskList,result, command);
 	  else
 	    return new Result();
 }

@@ -1,6 +1,6 @@
 #include "SelectCommandExecutor.h"
 
-Result* SelectCommandExecutor::executeCommand(Command *command){
+Result* SelectCommandExecutor::executeCommand(TaskList* mainTaskList,Command *command){
     if (command->method == SELECT){
         vector<Filter*> filters;
         if (command->keyword != "") filters.push_back(new KFilter(command->keyword));
@@ -21,7 +21,7 @@ Result* SelectCommandExecutor::executeCommand(Command *command){
     }
     return new Result();
 }
-Result* SelectCommandExecutor::executeCommand(Result* result, Command *command){
+Result* SelectCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result,Command *command){
     if (command->method == SELECT){
         vector<Filter*> filters;
         if (command->keyword != "") filters.push_back(new KFilter(command->keyword));

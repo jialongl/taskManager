@@ -6,7 +6,6 @@
 #include "PriCommandExecutor.h"
 #include "AddCommandExecutor.h"
 #include "LsCommandExecutor.h"
-#include "RunCommandExecutor.h"
 #include "EditCommandExecutor.h"
 #include "ExportCommandExecutor.h"
 #include "ImportCommandExecutor.h"
@@ -22,8 +21,8 @@ private:
 public:
 	~MainCommandExecutor();
 	MainCommandExecutor();
-	Result *executeCommand(Command *command);
-	Result *executeCommand(Result* result, Command *command);
+	Result *executeCommand(TaskList* mainTaskList,Command *command);
+	Result *executeCommand(TaskList* mainTaskList, Result* result,Command *command);
 };
 
 static MainCommandExecutor *mainCommandExecutor;

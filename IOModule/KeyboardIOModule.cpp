@@ -1,4 +1,8 @@
 #include "KeyboardIOModule.h"
+#include "../Parser.h"
+KeyboardIOModule::KeyboardIOModule(Parser* pser){
+    parser = pser;
+}
 CommandList KeyboardIOModule::getCommand(){
     cout<<"> ";
     string str;
@@ -33,4 +37,6 @@ bool KeyboardIOModule::confirm(string prompt){
     }
     else return false;
 }
-
+void KeyboardIOModule::echo(string s){
+    cout<<s<<endl;
+}

@@ -13,6 +13,7 @@
 #include "../../Command.h"
 #include "../../Comparer.h"
 #include "DisplayElement.h"
+#include "DisplayManager.h"
 
 class ListDisplayElement:public DisplayElement{
 private: 
@@ -26,8 +27,10 @@ private:
     vector<int> taskStartAt;
     int lastSelectedSn;
     int lastNavigateToSelect;
+    Parser* parser;
+    DisplayManager* displayManager;
 public:
-    ListDisplayElement(TaskList* taskList);
+    ListDisplayElement(TaskList* taskList,Parser* parser,DisplayManager* dm);
     ~ListDisplayElement();
     void draw();
     void naiveDraw();

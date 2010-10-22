@@ -1,5 +1,5 @@
 #include "RmCommandExecutor.h"
-Result* RmCommandExecutor::executeCommand(Command *command){
+Result* RmCommandExecutor::executeCommand(TaskList* mainTaskList,Command *command){
     if (command->method == RM){
         for (vector<int>::iterator it = command->serialNumberList.begin(); it < command->serialNumberList.end();  it++){
             int x=*it;
@@ -13,7 +13,7 @@ Result* RmCommandExecutor::executeCommand(Command *command){
     }
     return new Result();
 }
-Result* RmCommandExecutor::executeCommand(Result* result, Command* command){
+Result* RmCommandExecutor::executeCommand(TaskList* mainTaskList,Result* result, Command* command){
     if (command->method == RM){
         map<int, Task*> tmp = result->getTaskMap();
         for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){

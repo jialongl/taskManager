@@ -32,9 +32,8 @@ class TaskList{
   TaskList* getTasks(Filter* filter);
   vector<Task*> sort(Comparer* comp);
   TaskList* clone();
+  void clearEntries();
 
 };
-
-static TaskList *mainTaskList;
 
 #endif

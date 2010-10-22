@@ -17,7 +17,8 @@ private:
     bool commandReady;
     CommandList commandList;
 public:
-    PdcIO();
+    Parser* parser;
+    PdcIO(Parser* pser);
     ~PdcIO();
 
     CommandList getCommand() ;

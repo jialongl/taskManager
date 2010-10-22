@@ -8,7 +8,6 @@
 #endif
 #include "../../includes.h"
 #include "DisplayElement.h"
-#include "ListDisplayElement.h"
 #include "../PdcIO.h"
 
 
@@ -22,6 +21,7 @@ class DisplayManager{
     string keyHistory;
     PdcIO* parent;
     string echoHistory;
+    bool initializing;
 
  public:
     DisplayManager(PdcIO* parentIO);

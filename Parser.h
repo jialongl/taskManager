@@ -6,10 +6,6 @@
 #include "includes.h"
 #include "Command.h"
 #include "Result.h"
-#include "IOModule/TM_IOModule.h"
-#include "Shell.h"
-#include "IOModule/PdcIO.h"
-#include "IOModule/KeyboardIOModule.h"
 
 class Parser{
 
@@ -44,7 +40,4 @@ class Parser{
   CommandList inputToCommandList (string input);
   string resultToOutput(Result *result);
 };
-
-static Parser *parser;
-
 #endif

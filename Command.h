@@ -22,6 +22,7 @@ class Command{
   string keyword;
   finishFlag_e finishFlag;
   bool overdue;
+  string originalCommand;
 
   Command();
 };

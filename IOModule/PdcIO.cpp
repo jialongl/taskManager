@@ -1,7 +1,9 @@
 #include "PdcIO.h"
 #include "TUI/DisplayManager.h"
 
-PdcIO::PdcIO(){
+PdcIO::PdcIO(Parser* pser){
+        commandReady = false;
+        parser = pser;
         initscr();
         raw();
         keypad(stdscr, TRUE);
@@ -17,14 +19,8 @@ PdcIO::~PdcIO(){
 
 CommandList PdcIO::getCommand(){
     displayManager->redraw();
-    commandReady = false;
     int ch;
     int mx=0, my=0;
-    /*
-      getmaxyx(stdscr, mx, my);
-      move(mx - 1,0);
-      printw("> ");
-    */
     while (!commandReady){
         ch = getch();
         if (ch == 3)  setCommand(parser->inputToCommandList("exit"));
@@ -32,18 +28,15 @@ CommandList PdcIO::getCommand(){
         else displayManager -> handleKey(ch);
     }
 
+    commandReady = false;
     return commandList;
 }
 
 void PdcIO::showOutput(Result* result){
-  //  printw((parser->resultToOutput(result)).c_str());
   displayManager -> handleResult(result);
-//    IOModule->echo("show output!");
 }
 
 void PdcIO::showWelcomeMessage(){
-//     printw("TaskManager V0.2  TUI with Pdcurses\n");
-//     refresh();
 }
     
 void PdcIO::handleException(exception_e except){
@@ -57,15 +50,6 @@ void PdcIO::handleException(exception_e except){
 }
 
 bool PdcIO::confirm(string prompt){
-  /*
-    cout<<prompt;
-    string keyIn;
-    cin>>keyIn;
-    if (keyIn == "Yes" || keyIn == "YES" || keyIn == "Y" || keyIn == "y"){
-    return true;
-    }
-    else return false;
-  */
   return true;
 }
 

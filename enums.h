@@ -15,7 +15,9 @@ enum commandMethod {
 	IMPORT,
 	SORT,
 	RUN,
-	NULLCOMMAND
+	NULLCOMMAND,
+    TUI,
+    NOTUI,
 };
 
 enum sortKeyword_e{

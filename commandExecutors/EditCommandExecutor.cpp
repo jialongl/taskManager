@@ -1,6 +1,6 @@
 #include "CommandExecutor.h"
 
-Result* CommandExecutor::executeCommand(Command *command){
+Result* CommandExecutor::executeCommand(TaskList* mainTaskList,Command *command){
     if (command->method == EDIT){
         int taskNum = (command->serialNumberList)[0];
         if (command->taskDescription != "") mainTaskList->editTaskDescription(taskNum,command->taskDescription);
