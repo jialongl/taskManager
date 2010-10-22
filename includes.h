@@ -27,7 +27,7 @@ using namespace std;
 
 #endif
 
-#include "enums.cpp"
+#include "enums.h"
 #include "util.h"
 
 
