@@ -1,4 +1,6 @@
 /* Author: He Haocong */
+#ifndef enumH
+#define enumH
 enum commandMethod {
 	ADD,
 	EDIT,
@@ -52,3 +54,4 @@ enum displayElementType{
     CMD_DE,
     CONFIRM_DE
 };
+#endif

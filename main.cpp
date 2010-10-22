@@ -1,6 +1,6 @@
 /* Author: He Haocong */
 #include "includes.h"
-#include "cleanUp.cpp"
+#include "cleanUp.h"
 #include "init.h"
 
 int main(int argc, char* argv[]){
