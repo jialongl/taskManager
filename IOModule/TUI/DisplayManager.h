@@ -1,5 +1,17 @@
 #ifndef DisplayManagerH
 #define DisplayManagerH
+
+#ifdef WIN32
+    #include "../../curses.h"
+#else 
+    #include <ncurses.h>
+#endif
+#include "../../includes.h"
+#include "DisplayElement.h"
+#include "ListDisplayElement.h"
+#include "../PdcIO.h"
+
+
 #define StackSize 10
 #define KEY_ESC 27
 class DisplayManager{

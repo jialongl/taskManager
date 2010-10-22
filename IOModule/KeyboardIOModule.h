@@ -1,5 +1,10 @@
-#ifndef _KeyboardIOModule
-#define _KeyboardIOModule
+#ifndef KeyboardIOModuleH
+#define KeyboardIOModuleH
+
+#include "../include.h"
+#include "../Command.h"
+#include "../Result.h"
+#include "../Parser.h"
 
 class KeyboardIOModule: public TM_IOModule{
 

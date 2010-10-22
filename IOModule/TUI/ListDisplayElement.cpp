@@ -1,3 +1,4 @@
+#include "DisplayManager.h"
 ListDisplayElement::ListDisplayElement(TaskList* taskList){
     detailList.clear();
     lastSelectedSn = 0;

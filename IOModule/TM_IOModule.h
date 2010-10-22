@@ -1,5 +1,9 @@
-#ifndef _TM_IOModule
-#define _TM_IOModule
+#ifndef TM_IOModuleH
+#define TM_IOModuleH
+
+#include "../includes.h"
+#include "../Command.h"
+#include "../Result.h"
 
 class TM_IOModule{
 public:

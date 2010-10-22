@@ -1,5 +1,14 @@
-#ifndef _PdcIO
-#define _PdcIO
+#ifndef PdcIOH
+#define PdcIOH
+
+#include "../includes.h"
+#ifdef WIN32
+    #include "../curses.h"
+#else
+    #include <ncurses.h>
+#endif
+#include "../Command.h"
+#include "TUI/DisplayManager.h"
 
 class PdcIO : public TM_IOModule{
 private:

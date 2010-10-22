@@ -1,5 +1,19 @@
 #ifndef ListDisplayElementH
 #define ListDisplayElementH
+
+#include "../../includes.h"
+#include "../../TaskList.h"
+#ifdef WIN32
+    #include "../../curses.h"
+#else 
+    #include <ncurses.h>
+#endif
+#include "../../Result.h"
+#include "../../Parser.h"
+#include "../../Command.h"
+#include "../../Comparer.h"
+#include "DisplayElement.h"
+
 class ListDisplayElement:public DisplayElement{
 private: 
     TaskList *list,*originalList;

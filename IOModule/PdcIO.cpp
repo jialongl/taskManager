@@ -1,3 +1,4 @@
+#include "PdcIO.h"
 
 PdcIO::PdcIO(){
         initscr();

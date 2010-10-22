@@ -1,5 +1,9 @@
 #ifndef DisplayElementH
 #define DisplayElementH
+
+#include "../../includes.h" 
+#include "../../Result.h"
+
 class DisplayElement{
 protected:
     DisplayElement* parent;
