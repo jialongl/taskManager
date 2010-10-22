@@ -1,70 +1,35 @@
-/* Author: He Haocong */
+/* Author: Liu Jialong */
+
+#ifndef TaskH
+#define TaskH
+
+#include"includes.h"
+
 class Task{
-private:
-	time_t deadline;
-	int priority;
-	string description;
-	int cronFreq;
-	bool isFinished;
-	int serialNumber;
-	string group;
+ private:
+  time_t deadline;
+  int priority;
+  string description;
+  int cronFreq;
+  bool isFinished;
+  int serialNumber;
+  string group;
 
-public:
-	Task(time_t deadline, int priority, string description, int cronFreq, bool isFinished, int serialNumber, string group){
-		setDeadline(deadline);
-		setPriority(priority);
-		setDescription(description);
-		setCronFreq(cronFreq);
-		setIsFinished(isFinished);
-		setSerialNumber(serialNumber);
-		setGroup(group);
-	}
-
-	void setPriority(int x){
-		priority = x;
-	}
-	void setDescription(string s){
-		description = s;
-	}	
-	void setDeadline(time_t t){
-		deadline = t;
-	}
-	void setGroup(string s){
-		group = s;
-	}
-	void setCronFreq(int x){
-		cronFreq = x;
-	}
-	void setSerialNumber(int x){
-		serialNumber = x;
-	}
-	void setIsFinished(bool f){
-		isFinished = f;
-	}
-	
-	time_t getDeadline(){
-		return deadline;
-	}
-	int getPriority(){
-		return priority;
-	}
-	string getDescription(){
-		return string(description);
-	}
-	int getCronFreq(){
-		return cronFreq;
-	}
-	bool getIsFinished(){
-		return isFinished;
-	}
-	int getSerialNumber(){
-		return serialNumber;
-	}
-	string getGroup(){
-		return string(group);
-	}
-
-	bool matchKeyword(string keyword){
-		return tryMatch(description, keyword);	
-	}	
+ public:
+  Task(time_t deadline, int priority, string description, int cronFreq, bool isFinished, int serialNumber, string group);
+  void setPriority(int x);
+  void setDeadline(time_t t);
+  void setDescription(string s);
+  void setGroup(string s);
+  void setSerialNumber(int x);
+  void setIsFinished(bool f);
+  time_t getDeadline();
+  int getPriority();
+  string getDescription();
+  bool getIsFinished();
+  int getSerialNumber();
+  string getGroup();
+  bool matchKeyword(string keyword);
 };
+
+#endif
