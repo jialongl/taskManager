@@ -21,9 +21,11 @@ using namespace std;
 
 #ifndef WIN32
   #include <ncurses.h>
+  #define HOME "%USERPROFILE%"
 
 #else
   #include "curses.h"
+  #define HOME "~"
 
 #endif
 

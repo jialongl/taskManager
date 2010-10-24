@@ -5,6 +5,7 @@ PdcIO::PdcIO(Parser* pser){
         commandReady = false;
         parser = pser;
         initscr();
+	refresh();
         raw();
         keypad(stdscr, TRUE);
         noecho();
