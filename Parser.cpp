@@ -266,8 +266,10 @@ void Parser::export_parse() {
   if (args.size() == 2 && args[1] != "-html" )
     cmd->filename = args[1];
  
-  else if (args.size() == 3 && args[1] == "-html")
+  else if (args.size() == 3 && args[1] == "-html") {
     cmd->filename = args[2];
+    cmd->html = 1;
+  }
 }
 
 void Parser::import_parse() {
