@@ -1,10 +1,10 @@
 /* Author: Zhou Biyan */
-#ifndef ImportCommandExecutorH
-#define ImportCommandExecutorH
+#ifndef ReadCommandExecutorH
+#define ReadCommandExecutorH
 
 #include "CommandExecutor.h"
 
-class ImportCommandExecutor:public CommandExecutor{
+class ReadCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(TaskList* mainTaskList, Command *command);
 	Result *executeCommand(TaskList* mainTaskList, Result* result, Command *command);

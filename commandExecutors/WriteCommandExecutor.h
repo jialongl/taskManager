@@ -1,12 +1,11 @@
-/* Author: Wang Xiangyu */
+/* Author: Zhou Biyan */
 #include <fstream>
-
-#ifndef ExportCommandExecutorH
-#define ExportCommandExecutorH
+#ifndef WriteCommandExecutorH
+#define WriteCommandExecutorH
 
 #include "CommandExecutor.h"
 
-class ExportCommandExecutor: public CommandExecutor{
+class WriteCommandExecutor: public CommandExecutor{
 public:
 	Result *executeCommand (TaskList* mainTaskList, Command* command);
 	Result *executeCommand(TaskList* mainTaskList, Result* result, Command *command);

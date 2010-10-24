@@ -1,7 +1,7 @@
 /* Author: Zhou Biyan */
 
-#include "ImportCommandExecutor.h"
-string ImportCommandExecutor::restoreString (string s){
+#include "ReadCommandExecutor.h"
+string ReadCommandExecutor::restoreString (string s){
 	int i = 0;
 	while (i + 3 < s.size()){
 		if(s.substr(i, 4) == "&lt;"){
@@ -21,7 +21,7 @@ string ImportCommandExecutor::restoreString (string s){
 	return s;
 }
 
-string ImportCommandExecutor::getNodeContent(string node, string text){
+string ReadCommandExecutor::getNodeContent(string node, string text){
 	string content;
 	int start, end;
 	
@@ -32,17 +32,12 @@ string ImportCommandExecutor::getNodeContent(string node, string text){
 	end = text.find("</" + node + ">");
 	content = restoreString(text.substr(start, end - start));
 
-//		cout<<node<<"!"<<content<<"!"<<endl;
 	return content;
 }
 
-Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Command *command){
-	if (command->method == IMPORT){
-//		delete mainTaskList;
-//		mainTaskList = new TaskList();
-
-//		map<int, Task*> tmp = storeMainTaskList->getTaskMap();
-//		for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){mainTaskList->addTask(it->first, it->second);}
+Result* ReadCommandExecutor::executeCommand(TaskList* mainTaskList, Command *command){
+	if (command->method == READ){
+		TaskList * readTaskList = new TaskList();
 
 		ifstream record((command->filename).c_str());
 
@@ -61,7 +56,7 @@ Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Command *c
 			while(getline(record, line)){data = data + line;}
 
 			while(data.find("<task>") != string::npos){
-				serialNumber = mainTaskList->getSerial()+1;
+				serialNumber = StringToNum(getNodeContent("serialNumber", data));
 				deadline = StringToNum(getNodeContent("deadline", data));
 				priority = StringToNum(getNodeContent("priority", data));
 				description = getNodeContent("description", data);
@@ -73,25 +68,25 @@ Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Command *c
 				data.replace(0, data.find("</task>") + 8, " ");
 
 				Task* task = new Task(deadline, priority, description, 0, isFinished, serialNumber, group);
-				mainTaskList->addTask(serialNumber,task);
+				readTaskList->addTask(serialNumber,task);
 			}
 
 		}/*else{
 			throw EXCEPTION_FILE_OPEN_FAILED;
 		}*/
-		return new Result(mainTaskList,true);
+		return new Result(readTaskList,true);
 	}
 	return new Result();
 }
 
-Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result, Command *command){
-	if (command->method == IMPORT){
+Result* ReadCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result, Command *command){
+	if (command->method == READ){
+		TaskList * readTaskList = new TaskList();
+
 		map<int, Task*> tmp = result->getTaskMap();
-		for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
-			it->second->setSerialNumber(mainTaskList->getSerial()+1);
-			mainTaskList->addTask(it->second->getSerialNumber(), it->second);
-		}
-		return new Result(mainTaskList,true);
+		for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){readTaskList->addTask(it->first, it->second);}
+
+		return new Result(readTaskList,true);
 	}
 	return new Result();
 }
