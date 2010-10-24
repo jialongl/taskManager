@@ -2,7 +2,7 @@
 # Author: He Haocong
 
 CC=g++
-OBJECTS=main.o Task.o Comparer.o Command.o filters/GFilter.o filters/KFilter.o filters/FFilter.o filters/OFilter.o filters/NFilter.o TaskList.o Result.o Parser.o commandExecutors/AddCommandExecutor.o commandExecutors/EditCommandExecutor.o commandExecutors/RmCommandExecutor.o commandExecutors/LsCommandExecutor.o commandExecutors/TaskCommandExecutor.o commandExecutors/PriCommandExecutor.o commandExecutors/FinishCommandExecutor.o commandExecutors/ExportCommandExecutor.o commandExecutors/ImportCommandExecutor.o commandExecutors/MainCommandExecutor.o Shell.o IOModule/KeyboardIOModule.o IOModule/PdcIO.o IOModule/TUI/DisplayManager.o IOModule/TUI/ListDisplayElement.o IOModule/TUI/DisplayElement.o
+OBJECTS=main.o Task.o Comparer.o Command.o filters/GFilter.o filters/KFilter.o filters/FFilter.o filters/OFilter.o filters/NFilter.o TaskList.o Result.o Parser.o commandExecutors/AddCommandExecutor.o commandExecutors/EditCommandExecutor.o commandExecutors/RmCommandExecutor.o commandExecutors/LsCommandExecutor.o commandExecutors/TaskCommandExecutor.o commandExecutors/PriCommandExecutor.o commandExecutors/FinishCommandExecutor.o commandExecutors/ExportCommandExecutor.o commandExecutors/ReadCommandExecutor.o commandExecutors/ImportCommandExecutor.o commandExecutors/WriteCommandExecutor.o commandExecutors/MainCommandExecutor.o Shell.o IOModule/KeyboardIOModule.o IOModule/PdcIO.o IOModule/TUI/DisplayManager.o IOModule/TUI/ListDisplayElement.o IOModule/TUI/DisplayElement.o
 
 FLAGS=-g -Wall -lcurses
 

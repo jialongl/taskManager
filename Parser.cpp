@@ -272,8 +272,24 @@ void Parser::export_parse() {
   }
 }
 
+void Parser::write_parse() {
+  cmd->method = WRITE;
+  if (args.size() == 2 && args[1] != "-html" )
+    cmd->filename = args[1];
+
+  else if (args.size() == 3 && args[1] == "-html") {
+    cmd->filename = args[2];
+    cmd->html = 1;
+  }
+}
+
 void Parser::import_parse() {
   cmd->method = IMPORT;
+  if (args.size()!=1) cmd->filename = args[1];
+}
+
+void Parser::read_parse() {
+  cmd->method = READ;
   if (args.size()!=1) cmd->filename = args[1];
 }
 
@@ -388,6 +404,12 @@ Command* Parser::inputToCommand (string input) {
 
   else if (args[0] == "map")
     map_parse();
+  
+  else if (args[0] == "read")
+    read_parse();
+  
+  else if (args[0] == "write")
+    write_parse();
 
   else {
     throw EXCEPTION_NO_SUCH_COMMAND;

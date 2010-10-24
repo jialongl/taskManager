@@ -33,7 +33,9 @@ class Parser{
   void pri_parse();
   void finish_parse();
   void export_parse();
+  void write_parse();
   void import_parse();
+  void read_parse();
   void task_parse();
   void map_parse();
   Command *inputToCommand (string input);

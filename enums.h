@@ -16,8 +16,10 @@ enum commandMethod {
 	SORT,
 	RUN,
 	NULLCOMMAND,
-    TUI,
-    NOTUI,
+	WRITE,
+	READ,
+	TUI,
+	NOTUI,
 };
 
 enum sortKeyword_e{

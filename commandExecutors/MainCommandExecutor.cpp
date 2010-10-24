@@ -15,6 +15,8 @@ MainCommandExecutor::MainCommandExecutor(){
 		executors[LS] = new LsCommandExecutor();// deprecated
 		executors[TASK] = new TaskCommandExecutor();
 		executors[RM] = new RmCommandExecutor();
+		executors[READ] = new ReadCommandExecutor();
+		executors[WRITE] = new WriteCommandExecutor();
 
 		// executors[SELECT] = new SelectCommandExecutor();
 		// executors[SORT] = new SortCommandExecutor();
