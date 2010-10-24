@@ -48,6 +48,10 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
             return new Result();
             break;
         case RUN: //run a TM script
+
+	    if(command->filename == "")
+	      command->filename = RECORDFILE;
+
             script.open((command->filename).c_str());
             if (script.is_open()){
                 string line;

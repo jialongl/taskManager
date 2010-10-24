@@ -33,14 +33,17 @@ Result* ExportCommandExecutor::executeCommand (TaskList* mainTaskList, Command* 
 		map<int, Task*> tasks = mainTaskList->getTaskMap();
 		
 		ofstream writeFile;
-		if (command->filename == "")
-			writeFile.open("record.xml");
-		else{
-			filename = command->filename;
-			//writeFile.open((command->filename).c_str());
-			writeFile.open(filename.c_str());
-		}
-		
+		if(command->filename == "")
+		  command->filename = RECORDFILE;
+
+
+		filename = command->filename;
+		//writeFile.open((command->filename).c_str());
+		writeFile.open(filename.c_str());
+
+		if (writeFile.is_open())
+		  cout << "writeFile opened." << endl;
+
 		if(command->html){
 			//file head
 			writeFile<<"<html>"<<endl;
@@ -113,12 +116,11 @@ Result* ExportCommandExecutor::executeCommand(TaskList* mainTaskList, Result* re
 		
 		ofstream writeFile;
 		if(command->filename == "")
-			writeFile.open("record.xml");
-		else{
-			filename = command->filename;
-			//writeFile.open((command->filename).c_str());
-			writeFile.open(filename.c_str());
-		}
+		  command->filename = RECORDFILE;
+
+		filename = command->filename;
+		//writeFile.open((command->filename).c_str());
+		writeFile.open(filename.c_str());
 
 		if(command->html){
 			//file head

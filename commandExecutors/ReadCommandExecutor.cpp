@@ -39,6 +39,9 @@ Result* ReadCommandExecutor::executeCommand(TaskList* mainTaskList, Command *com
 	if (command->method == READ){
 		TaskList * readTaskList = new TaskList();
 
+		if (command->filename == "")
+		  command->filename = RECORDFILE;
+
 		ifstream record((command->filename).c_str());
 
 		string line;

@@ -29,7 +29,7 @@ Command::Command(){
   serialNumberList.clear();
   sortKeyword.clear();
   taskDescription = "";
-  filename = "record.xml";
+  filename = "";
   deadline = currentTime();
   method = NULLCOMMAND;
 }

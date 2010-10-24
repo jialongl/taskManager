@@ -4,6 +4,11 @@
 #ifndef utilH
 #define utilH
 
+static string getRecordDirectory(){
+  passwd *pwd = getpwuid( getuid() );
+  return string(pwd->pw_dir) + "/record.xml";
+}
+
 static time_t currentTime(){
         time_t curTime;
         time(&curTime);

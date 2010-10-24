@@ -44,7 +44,10 @@ Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Command *c
 //		map<int, Task*> tmp = storeMainTaskList->getTaskMap();
 //		for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){mainTaskList->addTask(it->first, it->second);}
 
-		ifstream record((command->filename).c_str());
+		if (command->filename == "")
+		  command->filename = RECORDFILE;
+
+		  ifstream record((command->filename).c_str());
 
 		string line;
 		string data;

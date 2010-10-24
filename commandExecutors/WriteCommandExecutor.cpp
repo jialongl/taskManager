@@ -36,12 +36,11 @@ Result* WriteCommandExecutor::executeCommand (TaskList* mainTaskList, Command* c
 		
 		ofstream writeFile;
 		if (command->filename == "")
-			writeFile.open("record.xml");
-		else{
-			filename = command->filename;
-			//writeFile.open((command->filename).c_str());
-			writeFile.open(filename.c_str());
-		}
+		  command->filename = RECORDFILE;
+
+		filename = command->filename;
+		//writeFile.open((command->filename).c_str());
+		writeFile.open(filename.c_str());
 
 		if(command->html){
 			//file head
@@ -118,12 +117,11 @@ Result* WriteCommandExecutor::executeCommand(TaskList* mainTaskList, Result* res
 		
 		ofstream writeFile;
 		if (command->filename == "")
-			writeFile.open("record.xml");
-		else{
-			filename = command->filename;
-			//writeFile.open((command->filename).c_str());
-			writeFile.open(filename.c_str());
-		}
+		  command->filename = RECORDFILE;
+
+		filename = command->filename;
+		//writeFile.open((command->filename).c_str());
+		writeFile.open(filename.c_str());
 
 		if(command->html){
 			//file head
