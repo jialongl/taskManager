@@ -41,8 +41,7 @@ Result* ExportCommandExecutor::executeCommand (TaskList* mainTaskList, Command* 
 		//writeFile.open((command->filename).c_str());
 		writeFile.open(filename.c_str());
 
-		if (writeFile.is_open())
-		  cout << "writeFile opened." << endl;
+		//cout << command->filename << endl;
 
 		if(command->html){
 			//file head

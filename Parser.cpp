@@ -300,6 +300,9 @@ void Parser::task_parse() {
     cmd->serialNumberList.push_back(StringToNum(args.at(1)));
 }
 
+void Parser::run_parse() {
+	cmd->method = RUN;
+}
 string Parser::matchAlias (string alias) {
 
   for ( iter2  = commandAliases.begin();
@@ -410,6 +413,9 @@ Command* Parser::inputToCommand (string input) {
   
   else if (args[0] == "write")
     write_parse();
+
+  else if (args[0] == "run")
+	  run_parse();
 
   else {
     throw EXCEPTION_NO_SUCH_COMMAND;

@@ -8,12 +8,17 @@ Shell::Shell(){
     parser = new Parser();
     IOModule = new KeyboardIOModule(parser);
     toChangeIOModule = false;
+	IOModule->showWelcomeMessage();
     //load saved record.
-    Command* cmd = new Command();
-    cmd->method = IMPORT;
-
+    
     try{
+		Command* cmd = new Command();
+		cmd->method = IMPORT;
         executeOneCommand(NULL,cmd);
+		delete cmd;
+		cmd = new Command();
+		cmd->method = RUN;
+		executeOneCommand(NULL,cmd);
     } catch (exception_e except){
         IOModule->handleException(except);
     }
@@ -26,7 +31,6 @@ Shell::~Shell(){
 }
 
 void Shell::start(){
-    IOModule->showWelcomeMessage();
     mainLoop();
 }
 
@@ -50,7 +54,7 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
         case RUN: //run a TM script
 
 	    if(command->filename == "")
-	      command->filename = RECORDFILE;
+	      command->filename = RCFILE;
 
             script.open((command->filename).c_str());
             if (script.is_open()){

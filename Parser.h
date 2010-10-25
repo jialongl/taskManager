@@ -38,6 +38,7 @@ class Parser{
   void read_parse();
   void task_parse();
   void map_parse();
+  void run_parse();
   Command *inputToCommand (string input);
   CommandList inputToCommandList (string input);
   string resultToOutput(Result *result);

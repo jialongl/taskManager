@@ -4,19 +4,16 @@
 #ifndef utilH
 #define utilH
 
-static string getRecordDirectory(){
-  passwd *pwd = getpwuid( getuid() );
-  return string(pwd->pw_dir) + "/record.xml";
-}
-
 static time_t currentTime(){
         time_t curTime;
         time(&curTime);
         return curTime; // + TIMEZONE * 3600;
 }
 
-static int min(int x,int y){ return x<y?x:y;}
-static int max(int x,int y){ return x>y?x:y;}
+static int min(int x,int y)
+{ return x<y?x:y;}
+static int max(int x,int y)
+{ return x>y?x:y;}
 
 static string formatTime(int x){
 	time_t  t = x;

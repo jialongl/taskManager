@@ -10,7 +10,7 @@
 class CommandExecutor{
 public:
 	virtual Result* executeCommand(TaskList* mainTaskList,Command *command) =0;
-	virtual Result* executeCommand(TaskList* mainTaskList, Result* result,Command *command){};
+	virtual Result* executeCommand(TaskList* mainTaskList, Result* result,Command *command){return new Result();};
 	virtual ~CommandExecutor(){};
 };
 #endif

@@ -12,11 +12,11 @@ public:
     TM_IOModule(){};
     virtual ~TM_IOModule(){};
 
-    virtual CommandList getCommand() {};
+    virtual CommandList getCommand() {return vector<Command *>(); };
     virtual void showOutput(Result* result) {};
     virtual void showWelcomeMessage() {};
     virtual void handleException(exception_e except) {};
-    virtual bool confirm(string prompt){};
+    virtual bool confirm(string prompt){ return true;};
     virtual void echo(string s){};
 };
 
