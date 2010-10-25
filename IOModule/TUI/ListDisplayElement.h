@@ -51,5 +51,8 @@ public:
     void search();
     void restoreLastView();
     void resize(int row0);
+    time_t datePicker(time_t curTime, int startRow, int startCol);
+    void drawCalendar(time_t theTime, int startRow, int startCol);
 };
+
 #endif

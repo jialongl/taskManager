@@ -141,10 +141,13 @@ void Parser::edit_parse() {
   for(iter = args.begin(); iter < args.end(); iter++ ) {
     if ( *iter == "-t" ) {
       string temp = *(++iter);
-      long seconds = 0;
+      if (isNumber(temp)) cmd->deadline = StringToNum(temp);
+      else {
+          long seconds = 0;
 
-      parse_date(temp, &seconds);
-      cmd->deadline = currentTime() + seconds;
+          parse_date(temp, &seconds);
+          cmd->deadline = currentTime() + seconds;
+      }
     }
 
     else if ( *iter == "-p" ) {

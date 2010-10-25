@@ -393,13 +393,22 @@ vector<string> ListDisplayElement::editSelect(){
     int mx=0, my=0;
     getmaxyx(listWindow, mx, my);
     string newGrp = editArea(listWindow,taskStartAt[selectTask] - navigateRow,taskStartAt[selectTask] - navigateRow,13,max(23,13+(tasks[selectTask]->getGroup()).size()),tasks[selectTask]->getGroup());
-    string newTime = editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
+    int theRow = taskStartAt[selectTask]- navigateRow + listWindow->_begy;
+    if (theRow + 12 >= mx+listWindow->_begy) theRow= mx+listWindow->_begy-13;
+    int newTime = datePicker(tasks[selectTask]->getDeadline(),theRow,45);//editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
+    naiveDraw();
+    move(taskStartAt[selectTask]+1- navigateRow + listWindow->_begy+1,48);
+    printw(((formatTime(newTime)).substr(0,24)).c_str());
+    move(taskStartAt[selectTask] - navigateRow +listWindow->_begy+1,14);
+    attron(A_BOLD);
+    printw("%s----",newGrp.c_str());
+    attroff(A_BOLD);
     string newPri = editArea(listWindow,taskStartAt[selectTask]+2- navigateRow,taskStartAt[selectTask]+2- navigateRow,25,27,NumberToString(tasks[selectTask]->getPriority()));
     string newDetail = editArea(listWindow,taskStartAt[selectTask]+4- navigateRow,taskStartAt[selectTask+1] -2- navigateRow,15,my-13,tasks[selectTask]->getDescription());
     //displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
     vector<string> ans;
     ans.push_back(newGrp);
-    ans.push_back(newTime);
+    ans.push_back(NumberToString(newTime));
     ans.push_back(newPri);
     ans.push_back(newDetail);
     return ans;
@@ -488,4 +497,108 @@ void ListDisplayElement::resize(int row0){
     int startx = row0;
     int starty = 0;
     listWindow = create_newwin(height, width, startx, starty);  
+}
+
+void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol){
+    string months[]  = {
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    };
+    time_t curTime = theTime;
+    struct tm* curDate = localtime(&curTime);
+    int curMon = curDate->tm_mon;
+    int curDay = curDate->tm_mday;
+    int curYear = curDate->tm_year + 1900;
+    time_t startTime = curTime;
+    struct tm* datetime = localtime(&startTime);
+    while (datetime->tm_wday!=0 || (datetime->tm_mon == curMon && datetime->tm_mday > 1)){
+        startTime -= 24*60*60;
+        datetime = localtime(&startTime);
+    }
+//    int startCol = 0;
+ //   int startRow = 0;
+    int curCol = startCol;
+    int curRow = startRow+1;
+    move(curRow,startCol);
+    printw("%34s"," ");
+    curRow++;
+    move(curRow,startCol);
+    attron(A_REVERSE);
+    printw("%15s %4d                ",months[curMon].c_str(),curYear);
+    attroff(A_REVERSE);
+    curRow++;
+    move(curRow,startCol);
+    attron(A_UNDERLINE); 
+    printw("  Week  | Su Mo Tu We Th Fr Sa    ");
+    attroff(A_UNDERLINE);
+    curRow++;
+    for (int i=0;i<6;i++){
+        datetime = localtime(&startTime);
+        int numOfWeek = (datetime->tm_yday)/7 + 1;
+        move(curRow,startCol);
+        printw("  %4d  |",numOfWeek);
+        curCol += 9;
+        for (int j=0;j<7;j++){
+            move(curRow,curCol);
+            datetime = localtime(&startTime);
+            if (datetime->tm_mon == curMon) attron(A_BOLD);
+            if (datetime->tm_mday == curDay && datetime->tm_mon == curMon) attron(A_REVERSE);
+            printw("%3d",datetime->tm_mday);
+            if (datetime->tm_mday == curDay && datetime->tm_mon == curMon) attroff(A_REVERSE);
+            if (datetime->tm_mon == curMon) attroff(A_BOLD);
+            startTime += 24*60*60;
+            curCol+=3;
+        }
+        move(curRow,curCol);
+        printw("    ");
+        curRow+=1;
+        curCol=startCol;
+    }
+    move(curRow,startCol);
+    printw("%34s"," ");
+    curRow++;
+    refresh();
+}
+
+time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol){
+
+//    time_t curTime = currentTime();
+    drawCalendar(curTime,startRow,startCol);
+    bool flag = false;
+
+    while (!flag){
+        int ch = getch();
+        switch (ch){
+            case 10:
+            case 13:
+                flag = true;
+                break;
+            case KEY_LEFT:
+                curTime -= 24*60*60;
+                break;
+            case KEY_RIGHT:
+                curTime += 24*60*60;
+                break;
+            case KEY_UP:
+                curTime -= 7 * 24*60*60;
+                break;
+            case KEY_DOWN:
+                curTime += 7 * 24*60*60;
+                break;
+            default:
+                break;
+        }
+        drawCalendar(curTime,startRow,startCol);
+    }
+    return curTime;    
 }

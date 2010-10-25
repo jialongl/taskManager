@@ -10,6 +10,12 @@ static time_t currentTime(){
         return curTime; // + TIMEZONE * 3600;
 }
 
+static bool isNumber(string s){
+    for (int i=0;i<s.length();i++)
+        if (s[i]<48 || s[i]>57) return false;
+    return true;
+}
+
 static int min(int x,int y)
 { return x<y?x:y;}
 static int max(int x,int y)
