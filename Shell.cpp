@@ -51,6 +51,13 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
             changeIOModule(newIO);
             return new Result();
             break;
+        case RM: //remove a task, ask for confirmation
+
+            if (IOModule->confirm("Do you really want to remove this task permanently? "))
+                return (result == NULL)?mainCommandExecutor->executeCommand(mainTaskList,command):mainCommandExecutor->executeCommand(mainTaskList,result,command);
+            else return new Result();
+
+            break;
         case RUN: //run a TM script
 
 	    if(command->filename == "")
@@ -66,10 +73,17 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
                         Result *result;
 
                         commandList = parser->inputToCommandList(line);
-                        result = executeCommandList(commandList);
+                        if (commandList.size()!=0) result = executeCommandList(commandList);
+                        else result = new Result();
 
                         if (!(result->isNull))
-                        IOModule->showOutput(result); 
+                            IOModule->showOutput(result); 
+          
+                        if (toChangeIOModule){
+                             delete IOModule;
+                             IOModule = newIOModule;
+                             toChangeIOModule = false;
+                        }
                     
                         command = new Command();
                         command->method = EXPORT;

@@ -51,7 +51,74 @@ void PdcIO::handleException(exception_e except){
 }
 
 bool PdcIO::confirm(string prompt){
-  return true;
+    vector<string> lines;
+    while (prompt.length()>0){
+        int x=0,y=0;
+        while (x<30){
+            if (prompt[x] == ' ') y=x;
+            x++;
+        }
+        lines.push_back(prompt.substr(0,y));
+        prompt.erase(0,y);
+    }
+    int mx,my;
+    getmaxyx(stdscr,mx,my);
+    int height = lines.size() + 3;
+    int width = 34;
+    int startRow = (mx-height)/2;
+    int startCol = (my-width)/2;
+    for (int i=0;i<height;i++){
+        move(startRow+i,startCol-1);
+        if (i==0) printw(" +--------------------------------+ ");
+        else if (i==height-1) printw(" +--------------------------------+ ");
+        else printw(" |%32s| "," ");
+    }
+    attron(A_BOLD);
+    for (int i=0;i<lines.size();i++){
+        move(startRow+i+1,startCol+2);
+        printw("%s",(lines[i]).c_str());
+    }
+    attroff(A_BOLD);
+    int colYes = 12;
+    int colNo = 19; 
+    bool flag = false;
+    move(startRow+lines.size()+1,startCol+colYes);
+    if (flag) attron(A_REVERSE);
+    printw("Yes");
+    if (flag) attroff(A_REVERSE);
+    move(startRow+lines.size()+1,startCol+colNo);
+    if (!flag) attron(A_REVERSE);
+    printw("No ");
+    if (!flag) attroff(A_REVERSE);
+
+    bool finished = false;
+    while (!finished){
+        int ch=getch();
+        switch (ch){
+            case 10:
+            case 13:
+                finished = true;
+                break;
+            case KEY_LEFT:
+                flag = true;
+                break;
+            case KEY_RIGHT:
+                flag = false;
+                break;
+            default:
+                break;
+        }
+        move(startRow+lines.size()+1,startCol+colYes);
+        if (flag) attron(A_REVERSE);
+        printw("Yes");
+        if (flag) attroff(A_REVERSE);
+        move(startRow+lines.size()+1,startCol+colNo);
+        if (!flag) attron(A_REVERSE);
+        printw("No ");
+        if (!flag) attroff(A_REVERSE);
+    } 
+    move(0,my);
+    return flag;
 }
 
 void PdcIO::setCommand(CommandList cl){

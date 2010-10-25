@@ -31,12 +31,12 @@ void KeyboardIOModule::handleException(exception_e except){
 bool KeyboardIOModule::confirm(string prompt){
     cout<<prompt;
     string keyIn;
-    cin>>keyIn;
-    if (keyIn == "Yes" || keyIn == "YES" || keyIn == "Y" || keyIn == "y"){
+    getline(cin,keyIn);
+    if (keyIn == "Yes" || keyIn == "YES" || keyIn == "Y" || keyIn == "y" || keyIn == "yes"){
         return true;
     }
     else return false;
 }
 void KeyboardIOModule::echo(string s){
-    cout<<s<<endl;
+//    cout<<s<<endl;
 }

@@ -44,8 +44,55 @@ void DisplayManager::handleKey(int ch){
         if (flag) escStack[escStackTop] -> handleConfirm( false );
     }else if(ch == -1){
         redraw();
+    }else if(ch == 263){
+       showHelp(); 
+    }else escStack[escStackTop] -> handleKey(ch);
+}
+
+void DisplayManager::showHelp(){
+
+    int numOfButtons = 13;
+    string buttons[] = {"Ctrl-C","f","d","e","a","SPACE","j","k","up","down","Q","s","ESC"};
+    string funcs[] = {
+        "Quit task manager",
+        "Mark selected task as finished",
+        "Remove selected task",
+        "Edit selected task",
+        "Add a new task",
+        "Show/Hide detail of selected Task",
+        "Scroll down",
+        "Scroll up",
+        "Select previous task",
+        "Select next task",
+        "Switch off TUI and go back to command line mode",
+        "Incremental search",
+        "Back to main task list"};
+
+    int mx=0, my=0;
+    getmaxyx(stdscr, mx, my);
+
+    for (int i = 3;i<mx-2;i++){
+        move(i,2);
+        for(int j=1;j<my-2;j++)
+            printw(" ");
     }
-    else escStack[escStackTop] -> handleKey(ch);
+
+    for (int i = 0;i<numOfButtons;i++){
+        move(i+3,1);
+        printw("    <");
+        attron(A_BOLD);
+        printw("%s",buttons[i].c_str());
+        attroff(A_BOLD);
+        printw(">\t%s",funcs[i].c_str());
+    }
+
+    move(mx-3,5);
+    attron(A_BLINK);
+    printw("press any key to continue");
+    attroff(A_BLINK);
+
+    getch();
+    redraw();
 }
 
 void DisplayManager::redraw(){
@@ -59,9 +106,9 @@ void DisplayManager::redraw(){
     mvhline(0,0,'-', my);
     mvprintw(0,ypos,title.c_str());
     attroff(A_REVERSE);
-    int numOfButtons = 13;
-    string buttons[] = {"Ctrl-C","f","d","e","a","SPACE","j","k","up","down","Q","s","ESC"};
-    string funcs[] = {"exit","finish","remove","edit","add","show/hide detail","scroll down","scroll up","select previous task","select next task","switch off TUI","search","main task list"};
+    int numOfButtons = 2;
+    string buttons[] = {"Ctrl-c","Ctrl-h"};
+    string funcs[] = {"exit","show help"};
 
     int col = 0;
     int row = 1;

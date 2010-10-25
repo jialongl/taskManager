@@ -401,7 +401,7 @@ vector<string> ListDisplayElement::editSelect(){
     printw(((formatTime(newTime)).substr(0,24)).c_str());
     move(taskStartAt[selectTask] - navigateRow +listWindow->_begy+1,14);
     attron(A_BOLD);
-    printw("%s----",newGrp.c_str());
+    printw("%s------------------",newGrp.c_str());
     attroff(A_BOLD);
     string newPri = editArea(listWindow,taskStartAt[selectTask]+2- navigateRow,taskStartAt[selectTask]+2- navigateRow,25,27,NumberToString(tasks[selectTask]->getPriority()));
     string newDetail = editArea(listWindow,taskStartAt[selectTask]+4- navigateRow,taskStartAt[selectTask+1] -2- navigateRow,15,my-13,tasks[selectTask]->getDescription());
@@ -478,6 +478,7 @@ void ListDisplayElement::search(){
     displayManager->echo("Search finish");
 }
 void ListDisplayElement::restoreLastView(){
+    selectTask = 0;
     for (int i=0;i<tasks.size();i++){
         if (lastSelectedSn == tasks[i]->getSerialNumber()) {
             selectTask = i;

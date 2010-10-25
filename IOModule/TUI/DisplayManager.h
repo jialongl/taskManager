@@ -33,6 +33,7 @@ class DisplayManager{
     void handleResult(Result* result);
     void setCommand(CommandList cl);
     void echo(string s);
+    void showHelp();
 };
 
 static DisplayManager* displayManager;
