@@ -301,31 +301,13 @@ void Parser::task_parse() {
 }
 
 void Parser::run_parse() {
-	cmd->method = RUN;
-}
-string Parser::matchAlias (string alias) {
-
-  for ( iter2  = commandAliases.begin();
-	iter2 != commandAliases.end();
-	iter2++) {
-    if (alias == (*iter2).first) {
-      return (*iter2).second;
-    }
-    //(first token of "alias" is the same as the first token of iter2.first) {
-    /* if (the number of args match) */
-    /*   return iter2.second;  // return the key */
-    /* else if (last token of iter2.first is "$0" and everything else matches) */
-    /*   return iter2.second;  // return the key */
-  }
-  return "";
+  cmd->method = RUN;
 }
 
 void Parser::map_parse() {
 
-  string alias = trimHeadTailInvertedCommas( args.at(1) );
+  string alias  = trimHeadTailInvertedCommas( args.at(1) );
   string origin = trimHeadTailInvertedCommas( args.at(2) );
-
-  /* cout << "a=" << alias << "o=" << origin << endl; */
 
   if (alias != "map")
     commandAliases[alias] = origin;
@@ -344,19 +326,80 @@ string Parser::trimHeadTailInvertedCommas(string s) {
   return s.substr(start+1, end-start-1); // the string has '"' at the beginning and the end.
 }
 
+string Parser::matchAlias (string s) {
+  string alias;
+  string origin;
+  string token_to_insert;
+  size_t found;
+  int dollar_number;
+  vector<string> args_input;
+
+  tokenize_by_space(s);
+  args_input = args;
+
+  for ( iter2  = commandAliases.begin();
+	iter2 != commandAliases.end();
+	iter2++) {
+
+      alias  = (*iter2).first;
+      origin = (*iter2).second;
+
+      tokenize_by_space(alias);
+
+      for (int i = 0; i < args.size(); i++) {
+	// cout << "i=" << i << "origin=" << origin <<endl;
+
+	if (  args[i] != args_input[i] ) {
+	  if ( args[i][0] == '$' ) {
+
+	    dollar_number = StringToNum( args[i].substr(1, args[i].length()-1) );
+
+	    if (dollar_number == 0) {
+	      found = origin.find(args[i]); // args[i] = "$0" at this moment
+
+	      if (found != string::npos)
+		// replace the whole remaining substring with token_to_insert
+		origin.replace( int(found),
+				origin.length()-1-int(found),
+				args_input[i] );
+	      
+	      return origin;
+
+	    } else {
+	      // find string '${dollar_number}' in string "origin" and replace it with THIS (the current one) token in "s"
+	      found = origin.find(args[i]);
+
+	      if (found != string::npos) {
+		origin.replace( int(found),  2, args_input[i] );
+		// cout << "found and replaced in 'origin', origin=" << origin << "-------------------" << endl;
+	      }
+	    }
+
+	  } else { // not a variable ( denoted by $0, $1, $2...) used in "map" command
+	    break;
+	  }
+
+	}
+	if (i == args.size() - 1) { // all tokens match
+	  return origin;
+	}
+      }
+  }
+
+  return "";
+}
+
 Command* Parser::inputToCommand (string input) {
 
-  tokenize_by_space(input);
-
+ 
   //------ check if this command has been alias-ed. -----
-
-  string temp = matchAlias(args[0]);
+  string temp = matchAlias(input);
 
   if (temp != "")
     tokenize_by_space(temp);
-
+  else
+    tokenize_by_space(input);
   //-----------------------------------------------------
-
 
   cmd = new Command();
 
@@ -415,7 +458,7 @@ Command* Parser::inputToCommand (string input) {
     write_parse();
 
   else if (args[0] == "run")
-	  run_parse();
+    run_parse();
 
   else {
     throw EXCEPTION_NO_SUCH_COMMAND;
