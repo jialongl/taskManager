@@ -1,0 +1,2 @@
+map "lsf" "ls -f yes"
+map "lsgf $1 $2" "ls -g $1 -f $2"
