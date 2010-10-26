@@ -41,13 +41,11 @@ void PdcIO::showWelcomeMessage(){
 }
     
 void PdcIO::handleException(exception_e except){
-  /*
-    if (except == EXCEPTION_NO_SUCH_TASK) cout<<"TaskManager: no such task"<<endl;
-    if (except == EXCEPTION_NO_SUCH_COMMAND) cout<<"TaskManager: command not found"<<endl;
-    if (except == EXCEPTION_TASK_EXIST) cout<<"TaskManager: add task failed. task exists"<<endl;
-    if (except == EXCEPTION_ILLEGAL_EXPRESSION) cout<<"TaskManager: illegal expression"<<endl;
-    if (except == EXCEPTION_HELP) displayHelp();
-  */
+    if (except == EXCEPTION_NO_SUCH_TASK) echo("TaskManager: no such task");
+    if (except == EXCEPTION_NO_SUCH_COMMAND) echo("TaskManager: command not found");
+    if (except == EXCEPTION_TASK_EXIST) echo("TaskManager: add task failed. task exists");
+    if (except == EXCEPTION_ILLEGAL_EXPRESSION) echo("TaskManager: illegal expression");
+    if (except == EXCEPTION_HELP) displayManager->showHelp();
 }
 
 bool PdcIO::confirm(string prompt){

@@ -45,14 +45,28 @@ void DisplayManager::handleKey(int ch){
     }else if(ch == -1){
         redraw();
     }else if(ch == 263){
-       showHelp(); 
+        showHelp(); 
+    }else if (ch == 67){
+        enterCommand();
     }else escStack[escStackTop] -> handleKey(ch);
+}
+
+void DisplayManager::enterCommand(){
+    int mx,my;
+    getmaxyx(stdscr,mx,my);
+    move(mx-1,0);
+    printw("> ");
+    string st = dynamic_cast<ListDisplayElement*>(escStack[0]) -> editArea(stdscr, mx-2,mx-2,1,my-2,""); 
+    if (st!="")
+        setCommand((parent->parser)->inputToCommandList(st));
+    else
+        echo("TaskManager: Canceled by user");
 }
 
 void DisplayManager::showHelp(){
 
-    int numOfButtons = 13;
-    string buttons[] = {"Ctrl-C","f","d","e","a","SPACE","j","k","up","down","Q","s","ESC"};
+    int numOfButtons = 14;
+    string buttons[] = {"Ctrl-C","f","d","e","a","SPACE","j","k","up","down","Q","s","ESC","C"};
     string funcs[] = {
         "Quit task manager",
         "Mark selected task as finished",
@@ -66,7 +80,8 @@ void DisplayManager::showHelp(){
         "Select next task",
         "Switch off TUI and go back to command line mode",
         "Incremental search",
-        "Back to main task list"};
+        "Back to main task list",
+        "Enter command directly"};
 
     int mx=0, my=0;
     getmaxyx(stdscr, mx, my);
@@ -145,6 +160,7 @@ void DisplayManager::echo(string s){
     echoHistory = s;
     int my,mx;
     getmaxyx(stdscr,mx,my);
+    if (s.length()>my) s=s.substr(0,my);
     move(mx - 1,0);
     hline(' ',my);
     move(mx - 1,0);

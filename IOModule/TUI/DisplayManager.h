@@ -34,6 +34,7 @@ class DisplayManager{
     void setCommand(CommandList cl);
     void echo(string s);
     void showHelp();
+    void enterCommand();
 };
 
 static DisplayManager* displayManager;

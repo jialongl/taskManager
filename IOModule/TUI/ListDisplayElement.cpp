@@ -109,7 +109,7 @@ void ListDisplayElement::handleKey(int ch){
         case (int)'a':
             if (list!=originalList) break;
             newTaskSerial = originalList->getSerial()+1;
-            tasks.push_back(new Task(currentTime(), 0, "New Task", 0, false,newTaskSerial, "default"));
+            tasks.push_back(new Task(currentTime(), 0, "", 0, false,newTaskSerial, "default"));
             selectTask = tasks.size()-1;
             showDetail();
             naiveDraw();
@@ -252,7 +252,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
     int startPos = 0;
     int msize = (row1 - row0 + 1) * (col1 - col0 + 1);
 //    if (newStr.size()>=msize) startPos = newStr.size() - msize + 1;
-    int curPos = newStr.size();
+    int curPos = newStr.size()>(col1-col0+1)?(col1-col0+1):newStr.size();
     int curRow,curCol;
     refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&curRow,&curCol);
     bool flag = false;
@@ -438,7 +438,7 @@ void ListDisplayElement::hideDetail(){
 }
 
 void ListDisplayElement::reset(){
-    list = originalList;
+    displayManager->setCommand(parser->inputToCommandList("ls"));
 }
 
 void ListDisplayElement::search(){
@@ -462,7 +462,8 @@ void ListDisplayElement::search(){
             case 8:
             case 127:
                 if (searchKeyword.size()!=0) searchKeyword = searchKeyword.substr(0,searchKeyword.size() - 1);
-                reset();
+//                reset();
+                list = originalList;              
                 displayManager->echo("Search: "+searchKeyword);
                 list = list -> getTasks(new KFilter("*"+searchKeyword+"*"));
                 draw(); 
