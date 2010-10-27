@@ -44,7 +44,7 @@ void DisplayManager::handleKey(int ch){
         if (flag) escStack[escStackTop] -> handleConfirm( false );
     }else if(ch == -1){
         redraw();
-    }else if(ch == 263){
+    }else if(ch == 'H'){
         showHelp(); 
     }else if (ch == 67){
         enterCommand();
@@ -65,8 +65,8 @@ void DisplayManager::enterCommand(){
 
 void DisplayManager::showHelp(){
 
-    int numOfButtons = 14;
-    string buttons[] = {"Ctrl-C","f","d","e","a","SPACE","j","k","up","down","Q","s","ESC","C"};
+    int numOfButtons = 15;
+    string buttons[] = {"Ctrl-C","f","d","e","a","SPACE","j","k","up","down","Q","s","ESC","C","H"};
     string funcs[] = {
         "Quit task manager",
         "Mark selected task as finished",
@@ -81,7 +81,8 @@ void DisplayManager::showHelp(){
         "Switch off TUI and go back to command line mode",
         "Incremental search",
         "Back to main task list",
-        "Enter command directly"};
+        "Enter command directly",
+        "Show this help"};
 
     int mx=0, my=0;
     getmaxyx(stdscr, mx, my);
@@ -122,7 +123,7 @@ void DisplayManager::redraw(){
     mvprintw(0,ypos,title.c_str());
     attroff(A_REVERSE);
     int numOfButtons = 2;
-    string buttons[] = {"Ctrl-c","Ctrl-h"};
+    string buttons[] = {"Ctrl-c","H"};
     string funcs[] = {"exit","show help"};
 
     int col = 0;

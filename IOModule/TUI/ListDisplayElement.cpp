@@ -141,6 +141,8 @@ void ListDisplayElement::handleKey(int ch){
             naiveDraw();
             break;
         case (int)' ':
+        case 10:
+        case 13:
             if (tasks.size()!=0){
                 if (detailList[tasks[selectTask] -> getSerialNumber()]) hideDetail();
                 else showDetail();
@@ -285,7 +287,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
     int startPos = 0;
     int msize = (row1 - row0 + 1) * (col1 - col0 + 1);
 //    if (newStr.size()>=msize) startPos = newStr.size() - msize + 1;
-    int curPos = newStr.size()>(col1-col0+1)?(col1-col0+1):newStr.size();
+    int curPos = newStr.size()>(col1-col0+1)*(row1-row0+1)?(col1-col0+1)*(row1-row0+1):newStr.size();
     int curRow,curCol;
     refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&curRow,&curCol);
     bool flag = false;
@@ -759,7 +761,7 @@ string ListDisplayElement::lineWithNewGroup(int i,string group){
 
     int mx,my;
     getmaxyx(stdscr,mx,my);
-    string line = "";
+    string line = "   ";
     string temps;
     temps = NumberToString(tasks[i]->getSerialNumber());
     line.append(temps);

@@ -107,8 +107,11 @@ void Parser::add_parse() {
       string temp = *(++iter);
       long seconds = 0;
 
-      parse_date(temp, &seconds);
-      cmd->deadline = currentTime() + seconds;
+      if (isNumber(temp)) cmd->deadline = StringToNum(temp);
+      else{
+          parse_date(temp, &seconds);
+          cmd->deadline = currentTime() + seconds;
+      }
     }
 
     else if ( *iter == "-p" ) {
