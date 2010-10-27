@@ -32,6 +32,7 @@ void ListDisplayElement::draw(){
         for (int i=0; i<tasks.size(); i++) detailList[tasks[i]->getSerialNumber()] = false; 
     if (selectTask >= tasks.size()) selectTask = tasks.size()-1;
     reconstructLines();
+    if (navigateRow >= lines.size() && lines.size()>0) navigateRow = lines.size()-1;
     werase(listWindow);
     wborder(listWindow, '|', '|', '-','-','+','+','+','+');
 /*    string s = parser -> resultToOutput(new Result(list,false));
@@ -39,14 +40,16 @@ void ListDisplayElement::draw(){
     for (int i=navigateRow;i<lines.size()&&i<navigateRow+mx-2;i++){
         wmove(listWindow,i+1-navigateRow,1);
         if (i >= taskStartAt[selectTask]) wattron(listWindow,A_BOLD);
-        if (selectTask != tasks.size()-1 && i >= taskStartAt[selectTask + 1]) wattroff(listWindow,A_BOLD);
+        if (selectTask != tasks.size()-1 && i >= taskFinishAt[selectTask]) wattroff(listWindow,A_BOLD);
         wprintw(listWindow,lines[i].c_str());
     }
     wattroff(listWindow,A_BOLD);
     wrefresh(listWindow);
+    drawSelectNumber();
     move(0,my-1);
 }
 void ListDisplayElement::naiveDraw(){
+    if (navigateRow >= lines.size() && lines.size()>0) navigateRow = lines.size()-1;
     int mx=0, my=0;
     getmaxyx(listWindow, mx, my);
     reconstructLines();
@@ -57,11 +60,12 @@ void ListDisplayElement::naiveDraw(){
     for (int i=navigateRow;i<lines.size()&&i<navigateRow+mx-2;i++){
         wmove(listWindow,i+1-navigateRow,1);
         if (i >= taskStartAt[selectTask]) wattron(listWindow,A_BOLD);
-        if (selectTask != tasks.size()-1 && i >= taskStartAt[selectTask + 1]) wattroff(listWindow,A_BOLD);
+        if (selectTask != tasks.size()-1 && i >= taskFinishAt[selectTask]) wattroff(listWindow,A_BOLD);
         wprintw(listWindow,lines[i].c_str());
     }
     wattroff(listWindow,A_BOLD);
     wrefresh(listWindow);
+    drawSelectNumber();
     move(0,my-1);
 }
 void ListDisplayElement::handleKey(int ch){
@@ -127,13 +131,13 @@ void ListDisplayElement::handleKey(int ch){
         case KEY_UP:
             if (selectTask > 0) selectTask--;
             if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
-            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask+1]>navigateRow+mx-2) navigateRow = taskStartAt[selectTask+1]-mx+2;
+            if (selectTask >= 0 && selectTask < tasks.size() && taskFinishAt[selectTask]>navigateRow+mx-2) navigateRow = taskFinishAt[selectTask]-mx+2;
             naiveDraw();
             break;
         case KEY_DOWN:
             if (selectTask+1 < tasks.size()) selectTask++;
             if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
-            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask+1]>navigateRow+mx-2) navigateRow = taskStartAt[selectTask+1]-mx+2;
+            if (selectTask >= 0 && selectTask < tasks.size() && taskFinishAt[selectTask]>navigateRow+mx-2) navigateRow = taskFinishAt[selectTask]-mx+2;
             naiveDraw();
             break;
         case (int)' ':
@@ -157,13 +161,27 @@ void ListDisplayElement::handleResult(Result* result){
     originalList = result;
     draw();
 }
-void ListDisplayElement::selectUp(){
-}
-void ListDisplayElement::selectDown(){
-}
-void ListDisplayElement::navigateUp(){
-}
-void ListDisplayElement::navigateDown(){
+string ListDisplayElement::formatDate(time_t t){
+    string months[]  = {
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    };
+    struct tm* datetime = localtime(&t);
+    string st = "____ "+ NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year+1900)+" ____";
+    int mx,my;
+    getmaxyx(stdscr,mx,my);
+    while (st.length()+3<my) st = " "+st;
+    return st;
 }
 void ListDisplayElement::reconstructLines(){
     int mx=0, my=0;
@@ -171,7 +189,14 @@ void ListDisplayElement::reconstructLines(){
    
     lines.clear();
     taskStartAt.clear(); 
+    taskFinishAt.clear(); 
+    string lastTime = "";
     for (int i=0; i<tasks.size(); i++){
+        string newTime = formatDate(tasks[i]->getDeadline());
+        if (newTime != lastTime){
+              lastTime = newTime;
+            lines.push_back(newTime);
+        }
         taskStartAt.push_back(lines.size());
         if (! detailList[tasks[i] -> getSerialNumber()] ){
             lines.push_back("   ");
@@ -181,8 +206,13 @@ void ListDisplayElement::reconstructLines(){
             while (lines[lines.size() - 1].size() < 8) lines[lines.size() - 1].push_back(' ');
             if (tasks[i]->getIsFinished()) lines[lines.size() - 1].append("f ");
             else lines[lines.size() - 1].append("  ");         
+            temps = tasks[i]->getGroup();
+            while (temps.length()<9) temps.push_back(' ');
+            if (temps.length()>9) temps = temps.substr(0,9);
+            temps.push_back(' ');
+            lines[lines.size() - 1].append(temps);
             temps = tasks[i]->getDescription();
-            int mlength = my - 5 - 10;
+            int mlength = my - 5 - 10 - 10;
             if (temps.length() > mlength) 
                 temps = temps.substr(0,mlength-3) + "...";
             lines[lines.size() - 1].append(temps);
@@ -217,13 +247,16 @@ void ListDisplayElement::reconstructLines(){
 	        lines.push_back("            Details:");
 	        temps = tasks[i]->getDescription();
             int lengthLimit = my-27;
-            while (temps != ""){
+            bool flag = true;
+            while (temps != ""||flag){
+                flag = false;
                 lines.push_back("               "+temps.substr(0,lengthLimit));
                 if (lengthLimit >= temps.size()) temps = "";
                 else temps = temps.substr(lengthLimit,temps.size());
             }
             lines.push_back("        "+string(my-16,'-'));
         }
+        taskFinishAt.push_back(lines.size());
     }
     taskStartAt.push_back(lines.size());
 }
@@ -393,6 +426,10 @@ vector<string> ListDisplayElement::editSelect(){
     int mx=0, my=0;
     getmaxyx(listWindow, mx, my);
     string newGrp = editArea(listWindow,taskStartAt[selectTask] - navigateRow,taskStartAt[selectTask] - navigateRow,13,max(23,13+(tasks[selectTask]->getGroup()).size()),tasks[selectTask]->getGroup());
+    move(taskStartAt[selectTask] - navigateRow + 3, 1);
+    attron(A_BOLD);
+    printw("%s",lineWithNewGroup(selectTask,newGrp).c_str());
+    attroff(A_BOLD);
     int theRow = taskStartAt[selectTask]- navigateRow + listWindow->_begy;
     if (theRow + 12 >= mx+listWindow->_begy) theRow= mx+listWindow->_begy-13;
     int newTime = datePicker(tasks[selectTask]->getDeadline(),theRow,45);//editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
@@ -404,7 +441,7 @@ vector<string> ListDisplayElement::editSelect(){
     printw("%s------------------",newGrp.c_str());
     attroff(A_BOLD);
     string newPri = editArea(listWindow,taskStartAt[selectTask]+2- navigateRow,taskStartAt[selectTask]+2- navigateRow,25,27,NumberToString(tasks[selectTask]->getPriority()));
-    string newDetail = editArea(listWindow,taskStartAt[selectTask]+4- navigateRow,taskStartAt[selectTask+1] -2- navigateRow,15,my-13,tasks[selectTask]->getDescription());
+    string newDetail = editArea(listWindow,taskStartAt[selectTask]+4- navigateRow,taskFinishAt[selectTask] -2- navigateRow,15,my-13,tasks[selectTask]->getDescription());
     //displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
     vector<string> ans;
     ans.push_back(newGrp);
@@ -422,7 +459,7 @@ void ListDisplayElement::showDetail(){
         reconstructLines();
         if (detailList[tasks[selectTask]->getSerialNumber()]){
             if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
-            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask+1]>navigateRow+mx-2) navigateRow = taskStartAt[selectTask+1]-mx+2;
+            if (selectTask >= 0 && selectTask < tasks.size() && taskFinishAt[selectTask]>navigateRow+mx-2) navigateRow = taskFinishAt[selectTask]-mx+2;
         }
         naiveDraw();
     }
@@ -532,11 +569,11 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
     int curCol = startCol;
     int curRow = startRow+1;
     move(curRow,startCol);
-    printw("%34s"," ");
+//    printw("%34s"," ");
     curRow++;
     move(curRow,startCol);
     attron(A_REVERSE);
-    printw("%15s %4d                ",months[curMon].c_str(),curYear);
+    printw("%15s %4d              ",months[curMon].c_str(),curYear);
     attroff(A_REVERSE);
     curRow++;
     move(curRow,startCol);
@@ -602,5 +639,136 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
         }
         drawCalendar(curTime,startRow,startCol);
     }
-    return curTime;    
+    //naiveDraw();
+
+    struct tm* datetime = localtime(&curTime);   
+    int year = datetime->tm_year + 1900;
+    int mon = datetime->tm_mon;
+    int day = datetime->tm_mday;
+    int limit[] = {24,60,60};
+    int hourMinSec[3];
+    hourMinSec[0] = datetime->tm_hour;
+    hourMinSec[1] = datetime->tm_min;
+    hourMinSec[2] = 0;
+    int curFoc = 0;
+    drawTime(year,mon,day,hourMinSec,curFoc,startRow,startCol);
+    flag = false;
+    while (!flag){
+        int ch = getch();
+        switch (ch){
+            case 10:
+            case 13:
+                flag = true;
+                break;
+            case KEY_LEFT:
+                if (curFoc!=0) curFoc--;
+                break;
+            case KEY_RIGHT:
+                if (curFoc!=3) curFoc++;
+                break;
+            case KEY_UP:
+                hourMinSec[curFoc] = (hourMinSec[curFoc] + limit[curFoc] - 1) % limit[curFoc]; 
+                break;
+            case KEY_DOWN:
+                hourMinSec[curFoc] = (hourMinSec[curFoc] + limit[curFoc] + 1) % limit[curFoc]; 
+                break;
+            default:
+                break;
+        }
+        drawTime(year,mon,day,hourMinSec,curFoc,startRow,startCol);
+    }
+    datetime = localtime(&curTime);
+    datetime->tm_hour = hourMinSec[0]; 
+    datetime->tm_min = hourMinSec[1]; 
+    datetime->tm_sec = hourMinSec[2]; 
+    return mktime(datetime);    
+}
+
+void ListDisplayElement::drawTime(int year,int mon,int day,int hourMinSec[],int curFoc,int startRow,int startCol){
+    string months[]  = {
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    };
+    int curCol = startCol;
+    int curRow = startRow+1;
+    move(curRow,startCol);
+//    printw("%34s"," ");
+    curRow++;
+    move(curRow,startCol);
+    attron(A_REVERSE);
+    printw("%13d %3s %4d            ",day,months[mon].c_str(),year);
+    attroff(A_REVERSE);
+    string hour = NumberToString(hourMinSec[0]);
+    if (hour.length() < 2) hour = '0'+hour;
+    string min = NumberToString(hourMinSec[1]);
+    if (min.length() < 2) min = '0'+min;
+    string sec = NumberToString(hourMinSec[2]);
+    if (sec.length() < 2) sec ='0'+sec;
+    for (int i=0;i<8;i++){
+        curRow++; 
+        move(curRow,startCol);
+        printw("%34s"," ");
+        if (i==1){
+            move(curRow,startCol);
+            printw("%10s"," ");
+            attron(A_UNDERLINE);
+            printw("%4s %4s %4s","Hour","Min","Sec");
+            attroff(A_UNDERLINE);
+            printw("%10s"," ");
+        }
+        if (i==2){
+            move(curRow,startCol);
+            printw("%10s"," ");
+            if (curFoc == 0) attron(A_REVERSE);
+            printw("%3s",hour.c_str());
+            if (curFoc == 0) attroff(A_REVERSE);
+            printw(" :");
+            if (curFoc == 1) attron(A_REVERSE);
+            printw("%3s",min.c_str());
+            if (curFoc == 1) attroff(A_REVERSE);
+            printw(" :");
+            if (curFoc == 2) attron(A_REVERSE);
+            printw("%3s",sec.c_str());
+            if (curFoc == 2) attroff(A_REVERSE);
+            printw("%10s"," ");
+        }
+    }
+    refresh();
+
+}
+void ListDisplayElement::drawSelectNumber(){
+    string st =" "+ NumberToString(selectTask+1)+"/"+NumberToString(tasks.size())+" Tasks ";
+    int mx,my;
+    getmaxyx(stdscr,mx,my);
+    my -= st.length();
+    move(mx-2,my-2);
+    printw("%s",st.c_str());
+    refresh();
+}
+string ListDisplayElement::lineWithNewGroup(int i,string group){
+
+    int mx,my;
+    getmaxyx(stdscr,mx,my);
+    string line = "";
+    string temps;
+    temps = NumberToString(tasks[i]->getSerialNumber());
+    line.append(temps);
+    while (line.size() < 8) line.push_back(' ');
+    string grp = group;
+    int firstHalf = 5;//(my-16-grp.size())/2;
+    line += string(firstHalf,'-');
+    line += grp;
+    line += string(my-16-firstHalf-grp.size(),'-');
+
+    return line;
 }

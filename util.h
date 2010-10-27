@@ -57,7 +57,7 @@ static bool tryMatch(string st1, string st2){
 			if (i<=0||j<=0) match[i][j] = false; else
 			if (st2[j-1] == '*') match[i][j] = match[i][j - 1] || match[i - 1][j]; else
 			if (st2[j-1] == '?') match[i][j] =  match[i - 1][j - 1]; else
-			if (st2[j-1] == st1[i-1]) match[i][j] =  match[i - 1][j - 1]; else
+			if (st2[j-1] == st1[i-1] || abs(st2[j-1] - st1[i-1] == 32)) match[i][j] =  match[i - 1][j - 1]; else
 				match[i][j]=false;
 		}
 	}

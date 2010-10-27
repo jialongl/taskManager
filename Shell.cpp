@@ -55,7 +55,7 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
 
             if (IOModule->confirm("Do you really want to remove this task permanently? "))
                 return (result == NULL)?mainCommandExecutor->executeCommand(mainTaskList,command):mainCommandExecutor->executeCommand(mainTaskList,result,command);
-            else return new Result();
+            else throw EXCEPTION_CANCEL;
 
             break;
         case RUN: //run a TM script
