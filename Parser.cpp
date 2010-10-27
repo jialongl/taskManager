@@ -205,6 +205,10 @@ void Parser::ls_parse() {
     /* } */
 
     else if ( *iter == "-f" ) {
+
+      if (args.size() != 3)
+	return ;
+
       string s = *(++iter);
 
       if (s == "yes" || s == "YES" || s == "Yes" || s == "y" || s == "Y")
@@ -383,6 +387,7 @@ string Parser::matchAlias (string s) {
 	  }
 
 	}
+
 	if (i == args.size() - 1) { // all tokens match
 	  return origin;
 	}
@@ -394,7 +399,6 @@ string Parser::matchAlias (string s) {
 
 Command* Parser::inputToCommand (string input) {
 
- 
   //------ check if this command has been alias-ed. -----
   string temp = matchAlias(input);
 
@@ -487,8 +491,10 @@ CommandList Parser::inputToCommandList (string s) {
 }
 
 string Parser::resultToOutput(Result *result){
-  if (result->isNull == true)
+  if (result->isNull == true) {
+    // delete result;
     return string("");
+  }
 
   else {
     vector<Task *> ret = result->sort(result->comparer);
@@ -521,7 +527,8 @@ string Parser::resultToOutput(Result *result){
 	ss << "\t" << ret.at(i)->getDescription()<<endl;
       }
     }
+
+    // delete result;
     return ss.str();
   }
 }
-
