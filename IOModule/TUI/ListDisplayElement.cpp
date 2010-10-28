@@ -179,10 +179,12 @@ string ListDisplayElement::formatDate(time_t t){
         "Dec"
     };
     struct tm* datetime = localtime(&t);
-    string st = "____ "+ NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year+1900)+" ____";
+    string st = "< "+ NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year+1900)+" >  ";
     int mx,my;
     getmaxyx(stdscr,mx,my);
-    while (st.length()+3<my) st = " "+st;
+    st = string((my-2-st.length()),' ') + st; 
+//    while (st.length()+13<my) st = " "+st;
+//    while (st.length()+3<my) st = " "+st;
     return st;
 }
 void ListDisplayElement::reconstructLines(){
