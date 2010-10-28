@@ -139,7 +139,6 @@ void Parser::add_parse() {
       cmd->taskDescription = temp.substr(1, temp.length() - 2);
     }
 
-    /* else if ( *iter == "-c" ) */
   }
 }
 
@@ -163,6 +162,15 @@ void Parser::edit_parse() {
 
     else if ( *iter == "-p" ) {
       cmd->priority = StringToNum(*(++iter));
+    }
+
+    else if ( *iter == "-f" ) {
+      string s = *(++iter);
+
+      if (s == "yes" || s == "YES" || s == "Yes" || s == "y" || s == "Y")
+	cmd->finishFlag = YES;
+      else if (s == "no"|| s == "NO" || s == "No" || s == "n" || s == "N")
+	cmd->finishFlag = NO;
     }
 
     else if ( *iter == "-g" ) {
