@@ -60,7 +60,6 @@ void Shell::redo(){
         throw EXCEPTION_REDO_FAIL;
         return;
     }
-    cout<<"redo"<<endl;
     undoStack[undoStackTop++] = redoStack[--redoStackTop];
     delete mainTaskList;
     mainTaskList = undoStack[undoStackTop-1]->clone();
