@@ -35,6 +35,7 @@ class Shell{
   void backup();
   void undo();
   void redo();
+  int testSimilarity(string st);
 
  public:
   Shell();

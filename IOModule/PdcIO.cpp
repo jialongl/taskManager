@@ -48,6 +48,8 @@ void PdcIO::handleException(exception_e except){
     if (except == EXCEPTION_NO_SUCH_COMMAND) echo("TaskManager: illegal expression");
     if (except == EXCEPTION_NOT_A_NUMBER) echo("TaskManager: some field requires a number");
     if (except == EXCEPTION_CANCEL) echo("TaskManager: canceled by user");
+    if (except == EXCEPTION_UNDO_FAIL) echo("TaskManager: already at oldest change");
+    if (except == EXCEPTION_REDO_FAIL) echo("TaskManager: already at newest change");
     if (except == EXCEPTION_HELP) displayManager->showHelp();
 }
 
@@ -60,7 +62,7 @@ bool PdcIO::confirm(string prompt){
             x++;
         }
         lines.push_back(prompt.substr(0,y));
-        prompt.erase(0,y);
+        prompt.erase(0,y+1);
     }
     int mx,my;
     getmaxyx(stdscr,mx,my);

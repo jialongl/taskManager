@@ -73,6 +73,7 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
     TM_IOModule* newIO ;
     ifstream script;
     Result* ans;
+    bool flag;
     //handle special command when low level command executor don't have privillige to do it.
     switch (command->method){
        case UNDO:
@@ -145,7 +146,13 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
             ans = new Result();
             break;
         default:
-            ans =  (result == NULL)?mainCommandExecutor->executeCommand(mainTaskList,command):mainCommandExecutor->executeCommand(mainTaskList,result,command);
+            if (command->method == ADD){
+                int percentage = testSimilarity(command->taskDescription);    
+                flag = true;
+                if (percentage >= 70) flag = IOModule->confirm("This task is highly similiar to some existing task, do you really want to add it?");
+                if (flag) ans =  (result == NULL)?mainCommandExecutor->executeCommand(mainTaskList,command):mainCommandExecutor->executeCommand(mainTaskList,result,command);
+                else ans = new Result();
+            }  else ans =  (result == NULL)?mainCommandExecutor->executeCommand(mainTaskList,command):mainCommandExecutor->executeCommand(mainTaskList,result,command);
     }
 
     if (command->method != LS && command->method != NULLCOMMAND && command->method !=EXPORT && command->method != UNDO && command->method != REDO){
@@ -216,4 +223,12 @@ void Shell::changeIOModule(TM_IOModule* newIO){
     toChangeIOModule = true;
     newIOModule = newIO;
 }
-
+int Shell::testSimilarity(string st){
+    vector<Task*> list = mainTaskList->sort(new Comparer());
+    int max = 0;
+    for (int i=0;i<list.size();i++){
+        int x = lcs(list[i]->getDescription(),st);
+        if (x>max) max = x;
+    }
+    return max;
+}

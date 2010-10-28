@@ -110,4 +110,18 @@ static void destroy_win(WINDOW *local_win)
     delwin(local_win);
 }
 
+static int lcs(string st1, string st2){
+    if (st1 == "" || st2 == "") return 0;
+//    cout<<"comparing with: "<<st1<<"!!!"<<st2<<endl;
+    int f[2][MAX_LEN];
+    for (int i=0;i<st1.size();i++)
+        for (int j=0;j<st2.size();j++)
+            if (st1[i] == st2[j]) 
+                f[i%2][j] = (i-1<0||j-1<0)?1:f[(i+1)%2][j-1] + 1;
+            else 
+                f[i%2][j] = max( (i-1<0)?0:f[(i+1)%2][j] , (j-1<0)?0:f[i%2][j-1] );
+//    cout<<f[(st1.size() -1)%2][st2.size()-1]*100/st2.size()<<"%"<<endl;
+    return f[(st1.size() -1)%2][st2.size()-1]*100/max(st2.size(),st1.size());
+}
+
 #endif
