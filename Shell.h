@@ -17,6 +17,11 @@
 class Shell{
 
  private:
+  
+  TaskList* undoStack[MAX_UNDO];
+  TaskList* redoStack[MAX_UNDO];
+  int undoStackTop,redoStackTop;
+
   bool toChangeIOModule;
   TM_IOModule* newIOModule;
   TM_IOModule* IOModule;
@@ -27,6 +32,9 @@ class Shell{
   void changeIOModule(TM_IOModule* newIO);
   Result* executeCommandList(CommandList commandList);
   bool oneIteration();		
+  void backup();
+  void undo();
+  void redo();
 
  public:
   Shell();

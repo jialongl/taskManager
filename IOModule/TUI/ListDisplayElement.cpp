@@ -77,6 +77,12 @@ void ListDisplayElement::handleKey(int ch){
     vector<string> editDetail;
     int newTaskSerial;
     switch (ch){
+        case (int)'U':
+            displayManager->setCommand(parser->inputToCommandList("undo|ls"));
+            break;
+        case (int)'R':
+            displayManager->setCommand(parser->inputToCommandList("redo|ls"));
+            break;
         case (int)'f':
             if (tasks.size() != 0){
                 st = "finish " + NumberToString(tasks[selectTask]->getSerialNumber());

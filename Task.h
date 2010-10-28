@@ -29,6 +29,7 @@ class Task{
   int getSerialNumber();
   string getGroup();
   bool matchKeyword(string keyword);
+  Task* clone();
 };
 
 #endif

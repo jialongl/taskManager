@@ -20,6 +20,8 @@ enum commandMethod {
 	READ,
 	TUI,
 	NOTUI,
+    UNDO,
+    REDO
 };
 
 enum sortKeyword_e{
@@ -44,6 +46,8 @@ enum exception_e{
 	EXCEPTION_TASK_EXIST,
 	EXCEPTION_ILLEGAL_EXPRESSION,
     EXCEPTION_CANCEL,
+    EXCEPTION_UNDO_FAIL,
+    EXCEPTION_REDO_FAIL,
 	EXCEPTION_HELP
 };
 

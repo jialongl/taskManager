@@ -65,14 +65,16 @@ void DisplayManager::enterCommand(){
 
 void DisplayManager::showHelp(){
 
-    int numOfButtons = 15;
-    string buttons[] = {"Ctrl-C","f","d","e","a","SPACE","j","k","up","down","Q","s","ESC","C","H"};
+    int numOfButtons = 17;
+    string buttons[] = {"Ctrl-C","f","d","e","a","U","R","SPACE","j","k","up","down","Q","s","ESC","C","H"};
     string funcs[] = {
         "Quit task manager",
         "Mark selected task as finished",
         "Remove selected task",
         "Edit selected task",
         "Add a new task",
+        "Undo previous action",
+        "Redo last undo",
         "Show/Hide detail of selected Task",
         "Scroll down",
         "Scroll up",

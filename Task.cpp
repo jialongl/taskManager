@@ -52,3 +52,7 @@ string Task::getGroup(){
 bool Task::matchKeyword(string keyword){
   return tryMatch(description, keyword);	
 }	
+
+Task* Task::clone(){
+    return new Task(deadline,priority,description,0,isFinished,serialNumber,group);
+}

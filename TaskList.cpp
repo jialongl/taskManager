@@ -111,7 +111,7 @@ TaskList* TaskList::clone(){
   TaskList* ans = new TaskList();
   vector<Task*> tasks = sort(new Comparer);
   for (int i=0;i<tasks.size();i++){
-    ans->addTask(tasks[i]->getSerialNumber(),tasks[i]);
+    ans->addTask(tasks[i]->getSerialNumber(),tasks[i]->clone());
   }
   return ans;
 }

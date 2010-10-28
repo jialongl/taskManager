@@ -339,6 +339,14 @@ void Parser::map_parse() {
     commandAliases[alias] = origin;
 }
 
+void Parser::undo_parse(){
+  cmd->method = UNDO;
+}
+
+void Parser::redo_parse(){
+  cmd->method = REDO;
+}
+
 string Parser::trimHeadTailInvertedCommas(string s) {
   int start = 0;
   int end = s.length() - 1;
@@ -485,6 +493,12 @@ Command* Parser::inputToCommand (string input) {
 
   else if (args[0] == "run")
     run_parse();
+
+  else if (args[0] == "undo")
+    undo_parse();
+
+  else if (args[0] == "redo")
+    redo_parse();
 
   else {
     throw EXCEPTION_NO_SUCH_COMMAND;

@@ -6,6 +6,7 @@
 
 #define TIMEZONE 8
 #define MAX_LEN 1024
+#define MAX_UNDO 1000
 
 #include <iostream>
 #include <sstream>
