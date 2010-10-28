@@ -57,19 +57,16 @@ void Parser::tokenize_by_space (string s) {
       buf += s[pos];
 
       if (s[pos] == '"') {
-  	if(inInvertedCommas == 0)
-	  inInvertedCommas = 1;
-
-	else {
-	  inInvertedCommas = 0;
+	if (inInvertedCommas == true) {
 	  args.push_back(buf);
 	  buf = "";
 	}
+	inInvertedCommas = !inInvertedCommas;
       }
     }
 
     else {
-      if (inInvertedCommas == 1)
+      if (inInvertedCommas == true)
 	buf += s[pos];
 
       else if (buf != "") {
