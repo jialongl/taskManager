@@ -490,6 +490,7 @@ void ListDisplayElement::reset(){
 
 void ListDisplayElement::search(){
     bool flag = false;
+    string keyInSt = "";
     searchKeyword = "";
     displayManager->echo("Search: "+searchKeyword);
     while (!flag){
@@ -509,15 +510,18 @@ void ListDisplayElement::search(){
             case 8:
             case 127:
                 if (searchKeyword.size()!=0) searchKeyword = searchKeyword.substr(0,searchKeyword.size() - 1);
+                if (keyInSt.size()!=0) keyInSt = keyInSt.substr(0,keyInSt.size() - 1);
 //                reset();
                 list = originalList;              
-                displayManager->echo("Search: "+searchKeyword);
+                displayManager->echo("Search: "+keyInSt);
                 list = list -> getTasks(new KFilter("*"+searchKeyword+"*"));
                 draw(); 
                 break;
             default:
+                keyInSt.push_back((char)ch);
+                if (ch == (int)' ') ch = (int)'*';
                 searchKeyword.push_back((char)ch);
-                displayManager->echo("Search: "+searchKeyword);
+                displayManager->echo("Search: "+keyInSt);
                 list = list -> getTasks(new KFilter("*"+searchKeyword+"*"));
                 draw(); 
                 break;
