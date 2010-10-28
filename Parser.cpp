@@ -13,18 +13,28 @@ void Parser::tokenize_by_pipe (string s) {
 
   int pos = 0;
   string buf = "";
+  bool inInvertedCommas = false;
 
   while (pos < s.size() && s[pos] == '|')
     pos++;
 
   while (pos < s.size()) {
-    if ( s[pos] != '|')
+    if ( s[pos] != '|') {
+      if ( s[pos] == '"')
+	inInvertedCommas = !inInvertedCommas;
+
       buf += s[pos];
-      
-    else {
+    }
+
+    else if (inInvertedCommas == false) {
       args.push_back(buf);
       buf = "";
     }
+
+    else { // s[pos] == '"' and inInvertedCommas == true
+      buf += s[pos];
+    }
+
     pos++;
   }
 
@@ -34,9 +44,10 @@ void Parser::tokenize_by_pipe (string s) {
 
 void Parser::tokenize_by_space (string s) {
   args.clear();
+
   int pos = 0;
   string buf = "";
-  short inInvertedCommas = 0;
+  bool inInvertedCommas = false;
 
   while (pos < s.size() && s[pos] == ' ')
     pos++;
@@ -46,7 +57,7 @@ void Parser::tokenize_by_space (string s) {
       buf += s[pos];
 
       if (s[pos] == '"') {
-	if(inInvertedCommas == 0)
+  	if(inInvertedCommas == 0)
 	  inInvertedCommas = 1;
 
 	else {
