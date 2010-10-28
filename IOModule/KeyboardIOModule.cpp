@@ -6,8 +6,10 @@ KeyboardIOModule::KeyboardIOModule(Parser* pser){
 CommandList KeyboardIOModule::getCommand(){
     cout<<"> ";
     string str;
-    getline(cin,str);
-    return parser->inputToCommandList(str);
+    if ( getline(cin,str))
+      return parser->inputToCommandList(str);
+    else
+      return parser->inputToCommandList("exit");
 }
 
 void KeyboardIOModule::showOutput(Result* result){
