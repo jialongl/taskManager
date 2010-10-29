@@ -14,6 +14,7 @@
 #include "../../Comparer.h"
 #include "DisplayElement.h"
 #include "DisplayManager.h"
+#include "../../filters/IFilter.h"
 
 class ListDisplayElement:public DisplayElement{
 private: 
@@ -55,6 +56,7 @@ public:
     string formatDate(time_t t);
     string lineWithNewGroup(int i,string group);
     bool ListDisplayElement::is_time(string st);
+    void ListDisplayElement::selectByCalendar();
 };
 
 #endif

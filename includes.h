@@ -39,6 +39,7 @@ using namespace std;
 #define _EDIT COLOR_PAIR(7)
 #define _EDITTED COLOR_PAIR(8)//A_BOLD//COLOR_PAIR(8)
 #define _TIMELINE COLOR_PAIR(9)
+#define _TASKDAY COLOR_PAIR(10)
 
 
 #endif

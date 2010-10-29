@@ -97,6 +97,9 @@ void ListDisplayElement::handleKey(int ch){
         case (int)'R':
             displayManager->setCommand(parser->inputToCommandList("redo|ls"));
             break;
+        case (int)'c':
+            selectByCalendar();
+            break;
         case (int)'f':
             if (tasks.size() != 0){
                 st = "finish " + NumberToString(tasks[selectTask]->getSerialNumber());
@@ -631,6 +634,10 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
     attroff(_UNDERLINE);
     attron(_NORMAL);
     curRow++;
+    vector<sortKeyword_e> keys;
+    keys.push_back(DEADLINE);
+    vector<Task*> thetasks = (originalList->getTasks(new IFilter(startTime,startTime+42*24*60*60)))->sort(new Comparer(keys));
+    int taskNum = 0; 
     for (int i=0;i<6;i++){
         datetime = localtime(&startTime);
         int numOfWeek = (datetime->tm_yday)/7 + 1;
@@ -642,7 +649,14 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
             datetime = localtime(&startTime);
             if (datetime->tm_mon == curMon) attron(_BOLD);
             if (datetime->tm_mday == curDay && datetime->tm_mon == curMon) attron(_REVERSE);
+            while (taskNum<thetasks.size() && thetasks[taskNum]->getDeadline()<startTime) taskNum++;
+            if (taskNum<thetasks.size() && thetasks[taskNum]->getDeadline()<startTime+24*60*60)
+                attron(_TASKDAY);
             printw("%3d",datetime->tm_mday);
+            if (taskNum<thetasks.size() && thetasks[taskNum]->getDeadline()<startTime+24*60*60){
+                attroff(_TASKDAY);
+                attron(_NORMAL);
+            }
             if (datetime->tm_mday == curDay && datetime->tm_mon == curMon) {
                 attroff(_REVERSE);
                 attron(_NORMAL);
@@ -870,4 +884,67 @@ string ListDisplayElement::lineWithNewGroup(int i,string group){
 bool ListDisplayElement::is_time(string st){
     int l = st.size();
     return (st[l-1] == ' ' && st[l-2] == ' '&& st[l-3] == '>' && st[l-4] == ' ');// && st[l-9] == ' ' && st[l-13] == ' ');
+}
+void ListDisplayElement::selectByCalendar(){
+    time_t curTime = currentTime();
+    struct tm* datetime = localtime(&curTime);
+    datetime->tm_hour = 0;
+    datetime->tm_min = 0;
+    datetime->tm_sec = 0;
+    curTime = mktime(datetime);
+    
+    int mx,my;
+    getmaxyx(stdscr,mx,my);
+
+    int startCol = my-1-34;
+    int startRow = mx-1-12;
+
+    list = originalList->getTasks(new IFilter(curTime,curTime+24*60*60));
+    draw();
+    drawCalendar(curTime,startRow,startCol);
+    bool flag = false;
+
+    int count = 0;
+    while (!flag){
+        int ch = getch();
+        if (ch >= 48 && ch < 58) count = count * 10 + ch - 48;
+        switch (ch){
+            case 10:
+            case 13:
+                flag = true;
+                break;
+            case KEY_LEFT:
+                if (count ==0) count = 1;
+                for (int i=0;i<count;i++)
+                    curTime -= 24*60*60;
+                count = 0;
+                break;
+            case KEY_RIGHT:
+                if (count ==0) count = 1;
+                for (int i=0;i<count;i++)
+                    curTime += 24*60*60;
+                count = 0;
+                break;
+            case KEY_UP:
+                if (count ==0) count = 1;
+                for (int i=0;i<count;i++)
+                    curTime -= 7 * 24*60*60;
+                count = 0;
+                break;
+            case KEY_DOWN:
+                if (count ==0) count = 1;
+                for (int i=0;i<count;i++)
+                    curTime += 7 * 24*60*60;
+                count = 0;
+                break;
+            default:
+                break;
+        }
+        list = originalList->getTasks(new IFilter(curTime,curTime+24*60*60));
+        draw();
+        drawCalendar(curTime,startRow,startCol);
+    }
+
+    naiveDraw();
+
 }

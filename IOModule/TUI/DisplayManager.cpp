@@ -65,8 +65,8 @@ void DisplayManager::enterCommand(){
 
 void DisplayManager::showHelp(){
 
-    int numOfButtons = 17;
-    string buttons[] = {"Ctrl-C","f","d","e","a","U","R","SPACE","j","k","up","down","Q","s","ESC","C","H"};
+    int numOfButtons = 18;
+    string buttons[] = {"Ctrl-C","f","d","e","a","U","R","SPACE","j","k","c","up","down","Q","s","ESC","C","H"};
     string funcs[] = {
         "Quit task manager",
         "Mark selected task as finished",
@@ -78,6 +78,7 @@ void DisplayManager::showHelp(){
         "Show/Hide detail of selected Task",
         "Scroll down",
         "Scroll up",
+        "Show calendar",
         "Select previous task",
         "Select next task",
         "Switch off TUI and go back to command line mode",
