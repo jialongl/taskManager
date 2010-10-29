@@ -155,7 +155,7 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
             }  else ans =  (result == NULL)?mainCommandExecutor->executeCommand(mainTaskList,command):mainCommandExecutor->executeCommand(mainTaskList,result,command);
     }
 
-    if (command->method != LS && command->method != NULLCOMMAND && command->method !=EXPORT && command->method != UNDO && command->method != REDO){
+    if (command->method != LS && command->method != NULLCOMMAND && command->method !=EXPORT && command->method != UNDO && command->method != REDO && command->method != TUI && command->method != NOTUI && command->method != READ){
         backup();
     }
     return ans;

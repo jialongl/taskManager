@@ -4,6 +4,7 @@
 #define ComparerH
 
 #include "includes.h"
+#include "util.h"
 #include "Task.h"
 
 class Comparer{

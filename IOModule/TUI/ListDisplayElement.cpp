@@ -761,7 +761,7 @@ void ListDisplayElement::drawTime(int year,int mon,int day,int hourMinSec[],int 
 
 }
 void ListDisplayElement::drawSelectNumber(){
-    string st =" "+ NumberToString(selectTask+1)+"/"+NumberToString(tasks.size())+" Tasks ";
+    string st =" "+ NumberToString(selectTask+1)+"\/"+NumberToString(tasks.size())+" Tasks ";
     int mx,my;
     getmaxyx(stdscr,mx,my);
     my -= st.length();

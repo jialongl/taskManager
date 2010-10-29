@@ -28,7 +28,7 @@ using namespace std;
 
 
 #include "enums.h"
-#include "util.h"
+//#include "util.h"
 
 #ifdef WIN32
 #include <windows.h>

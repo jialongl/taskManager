@@ -4,6 +4,7 @@
 #define CommandH
 
 #include "includes.h"
+#include "util.h"
 
 class Command{
  public:
