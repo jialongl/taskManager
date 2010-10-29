@@ -789,13 +789,13 @@ void ListDisplayElement::drawTime(int year,int mon,int day,int hourMinSec[],int 
 
 }
 void ListDisplayElement::drawSelectNumber(){
-    string st =" "+ NumberToString(selectTask+1)+" / "+NumberToString(tasks.size())+" Tasks ";
+    string st =" "+ NumberToString((selectTask+1)>tasks.size()?tasks.size():selectTask+1)+" of "+NumberToString(tasks.size())+" Tasks ";
     int mx,my;
-    getmaxyx(stdscr,mx,my);
+    getmaxyx(listWindow,mx,my);
     my -= st.length();
-    move(mx-2,my-2);
-    printw("%s",st.c_str());
-    refresh();
+    wmove(listWindow,mx-1,my-2);
+    wprintw(listWindow,st.c_str());
+    wrefresh(listWindow);
 }
 string ListDisplayElement::lineWithNewGroup(int i,string group){
 

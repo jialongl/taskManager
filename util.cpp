@@ -126,4 +126,44 @@ int lcs(string st1, string st2){
     return f[(st1.size() -1)%2][st2.size()-1]*100/max(st2.size(),st1.size());
 }
 
+#ifdef WIN32
+#include <windows.h>
+  //#define RCFILE "%USERPROFILE\\.tmrc"
+string getRecordDirectory(){
+	char profilepath[250];
+	LPCSTR userprofile = "%userprofile%";
+	ExpandEnvironmentStrings(userprofile,profilepath,250);
+	string s = string(profilepath);
+	//cvtLPW2stdstring(s,profilepath);
+	//printf("%s",profilepath);
+	return s+"\\record.xml";
+}
+string getRcDirectory(){
+	char profilepath[250];
+	LPCSTR userprofile = "%userprofile%";
+	ExpandEnvironmentStrings(userprofile,profilepath,250);
+	string s = string(profilepath);
+	//cvtLPW2stdstring(s,profilepath);
+	//printf("%s",profilepath);
+	return s+"\\tmrc.txt";
+}
+#else
+  /* #define RECORDFILE "~/record.xml" */
+  /* #define RCFILE     "~/.tmrc" */
+
+  #include <cerrno>
+  #include <sys/stat.h>
+  #include <sys/types.h>
+  #include <pwd.h>
+  #include <unistd.h>
+string getRecordDirectory(){
+  passwd *pwd = getpwuid( getuid() );
+  return string(pwd->pw_dir) + "/record.xml";
+}
+string getRcDirectory(){
+  passwd *pwd = getpwuid( getuid() );
+  return string(pwd->pw_dir) + "/.tmrc";
+}
+#endif
+
 #endif

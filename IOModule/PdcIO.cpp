@@ -27,7 +27,6 @@ CommandList PdcIO::getCommand(){
         ch = getch();
         if (ch>=48 && ch<58){
             count = count*10+ch-48;
-            displayManager->echo("  " + NumberToString(count));
         }
         else{
             if (count == 0) count =1;

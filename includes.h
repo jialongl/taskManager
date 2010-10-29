@@ -30,6 +30,5 @@ using namespace std;
 #include "enums.h"
 //#include "util.h"
 
-
 #endif
 

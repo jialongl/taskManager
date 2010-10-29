@@ -108,6 +108,7 @@ void DisplayManager::showHelp(){
     attron(A_BLINK);
     printw("press any key to continue");
     attroff(A_BLINK);
+    refresh();
 
     getch();
     redraw();
