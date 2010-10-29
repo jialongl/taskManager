@@ -442,7 +442,7 @@ Command* Parser::inputToCommand (string input) {
   if (input.length() == 0) {
 
   }
-  else if (args[0] == "exit")
+  else if (args[0] == "exit" || args[0] == "quit")
     throw EXCEPTION_HALT;
     
   else if (args[0] == "help") {
