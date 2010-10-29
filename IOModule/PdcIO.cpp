@@ -22,11 +22,21 @@ CommandList PdcIO::getCommand(){
     displayManager->redraw();
     int ch;
     int mx=0, my=0;
+    int count = 0;
     while (!commandReady){
         ch = getch();
-        if (ch == 3)  setCommand(parser->inputToCommandList("exit"));
-        else if (ch == (int)'Q') setCommand(parser->inputToCommandList("notui"));
-        else displayManager -> handleKey(ch);
+        if (ch>=48 && ch<58){
+            count = count*10+ch-48;
+            displayManager->echo("  " + NumberToString(count));
+        }
+        else{
+            if (count == 0) count =1;
+            for (int i=0;i<count;i++)
+                if (ch == 3)  setCommand(parser->inputToCommandList("exit"));
+                else if (ch == (int)'Q') setCommand(parser->inputToCommandList("notui"));
+                else displayManager -> handleKey(ch);
+            count = 0;
+        }
     }
 
     commandReady = false;

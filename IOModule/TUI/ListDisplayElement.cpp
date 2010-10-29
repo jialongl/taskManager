@@ -629,24 +629,38 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
     drawCalendar(curTime,startRow,startCol);
     bool flag = false;
 
+    int count = 0;
     while (!flag){
         int ch = getch();
+        if (ch >= 48 && ch < 58) count = count * 10 + ch - 48;
         switch (ch){
             case 10:
             case 13:
                 flag = true;
                 break;
             case KEY_LEFT:
-                curTime -= 24*60*60;
+                if (count ==0) count = 1;
+                for (int i=0;i<count;i++)
+                    curTime -= 24*60*60;
+                count = 0;
                 break;
             case KEY_RIGHT:
-                curTime += 24*60*60;
+                if (count ==0) count = 1;
+                for (int i=0;i<count;i++)
+                    curTime += 24*60*60;
+                count = 0;
                 break;
             case KEY_UP:
-                curTime -= 7 * 24*60*60;
+                if (count ==0) count = 1;
+                for (int i=0;i<count;i++)
+                    curTime -= 7 * 24*60*60;
+                count = 0;
                 break;
             case KEY_DOWN:
-                curTime += 7 * 24*60*60;
+                if (count ==0) count = 1;
+                for (int i=0;i<count;i++)
+                    curTime += 7 * 24*60*60;
+                count = 0;
                 break;
             default:
                 break;
@@ -667,24 +681,38 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
     int curFoc = 0;
     drawTime(year,mon,day,hourMinSec,curFoc,startRow,startCol);
     flag = false;
+    count = 0;
     while (!flag){
         int ch = getch();
+        if (ch >= 48 && ch < 58) count = count * 10 + ch - 48;
         switch (ch){
             case 10:
             case 13:
                 flag = true;
                 break;
             case KEY_LEFT:
-                if (curFoc!=0) curFoc--;
+                if (count == 0) count = 1;
+                for (int i=0;i<count;i++)
+                    if (curFoc!=0) curFoc--;
+                count = 0;
                 break;
             case KEY_RIGHT:
-                if (curFoc!=3) curFoc++;
+                if (count == 0) count = 1;
+                for (int i=0;i<count;i++)
+                    if (curFoc!=3) curFoc++;
+                count = 0;
                 break;
             case KEY_UP:
-                hourMinSec[curFoc] = (hourMinSec[curFoc] + limit[curFoc] - 1) % limit[curFoc]; 
+                if (count == 0) count = 1;
+                for (int i=0;i<count;i++)
+                    hourMinSec[curFoc] = (hourMinSec[curFoc] + limit[curFoc] - 1) % limit[curFoc]; 
+                count = 0;
                 break;
             case KEY_DOWN:
-                hourMinSec[curFoc] = (hourMinSec[curFoc] + limit[curFoc] + 1) % limit[curFoc]; 
+                if (count == 0) count = 1;
+                for (int i=0;i<count;i++)
+                    hourMinSec[curFoc] = (hourMinSec[curFoc] + limit[curFoc] + 1) % limit[curFoc]; 
+                count = 0;
                 break;
             default:
                 break;
@@ -761,7 +789,7 @@ void ListDisplayElement::drawTime(int year,int mon,int day,int hourMinSec[],int 
 
 }
 void ListDisplayElement::drawSelectNumber(){
-    string st =" "+ NumberToString(selectTask+1)+"\/"+NumberToString(tasks.size())+" Tasks ";
+    string st =" "+ NumberToString(selectTask+1)+" / "+NumberToString(tasks.size())+" Tasks ";
     int mx,my;
     getmaxyx(stdscr,mx,my);
     my -= st.length();
