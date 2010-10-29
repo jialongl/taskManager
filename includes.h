@@ -38,6 +38,7 @@ using namespace std;
 #define _SELECT COLOR_PAIR(6)
 #define _EDIT COLOR_PAIR(7)
 #define _EDITTED COLOR_PAIR(8)//A_BOLD//COLOR_PAIR(8)
+#define _TIMELINE COLOR_PAIR(9)
 
 
 #endif

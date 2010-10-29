@@ -46,7 +46,9 @@ void ListDisplayElement::draw(){
             wattroff(listWindow,_SELECT);
             wattron(listWindow,_NORMAL);
         }
+        if (is_time(lines[i])) wattron(listWindow,_TIMELINE);
         wprintw(listWindow,lines[i].c_str());
+        if (is_time(lines[i])) wattroff(listWindow,_TIMELINE);
     }
     wattroff(listWindow,_SELECT);
     wattron(listWindow,_NORMAL);
@@ -70,7 +72,9 @@ void ListDisplayElement::naiveDraw(){
             wattroff(listWindow,_SELECT);
             wattron(listWindow,_NORMAL);
         }
+        if (is_time(lines[i])) wattron(listWindow,_TIMELINE);
         wprintw(listWindow,lines[i].c_str());
+        if (is_time(lines[i])) wattroff(listWindow,_TIMELINE);
     }
     wattroff(listWindow,_SELECT);
     wattron(listWindow,_NORMAL);
@@ -853,4 +857,8 @@ string ListDisplayElement::lineWithNewGroup(int i,string group){
     line += string(my-16-firstHalf-grp.size(),'-');
 
     return line;
+}
+bool ListDisplayElement::is_time(string st){
+    int l = st.size();
+    return (st[l-1] == ' ' && st[l-2] == ' '&& st[l-3] == '>' && st[l-4] == ' ' && st[l-9] == ' ' && st[l-13] == ' ');
 }

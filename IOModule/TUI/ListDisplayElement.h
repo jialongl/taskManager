@@ -54,7 +54,7 @@ public:
     void drawSelectNumber();
     string formatDate(time_t t);
     string lineWithNewGroup(int i,string group);
-
+    bool ListDisplayElement::is_time(string st);
 };
 
 #endif

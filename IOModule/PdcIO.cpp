@@ -14,6 +14,7 @@ PdcIO::PdcIO(Parser* pser){
         init_pair(6, COLOR_GREEN, COLOR_BLACK);
         init_pair(7, COLOR_YELLOW, COLOR_BLACK);
         init_pair(8, COLOR_YELLOW, COLOR_BLACK);
+        init_pair(9, COLOR_YELLOW, COLOR_BLACK);
         attron(_NORMAL);
         clear();
 //        attron(COLOR_PAIR(1));
