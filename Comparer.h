@@ -8,9 +8,9 @@
 
 class Comparer{
  private:
-  vector<sortKeyword_e> *keywords;
 
  public:
+  vector<sortKeyword_e> *keywords;
   Comparer(vector<sortKeyword_e> keys);
   Comparer();
   ~Comparer();

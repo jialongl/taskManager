@@ -225,7 +225,7 @@ void Parser::ls_parse() {
 
     else if ( *iter == "-f" ) {
 
-      if (args.size() != 3)
+      if (args.size() < 3)
 	return ;
 
       string s = *(++iter);
@@ -258,8 +258,10 @@ void Parser::ls_parse() {
       while ( ss >> buf ) {
 	if( deadline.find(buf) != string::npos )
 	  cmd->sortKeyword.push_back(DEADLINE);
+
 	else if( serialnumber.find(buf) != string::npos )
 	  cmd->sortKeyword.push_back(SERIAL_NUMBER);
+
 	else if( priority.find(buf) != string::npos )
 	  cmd->sortKeyword.push_back(PRIORITY);
       }
@@ -534,12 +536,30 @@ string Parser::resultToOutput(Result *result){
     stringstream ss("");
 
     if (result->detailed == false) {
-      for (unsigned i = 0; i < ret.size(); i++){
+
+      for (unsigned i = 0; i < ret.size(); i++) {
 	ss << endl << ret.at(i)-> getSerialNumber();
-	if (ret.at(i)->getIsFinished()) ss<<" f";
+
+	if (ret.at(i)->getIsFinished())
+	  ss<<" f";
+
 	string s = ret.at(i)->getDescription();
-	if (s.length()>50) s = s.substr(0,50) + "...";
+
+	if (s.length()>50)
+	  s = s.substr(0,50) + "...";
+
 	ss<< "\t" << s;
+
+	for (int i=0; i < result->comparer->keywords->size(); i++) {
+	  if (result->comparer->keywords->at(i) == DEADLINE)
+	    ss<< "\t" << formatTime ( ret.at(i)->getDeadline() );
+
+	  else if (result->comparer->keywords->at(i) == PRIORITY)
+	    ss<< "\t" << ret.at(i)->getPriority();
+
+	  // else if (result->comparer->keywords.at(i) == serialNumber)
+	  //   ss<< "\t" << ret.at(i)->getSerialNumber;
+	}
       }
 
       ss<< endl;
