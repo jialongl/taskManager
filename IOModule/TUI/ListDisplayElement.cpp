@@ -200,6 +200,15 @@ string ListDisplayElement::formatDate(time_t t){
     };
     struct tm* datetime = localtime(&t);
     string st = "< "+ NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year+1900)+" >  ";
+    time_t curTime = currentTime();
+    datetime = localtime(&curTime);
+    datetime->tm_hour = 0;
+    datetime->tm_min = 0;
+    datetime->tm_sec = 0;
+    curTime = mktime(datetime); 
+    if (t>= curTime && t< curTime+24*60*60) st =  "< ---- Today ---- >  ";
+    if (t>= curTime+24*60*60 && t< curTime+48*60*60) st =  "< -- Tomorrow --- >  ";
+    if (t>= curTime-24*60*60 && t< curTime) st =  "< -- Yesterday -- >  "; 
     int mx,my;
     getmaxyx(stdscr,mx,my);
     st = string((my-2-st.length()),' ') + st; 
@@ -860,5 +869,5 @@ string ListDisplayElement::lineWithNewGroup(int i,string group){
 }
 bool ListDisplayElement::is_time(string st){
     int l = st.size();
-    return (st[l-1] == ' ' && st[l-2] == ' '&& st[l-3] == '>' && st[l-4] == ' ' && st[l-9] == ' ' && st[l-13] == ' ');
+    return (st[l-1] == ' ' && st[l-2] == ' '&& st[l-3] == '>' && st[l-4] == ' ');// && st[l-9] == ' ' && st[l-13] == ' ');
 }
