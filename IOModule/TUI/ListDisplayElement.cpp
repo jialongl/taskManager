@@ -17,8 +17,10 @@ ListDisplayElement::ListDisplayElement(TaskList* taskList, Parser* pser,DisplayM
     int starty = 0;
     listWindow = create_newwin(height, width, startx, starty); 
     //draw(); 
+    wattron(listWindow, _NORMAL);
 }
 ListDisplayElement::~ListDisplayElement(){
+    wattroff(listWindow, _NORMAL);
     destroy_win(listWindow);
 };
 
@@ -39,11 +41,15 @@ void ListDisplayElement::draw(){
     wprintw(listWindow, s.c_str());   */ 
     for (int i=navigateRow;i<lines.size()&&i<navigateRow+mx-2;i++){
         wmove(listWindow,i+1-navigateRow,1);
-        if (i >= taskStartAt[selectTask]) wattron(listWindow,A_BOLD);
-        if (selectTask != tasks.size()-1 && i >= taskFinishAt[selectTask]) wattroff(listWindow,A_BOLD);
+        if (i >= taskStartAt[selectTask]) wattron(listWindow,_SELECT);
+        if (selectTask != tasks.size()-1 && i >= taskFinishAt[selectTask]){
+            wattroff(listWindow,_SELECT);
+            wattron(listWindow,_NORMAL);
+        }
         wprintw(listWindow,lines[i].c_str());
     }
-    wattroff(listWindow,A_BOLD);
+    wattroff(listWindow,_SELECT);
+    wattron(listWindow,_NORMAL);
     wrefresh(listWindow);
     drawSelectNumber();
     move(0,my-1);
@@ -59,11 +65,15 @@ void ListDisplayElement::naiveDraw(){
     wprintw(listWindow, s.c_str());   */ 
     for (int i=navigateRow;i<lines.size()&&i<navigateRow+mx-2;i++){
         wmove(listWindow,i+1-navigateRow,1);
-        if (i >= taskStartAt[selectTask]) wattron(listWindow,A_BOLD);
-        if (selectTask != tasks.size()-1 && i >= taskFinishAt[selectTask]) wattroff(listWindow,A_BOLD);
+        if (i >= taskStartAt[selectTask]) wattron(listWindow,_SELECT);
+        if (selectTask != tasks.size()-1 && i >= taskFinishAt[selectTask]){
+            wattroff(listWindow,_SELECT);
+            wattron(listWindow,_NORMAL);
+        }
         wprintw(listWindow,lines[i].c_str());
     }
-    wattroff(listWindow,A_BOLD);
+    wattroff(listWindow,_SELECT);
+    wattron(listWindow,_NORMAL);
     wrefresh(listWindow);
     drawSelectNumber();
     move(0,my-1);
@@ -269,6 +279,9 @@ void ListDisplayElement::reconstructLines(){
         taskFinishAt.push_back(lines.size());
     }
     taskStartAt.push_back(lines.size());
+    for (int i=0;i<lines.size();i++){
+        while (lines[i].length() < my-2) lines[i].push_back(' ');
+    }
 }
 
 void ListDisplayElement::refreshEditArea(WINDOW* win, int row0, int row1, int col0, int col1, string newStr, int startPos,int* cR, int* cC){
@@ -285,7 +298,7 @@ void ListDisplayElement::refreshEditArea(WINDOW* win, int row0, int row1, int co
     *cC = curCol;
 }
 string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int col1,string st0){
-    attron(A_REVERSE);
+    attron(_EDIT);
     row0+=win->_begy+1;
     row1+=win->_begy+1;
     col0+=win->_begx+1;
@@ -417,7 +430,8 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
         }
     }
     curs_set(0);
-    attroff(A_REVERSE);
+    attroff(_EDIT);
+    attron(_EDITTED);
     curRow = row0, curCol = col0;
     tmp = 0;
     for (int i=row0;i<=row1;i++)
@@ -426,6 +440,9 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
              move(i,j);
              addch(tmp<newStr.size()?newStr[tmp++]:' ');
         }
+    attroff(_EDITTED);
+    attron(_NORMAL);
+    curRow = row0, curCol = col0;
     move(row0,col0);
     return newStr;
 }
@@ -437,19 +454,23 @@ vector<string> ListDisplayElement::editSelect(){
     getmaxyx(listWindow, mx, my);
     string newGrp = editArea(listWindow,taskStartAt[selectTask] - navigateRow,taskStartAt[selectTask] - navigateRow,13,max(23,13+(tasks[selectTask]->getGroup()).size()),tasks[selectTask]->getGroup());
     move(taskStartAt[selectTask] - navigateRow + 3, 1);
-    attron(A_BOLD);
+    attron(_SELECT);
     printw("%s",lineWithNewGroup(selectTask,newGrp).c_str());
-    attroff(A_BOLD);
+    attroff(_SELECT);
+    attron(_NORMAL);
     int theRow = taskStartAt[selectTask]- navigateRow + listWindow->_begy;
     if (theRow + 12 >= mx+listWindow->_begy) theRow= mx+listWindow->_begy-13;
     int newTime = datePicker(tasks[selectTask]->getDeadline(),theRow,45);//editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
     naiveDraw();
     move(taskStartAt[selectTask]+1- navigateRow + listWindow->_begy+1,48);
+    attron(_EDITTED);
     printw(((formatTime(newTime)).substr(0,24)).c_str());
+    attroff(_EDITTED);
     move(taskStartAt[selectTask] - navigateRow +listWindow->_begy+1,14);
-    attron(A_BOLD);
+    attron(_SELECT);
     printw("%s------------------",newGrp.c_str());
-    attroff(A_BOLD);
+    attroff(_SELECT);
+    attron(_NORMAL);
     string newPri = editArea(listWindow,taskStartAt[selectTask]+2- navigateRow,taskStartAt[selectTask]+2- navigateRow,25,27,NumberToString(tasks[selectTask]->getPriority()));
     string newDetail = editArea(listWindow,taskStartAt[selectTask]+4- navigateRow,taskFinishAt[selectTask] -2- navigateRow,15,my-13,tasks[selectTask]->getDescription());
     //displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
@@ -586,14 +607,16 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
 //    printw("%34s"," ");
     curRow++;
     move(curRow,startCol);
-    attron(A_REVERSE);
+    attron(_REVERSE);
     printw("%15s %4d              ",months[curMon].c_str(),curYear);
-    attroff(A_REVERSE);
+    attroff(_REVERSE);
+    attron(_NORMAL);
     curRow++;
     move(curRow,startCol);
-    attron(A_UNDERLINE); 
+    attron(_UNDERLINE); 
     printw("  Week  | Su Mo Tu We Th Fr Sa    ");
-    attroff(A_UNDERLINE);
+    attroff(_UNDERLINE);
+    attron(_NORMAL);
     curRow++;
     for (int i=0;i<6;i++){
         datetime = localtime(&startTime);
@@ -604,11 +627,17 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
         for (int j=0;j<7;j++){
             move(curRow,curCol);
             datetime = localtime(&startTime);
-            if (datetime->tm_mon == curMon) attron(A_BOLD);
-            if (datetime->tm_mday == curDay && datetime->tm_mon == curMon) attron(A_REVERSE);
+            if (datetime->tm_mon == curMon) attron(_BOLD);
+            if (datetime->tm_mday == curDay && datetime->tm_mon == curMon) attron(_REVERSE);
             printw("%3d",datetime->tm_mday);
-            if (datetime->tm_mday == curDay && datetime->tm_mon == curMon) attroff(A_REVERSE);
-            if (datetime->tm_mon == curMon) attroff(A_BOLD);
+            if (datetime->tm_mday == curDay && datetime->tm_mon == curMon) {
+                attroff(_REVERSE);
+                attron(_NORMAL);
+            }
+            if (datetime->tm_mon == curMon) {
+                attroff(_BOLD);
+                attron(_NORMAL);
+            }
             startTime += 24*60*60;
             curCol+=3;
         }
@@ -747,9 +776,10 @@ void ListDisplayElement::drawTime(int year,int mon,int day,int hourMinSec[],int 
 //    printw("%34s"," ");
     curRow++;
     move(curRow,startCol);
-    attron(A_REVERSE);
+    attron(_REVERSE);
     printw("%13d %3s %4d            ",day,months[mon].c_str(),year);
-    attroff(A_REVERSE);
+    attroff(_REVERSE);
+    attron(_NORMAL);
     string hour = NumberToString(hourMinSec[0]);
     if (hour.length() < 2) hour = '0'+hour;
     string min = NumberToString(hourMinSec[1]);
@@ -763,25 +793,35 @@ void ListDisplayElement::drawTime(int year,int mon,int day,int hourMinSec[],int 
         if (i==1){
             move(curRow,startCol);
             printw("%10s"," ");
-            attron(A_UNDERLINE);
+            attron(_UNDERLINE);
             printw("%4s %4s %4s","Hour","Min","Sec");
-            attroff(A_UNDERLINE);
+            attroff(_UNDERLINE);
+            attron(_NORMAL);
             printw("%10s"," ");
         }
         if (i==2){
             move(curRow,startCol);
             printw("%10s"," ");
-            if (curFoc == 0) attron(A_REVERSE);
+            if (curFoc == 0) attron(_REVERSE);
             printw("%3s",hour.c_str());
-            if (curFoc == 0) attroff(A_REVERSE);
+            if (curFoc == 0){
+                attroff(_REVERSE);
+                attron(_NORMAL);
+            }
             printw(" :");
-            if (curFoc == 1) attron(A_REVERSE);
+            if (curFoc == 1) attron(_REVERSE);
             printw("%3s",min.c_str());
-            if (curFoc == 1) attroff(A_REVERSE);
+            if (curFoc == 1) {
+                attroff(_REVERSE);
+                attron(_NORMAL);
+            }
             printw(" :");
-            if (curFoc == 2) attron(A_REVERSE);
+            if (curFoc == 2) attron(_REVERSE);
             printw("%3s",sec.c_str());
-            if (curFoc == 2) attroff(A_REVERSE);
+            if (curFoc == 2) {
+                attroff(_REVERSE);
+                attron(_NORMAL);
+            }
             printw("%10s"," ");
         }
     }

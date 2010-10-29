@@ -98,16 +98,18 @@ void DisplayManager::showHelp(){
     for (int i = 0;i<numOfButtons;i++){
         move(i+3,1);
         printw("    <");
-        attron(A_BOLD);
+        attron(_BOLD);
         printw("%s",buttons[i].c_str());
-        attroff(A_BOLD);
+        attroff(_BOLD);
+        attron(_NORMAL);
         printw(">\t%s",funcs[i].c_str());
     }
 
     move(mx-3,5);
-    attron(A_BLINK);
+    attron(_BLINK);
     printw("press any key to continue");
-    attroff(A_BLINK);
+    attroff(_BLINK);
+    attron(_NORMAL);
     refresh();
 
     getch();
@@ -121,10 +123,11 @@ void DisplayManager::redraw(){
     curs_set(0);
     string title = "Task Manager V0.15     TUI with PDCurses";
     int ypos = (my - title.length()) / 2;
-    attron(A_REVERSE);
+    attron(_REVERSE);
     mvhline(0,0,'-', my);
     mvprintw(0,ypos,title.c_str());
-    attroff(A_REVERSE);
+    attroff(_REVERSE);
+    attron(_NORMAL);
     int numOfButtons = 2;
     string buttons[] = {"Ctrl-c","H"};
     string funcs[] = {"exit","show help"};
@@ -136,9 +139,10 @@ void DisplayManager::redraw(){
         if (col+numOfSpace+buttons[i].size()+funcs[i].size() >= my){ row++; col=0;}
         move (row,col);
         printw("    <");
-        attron(A_BOLD);
+        attron(_BOLD);
         printw("%s",buttons[i].c_str());
-        attroff(A_BOLD);
+        attroff(_BOLD);
+        attron(_NORMAL);
         printw(">: %s",funcs[i].c_str());
         col =col+numOfSpace+buttons[i].size()+funcs[i].size(); 
     }
@@ -168,8 +172,9 @@ void DisplayManager::echo(string s){
     move(mx - 1,0);
     hline(' ',my);
     move(mx - 1,0);
-    attron(A_BOLD);
+    attron(_BOLD);
     printw("%s",s.c_str());
-    attroff(A_BOLD);
+    attroff(_BOLD);
+    attron(_NORMAL);
     refresh();
 }

@@ -5,6 +5,18 @@ PdcIO::PdcIO(Parser* pser){
         commandReady = false;
         parser = pser;
         initscr();
+        start_color();
+        init_pair(1, COLOR_WHITE, COLOR_BLACK);
+        init_pair(2, COLOR_BLACK, COLOR_WHITE);
+        init_pair(3, COLOR_CYAN, COLOR_BLACK);
+        init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+        init_pair(5, COLOR_CYAN, COLOR_BLACK);
+        init_pair(6, COLOR_GREEN, COLOR_BLACK);
+        init_pair(7, COLOR_YELLOW, COLOR_BLACK);
+        init_pair(8, COLOR_YELLOW, COLOR_BLACK);
+        attron(_NORMAL);
+        clear();
+//        attron(COLOR_PAIR(1));
 		refresh();
         raw();
         keypad(stdscr, TRUE);
@@ -15,6 +27,7 @@ PdcIO::PdcIO(Parser* pser){
 PdcIO::~PdcIO(){
         delete displayManager;
         clear();
+        attroff(COLOR_PAIR(1));
         endwin();
 }
 
@@ -85,23 +98,23 @@ bool PdcIO::confirm(string prompt){
         else if (i==height-1) printw(" +--------------------------------+ ");
         else printw(" |%32s| "," ");
     }
-    attron(A_BOLD);
+    attron(_BOLD);
     for (int i=0;i<lines.size();i++){
         move(startRow+i+1,startCol+2);
         printw("%s",(lines[i]).c_str());
     }
-    attroff(A_BOLD);
+    attroff(_BOLD);
     int colYes = 12;
     int colNo = 19; 
     bool flag = false;
     move(startRow+lines.size()+1,startCol+colYes);
-    if (flag) attron(A_REVERSE);
+    if (flag) attron(_REVERSE);
     printw("Yes");
-    if (flag) attroff(A_REVERSE);
+    if (flag) attroff(_REVERSE);
     move(startRow+lines.size()+1,startCol+colNo);
-    if (!flag) attron(A_REVERSE);
+    if (!flag) attron(_REVERSE);
     printw("No ");
-    if (!flag) attroff(A_REVERSE);
+    if (!flag) attroff(_REVERSE);
 
     bool finished = false;
     while (!finished){
@@ -121,13 +134,13 @@ bool PdcIO::confirm(string prompt){
                 break;
         }
         move(startRow+lines.size()+1,startCol+colYes);
-        if (flag) attron(A_REVERSE);
+        if (flag) attron(_REVERSE);
         printw("Yes");
-        if (flag) attroff(A_REVERSE);
+        if (flag) attroff(_REVERSE);
         move(startRow+lines.size()+1,startCol+colNo);
-        if (!flag) attron(A_REVERSE);
+        if (!flag) attron(_REVERSE);
         printw("No ");
-        if (!flag) attroff(A_REVERSE);
+        if (!flag) attroff(_REVERSE);
     } 
     move(0,my);
     return flag;

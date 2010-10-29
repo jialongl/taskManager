@@ -30,5 +30,15 @@ using namespace std;
 #include "enums.h"
 //#include "util.h"
 
+#define _NORMAL COLOR_PAIR(1)
+#define _REVERSE A_REVERSE//COLOR_PAIR(2)
+#define _BOLD COLOR_PAIR(3)
+#define _UNDERLINE COLOR_PAIR(4)
+#define _BLINK COLOR_PAIR(8)
+#define _SELECT COLOR_PAIR(6)
+#define _EDIT COLOR_PAIR(7)
+#define _EDITTED COLOR_PAIR(8)//A_BOLD//COLOR_PAIR(8)
+
+
 #endif
 
