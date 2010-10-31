@@ -514,21 +514,13 @@ All tasks due today will be listed out.
 
 A. Compilation and Installation
 
+1. Windows
+2. *nix
 
-In linux / mac os x, this is handy. Start a shell, go to where the taskManager source folder is located, and type
-
-    $ sudo make && make install
-
-make install is optional. It copys taskManager to /usr/bin and enables "$ man taskManager" to show the man page of taskManager.
-
-To build taskManager with TUI, ncurses library is needed. 
-Most linux should come with it. If not, it can be installed with yum or apt-get.
-Most macs also come with it. If not, it can be installed with mac ports. 
-
-In windows, taskManager can be built with visual studio following these steps:
+In windows, taskManager can be built with visual studio with following these steps:
 
 1. Start visual c++
-2. New a win32 console project
+2. Create a win32 console project
 3. Drag all source files into the solution folder on the left bar. Files should be automatically categorized into header files and source files.
 4. Edit project configuration, under general, set character set to be multi-byte characters. 
 5. Edit project configuration, under linker, add pdcurses.lib to additional librarys and add the folder containing pdcurses.lib to library search directories.
@@ -539,6 +531,20 @@ To build taskManager with TUI, pdcurses library is needed.
 It is free and can be downloaded from here:
 http://sourceforge.net/projects/pdcurses/files/
 
+Edit the project property to include the pdcurses.lib and in the linker options.
+
+
+
+In Linux / Mac OS: Start a shell, go to where the taskManager source folder is located, and type
+
+    $ make
+    $ sudo make install
+
+"make install" is optional. It just makes taskManager available system wide, which copys taskManager to /usr/bin and enables "man taskManager" to show the man page of taskManager.
+
+To build taskManager with TUI, ncurses library is needed. 
+Most Linux distributions should come with it. If not, it can be installed with the package manager (apt-get, yum, pacman etc).
+Most Macs also come with it. If not, it can be installed with mac ports. 
 
 =================================
 The End.
