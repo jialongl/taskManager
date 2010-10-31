@@ -25,7 +25,7 @@ int max(int x,int y)
 
 string formatTime(int x){
 	time_t  t = x;
-	return (string)ctime(&t);	
+	return ((string)ctime(&t)).substr(0,24);	
 }
 
 int StringToNum(string s){

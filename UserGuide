@@ -1,0 +1,545 @@
+=================================
+A Complete User Guide to 
+    TaskManager V2.0 
+=================================
+
+1. A one minute tutorial
+2. Some more commands
+3. Commands with options
+4. A text based interactive user interface
+5. Advanced topics
+A. Compilation and Installation
+
+-----------------------------------
+
+1. A one minute tutorial
+
+Step1: Start taskManager shell
+
+TaskManager can be started form shell / command line like this:
+
+    $ cd the/folder/of/taskManager
+    $ ./taskManager   <linux/mac os> *
+    $ taskManager.exe <windows>
+
+Notice: Linux version can run taskManger at any directory with 
+            $ taskManager
+        After
+            $ sudo make install
+
+Step2: Add some tasks
+
+    > add "Sample task 1"
+    > add "Sample task 2"
+    TaskManager: This task is highly similiar to some existing task, do you really want to add it? yes
+
+To add a task, simply use the add command followed by the description of the task in a pair of quotation marks. 
+If no error message is shown, the task is successfully added to your task list.
+TaskManager mey prompt for confirmation if the task to be added is highly similar to one or more existing task(s), like in the example, to prevent adding same task repeatly.
+
+Step3: List the added tasks
+
+    > ls
+
+    1   Sample task 1
+    2   Sample task 2
+
+To see a list of added tasks, use the ls command. By default, the taskManager shows the serial number of the task and the description of the task.
+
+Step4: Mark a task as finished
+
+    > finish 2
+    > ls
+
+    1   Sample task 1
+    2 f Sample task 2
+ 
+To finish a existing task, use the finish command followed by the serial number of the task to finish. 
+Notice that for finished task, a "f" is shown between serial number and task description.
+
+Step5: Remove a task
+
+    > ls
+
+    1 f Sample task 1
+    2   Sample task 2
+
+    > rm 1
+    TaskManager: Do you really want to remove this task permanently? yes
+    > ls
+
+    2   Sample task 2
+
+To remove a existing task, use the rm command followed by the serial number of the task to remove.
+TaskManager may prompt from confirmation when removing tasks.
+
+Step6: Exit from taskManager
+
+    > exit
+
+To quit from taskManager, use the exit command. 
+All changes will be automatically saved.
+
+
+-----------------------------------
+
+2. Some more commands
+
+2.1 Read , Import & Export commands
+
+The data of added tasks is stored in a xml file by taskManager. By default it is located at:
+
+~/record.xml                <linux/mac os>
+%USERPROFILE%\record.xml    <windows>
+
+It can be edited using your favourate xml editor.
+TaskManager also support import from / export to different files. This is done by read, import and export command.
+
+2.1.1 Read
+
+Read command reads an xml file, list all the tasks it contains without affecting current task list. 
+This is helpful when you only want to peek the content of a xml file without really importing it.
+
+    > ls
+
+    1   Sample task 2
+
+    > read mytasks.xml
+
+    1 f CS2103 midTerm Sep 29 06:30 - 07:30 pm MPSH 1B
+    2 f CS3230 midTerm Oct 15 06:00 pm
+    3 f CS3241 midTerm Oct 07 lecture
+    4 f CS3244 midTerm Oct 04 lecture
+    5 f ST2132 midTerm Oct 08 LT33 12:15 - 1:30 pm
+
+    > ls
+
+    1   Sample task 2
+
+Notice: the file name is not quoted. If the file name contains space, please quote it with a pair of quotation marks.
+
+2.1.2 Import
+
+Import command is similar to read command. It reads the content of xml file and adds all tasks it contains to current task list.
+
+    > ls
+
+    1   Sample task 2
+
+    > import mytasks.xml
+
+    1   Sample task 2
+    2 f CS2103 midTerm Sep 29 06:30 - 07:30 pm MPSH 1B
+    3 f CS3230 midTerm Oct 15 06:00 pm
+    4 f CS3241 midTerm Oct 07 lecture
+    5 f CS3244 midTerm Oct 04 lecture
+    6 f ST2132 midTerm Oct 08 LT33 12:15 - 1:30 pm
+
+Notice: Sample task 2 is still in task list. Importing tasks will not erase existing tasks. 
+
+2.1.3 Export
+
+Export command export current task list to xml file or html file.
+
+    > export sampletasks.xml
+    > exit
+    $ cat sampletasks.xml
+    <taskList>
+        <task>
+            <serialNumber>1</serialNumber>
+            <deadline>1288473083</deadline>
+            <priority>0</priority>
+            <description>Sample task 2</description>
+            <group>default</group>
+            <isFinished>0</isFinished>
+        </task>
+    </taskList>
+
+Notice: Currently export don't support environmental variable in path. E.g. export ~/abc.xml will not export the file to /home/my/user/name/.
+ 
+Export can also be used to generate a html file. This file can be browsed using web browser later.
+    
+    > export -html sampletasks.html
+    > exit
+    $ firefox sampletasks.html
+
+    //-------- Screen shot of browser here -----------
+
+Notice: Page may not correctly render in IE 6 or its earlier version.
+
+2.2 Task command
+
+    > task 1
+
+       Number:  1       Deadline:   Sun Oct 31 05:11:23 2010
+     Priority:  0         Status:   Doing
+        Group:  default
+      Details:
+        Sample task 2
+
+To show detail information of a task, use the task command followed by serial number of the task.
+
+Notice: Adding tasks with more detailed information is covered in chapter 3.
+        In this example, default values are shown.
+
+2.3 Pri command
+
+    > pri 1 10
+    > task 1
+
+       Number:  1       Deadline:   Sun Oct 31 05:11:23 2010
+     Priority:  10        Status:   Doing
+        Group:  default
+      Details:
+        Sample task 2
+
+To set or change the priority of a task, use the pri command followed by serial number of tast and new priority.
+Priority is typically a number between -20 and 20. By default, the priority of a newly added task is set to be 0.
+
+2.4 Edit command
+
+    > edit 1 -d "Sample task 3" -p 12 -t 1d -g SampleGroup -f yes
+    > task 1
+
+       Number:  1       Deadline:   Mon Nov  1 05:47:59 2010
+     Priority:  12        Status:   Finished
+        Group:  SampleGroup
+      Details:
+        Sample task 3
+
+To edit a task, edit command is used like this:
+    > edit <task serial number> -d "<new description>" -p <new priority> -t <new deadline> -g <new group> -f <finished or not>
+
+Only serial number is compulsory. E.g. to finish a task, 
+    > finish 1 
+is equivalent to:     
+    > edit 1 -f yes 
+
+Notice: -t 1d means setting the deadlne to be 1 day later. Time format that taskManager accepts is discussed in chapter 3.1
+
+2.5 Undo command
+
+    > undo
+
+Undo the last command. 
+
+Notice: The undo command will not undo commands like ls, export, undo and tui.
+
+2.6 Redo command
+
+    > redo
+
+Redo the last undo. If more than one undo command executed, redo the next latest one.
+
+-----------------------------------
+
+3. Commands with options
+
+Like edit, some of the commands come with options to support different functionality.
+In this chapter they are introduced command by command.
+
+3.1 Add
+
+Use -t option to add a task with a deadline 
+
+    > add "some task" -t 3d2h 
+
+    taskManager support 3 types of time format: 
+    Plus format:        <number:a>d<number:b>h<number:c>m
+                        Means a days b hours c minutes later. i.e. current time plus a day b hours c minutes.
+                        None of them is compulsory
+                        e.g. 3d2h means 3 days 2 hours later.
+    By format:          b<number:a>w<number:b>d<number:c>h<number:d>m
+                        Means before c hour d minutes on the b-th day of a-th week from now.
+                        None of them is compulsory
+                        e.g. b0w5d means by friday this week.
+                             b2w3d8h means by wednesday 8:00am, 2 weeks later.
+                             b1w means by start of next week, i.e. by the end of this week.
+                             b2d means by the end of tomorrow.
+                             b0d22h means by 10:00pm today.
+                             b10d means by start of the 10-th day from now, i.e. in 10 days including today.
+
+    Unix timestamp:     number of seconds since 1/1/1900 00:00:00
+
+Use -p option to add a task with a priority
+
+    > add "some important task" -p 20
+
+Use -g option to specify a group for a task
+
+    > add "the task with group" -g SampleGroup
+
+Notice: If group contains spaces use a pair of quotation mark to quote it.
+        Options are not compulsory.
+        Different options can be used together. E.g. add "some task" -p 10 -g "special task" -t 4d 
+
+3.2 Ls
+
+Use -s to sort the task list
+
+    > ls -s "deadline priority"
+    
+    A more general format is:
+
+    > ls -s "<search keyword 1> <search keyword 2> ..."
+
+    The listed tasks will be sorted by keyword 1 then keyword 2 ...
+    
+    Available search keywords are: deadline priority serialnumber. Prefix of a keyword is also acceptable. e.g. >ls -s "p" will sort the list by priority
+    e.g.
+
+    > ls -s "p d"
+
+    1   Sample task 1. This also has high priorty   10  Sun Oct 31 06:49:09 2010
+    2   Sample task 2. This has high priority       10  Mon Nov  1 06:54:42 2010
+    3   Sample task 3. This is the latest           0   Tue Nov  2 06:54:37 2010
+
+
+Use -k to filter tasks with a keyword
+
+    > ls -k *Sam?le*task
+
+    ? means can be replaced with any character.
+    * means can be replaced with any number of ?s. (including 0)
+    keyword is case insensitive
+
+    E.g.    "This is a sample with a important task" will match *Sam?le*task by letting first * to be "This is a ", ? to be 'p' and second "*" to be " with a important " 
+            "samqleTask" will also match *sam?le*task by letting both * to be empty string and ? to be 'q' 
+
+Use -f to show/hide finished tasks
+
+    > ls -f yes
+
+    Show only finished tasks
+
+    > ls -f N
+
+    Show only doing tasks
+
+Use -g to show tasks of a specific group
+
+    > ls -g SampleTask
+
+    Show only tasks from SampleTask group
+
+Notice: Different options can be used together.
+        When more then one restrictive options are there, conjuction of these restrictions are used.
+        e.g. ls -g SampleTask -f y will show finished tasks from SampleTask group. 
+
+3.3 Rm
+
+Use -g option to remove a group of tasks
+
+    > rm -g SampleTask
+
+    Remove the entire SampleTask group.
+
+Notice: Remove can be used to remove a list of tasks.
+        e.g. > rm 1 2 3  removes tasks 1 2 and 3.
+  
+3.4 Edit
+
+    This is discussed in chapter 2.4.
+
+3.5 Export
+
+    This is discussed in chapter 2.1.3.
+
+Notice: Commands like finish, rm, export, etc. donnot support all task selective options like -g -k -f.
+        Execute these commands on a selected task set can be done with command piping.
+        This is discussed in chapter 5.1
+-----------------------------------
+
+4. A text based interactive user interface
+
+
+-----------------------------------
+
+5. Advanced topics
+
+5.1 Command piping
+
+    > ls | rm
+
+TaskManager support command piping for most commands. Though it is a bit different from traditional linux/unix pipe.
+Piping in taskManager is done with symbol '|'. When a few taskManager commands are piped together, they are executed one by one from left to right. 
+If one command has output, it is then passed to the next command as input. Only output of the last command is shown.
+
+Examples:
+    
+a) finish all tasks 
+
+    > ls | finish
+
+b) remove all finished tasks
+
+    > ls -f yes | rm
+
+c) import from a file and replace corrent task list
+
+    > ls | rm | import newTasks.xml
+
+d) import all CS2103 group tasks from a file
+
+    > read newTasks.xml | ls -g CS2103 | add
+
+e) export all CS2103 related tasks to a html file
+    
+    > ls -k *CS2103* | export -html cs2103tasks.html
+
+f) show detail of CS2103 tasks, sort by priority
+
+    > ls -g CS2103 | sort "pri" | task
+
+
+5.2 Command mapping
+
+    > map "ls" "ls -f no"
+
+TaskManager support custom command mapping/alias. General format of map is like this:
+
+    > map "<new command>" "<original command>"
+    > map "<pattern of aliased command>" "<pattern of original command>"
+
+A simple mapping is like the previous example. This maps "ls" to "ls -f no", which means hide finished tasks when listing.
+To have another command which shows all tasks, do this:
+
+    > map "lsa" "ls"
+    > map "ls" "ls -f no"
+
+Notice: The order of mapping matters as commands are executed one by one. Reversing the order of these two mapping will not work.
+
+More complex mapping makes use of $ symbol. There are two kind of $ symbols:
+    $0 Means all characters from surrent position
+    $1, $2, $3 .... Means one token
+
+E.g.
+    
+    > map "tomorrow $1" "add $1 -t 1d"
+    > tomorrow "Finish user guide"
+    
+    The latter command will be parsed as
+    > add "Finish user guide" -t 1d
+    and a new task will be added with the deadline to be 1 days later
+
+    > map "do $1 at $2" "add $1 -t $2"
+    > do "Laundry" at 4h
+    
+    The latter command will be parsed as
+    > add "Laundry" -t 4h
+    and a new task called Laundry will be added with the deadline to be 4hours later
+
+    > map "ls $0" "ls -f no $0"
+    > ls
+    > ls -g cs2103
+    
+    The second command will be parsed as
+    > ls -f no 
+    and will list out all unfinished tasks.
+    The third command will be parsed as
+    > ls -f no -g cs2103
+    and will list out all unfinished cs2103 tasks.
+    
+5.3 TaskManager script
+
+Task manager commands can be saved in a single script file and be executed using run command.
+
+    $ cat tmscript 
+    ls
+    map "ls" "ls -f no"
+    ls
+
+    $ ./taskManager
+
+     Task Manager V 0.1 
+     exit<enter> to quit. help<enter> for more instructions
+    =====================================================================
+    > run tmscript
+
+    1 f Sample task 1. This also has high priorty
+    2   Sample task 2. This has high priority
+    3   Sample task 3. This is the latest
+
+
+    2   Sample task 2. This has high priority
+    3   Sample task 3. This is the latest
+
+Notice: The first 3 tasks are the result of the first ls in the script.
+        The last 2 tasks are the result of the second ls in the script.
+        Because "ls" is mapped to "ls -f no", finished tasks are not shown by the second ls.
+        TaskManager scripts are pure text files. ".txt" suffix is omitted here.
+        In windows, suffix is hidden by default. To show it, check corresponding checkbox in tools -> folder options. 
+        Windows may not know how to open file with no suffix.
+
+5.4 The start up script
+
+By default, taskManager executes a special script everytime when it is started. 
+This script is located at:
+
+    ~/.tmrc                 <linux/mac os>
+    %USERPROFILE%\tmrc.txt  <windows>
+
+This file can be editted to include customized setting.
+
+E.g.
+
+    a) To switch to the interactive user interface by default, add this line into tmrc
+    tui
+
+    b) To save a backup file when taskManager is started, add this line into tmrc
+    export /tmp/backupTasklist.xml
+
+    c) To show tasks when taskManager is started, add this line into tmrc
+    ls
+
+    d) To remove finished tasks when taskManager is started, add this line into tmrc
+    ls -f yes | rm
+
+    e) To run a script with all self-defined mappings when taskManager is started, add this line into tmrc
+    run /home/myusername/mymappings
+
+5.5 Talk to taskManager
+
+For all inputs that cannot be recognized by taskManager as a command, it will be treated as natural language sentense. 
+TaskManager will try its best to recognize it and give correct response.
+
+E.g.
+
+    > what do I do today?
+
+All tasks due today will be listed out.    
+
+
+-----------------------------------
+
+A. Compilation and Installation
+
+
+In linux / mac os x, this is handy. Start a shell, go to where the taskManager source folder is located, and type
+
+    $ sudo make && make install
+
+make install is optional. It copys taskManager to /usr/bin and enables "$ man taskManager" to show the man page of taskManager.
+
+To build taskManager with TUI, ncurses library is needed. 
+Most linux should come with it. If not, it can be installed with yum or apt-get.
+Most macs also come with it. If not, it can be installed with mac ports. 
+
+In windows, taskManager can be built with visual studio following these steps:
+
+1. Start visual c++
+2. New a win32 console project
+3. Drag all source files into the solution folder on the left bar. Files should be automatically categorized into header files and source files.
+4. Edit project configuration, under general, set character set to be multi-byte characters. 
+5. Edit project configuration, under linker, add pdcurses.lib to additional librarys and add the folder containing pdcurses.lib to library search directories.
+6. Copy pdcurses.dll to %WINDIR%\system32\ or the directory your executable is generated.
+7. Build the solution
+
+To build taskManager with TUI, pdcurses library is needed.
+It is free and can be downloaded from here:
+http://sourceforge.net/projects/pdcurses/files/
+
+
+=================================
+The End.
+=================================

@@ -31,7 +31,7 @@ void KeyboardIOModule::handleException(exception_e except){
             if (except == EXCEPTION_HELP) displayHelp();
 }
 bool KeyboardIOModule::confirm(string prompt){
-    cout<<prompt;
+    cout<<"TaskManager: "<<prompt<<" ";
     string keyIn;
     getline(cin,keyIn);
     if (keyIn == "Yes" || keyIn == "YES" || keyIn == "Y" || keyIn == "y" || keyIn == "yes"){

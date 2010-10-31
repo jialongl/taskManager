@@ -30,6 +30,6 @@ Command::Command(){
   sortKeyword.clear();
   taskDescription = "";
   filename = "";
-  deadline = currentTime();
+  deadline = 0;//currentTime();
   method = NULLCOMMAND;
 }

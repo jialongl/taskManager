@@ -109,6 +109,7 @@ void Parser::parse_date (string s, long *seconds) {
 void Parser::add_parse() {
   cmd->method = ADD;
   cmd->group = "default";
+  cmd->deadline = currentTime();
 
   for(iter = args.begin(); iter < args.end(); iter++ ) {
     if ( *iter == "-t" ) {
@@ -330,6 +331,7 @@ void Parser::task_parse() {
 
 void Parser::run_parse() {
   cmd->method = RUN;
+  if (args.size()!=1) cmd->filename = args[1];
 }
 
 void Parser::map_parse() {
@@ -550,11 +552,11 @@ string Parser::resultToOutput(Result *result){
 
 	ss<< "\t" << s;
 
-	for (int i=0; i < result->comparer->keywords->size(); i++) {
-	  if (result->comparer->keywords->at(i) == DEADLINE)
+	for (int j=0; j < result->comparer->keywords->size(); j++) {
+	  if (result->comparer->keywords->at(j) == DEADLINE)
 	    ss<< "\t" << formatTime ( ret.at(i)->getDeadline() );
 
-	  else if (result->comparer->keywords->at(i) == PRIORITY)
+	  else if (result->comparer->keywords->at(j) == PRIORITY)
 	    ss<< "\t" << ret.at(i)->getPriority();
 
 	  // else if (result->comparer->keywords.at(i) == serialNumber)

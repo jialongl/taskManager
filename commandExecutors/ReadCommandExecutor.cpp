@@ -77,7 +77,7 @@ Result* ReadCommandExecutor::executeCommand(TaskList* mainTaskList, Command *com
 		}/*else{
 			throw EXCEPTION_FILE_OPEN_FAILED;
 		}*/
-		return new Result(readTaskList,true);
+		return new Result(readTaskList,false);
 	}
 	return new Result();
 }
@@ -89,7 +89,7 @@ Result* ReadCommandExecutor::executeCommand(TaskList* mainTaskList, Result* resu
 		map<int, Task*> tmp = result->getTaskMap();
 		for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){readTaskList->addTask(it->first, it->second);}
 
-		return new Result(readTaskList,true);
+		return new Result(readTaskList,false);
 	}
 	return new Result();
 }

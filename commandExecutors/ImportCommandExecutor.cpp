@@ -82,7 +82,7 @@ Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Command *c
 		}/*else{
 			throw EXCEPTION_FILE_OPEN_FAILED;
 		}*/
-		return new Result(mainTaskList,true);
+		return new Result(mainTaskList,false);
 	}
 	return new Result();
 }
@@ -94,7 +94,7 @@ Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Result* re
 			it->second->setSerialNumber(mainTaskList->getSerial()+1);
 			mainTaskList->addTask(it->second->getSerialNumber(), it->second);
 		}
-		return new Result(mainTaskList,true);
+		return new Result(mainTaskList,false);
 	}
 	return new Result();
 }
