@@ -547,14 +547,18 @@ string Parser::resultToOutput(Result *result){
 
 	string s = ret.at(i)->getDescription();
 
-	if (s.length()>50)
+	if (s.length() > 50)
 	  s = s.substr(0,50) + "...";
+	else
+	  s.append( 50-s.length(), ' ');
 
 	ss<< "\t" << s;
 
-	for (int j=0; j < result->comparer->keywords->size(); j++) {
-	  if (result->comparer->keywords->at(j) == DEADLINE)
-	    ss<< "\t" << formatTime ( ret.at(i)->getDeadline() );
+	for (unsigned j=0; j < result->comparer->keywords->size(); j++) {
+	  if (result->comparer->keywords->at(j) == DEADLINE) {
+	    string s2 = formatTime ( ret.at(i)->getDeadline() );
+	    ss<< "\t" << s2.substr(0, 24);
+	  }
 
 	  else if (result->comparer->keywords->at(j) == PRIORITY)
 	    ss<< "\t" << ret.at(i)->getPriority();
