@@ -64,7 +64,9 @@ On Mac OS and GNU Linux (referred to as ``*nix'' later), taskManager can be star
 
 On Microsoft Windows, taskManager can be launched in command prompt as well, or simply by double clicking.
 
-\footnotetext{ *nix version can be run at any directory after installing taskManger -- ``make install''. See details in appendix ``Compilation and Installation''.}
+Once taskManager is launched, you will see a prompt like ``\textgreater \ \_'', and you will start typing commands!
+
+\footnotetext{ *nix version can be run at any directory after installing taskManger -- ``make install''. See details in section ``Compilation and Installation''.}
 
 \item Add some tasks
 
@@ -75,10 +77,10 @@ On Microsoft Windows, taskManager can be launched in command prompt as well, or 
 
 To add a task, simply use the \texttt{add} command followed by the description of the task in a pair of quotation marks. 
 
-If no error message is shown, the task is successfully added.
+\emph{If no error message is shown, the task is successfully added.}
 TaskManager may prompt for confirmation if the task to be added is highly similar to some existing task(s) to help prevent people forget adding tasks, which is the case in the example above.
 
-\item List the added tasks
+\item List the existing tasks
 
 \texttt{\textgreater \ ls\\
   1   Sample task 1\\
@@ -103,7 +105,7 @@ Notice that for finished task, a ``f'' is shown between serial number and task d
     2   Sample task 2\\
     3   Sample task 3\\
     \textgreater \ rm 1 2\\
-    TaskManager: Do you really want to remove these tasks permanently? \textcolor{blue}{yes}\\
+    TaskManager: Do you really want to remove these tasks permanently? \textcolor{blue}{y}\\
     \textgreater \ ls\\
     3   Sample task 3}
 
