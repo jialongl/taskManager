@@ -573,7 +573,7 @@ string Parser::resultToOutput(Result *result){
     } else {
       ss << endl;
       for (unsigned i = 0; i < ret.size(); i++) {
-	ss << "   Number:\t" << ret.at(i)->getSerialNumber() << "\t\tDeadline:\t" << formatTime(ret.at(i)->getDeadline()) ;
+	ss << "   Number:\t" << ret.at(i)->getSerialNumber() << "\t\tDeadline:\t" << formatTime(ret.at(i)->getDeadline()) <<endl;
 	ss << " Priority:\t"<< ret.at(i)->getPriority()<< "\t\t  Status:\t";
 
 	if (ret.at(i)->getIsFinished())

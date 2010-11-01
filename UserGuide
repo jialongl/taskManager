@@ -439,6 +439,8 @@ E.g.
     The third command will be parsed as
     > ls -f no -g cs2103
     and will list out all unfinished cs2103 tasks.
+
+Notice: TUI uses ls to retrieve tasks. Mapping ls to something else will affect behaviour of TUI.
     
 5.3 TaskManager script
 
