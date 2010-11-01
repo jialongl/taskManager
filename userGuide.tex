@@ -103,11 +103,10 @@ Notice that for finished task, a ``f'' is shown between serial number and task d
 \texttt{\textgreater \ ls\\
     1 f Sample task 1\\
     2   Sample task 2\\
-    3   Sample task 3\\
-    \textgreater \ rm 1 2\\
-    TaskManager: Do you really want to remove these tasks permanently? \textcolor{blue}{y}\\
+    \textgreater \ rm 1\\
+    TaskManager: Do you really want to remove this task permanently?\textcolor{blue}{y}\\
     \textgreater \ ls\\
-    3   Sample task 3}
+    2   Sample task 2}
 
 To remove a existing task, use \texttt{rm} command followed by the serial number(s) of the task to remove. TaskManager will prompt for confirmation when removing tasks.
 
@@ -363,37 +362,37 @@ blah blah blah
 \subsection{Advanced Usages}
 \subsubsection{command piping}
 
-    \textgreater \ ls | rm
+\texttt{\textgreater \ ls \textbar \  rm}
 
 TaskManager support command piping for most commands. Though it is a bit different from traditional linux/unix pipe.
-Piping in taskManager is done with symbol '|'. When a few taskManager commands are piped together, they are executed one by one from left to right. 
+Piping in taskManager is done with symbol '\textbar'. When a few taskManager commands are piped together, they are executed one by one from left to right. 
 If one command has output, it is then passed to the next command as input. Only output of the last command is shown.
 
 Examples:
     
 a) finish all tasks 
 
-    \textgreater \ ls | finish
+    \textgreater \ ls \textbar \  finish
 
 b) remove all finished tasks
 
-    \textgreater \ ls -f yes | rm
+    \textgreater \ ls -f yes \textbar \  rm
 
 c) import from a file and replace corrent task list
 
-    \textgreater \ ls | rm | import newTasks.xml
+    \textgreater \ ls \textbar \  rm \textbar \  import newTasks.xml
 
 d) import all CS2103 group tasks from a file
 
-    \textgreater \ read newTasks.xml | ls -g CS2103 | add
+    \textgreater \ read newTasks.xml \textbar \  ls -g CS2103 \textbar \  add
 
 e) export all CS2103 related tasks to a html file
     
-    \textgreater \ ls -k *CS2103* | export -html cs2103tasks.html
+    \textgreater \ ls -k *CS2103* \textbar \  export -html cs2103tasks.html
 
 f) show detail of CS2103 tasks, sort by priority
 
-    \textgreater \ ls -g CS2103 | sort "pri" | task
+    \textgreater \ ls -g CS2103 \textbar \  sort "pri" \textbar \  task
 
 
 \subsubsection{command mapping}
@@ -499,7 +498,7 @@ E.g.
     ls
 
     d) To remove finished tasks when taskManager is started, add this line into tmrc
-    ls -f yes | rm
+    ls -f yes \textbar \  rm
 
     e) To run a script with all self-defined mappings when taskManager is started, add this line into tmrc
     run /home/myusername/mymappings
@@ -545,9 +544,20 @@ In Unix-like operating systems like GNU Linux and Mac OS X, start a shell, chang
 da ``make install'' is optional. It just makes taskManager available system wide, which copys the executable and man pages to cooresponding directories.
 
 The text UI is built by default, which requires ncurses library.
-It ships with most Linux distributions and Mac OS. If not, it can be installed with the package manager (apt-get, yum, pacman on various Linux distributions and port on Mac).
+It ships with most Linux distributions and Mac OS. If not, it can be installed with the package manager (\texttt{apt-get}, \texttt{yum}, \texttt{pacman} on various Linux distributions and \texttt{port} on Mac).
 
 \section{Developer Guide}
 ahah
+
+\section{Individual Reports}
+\subsection{He Haocong}
+o
+\subsection{Liu Jialong}
+ah
+\subsection{Wang Xiangyu}
+jiong
+\subsection{Zhou Biyan}
+qie
+
 
 \end{document}
