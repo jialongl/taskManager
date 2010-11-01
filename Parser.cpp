@@ -144,10 +144,14 @@ void Parser::add_parse() {
 }
 
 void Parser::edit_parse() {
-  cmd->method = EDIT;
 
-  if (args.size() >= 2)
+
+  if (args.size() >= 2) {
+    cmd->method = EDIT;
     cmd->serialNumberList.push_back( StringToNum(args.at(1)) );
+
+  } else
+    return ;
 
   for(iter = args.begin(); iter < args.end(); iter++ ) {
     if ( *iter == "-t" ) {
