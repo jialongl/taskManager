@@ -323,25 +323,21 @@ Use -k to filter tasks with a keyword
 * means any string. (including empty string)\\
 keyword is case insensitive.
 
-For example, ``This is a sample with a important task'' will match *Sam?le*task as the first * is "This is a ", ? is 'p' and the second * to be `` with a important ''.
+For example, ``This is a sample with a important task'' will match *Sam?le*task as the first * matches ``This is a '', ? matches `p' and the second * matches `` with a important ''.
 
-"samqleTask" will also match *sam?le*task by letting both * to be empty string and ? to be 'q' 
+``samqleTask'' will also match *sam?le*task by letting both * to be empty string and ? to be 'q' 
 
 Use -f to show/hide finished tasks
 
-    \textgreater \ ls -f yes
+\texttt{\textgreater \ ls -f yes} shows only finished tasks.
 
-    Show only finished tasks
+\texttt{\textgreater \ ls -f N} shows only unfinished tasks.
 
-    \textgreater \ ls -f N
+Use -g to show tasks of a specific group:
 
-    Show only doing tasks
+\texttt{\textgreater \ ls -g SampleTask}
 
-Use -g to show tasks of a specific group
-
-    \textgreater \ ls -g SampleTask
-
-    Show only tasks from SampleTask group
+Only tasks from SampleTask group will be shown then.
 
 Notice: Different options can be used together.
         When more then one restrictive options are there, conjuction of these restrictions are used.
@@ -398,54 +394,48 @@ Examples:
 
 \subsubsection{command mapping}
 
-\texttt{\textgreater \ map "ls" "ls -f no"}
+\noindent \texttt{\textgreater \ map "ls" "ls -f no"}
 
 TaskManager support custom command mapping/aliasing. General format of \texttt{map} is:
 
-\texttt{\textgreater \ map "\textlessnew command\textgreater" "\textlessoriginal command\textgreater"\\
-  \textgreater \ map "\textlesspattern of aliased command\textgreater" "\textlesspattern of original command\textgreater"}
+\noindent \texttt{\textgreater \ map "new command" "original command"}
 
 A simple mapping is like the previous example. This maps "ls" to "ls -f no", which means hide finished tasks when listing.
-To have another command which shows all tasks, do this:
+To retain the original \texttt{ls} command, map \texttt{ls} to something else. For example:
 
-\texttt{\textgreater \ map "lsa" "ls"\\
-  \textgreater \ map "ls" "ls -f no"}
+\noindent \texttt{\textgreater \ map "lsa" "ls"\\
+  \textgreater \ map "ls" "ls -f no" \footnotemark}
 
-Notice: The order of mapping matters as commands are executed one by one. Reversing the order of these two mapping will not work.
+\footnotetext{ The order of mapping matters as commands are executed one by one. Reversing the order of these two mapping will NOT work.}
 
-More complex mapping makes use of \$ symbol. There are two kind of \$ symbols:
-    \$0 Means all characters from surrent position\\
-    \$1, \$2, \$3 .... Means one token
+More complex mapping makes use of symbol \$. There are two kinds of \$ symbols:
 
-E.g.
+\begin{itemize}
+\item \$0 Means all characters from current position
+\item \$1, \$2, \$3 .... Means one token
+\end{itemize}
+
+Examples:
     
-\texttt{\textgreater \ map "tomorrow \$1" "add \$1 -t 1d"\\
+\noindent \texttt{\textgreater \ map "tomorrow \$1" "add \$1 -t 1d"\\
   \textgreater \ tomorrow "Finish user guide"}
     
-    The latter command will be parsed as
-    \textgreater \ add "Finish user guide" -t 1d
-    and a new task will be added with the deadline to be 1 days later
+The latter command will be parsed as \texttt{add "Finish user guide" -t 1d}, and a new task ``Finish user guide'' will be added with the deadline to be 1 days later
 
-    \textgreater \ map "do \$1 at \$2" "add \$1 -t \$2"
-    \textgreater \ do "Laundry" at 4h
+\noindent \texttt{\textgreater \ map "do \$1 at \$2" "add \$1 -t \$2"\\
+  \textgreater \ do "Laundry" at 4h}
     
-    The latter command will be parsed as
-    \textgreater \ add "Laundry" -t 4h
-    and a new task called Laundry will be added with the deadline to be 4hours later
+The latter command will be parsed as \texttt{add "Laundry" -t 4h}, and a new task called ``Laundry'' will be added with the deadline to be 4hours later.
 
-    \textgreater \ map "ls \$0" "ls -f no \$0"
-    \textgreater \ ls
-    \textgreater \ ls -g cs2103
+\noindent \texttt{\textgreater \ map "ls \$0" "ls -f no \$0"\\
+  \textgreater \ ls\\
+  \textgreater \ ls -g cs2103}
     
-    The second command will be parsed as
-    \textgreater \ ls -f no 
-    and will list out all unfinished tasks.
-    The third command will be parsed as
-    \textgreater \ ls -f no -g cs2103
-    and will list out all unfinished cs2103 tasks.
+The second command will be parsed as \texttt{ls -f no}, and will list out all unfinished tasks.
+The third command will be parsed as \texttt{ls -f no -g cs2103}, and will list out all unfinished cs2103 tasks.
 
-Notice: TUI uses ls to retrieve tasks. Mapping ls to something else will affect behaviour of TUI.
-    
+{\bf Important: } TUI uses \texttt{ls} to retrieve tasks. Mapping \texttt{ls} to something else will affect behaviour of TUI.}
+
 \subsubsection{taskManager script}
 
 Task manager commands can be saved in a single script file and be executed using run command.
