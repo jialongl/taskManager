@@ -84,25 +84,31 @@ void Parser::tokenize_by_space (string s) {
 }
 
 void Parser::parse_date (string s, long *seconds) {
-  int num_pos = 0; // to record the position in the string where it is a number (i.e '0' ~ '9')
+  int digit_pos = 0; // to record the position in the string where it is a digit (i.e '0' ~ '9')
 
-  for (int j = 0; j < s.length(); j++) {
-    if (s[j] == 'w') {
-      *seconds += StringToNum( s.substr(num_pos, j-num_pos) ) * 604800;
-      num_pos = j + 1;
+  if (isNumber(s))
+    *seconds = StringToNum(s);
 
-    } else if (s[j] == 'd') {
-      *seconds += StringToNum( s.substr(num_pos, j-num_pos) ) * 86400;
-      num_pos = j + 1;
+  else if (s[0] >= 48 && s[0] <= 57) { // "plus" time format
+    for (int j = 0; j < s.length(); j++) {
+      if (s[j] == 'w') {
+	*seconds += StringToNum( s.substr(digit_pos, j-digit_pos) ) * 604800;
+	digit_pos = j + 1;
 
-    } else if (s[j] == 'h') {
-      *seconds += StringToNum( s.substr(num_pos, j-num_pos) ) * 3600;
-      num_pos = j + 1;
+      } else if (s[j] == 'd') {
+	*seconds += StringToNum( s.substr(digit_pos, j-digit_pos) ) * 86400;
+	digit_pos = j + 1;
 
-    } else if (s[j] == 'm') {
-      *seconds += StringToNum( s.substr(num_pos, j-num_pos) ) * 60;
-      num_pos = j + 1;
+      } else if (s[j] == 'h') {
+	*seconds += StringToNum( s.substr(digit_pos, j-digit_pos) ) * 3600;
+	digit_pos = j + 1;
+
+      } else if (s[j] == 'm') {
+	*seconds += StringToNum( s.substr(digit_pos, j-digit_pos) ) * 60;
+	digit_pos = j + 1;
+      }
     }
+    *seconds += currentTime();
   }
 }
 
@@ -116,11 +122,8 @@ void Parser::add_parse() {
       string temp = *(++iter);
       long seconds = 0;
 
-      if (isNumber(temp)) cmd->deadline = StringToNum(temp);
-      else{
-          parse_date(temp, &seconds);
-          cmd->deadline = currentTime() + seconds;
-      }
+      parse_date(temp, &seconds);
+      cmd->deadline = seconds;
     }
 
     else if ( *iter == "-p" ) {
@@ -561,7 +564,7 @@ string Parser::resultToOutput(Result *result){
 	for (unsigned j=0; j < result->comparer->keywords->size(); j++) {
 	  if (result->comparer->keywords->at(j) == DEADLINE) {
 	    string s2 = formatTime ( ret.at(i)->getDeadline() );
-	    ss<< "\t" << s2.substr(0, 24);
+	    ss<< "\t" << s2;
 	  }
 
 	  else if (result->comparer->keywords->at(j) == PRIORITY)

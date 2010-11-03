@@ -283,16 +283,14 @@ taskManager support 3 types of time format:
 \footnotetext{ At least one of them should be specified.}
 
 \item[ \texttt{"by" format} ]
-  ``By'' format has a similar form of ``plus'' format. It is in the form of b?w?d?h?m\footnotemark, where each question mark stands for a number (not a digit).
-  Means before c hour d minutes on the b-th day of a-th week from now. For example:
+  ``By'' format has a similar form of ``plus'' format. It is in the form of b?w?d?h?m\footnotemark, where each question mark stands for a number (not a digit). For example:
 
   \begin{tabular}{ r | l }
-    \texttt{b0w5d} & by Friday this week.\\
-    \texttt{b2w3d8h} & by Wednesday 8:00am, 2 weeks later.\\
-    \texttt{b1w} & by start of next week, i.e. by the end of this week.\\
-    \texttt{b2d} & by the end of tomorrow.\\
     \texttt{b0d22h} & by 10:00pm today.\\
-    \texttt{b10d} & by start of the 10th day from now, i.e. in 10 days including today.\\
+    \texttt{b2d} & by 23:59 tomorrow.\\
+    \texttt{b1w} & by the end of this week. i.e. 23:59 of the coming Sunday. \\
+    \texttt{b0w5d} & by 23:59 of the coming Friday.\\
+    \texttt{b2w3d8h} & by 8:00am of the next next Wednesday.\\
   \end{tabular}
 
 \footnotetext{ At least one of them should be specified.}
@@ -302,36 +300,38 @@ taskManager support 3 types of time format:
 
 \item[ \texttt{-p} ] add a task with a priority:
 
-\texttt{\textgreater \ add "some important task" -p 20}\\
+\texttt{\textgreater \ add "some important task" -p 20}
 
 \item[ \texttt{-g} ] specify a group for a task:
 
-\texttt{\textgreater \ add "the task with group"\footnotemark \  -g SampleGroup}\\
-\footnotetext{ If group name contains spaces, use a pair of quotation marks to quote it.}
-
+\texttt{\textgreater \ add "the task with group"\footnotemark \  -g SampleGroup}
 \end{enumerate}
+
+\footnotetext{ If group name contains spaces, use a pair of quotation marks to quote it.}
 Options are not compulsory. Different options can be used together. For example \texttt{add "some task" -p 10 -g "special task" -t 4d}.
 
 \subsubsection{ls}
 
 \begin{enumerate}
-\item[ \texttt{-s} ] sorts the task list:
+\item[ \texttt{-s} ] sorts the existing tasks:
 
 \texttt{\textgreater \ ls -s "deadline priority"}
 
 A more general format is:
-\texttt{\textgreater \ ls -s "\textless keyword1 \textgreater \textless keyword2 \textgreater \ldots"}
+\texttt{\textgreater \ ls -s "keyword1 keyword2 \ldots"}
 
 The listed tasks will be sorted by keyword1 then keyword2 \ldots
     
 Available search keywords are: deadline, priority and serialnumber. Prefix of a keyword is also acceptable. e.g. \textgreaterls -s "p" will sort the list by priority.
 
-Examples:
-
-\texttt{\textgreater \ ls -s "p d"\\
-  1   task 1 highest priorty.   3  Sun Oct 31 06:49:09 2010\\
-  2   task 2 high priority.       2  Mon Nov  1 06:54:42 2010\\
-  3   task 3. default priority.           0   Tue Nov  2 06:54:37 2010}
+Examples: \texttt{
+\begin{tabbing}
+  \textgreater \ ls -s "p d" \+\\
+  1   task 1 highest priorty. \ \=  3  Sun Oct 31 06:49:09 2010\\
+  2   task 2 high priority. \> 2  Mon Nov  1 06:54:42 2010\\
+  3   task 3 default priority. \> 0   Tue Nov  2 06:54:37 2010
+\end{tabbing}
+}
 
 \item [ \texttt{-k} ] filters tasks with a keyword\footnotemark:
 
