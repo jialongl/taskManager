@@ -315,40 +315,37 @@ Examples:
   2   Sample task 2. This has high priority       10  Mon Nov  1 06:54:42 2010\\
   3   Sample task 3. This is the latest           0   Tue Nov  2 06:54:37 2010}
 
-Use -k to filter tasks with a keyword
+Use -k to filter tasks with a keyword \footnotemark:
 
-\texttt{\textgreater \ ls -k *Sam?le*task}
-
-? means any single character.\\
-* means any string. (including empty string)\\
-keyword is case insensitive.
+\texttt{ls -k *Sam?le*task}, where ? means any single character, * means any string. (including empty string).
+\footnotetext{ keyword is case insensitive.}
 
 For example, ``This is a sample with a important task'' will match *Sam?le*task as the first * matches ``This is a '', ? matches `p' and the second * matches `` with a important ''.
 
-``samqleTask'' will also match *sam?le*task by letting both * to be empty string and ? to be 'q' 
+``samqleTask'' will also match *sam?le*task by letting both * to be empty string and ? to be `q'.
 
-Use -f to show/hide finished tasks
+Use -f to show/hide finished tasks:
 
-\texttt{\textgreater \ ls -f yes} shows only finished tasks.
+\texttt{ls -f yes} shows only finished tasks.
 
-\texttt{\textgreater \ ls -f N} shows only unfinished tasks.
+\texttt{ls -f no} shows only unfinished tasks.
 
 Use -g to show tasks of a specific group:
 
-\texttt{\textgreater \ ls -g SampleTask}
+\texttt{ls -g SampleTask}
 
 Only tasks from SampleTask group will be shown then.
 
-Notice: Different options can be used together.
-        When more then one restrictive options are there, conjuction of these restrictions are used.
-        e.g. ls -g SampleTask -f y will show finished tasks from SampleTask group. 
+\\Tip: Different options can be used together.
+When more then one restrictive options are there, conjuction of these restrictions are used.
+e.g. \texttt{ls -g SampleTask -f y} will show tasks that are finished AND from ``SampleTask'' group. 
 
 \subsubsection{rm}
 Use -g option to remove a group of tasks:
 
 \texttt{rm -g SampleTask} removes the entire SampleTask group.
 
-\texttt{rm} can be used to remove a list of tasks as well. e.g. \texttt{rm 1 2 3} removes tasks 1, 2 and 3.
+\texttt{rm} can be used removeS several tasks once as well. e.g. \texttt{rm 1 2 3} removes tasks 1, 2 and 3.
 
 %% \subsubsection{edit}
 %%     This is discussed in section 2.2.4.
@@ -410,10 +407,10 @@ To retain the original \texttt{ls} command, map \texttt{ls} to something else. F
 
 More complex mapping makes use of symbol \$. There are two kinds of \$ symbols:
 
-\begin{itemize}
-\item \$0 Means all characters from current position
-\item \$1, \$2, \$3 .... Means one token
-\end{itemize}
+\begin{enumerate}
+\item[ ] \$0 means all characters from the current position.
+\item[ ] \$1, \$2, \$3 \ldots Means one token separated by spaces.
+\end{enumerate}
 
 Examples:
     
@@ -434,7 +431,7 @@ The latter command will be parsed as \texttt{add "Laundry" -t 4h}, and a new tas
 The second command will be parsed as \texttt{ls -f no}, and will list out all unfinished tasks.
 The third command will be parsed as \texttt{ls -f no -g cs2103}, and will list out all unfinished cs2103 tasks.
 
-{\bf Important: } TUI uses \texttt{ls} to retrieve tasks. Mapping \texttt{ls} to something else will affect behaviour of TUI.}
+{\bf \textcolor{red}{Important:}} TUI uses \texttt{ls} to retrieve tasks. Mapping \texttt{ls} to something else will affect behaviour of TUI.}
 
 \subsubsection{taskManager script}
 
