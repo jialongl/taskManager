@@ -194,13 +194,19 @@ This is helpful when you only want to peek the content of an xml file without re
 \footnotetext{ Page may not render correctly in IE 6 or its earlier versions.}
 \end{enumerate}
 
+\newpage
 \subsubsection{task}
-\noindent \texttt{\textgreater \ task 1\\
-  Number: 1 Deadline: Sun Oct 31 05:11:23 2010\\
-  Priority: 0 Status: Doing\\
-  Group: default\\
-  Details:\\
-  Sample task 2 \footnotemark}
+
+\noindent \texttt{
+  \begin{tabbing}
+    \textgreater \ \=task 1 \+\\
+    Number:  1  \ \ \= Deadline:\=Sun Oct 31 05:11:23 2010\\
+    Priority:0 \> Status:\>Doing\\
+    Group: \ default\\
+    Details:\\
+    \ \ Sample task 2 \footnotemark
+  \end{tabbing}
+}
 
 \footnotetext{ Adding tasks with detailed information is covered in section 2.3.1. In this example, default values are shown.}
 
@@ -208,44 +214,50 @@ To show detail information of a task, use \texttt{task} command followed by seri
 
 \subsubsection{pri}
 
-\noindent \texttt{\textgreater \  pri 1 10\\
-  \textgreater \ task 1\\
-  Number:  1       Deadline:   Sun Oct 31 05:11:23 2010\\
-  Priority:  10        Status:   Doing\\
-  Group:  default\\
-  Details:\\
-  Sample task 2}
+\noindent \texttt{
+  \begin{tabbing}
+    \textgreater \  pri 1 10\\
+    \textgreater \ \=task 1 \+\\
+    Number:  1 \ \ \= Deadline: \= Sun Oct 31 05:11:23 2010\\
+    Priority:10 \> Status: \> Doing\\
+    Group: \ default\\
+    Details:\\
+    \ \ Sample task 2
+  \end{tabbing}
+}
 
 To change the priority of a task, use \texttt{pri} command followed by the serial number of a task and its new priority.
 Priority is typically a number between -20 and 20. By default, the priority of a newly added task is 0.
 
 \subsubsection{edit}
 
-\noindent \texttt{\textgreater \ edit 1 -d "Sample task 3" -p 12 -t 1d\footnotemark \ -g SampleGroup -f yes\\
-  \textgreater \ task 1\\
-  Number:  1       Deadline:   Mon Nov  1 05:47:59 2010\\
-  Priority:  12        Status:   Finished\\
-  Group:  SampleGroup\\
-  Details:\\
-  Sample task 3}
+\noindent \texttt{
+  \begin{tabbing}
+    \textgreater \ edit 1 -d "Sample task 3" -p 12 -t 1d\footnotemark \ -g SampleGroup -f yes\\
+    \textgreater \ \=task 1 \+\\
+     Number:  1 \ \ \= Deadline: \= Mon Nov  1 05:47:59 2010\\
+     Priority:12 \> Status: \> Finished\\
+     Group: \ SampleGroup\\
+     Details:\\
+     \ \ Sample task 3
+  \end{tabbing}
+}
 
-To edit a task, \texttt{edit} command is used like this:
-\texttt{edit \textless task serial number\textgreater \ -d \textless new description\textgreater \ -p \textless new priority\textgreater \ -t \textless new deadline\textgreater \ -g \textless new group\textgreater \ -f \textless finished or not\textgreater}
+To edit a task, \texttt{edit} command is used like this:\\
+\texttt{edit taskSerialNumber -d newDescription -p newPriority -t newDeadline -g newGroup -f finished\_or\_not}
 
 Only serial number is compulsory. Besides, to finish a task, \texttt{finish 1} is equivalent to \texttt{edit 1 -f yes}.
 
-\footnotetext{ -t 1d means setting the deadline to be 1 day later. Time format that taskManager accepts is discussed in section 2.3.1}
+\footnotetext{ -t 1d means setting the deadline to be 1 day later. Time formats that taskManager accept are discussed in section 2.3.1.}
 
 \subsubsection{undo and redo}
-\texttt{\textgreater \ undo \footnotemark}
+\texttt{\textgreater \ undo}
 
-Undo the last command. 
-
-\footnotetext{ \texttt{Undo} command has no effect on commands like ls, export, tui and undo.}
+Undo the last command. Note that it has no effect on commands like \texttt{ls}, \texttt{export}, \texttt{tui} and \texttt{undo}.
 
 \texttt{\textgreater \ redo}
 
-Redo the last undo. If more than one undo command executed, redo the next latest one.
+Redo the last undo, which means if more than one undo commands were executed, redo the next latest one.
 
 \subsection{Using Options}
 
@@ -254,51 +266,56 @@ In this section they are introduced in great detail.
 
 \subsubsection{add}
 
-\noindent Use -t option to add a task with a deadline:
+\begin{enumerate}
+\item [ \texttt{-t} ] add a task with a deadline:
 
-\noindent \texttt{\textgreater \ add "some task" -t 3d2h\\
-\textgreater \ add "some task" -t b2d\\
-\textgreater \ add "some task" -t 12345}\\
+  \texttt{\textgreater \ add "some task" -t 3d2h\\
+    \textgreater \ add "some task" -t b2d\\
+    \textgreater \ add "some task" -t 12345}
 
 taskManager support 3 types of time format:
 
 \begin{enumerate}
 \item[ \texttt{"plus" format} ]
-  ``Plus'' format specifies the how much time left for the task, and it has form ?w?d?h?m, where each question mark stands for a number (not a digit).\\
+  ``Plus'' format specifies the how much time left for the task, and it has form ?w?d?h?m\footnotemark, where each question mark stands for a number (not a digit).\\
   For example, 3d2h means the task will due after 3 days 2 hours the moment the command is executed -- you have 3 days and 2 hours to finish it.
 
-  At least one of them should be specified.
+\footnotetext{ At least one of them should be specified.}
 
 \item[ \texttt{"by" format} ]
-  ``By'' format has a similar form of ``plus'' format. It is in the form of b?w?d?h?m, where each question mark stands for a number (not a digit).
-  Means before c hour d minutes on the b-th day of a-th week from now.
+  ``By'' format has a similar form of ``plus'' format. It is in the form of b?w?d?h?m\footnotemark, where each question mark stands for a number (not a digit).
+  Means before c hour d minutes on the b-th day of a-th week from now. For example:
 
-  e.g. b0w5d means by friday this week.\\
-       b2w3d8h means by wednesday 8:00am, 2 weeks later.\\
-       b1w means by start of next week, i.e. by the end of this week.\\
-       b2d means by the end of tomorrow.\\
-       b0d22h means by 10:00pm today.\\
-       b10d means by start of the 10th day from now, i.e. in 10 days including today.
+  \begin{tabular}{ r | l }
+    \texttt{b0w5d} & by Friday this week.\\
+    \texttt{b2w3d8h} & by Wednesday 8:00am, 2 weeks later.\\
+    \texttt{b1w} & by start of next week, i.e. by the end of this week.\\
+    \texttt{b2d} & by the end of tomorrow.\\
+    \texttt{b0d22h} & by 10:00pm today.\\
+    \texttt{b10d} & by start of the 10th day from now, i.e. in 10 days including today.\\
+  \end{tabular}
 
-  At least one of them should be specified.
+\footnotetext{ At least one of them should be specified.}
 \item[ \texttt{Unix timestamp} ]
 ``Unix timestamp'' means the number of seconds elapsed since Jan 1, 1900 00:00:00. It is not recommended for users, but rather used as the lower-order method for developers.
 \end{enumerate}
 
-Use -p option to add a task with a priority:
+\item[ \texttt{-p} ] add a task with a priority:
 
 \texttt{\textgreater \ add "some important task" -p 20}\\
 
-Use -g option to specify a group for a task:
+\item[ \texttt{-g} ] specify a group for a task:
 
 \texttt{\textgreater \ add "the task with group"\footnotemark \  -g SampleGroup}\\
 \footnotetext{ If group name contains spaces, use a pair of quotation marks to quote it.}
 
+\end{enumerate}
 Options are not compulsory. Different options can be used together. For example \texttt{add "some task" -p 10 -g "special task" -t 4d}.
 
 \subsubsection{ls}
 
-Use -s to sort the task list:
+\begin{enumerate}
+\item[ \texttt{-s} ] sorts the task list:
 
 \texttt{\textgreater \ ls -s "deadline priority"}
 
@@ -310,12 +327,13 @@ The listed tasks will be sorted by keyword1 then keyword2 \ldots
 Available search keywords are: deadline, priority and serialnumber. Prefix of a keyword is also acceptable. e.g. \textgreaterls -s "p" will sort the list by priority.
 
 Examples:
-\texttt{\textgreater \ ls -s "p d"\\
-  1   Sample task 1. This also has high priorty   10  Sun Oct 31 06:49:09 2010\\
-  2   Sample task 2. This has high priority       10  Mon Nov  1 06:54:42 2010\\
-  3   Sample task 3. This is the latest           0   Tue Nov  2 06:54:37 2010}
 
-Use -k to filter tasks with a keyword \footnotemark:
+\texttt{\textgreater \ ls -s "p d"\\
+  1   task 1 highest priorty.   3  Sun Oct 31 06:49:09 2010\\
+  2   task 2 high priority.       2  Mon Nov  1 06:54:42 2010\\
+  3   task 3. default priority.           0   Tue Nov  2 06:54:37 2010}
+
+\item [ \texttt{-k} ] filters tasks with a keyword\footnotemark:
 
 \texttt{ls -k *Sam?le*task}, where ? means any single character, * means any string. (including empty string).
 \footnotetext{ keyword is case insensitive.}
@@ -324,21 +342,20 @@ For example, ``This is a sample with a important task'' will match *Sam?le*task 
 
 ``samqleTask'' will also match *sam?le*task by letting both * to be empty string and ? to be `q'.
 
-Use -f to show/hide finished tasks:
+\item[ \texttt{-f} ] shows finished/unfinished tasks:
 
 \texttt{ls -f yes} shows only finished tasks.
 
 \texttt{ls -f no} shows only unfinished tasks.
 
-Use -g to show tasks of a specific group:
+\item[ \texttt{-g} ] shows tasks of a specific group:
 
-\texttt{ls -g SampleTask}
+\texttt{ls -g SampleTask} makes tasks only from SampleTask group shown.
 
-Only tasks from SampleTask group will be shown then.
-
-\\Tip: Different options can be used together.
+\\ {\bf Tip}: Different options can be used together.
 When more then one restrictive options are there, conjuction of these restrictions are used.
 e.g. \texttt{ls -g SampleTask -f y} will show tasks that are finished AND from ``SampleTask'' group. 
+\end{enumerate}
 
 \subsubsection{rm}
 Use -g option to remove a group of tasks:
@@ -365,26 +382,19 @@ blah blah blah
 
 TaskManager supports command piping for most commands though it is a bit different from traditional Unix pipe.
 Piping means if one command selects some tasks, then the selected tasks will be passed to the next command as input. The tasks after the last command will be shown as output.
-Piping in taskManager is done with symbol `\textbar'. When a pipe signs appear in a command, the smaller commands (separated by pipes) are executed one by one from left to right. 
-
-Examples:
+Piping in taskManager is done with symbol `\textbar'. When a pipe signs appear in a command, the smaller commands (separated by pipes) are executed one by one from left to right. For examples:
 
 \begin{enumerate}
 \item finish all tasks\\
   \texttt{ls \textbar \  finish}
-
 \item remove all finished tasks\\
   \texttt{ls -f yes \textbar \  rm}
-
-\item import from a file and replace corrent task list\\
+\item import from a file and replace current task list\\
   \texttt{ls \textbar \  rm \textbar \  import newTasks.xml}
-
 \item import all CS2103 group tasks from a file\\
   \texttt{read newTasks.xml \textbar \  ls -g CS2103 \textbar \  add}
-
 \item export all CS2103 related tasks to a html file\\
   \texttt{ls -k *CS2103* \textbar \  export -html cs2103tasks.html}
-
 \item show details of CS2103 tasks, sort by priority\\
   \texttt{ls -g CS2103 \textbar \  sort "pri" \textbar \  task}
 \end{enumerate}
@@ -393,27 +403,25 @@ Examples:
 
 \noindent \texttt{\textgreater \ map "ls" "ls -f no"}
 
-TaskManager support custom command mapping/aliasing. General format of \texttt{map} is:
+TaskManager supports custom command mapping/aliasing. General format of \texttt{map} is:
 
 \noindent \texttt{\textgreater \ map "new command" "original command"}
 
-A simple mapping is like the previous example. This maps "ls" to "ls -f no", which means hide finished tasks when listing.
+A simple mapping is like the previous example. This maps ``ls'' to ``ls -f no'', which means hide finished tasks when listing.
 To retain the original \texttt{ls} command, map \texttt{ls} to something else. For example:
 
 \noindent \texttt{\textgreater \ map "lsa" "ls"\\
-  \textgreater \ map "ls" "ls -f no" \footnotemark}
+  \textgreater \ map "ls" "ls -f no"\footnotemark}
 
 \footnotetext{ The order of mapping matters as commands are executed one by one. Reversing the order of these two mapping will NOT work.}
 
 More complex mapping makes use of symbol \$. There are two kinds of \$ symbols:
 
-\begin{enumerate}
-\item[ ] \$0 means all characters from the current position.
-\item[ ] \$1, \$2, \$3 \ldots Means one token separated by spaces.
-\end{enumerate}
+\texttt{\$0} matches all characters from the current position.\\
+\texttt{\$1}, \texttt{\$2}, \texttt{\$3} \ldots corresponds to one token separated by spaces.
 
 Examples:
-    
+
 \noindent \texttt{\textgreater \ map "tomorrow \$1" "add \$1 -t 1d"\\
   \textgreater \ tomorrow "Finish user guide"}
     
@@ -454,8 +462,7 @@ Task manager commands can be saved in a single script file and be executed using
 
 The first 3 tasks are the result of the first ls in the script. The last 2 tasks are the result of the second ls in the script. Because "ls" is mapped to "ls -f no", finished tasks are not shown by the second ls.
 
-TaskManager scripts are pure text files. ".txt" suffix is omitted here. In windows, suffix is hidden by default. To show it, check corresponding checkbox under Tools -\textgreater \ Folder Options in a file browser.
-Windows may not know how to open file with no suffix.
+TaskManager scripts are plain text files. % ".txt" suffix is omitted here. In windows, suffix is hidden by default. To show it, check corresponding checkbox under Tools -\textgreater \ Folder Options in a file browser. Windows may not know how to open file with no suffix.
 
 \subsubsection{startup script}
 
@@ -519,7 +526,7 @@ In Unix-like operating systems like GNU Linux and Mac OS X, start a shell, chang
 \noindent \texttt{\$ make\\
   \$ sudo make install}
 
-``make install'' is optional. It just makes taskManager available system wide, which copys the executable and man pages to cooresponding directories.
+``make install'' is optional. It just makes taskManager available system wide by copying the executable and man pages to cooresponding directories.
 
 The text UI is built by default, which requires ncurses library.
 It ships with most Linux distributions and Mac OS. If not, it can be installed with the package manager (\texttt{apt-get}, \texttt{yum}, \texttt{pacman} on various Linux distributions and \texttt{port} on Mac).
@@ -527,15 +534,7 @@ It ships with most Linux distributions and Mac OS. If not, it can be installed w
 \section{Developer Guide}
 ahah
 
-\section{Individual Reports}
-\subsection{He Haocong}
-o
-\subsection{Liu Jialong}
-ah
-\subsection{Wang Xiangyu}
-jiong
-\subsection{Zhou Biyan}
-qie
+\section{Milestones and Individual Work}
 
 
 \end{document}
