@@ -725,14 +725,14 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
                 count = 0;
                 break;
             case KEY_UP:
-            case 'j':
+            case 'k':
                 if (count ==0) count = 1;
                 for (int i=0;i<count;i++)
                     curTime -= 7 * 24*60*60;
                 count = 0;
                 break;
             case KEY_DOWN:
-            case 'k':
+            case 'j':
                 if (count ==0) count = 1;
                 for (int i=0;i<count;i++)
                     curTime += 7 * 24*60*60;
@@ -790,14 +790,14 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
                // count = 0;
                 break;
             case KEY_UP:
-            case 'j':
+            case 'k':
                 //if (count == 0) count = 1;
                 //for (int i=0;i<count;i++)
                     hourMinSec[curFoc] = (hourMinSec[curFoc] + limit[curFoc] - 1) % limit[curFoc]; 
                 //count = 0;
                 break;
             case KEY_DOWN:
-            case 'k':
+            case 'j':
                 //if (count == 0) count = 1;
                 //for (int i=0;i<count;i++)
                     hourMinSec[curFoc] = (hourMinSec[curFoc] + limit[curFoc] + 1) % limit[curFoc]; 
