@@ -28,7 +28,7 @@ void DisplayManager::newElement(DisplayElement* element){
     refresh();
 }
 void DisplayManager::handleKey(int ch){
-    if (ch == KEY_ESC) {
+    if (ch == KEY_ESC || ch == 'q') {
         bool flag = false;
         if (escStack[escStackTop] -> type == CONFIRM_DE) flag = true; 
         if (escStackTop != 0) delete escStack[escStackTop];
@@ -58,7 +58,7 @@ void DisplayManager::enterCommand(){
     printw("> ");
     string st = dynamic_cast<ListDisplayElement*>(escStack[0]) -> editArea(stdscr, mx-2,mx-2,1,my-2,""); 
     if (st!="")
-        setCommand((parent->parser)->inputToCommandList(st));
+        setCommand((parent->parser)->inputToCommandList(st+"|ls"));
     else
         echo("TaskManager: Canceled by user");
 }
@@ -66,7 +66,7 @@ void DisplayManager::enterCommand(){
 void DisplayManager::showHelp(){
 
     int numOfButtons = 18;
-    string buttons[] = {"Ctrl-C","f","d","e","a","U","R","SPACE","j","k","c","up","down","Q","s","ESC","C","H"};
+    string buttons[] = {"Ctrl-C","f","d","e","a","U","R","SPACE","n","p","c","up","down","Q","s","ESC","C","H"};
     string funcs[] = {
         "Quit task manager",
         "Mark selected task as finished",
@@ -98,12 +98,12 @@ void DisplayManager::showHelp(){
 
     for (int i = 0;i<numOfButtons;i++){
         move(i+3,1);
-        printw("    <");
+        printw("    < ");
         attron(_BOLD);
         printw("%s",buttons[i].c_str());
         attroff(_BOLD);
         attron(_NORMAL);
-        printw(">\t%s",funcs[i].c_str());
+        printw(" >\t%s",funcs[i].c_str());
     }
 
     move(mx-3,5);
@@ -135,16 +135,16 @@ void DisplayManager::redraw(){
 
     int col = 0;
     int row = 1;
-    int numOfSpace = 8;
+    int numOfSpace = 10;
     for (int i=0;i<numOfButtons;i++){
         if (col+numOfSpace+buttons[i].size()+funcs[i].size() >= my){ row++; col=0;}
         move (row,col);
-        printw("    <");
+        printw("    < ");
         attron(_BOLD);
         printw("%s",buttons[i].c_str());
         attroff(_BOLD);
         attron(_NORMAL);
-        printw(">: %s",funcs[i].c_str());
+        printw(" >: %s",funcs[i].c_str());
         col =col+numOfSpace+buttons[i].size()+funcs[i].size(); 
     }
 

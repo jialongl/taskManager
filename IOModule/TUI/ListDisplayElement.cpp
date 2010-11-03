@@ -115,11 +115,11 @@ void ListDisplayElement::handleKey(int ch){
                 if (list != originalList) list->removeTask(tasks[selectTask]->getSerialNumber());
             }
             break;
-        case (int)'k':
+        case (int)'p':
             if (navigateRow > 0) navigateRow--;
             naiveDraw();
             break;
-        case (int)'j':
+        case (int)'n':
             if (navigateRow+1 < lines.size()) navigateRow++;
             naiveDraw();
             break;
@@ -145,19 +145,27 @@ void ListDisplayElement::handleKey(int ch){
             newTime = editDetail[1];
             newPri = editDetail[2];
             newDetail = editDetail[3];
-            if (tasks[tasks.size()-1]) delete tasks[tasks.size()-1];
+            lastSelectedSn = tasks[selectTask] -> getSerialNumber();
+            lastNavigateToSelect = taskStartAt[selectTask] - navigateRow;
+            selectTask = 100000000;
+            delete tasks[tasks.size()-1];
             displayManager->setCommand(parser->inputToCommandList("add -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri +"|ls"));
             break;
         case (int)'s':
             search();
             break;
         case KEY_UP:
+        case 'k':
             if (selectTask > 0) selectTask--;
             if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
             if (selectTask >= 0 && selectTask < tasks.size() && taskFinishAt[selectTask]>navigateRow+mx-2) navigateRow = taskFinishAt[selectTask]-mx+2;
+            if (navigateRow !=0 && is_time(lines[navigateRow - 1])) navigateRow--;
             naiveDraw();
             break;
+        case 'G':
+            selectTask = tasks.size() - 1;
         case KEY_DOWN:
+        case 'j':
             if (selectTask+1 < tasks.size()) selectTask++;
             if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
             if (selectTask >= 0 && selectTask < tasks.size() && taskFinishAt[selectTask]>navigateRow+mx-2) navigateRow = taskFinishAt[selectTask]-mx+2;
@@ -526,6 +534,7 @@ void ListDisplayElement::reset(){
 }
 
 void ListDisplayElement::search(){
+    list = originalList;
     bool flag = false;
     string keyInSt = "";
     searchKeyword = "";
@@ -541,6 +550,10 @@ void ListDisplayElement::search(){
                 break;
             case 10:
             case 13:
+                if (tasks.size() == 0) {
+                    list = originalList;
+                    draw();
+                }
                 flag = true;
                 break;
             case KEY_BACKSPACE:
@@ -692,27 +705,34 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
         switch (ch){
             case 10:
             case 13:
+            case KEY_ESC:
+            case 'q':
+            case ' ':
                 flag = true;
                 break;
             case KEY_LEFT:
+            case 'h':
                 if (count ==0) count = 1;
                 for (int i=0;i<count;i++)
                     curTime -= 24*60*60;
                 count = 0;
                 break;
             case KEY_RIGHT:
+            case 'l':
                 if (count ==0) count = 1;
                 for (int i=0;i<count;i++)
                     curTime += 24*60*60;
                 count = 0;
                 break;
             case KEY_UP:
+            case 'j':
                 if (count ==0) count = 1;
                 for (int i=0;i<count;i++)
                     curTime -= 7 * 24*60*60;
                 count = 0;
                 break;
             case KEY_DOWN:
+            case 'k':
                 if (count ==0) count = 1;
                 for (int i=0;i<count;i++)
                     curTime += 7 * 24*60*60;
@@ -737,38 +757,51 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
     int curFoc = 0;
     drawTime(year,mon,day,hourMinSec,curFoc,startRow,startCol);
     flag = false;
-    count = 0;
+//    count = 0;
     while (!flag){
         int ch = getch();
-        if (ch >= 48 && ch < 58) count = count * 10 + ch - 48;
+        if (ch >= 48 && ch < 58){
+          //  count = count * 10 + ch - 48;
+          hourMinSec[curFoc] = (hourMinSec[curFoc]*10+ch-48)%100;
+        }
         switch (ch){
             case 10:
             case 13:
+            case KEY_ESC:
+            case 'q':
+            case ' ':
+                if (hourMinSec[curFoc] >= limit[curFoc]) hourMinSec[curFoc] = limit[curFoc] - 1;
                 flag = true;
                 break;
             case KEY_LEFT:
-                if (count == 0) count = 1;
-                for (int i=0;i<count;i++)
+            case 'h':
+            //    if (count == 0) count = 1;
+             //   for (int i=0;i<count;i++)
+                    if (hourMinSec[curFoc] >= limit[curFoc]) hourMinSec[curFoc] = limit[curFoc] - 1;
                     if (curFoc!=0) curFoc--;
-                count = 0;
+              //  count = 0;
                 break;
             case KEY_RIGHT:
-                if (count == 0) count = 1;
-                for (int i=0;i<count;i++)
+            case 'l':
+               // if (count == 0) count = 1;
+               // for (int i=0;i<count;i++)
+                    if (hourMinSec[curFoc] >= limit[curFoc]) hourMinSec[curFoc] = limit[curFoc] - 1;
                     if (curFoc!=3) curFoc++;
-                count = 0;
+               // count = 0;
                 break;
             case KEY_UP:
-                if (count == 0) count = 1;
-                for (int i=0;i<count;i++)
+            case 'j':
+                //if (count == 0) count = 1;
+                //for (int i=0;i<count;i++)
                     hourMinSec[curFoc] = (hourMinSec[curFoc] + limit[curFoc] - 1) % limit[curFoc]; 
-                count = 0;
+                //count = 0;
                 break;
             case KEY_DOWN:
-                if (count == 0) count = 1;
-                for (int i=0;i<count;i++)
+            case 'k':
+                //if (count == 0) count = 1;
+                //for (int i=0;i<count;i++)
                     hourMinSec[curFoc] = (hourMinSec[curFoc] + limit[curFoc] + 1) % limit[curFoc]; 
-                count = 0;
+                //count = 0;
                 break;
             default:
                 break;
@@ -906,32 +939,44 @@ void ListDisplayElement::selectByCalendar(){
 
     int count = 0;
     while (!flag){
+        bool escFlag = false;
         int ch = getch();
         if (ch >= 48 && ch < 58) count = count * 10 + ch - 48;
         switch (ch){
             case 10:
             case 13:
+            case ' ':
+                if (tasks.size() == 0) escFlag = true;
+                flag = true;
+                break;
+            case KEY_ESC:
+            case 'q':
+                escFlag = true;
                 flag = true;
                 break;
             case KEY_LEFT:
+            case 'h':
                 if (count ==0) count = 1;
                 for (int i=0;i<count;i++)
                     curTime -= 24*60*60;
                 count = 0;
                 break;
             case KEY_RIGHT:
+            case 'l':
                 if (count ==0) count = 1;
                 for (int i=0;i<count;i++)
                     curTime += 24*60*60;
                 count = 0;
                 break;
             case KEY_UP:
+            case 'k':
                 if (count ==0) count = 1;
                 for (int i=0;i<count;i++)
                     curTime -= 7 * 24*60*60;
                 count = 0;
                 break;
             case KEY_DOWN:
+            case 'j':
                 if (count ==0) count = 1;
                 for (int i=0;i<count;i++)
                     curTime += 7 * 24*60*60;
@@ -940,7 +985,8 @@ void ListDisplayElement::selectByCalendar(){
             default:
                 break;
         }
-        list = originalList->getTasks(new IFilter(curTime,curTime+24*60*60));
+        if (!escFlag) list = originalList->getTasks(new IFilter(curTime,curTime+24*60*60));
+        else list = originalList;
         draw();
         drawCalendar(curTime,startRow,startCol);
     }
