@@ -5,9 +5,6 @@
 \usepackage{hyperref}
 \hypersetup{
     colorlinks,
-% citecolor=black,
-% filecolor=black,
-% linkcolor=black,
     urlcolor=blue
 }
 %\usepackage{setspace}
@@ -32,18 +29,15 @@
     \includegraphics[scale=0.72]{U099120W}&
     \includegraphics[scale=0.72]{U094837M}\\
 
-    \small{He Haocong} & \small{Liu Jialong} & \small{Wang Xiangyu} & \small{Zhou Biyan} \\
-    \small{\texttt{U099121H}} & \small{\texttt{U099122U}} & \small{\texttt{U099120W}} & \small{\texttt{U094837M}} \\
-
+    \small{He Haocong} & \small{Liu Jialong} & \small{Wang Xiangyu} & \small{Zhou Biyan}\\
+    \small{\texttt{U099121H}} & \small{\texttt{U099122U}} & \small{\texttt{U099120W}} & \small{\texttt{U094837M}}\\
   \end{tabular}
 
   \vfill
   {\large \today}
 \end{titlepage}
 
-
 \tableofcontents
-
 \newpage
 
 \section{Introduction}
@@ -75,9 +69,9 @@ Once taskManager is launched, you will see a prompt like ``\textgreater\_'', and
   \textgreater \  add "Sample task 2"\\
   TaskManager: This task is highly similiar to some existing task, do you really want to add it? \textcolor{blue}{y}}
 
-To add a task, simply use the \texttt{add} command followed by the description of the task in a pair of quotation marks. 
+To add a task, simply use \texttt{add} command followed by the description of the task in a pair of quotation marks.
 
-\emph{If no error message is shown, the task is successfully added.}
+\emph{If no error messages are shown, the task is successfully added.}
 TaskManager may prompt for confirmation if the task to be added is highly similar to some existing task(s) to help prevent people forget adding tasks, which is the case in the example above.
 
 \item List the existing tasks
@@ -86,7 +80,7 @@ TaskManager may prompt for confirmation if the task to be added is highly simila
   1   Sample task 1\\
   2   Sample task 2}
 
-To see the existing tasks, use \texttt{ls} command. By default, the taskManager shows the serial number and the description of the tasks.
+To see the existing tasks, use \texttt{ls} command. By default, the taskManager shows the serial numbers and the descriptions of the tasks.
 
 \item Mark a task as finished
 
@@ -96,7 +90,7 @@ To see the existing tasks, use \texttt{ls} command. By default, the taskManager 
   2 f Sample task 2}
  
 To finish an existing task, use the finish command followed by the serial number of the task to finish. 
-Notice that for finished task, a ``f'' is shown between serial number and task description.
+Notice that for finished task, an `f' is shown between serial number and task description.
 
 \item Remove task(s)
 
@@ -108,7 +102,7 @@ Notice that for finished task, a ``f'' is shown between serial number and task d
     \textgreater \ ls\\
     2   Sample task 2}
 
-To remove a existing task, use \texttt{rm} command followed by the serial number(s) of the task to remove. TaskManager will prompt for confirmation when removing tasks.
+To remove an existing task, use \texttt{rm} command followed by the serial number of the task to remove. TaskManager will prompt for confirmation when removing tasks.
 
 \item Exit from taskManager
 
@@ -164,19 +158,23 @@ This is helpful when you only want to peek the content of an xml file without re
 \item [ \texttt{export} ]
   exports the current task list to an XML or HTML file.
 
-\texttt{\textgreater \ export sampletasks.xml \footnotemark\\
-  \textgreater \ exit\\
-  \$ cat sampletasks.xml\\
-  <taskList>\\
-  <task>\\
-  <serialNumber>1</serialNumber>\\
-  <deadline>1288473083</deadline>\\
-  <priority>0</priority>\\
-  <description>Sample task 2</description>\\
-  <group>default</group>\\
-  <isFinished>0</isFinished>\\
-  </task>\\
-  </taskList>}
+\texttt{
+  \begin{tabbing}
+    \textgreater \ export sampletasks.xml \footnotemark\\
+    \textgreater \ exit\\
+    \$ cat sampletasks.xml\+\\
+    <taskList>\+\\
+    <task>\+\\
+    <serialNumber> 1 </serialNumber>\\
+    <deadline> 1288473083 </deadline>\\
+    <priority> 0 </priority>\\
+    <description> Sample task 2 </description>\\
+    <group> default </group>\\
+    <isFinished> 0 </isFinished>\<\\
+    </task>\<\\
+    </taskList>
+  \end{tabbing}
+}
 
 \footnotetext{ Currently \texttt{export} does not support environmental variables in path. E.g. \texttt{export \~{}/abc.xml} will not export the file to user's home directory /home/username/.}
  
@@ -257,7 +255,7 @@ Undo the last command. Note that it has no effect on commands like \texttt{ls}, 
 
 \texttt{\textgreater \ redo}
 
-Redo the last undo, which means if more than one undo commands were executed, redo the next latest one.
+Redo the last undo. It can be executed util all the undo's are re-done.
 
 \subsection{Using Options}
 
@@ -273,14 +271,15 @@ In this section they are introduced in great detail.
     \textgreater \ add "some task" -t b2d\\
     \textgreater \ add "some task" -t 12345}
 
-taskManager support 3 types of time format:
+  taskManager support 3 types of time format:
 
 \begin{enumerate}
 \item[ \texttt{"plus" format} ]
   ``Plus'' format specifies the how much time left for the task, and it has form ?w?d?h?m\footnotemark, where each question mark stands for a number (not a digit).\\
   For example, 3d2h means the task will due after 3 days 2 hours the moment the command is executed -- you have 3 days and 2 hours to finish it.
 
-\footnotetext{ At least one of them should be specified.}
+\footnotetext{ At least one of letters w/d/h/m should be specified.}
+% \footnotetext{ At least one of them should be specified.}
 
 \item[ \texttt{"by" format} ]
   ``By'' format has a similar form of ``plus'' format. It is in the form of b?w?d?h?m\footnotemark, where each question mark stands for a number (not a digit). For example:
@@ -293,7 +292,7 @@ taskManager support 3 types of time format:
     \texttt{b2w3d8h} & by 8:00am of the next next Wednesday.\\
   \end{tabular}
 
-\footnotetext{ At least one of them should be specified.}
+\footnotetext{ At least one of letters w/d/h/m should be specified.}
 \item[ \texttt{Unix timestamp} ]
 ``Unix timestamp'' means the number of seconds elapsed since Jan 1, 1900 00:00:00. It is not recommended for users, but rather used as the lower-order method for developers.
 \end{enumerate}

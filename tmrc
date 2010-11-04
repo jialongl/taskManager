@@ -1,2 +1,5 @@
+map "lsf" "ls -f all"
 map "lsf" "ls -f yes"
 map "lsgf $1 $2" "ls -g $1 -f $2"
+map "do $1 at $2" "add $1 -t $2"
+#map "do $1 -t by today" "add $1 -t "

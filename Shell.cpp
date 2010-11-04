@@ -11,20 +11,22 @@ Shell::Shell(){
     parser = new Parser();
     IOModule = new KeyboardIOModule(parser);
     toChangeIOModule = false;
-	IOModule->showWelcomeMessage();
-    //load saved record.
+    IOModule->showWelcomeMessage();
     
+    //load saved record.
     try{
-		Command* cmd = new Command();
-		cmd->method = IMPORT;
-        executeOneCommand(NULL,cmd);
-		delete cmd;
-		cmd = new Command();
-		cmd->method = RUN;
-		executeOneCommand(NULL,cmd);
+        Command* cmd = new Command();
+	cmd->method = IMPORT;
+	executeOneCommand(NULL,cmd);
+	delete cmd;
+
+	cmd = new Command();
+	cmd->method = RUN;
+	executeOneCommand(NULL,cmd);
     } catch (exception_e except){
         IOModule->handleException(except);
     }
+
 }
 Shell::~Shell(){
     delete mainTaskList;
@@ -111,7 +113,7 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
             script.open((command->filename).c_str());
             if (script.is_open()){
                 string line;
-                while (getline(script, line)){
+                while (getline(script, line) && line[0] != '#'){ // '#' starts a line of comment
                     try{
                         CommandList commandList;
                         Command *command;
@@ -134,7 +136,7 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
                         command->method = EXPORT;
                         mainCommandExecutor->executeCommand(mainTaskList,command);
                         delete command;
-                    }  
+                    }
 
                     catch (exception_e except){
                         if (except == EXCEPTION_HALT) break;
