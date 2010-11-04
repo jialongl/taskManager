@@ -468,14 +468,19 @@ string Parser::matchAlias (string s) {
 
 Command* Parser::inputToCommand (string input) {
 
-  //------ check if this command has been alias-ed. -----
-  string temp = matchAlias(input);
+  if (input[0] != '\'') {
+    //------ check if this command has been alias-ed. -----
+    string temp = matchAlias(input);
 
-  if (temp != "")
-    tokenize_by_space(temp);
+    if (temp != "")
+      tokenize_by_space(temp);
+    else
+      tokenize_by_space(input);
+    //-----------------------------------------------------
+  }
+
   else
-    tokenize_by_space(input);
-  //-----------------------------------------------------
+    tokenize_by_space(input.substr(1, input.length()-1));
 
   cmd = new Command();
 
