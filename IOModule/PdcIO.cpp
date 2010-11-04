@@ -127,10 +127,20 @@ bool PdcIO::confirm(string prompt){
                 finished = true;
                 break;
             case KEY_LEFT:
+            case 'h':
                 flag = true;
                 break;
             case KEY_RIGHT:
+            case 'l':
                 flag = false;
+                break;
+            case 'y':
+                flag = true;
+                finished = true;
+                break;
+            case 'n':
+                flag = false;
+                finished = true;
                 break;
             default:
                 break;
