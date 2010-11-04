@@ -14,7 +14,7 @@ time_t currentTime(){
 
 bool isNumber(string s){
     for (int i=0;i<s.length();i++)
-        if (s[i]<48 || s[i]>57) return false;
+        if ((i==0 && s[i] == '-') || s[i]<48 || s[i]>57) return false;
     return true;
 }
 
@@ -28,13 +28,14 @@ int max(int x,int y)
 { return x>y?x:y;}
 
 string formatTime(int x){
+    if (x == NO_SPECIFIC_DEADLINE) return "Anytime";
 	time_t  t = x;
 	return ((string)ctime(&t)).substr(0,24);	
 }
 
 int StringToNum(string s){
   if (s[0] == '-')
-    return -StringToNum(s.substr(1, s.length()));
+    return -StringToNum(s.substr(1, s.length()-1));
 
   int ans = 0;
   for (unsigned i=0; i < s.size(); i++){

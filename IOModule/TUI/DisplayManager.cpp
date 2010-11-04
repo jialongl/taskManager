@@ -56,10 +56,11 @@ void DisplayManager::enterCommand(){
     getmaxyx(stdscr,mx,my);
     move(mx-1,0);
     printw("> ");
-    string st = dynamic_cast<ListDisplayElement*>(escStack[0]) -> editArea(stdscr, mx-2,mx-2,1,my-2,""); 
-    if (st!="")
-        setCommand((parent->parser)->inputToCommandList(st+"|ls"));
-    else
+    string st = dynamic_cast<ListDisplayElement*>(escStack[0]) -> editArea(stdscr, mx-2,mx-2,1,my-2,"",false); 
+    if (st!=""){
+        if (st.find("ls") == string::npos) st = st + "|ls";
+        setCommand((parent->parser)->inputToCommandList(st));
+    }else
         echo("TaskManager: Canceled by user");
 }
 
@@ -108,7 +109,7 @@ void DisplayManager::showHelp(){
 
     move(mx-3,5);
     attron(_BLINK);
-    printw("press any key to continue");
+    printw("press any key to go back");
     attroff(_BLINK);
     attron(_NORMAL);
     refresh();
@@ -122,10 +123,10 @@ void DisplayManager::redraw(){
     getmaxyx(stdscr, mx, my);
     clear();
     curs_set(0);
-    string title = "Task Manager V0.15     TUI with PDCurses";
+    string title = "Task Manager V0.2";
     int ypos = (my - title.length()) / 2;
     attron(_REVERSE);
-    mvhline(0,0,'-', my);
+    mvhline(0,0,' ', my);
     mvprintw(0,ypos,title.c_str());
     attroff(_REVERSE);
     attron(_NORMAL);

@@ -151,7 +151,7 @@ void Parser::parse_date (string s, time_t *seconds) {
 void Parser::add_parse() {
   cmd->method = ADD;
   cmd->group = "default";
-  cmd->deadline = currentTime();
+  cmd->deadline = NO_SPECIFIC_DEADLINE;
 
   for(iter = args.begin(); iter < args.end(); iter++ ) {
     if ( *iter == "-t" ) {

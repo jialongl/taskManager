@@ -41,7 +41,7 @@ CommandList PdcIO::getCommand(){
     while (!commandReady){
         ch = getch();
         if (ch>=48 && ch<58){
-            count = count*10+ch-48;
+            count = (count*10+ch-48)%100;
         }
         else{
             if (count == 0) count =1;

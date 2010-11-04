@@ -321,7 +321,7 @@ void ListDisplayElement::refreshEditArea(WINDOW* win, int row0, int row1, int co
     *cR = curRow;
     *cC = curCol;
 }
-string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int col1,string st0){
+string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int col1,string st0,bool numOnly){
     attron(_EDIT);
     row0+=win->_begy+1;
     row1+=win->_begy+1;
@@ -337,14 +337,20 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
     refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&curRow,&curCol);
     bool flag = false;
     int tmp;
+    int chLast = 0;
+    time_t tLast,tNow;
     while (!flag){
+        time(&tLast);
         int ch = getch();
+        time(&tNow);
         switch (ch){
             case 10:
             case 13:
+                chLast = ch;
                 flag= true;
                 break;
             case KEY_LEFT:
+                chLast = ch;
                 if (curPos!=0 && !(curRow == row0 && curCol == col0)){
                     if (curCol == col0){ curCol = col1; curRow--;}
                     else curCol--;
@@ -359,6 +365,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                 }
                 break;
             case KEY_RIGHT:
+                chLast = ch;
                 if (curPos!=newStr.size() && !(curRow == row1 && curCol == col1)){
                     if (curCol == col1){ curCol = col0; curRow++;}
                     else curCol++;
@@ -373,6 +380,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                 }
                 break;
             case KEY_UP:
+                chLast = ch;
                 if (curPos - (col1-col0+1) >=0 && curRow!=row0){
                     curRow--;
                     curPos-=col1-col0+1;
@@ -386,6 +394,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                 }
                 break;
             case KEY_DOWN:
+                chLast = ch;
                 if (curPos + col1-col0+1 <= newStr.size() && curRow!=row1){
                     curRow++;
                     curPos+=col1-col0+1;
@@ -406,6 +415,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
             case KEY_BACKSPACE:
             case 8:
             case 127:
+                chLast = ch;
                 if (!(curCol == col0 && curRow == row0) && curPos != 0){
                     newStr.erase(curPos - 1,1);
                     if (curCol == col0){ curCol = col1; curRow--;}
@@ -424,6 +434,8 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                 }
                 break;
             case KEY_ESC:
+            case 3:
+                chLast = ch;
                 newStr = st0;
                 curRow = row0, curCol = col0;
                 curPos = st0.size();
@@ -436,20 +448,53 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                     }
                 flag = true;
                 break;
-            default:
-                if (curCol < col1){//curPos - startPos + 1<msize){
-                    newStr.insert(curPos,(char*)&ch,1);
+            case 'j':
+                if (chLast == 'j' && tLast >= tNow-1 && !numOnly){
+                    newStr[curPos-1] = '"';
                     refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
-                    curPos++;
-                    curCol++;
                     move(curRow,curCol);
-                }else{
-                    newStr.insert(curPos,(char*)&ch,1);
-                    startPos+=col1-col0+1;
-                    curPos++;
-                    curCol = col0;
-                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                    chLast = 0;
+                    break;
                 }
+                chLast = 'j';
+            case ' ':
+                if (chLast == ' ' && tLast >= tNow-1){
+                    if (!numOnly)
+                        if (!(curCol == col0 && curRow == row0) && curPos != 0){
+                            newStr.erase(curPos - 1,1);
+                            if (curCol == col0){ curCol = col1; curRow--;}
+                            else curCol--;
+                            curPos--;
+                            refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                            move(curRow,curCol);
+                        }else if (curPos !=0){
+                            startPos -= col1-col0+1;
+                            newStr.erase(curPos - 1,1);
+        //                    startPos--;
+                            curPos--;
+                            curCol = col1;
+                            refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                            move(curRow,curCol);
+                        }
+                    flag = true;
+                    break;
+                }
+            default:
+                chLast = ch;
+                if (!numOnly || isDigit(ch))
+                    if (curCol < col1){//curPos - startPos + 1<msize){
+                        newStr.insert(curPos,(char*)&ch,1);
+                        refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                        curPos++;
+                        curCol++;
+                        move(curRow,curCol);
+                    }else{
+                        newStr.insert(curPos,(char*)&ch,1);
+                        startPos+=col1-col0+1;
+                        curPos++;
+                        curCol = col0;
+                        refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                    }
                 break;
         }
     }
@@ -476,7 +521,7 @@ vector<string> ListDisplayElement::editSelect(){
     showDetail();
     int mx=0, my=0;
     getmaxyx(listWindow, mx, my);
-    string newGrp = editArea(listWindow,taskStartAt[selectTask] - navigateRow,taskStartAt[selectTask] - navigateRow,13,max(23,13+(tasks[selectTask]->getGroup()).size()),tasks[selectTask]->getGroup());
+    string newGrp = editArea(listWindow,taskStartAt[selectTask] - navigateRow,taskStartAt[selectTask] - navigateRow,13,max(23,13+(tasks[selectTask]->getGroup()).size()),tasks[selectTask]->getGroup(),false);
     move(taskStartAt[selectTask] - navigateRow + 3, 1);
     attron(_SELECT);
     printw("%s",lineWithNewGroup(selectTask,newGrp).c_str());
@@ -484,7 +529,13 @@ vector<string> ListDisplayElement::editSelect(){
     attron(_NORMAL);
     int theRow = taskStartAt[selectTask]- navigateRow + listWindow->_begy;
     if (theRow + 12 >= mx+listWindow->_begy) theRow= mx+listWindow->_begy-13;
-    int newTime = datePicker(tasks[selectTask]->getDeadline(),theRow,45);//editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
+    time_t tt = tasks[selectTask]->getDeadline();
+    struct tm* dd = localtime(&tt);
+    dd->tm_hour =0;
+    dd->tm_sec =0;
+    dd->tm_min =0;
+    tt = mktime(dd);
+    int newTime = datePicker(tt,theRow,45);//editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
     naiveDraw();
     move(taskStartAt[selectTask]+1- navigateRow + listWindow->_begy+1,48);
     attron(_EDITTED);
@@ -495,9 +546,11 @@ vector<string> ListDisplayElement::editSelect(){
     printw("%s------------------",newGrp.c_str());
     attroff(_SELECT);
     attron(_NORMAL);
-    string newPri = editArea(listWindow,taskStartAt[selectTask]+2- navigateRow,taskStartAt[selectTask]+2- navigateRow,25,27,NumberToString(tasks[selectTask]->getPriority()));
-    string newDetail = editArea(listWindow,taskStartAt[selectTask]+4- navigateRow,taskFinishAt[selectTask] -2- navigateRow,15,my-13,tasks[selectTask]->getDescription());
+    string newPri = editArea(listWindow,taskStartAt[selectTask]+2- navigateRow,taskStartAt[selectTask]+2- navigateRow,25,27,NumberToString(tasks[selectTask]->getPriority()),true);
+    string newDetail = editArea(listWindow,taskStartAt[selectTask]+4- navigateRow,taskFinishAt[selectTask] -2- navigateRow,15,my-13,tasks[selectTask]->getDescription(),false);
     //displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
+    newGrp = handleQuo(newGrp);
+    newDetail = handleQuo(newDetail);
     vector<string> ans;
     ans.push_back(newGrp);
     ans.push_back(NumberToString(newTime));
@@ -539,17 +592,25 @@ void ListDisplayElement::search(){
     string keyInSt = "";
     searchKeyword = "";
     displayManager->echo("Search: "+searchKeyword);
+    int chLast = 0;
+    time_t timeLast;
+    time_t timeNow;
     while (!flag){
         selectTask = 0;
+        time(&timeLast);
         int ch = getch();
+        time(&timeNow);
         switch (ch){
             case KEY_ESC:
+            case 3:
+                chLast = ch;
                 reset();
                 draw();
                 flag =true;
                 break;
             case 10:
             case 13:
+                chLast = ch;
                 if (tasks.size() == 0) {
                     list = originalList;
                     draw();
@@ -559,6 +620,7 @@ void ListDisplayElement::search(){
             case KEY_BACKSPACE:
             case 8:
             case 127:
+                chLast = ch;
                 if (searchKeyword.size()!=0) searchKeyword = searchKeyword.substr(0,searchKeyword.size() - 1);
                 if (keyInSt.size()!=0) keyInSt = keyInSt.substr(0,keyInSt.size() - 1);
 //                reset();
@@ -567,7 +629,17 @@ void ListDisplayElement::search(){
                 list = list -> getTasks(new KFilter("*"+searchKeyword+"*"));
                 draw(); 
                 break;
+            case ' ':
+                if (chLast == ' ' && timeNow <= timeLast+1){
+                    flag = true;
+                    if (tasks.size() == 0) {
+                        list = originalList;
+                        draw();
+                    }
+                    break;
+                }
             default:
+                chLast = ch;
                 keyInSt.push_back((char)ch);
                 if (ch == (int)' ') ch = (int)'*';
                 searchKeyword.push_back((char)ch);
@@ -703,10 +775,12 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
         int ch = getch();
         if (ch >= 48 && ch < 58) count = count * 10 + ch - 48;
         switch (ch){
+            case KEY_ESC:
+            case 3:
+            case 'q':
+                curTime = NO_SPECIFIC_DEADLINE;
             case 10:
             case 13:
-            case KEY_ESC:
-            case 'q':
             case ' ':
                 flag = true;
                 break;
@@ -756,7 +830,7 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
     hourMinSec[2] = 0;
     int curFoc = 0;
     drawTime(year,mon,day,hourMinSec,curFoc,startRow,startCol);
-    flag = false;
+    if (curTime != NO_SPECIFIC_DEADLINE) flag = false;
 //    count = 0;
     while (!flag){
         int ch = getch();
@@ -765,10 +839,14 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
           hourMinSec[curFoc] = (hourMinSec[curFoc]*10+ch-48)%100;
         }
         switch (ch){
+            case KEY_ESC:
+            case 3:
+            case 'q':
+                hourMinSec[0] = 0;
+                hourMinSec[1] = 0;
+                hourMinSec[2] = 0;
             case 10:
             case 13:
-            case KEY_ESC:
-            case 'q':
             case ' ':
                 if (hourMinSec[curFoc] >= limit[curFoc]) hourMinSec[curFoc] = limit[curFoc] - 1;
                 flag = true;
@@ -808,11 +886,14 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
         }
         drawTime(year,mon,day,hourMinSec,curFoc,startRow,startCol);
     }
-    datetime = localtime(&curTime);
-    datetime->tm_hour = hourMinSec[0]; 
-    datetime->tm_min = hourMinSec[1]; 
-    datetime->tm_sec = hourMinSec[2]; 
-    return mktime(datetime);    
+    if (curTime != NO_SPECIFIC_DEADLINE){
+        datetime = localtime(&curTime);
+        datetime->tm_hour = hourMinSec[0]; 
+        datetime->tm_min = hourMinSec[1]; 
+        datetime->tm_sec = hourMinSec[2]; 
+        return mktime(datetime);    
+    }else
+        return curTime;
 }
 
 void ListDisplayElement::drawTime(int year,int mon,int day,int hourMinSec[],int curFoc,int startRow,int startCol){
@@ -889,12 +970,34 @@ void ListDisplayElement::drawTime(int year,int mon,int day,int hourMinSec[],int 
 
 }
 void ListDisplayElement::drawSelectNumber(){
+    string months[]  = {
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    };
+    time_t now = currentTime();
+    struct tm* datetime;
+    datetime = localtime(&now);
+    string today = "Today is "+NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year + 1900);
     string st =" "+ NumberToString((selectTask+1)>tasks.size()?tasks.size():selectTask+1)+" of "+NumberToString(tasks.size())+" Tasks ";
     int mx,my;
     getmaxyx(listWindow,mx,my);
     my -= st.length();
     wmove(listWindow,mx-1,my-2);
     wprintw(listWindow,st.c_str());
+    wattron(listWindow,_TIMELINE);
+    wmove(listWindow,mx-1,2);
+    wprintw(listWindow,today.c_str());
+    wattroff(listWindow,_TIMELINE);
     wrefresh(listWindow);
 }
 string ListDisplayElement::lineWithNewGroup(int i,string group){
@@ -950,6 +1053,7 @@ void ListDisplayElement::selectByCalendar(){
                 flag = true;
                 break;
             case KEY_ESC:
+            case 3:
             case 'q':
                 escFlag = true;
                 flag = true;
@@ -993,4 +1097,18 @@ void ListDisplayElement::selectByCalendar(){
 
     naiveDraw();
 
+}
+
+string ListDisplayElement::handleQuo(string s0){
+    string ss = "";
+    for (int i=0;i<s0.length();i++){
+        if (s0[i] == '\\'){
+            ss.push_back('\\');
+            ss.push_back('\\');
+        }else if (s0[i] == '"'){
+            ss.push_back('\\');
+            ss.push_back('"');
+        }else ss.push_back(s0[i]);
+    }
+    return ss;
 }

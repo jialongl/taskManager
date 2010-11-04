@@ -41,6 +41,8 @@ using namespace std;
 #define _TIMELINE COLOR_PAIR(9)
 #define _TASKDAY COLOR_PAIR(10)
 
+#define NO_SPECIFIC_DEADLINE -1 
+
 
 #endif
 

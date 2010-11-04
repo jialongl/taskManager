@@ -40,7 +40,7 @@ public:
     void handleConfirm(bool flag);
     void handleResult(Result* result);
     void reconstructLines();
-    string editArea(WINDOW* win,int row0,int row1,int col0,int col1,string st0);
+    string editArea(WINDOW* win,int row0,int row1,int col0,int col1,string st0,bool numOnly);
     void refreshEditArea(WINDOW* win, int row0, int row1, int col0, int col1, string newStr, int startPos, int* cR,int* cC);
     vector<string> editSelect();
     void showDetail();
@@ -57,6 +57,7 @@ public:
     string lineWithNewGroup(int i,string group);
     bool is_time(string st);
     void selectByCalendar();
+    string handleQuo(string s0);
 };
 
 #endif
