@@ -18,6 +18,10 @@ bool isNumber(string s){
     return true;
 }
 
+bool isDigit(char ch){
+    return (ch >= 48 && ch <= 57);
+}
+
 int min(int x,int y)
 { return x<y?x:y;}
 int max(int x,int y)

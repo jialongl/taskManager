@@ -157,7 +157,6 @@ This is helpful when you only want to peek the content of an xml file without re
 
 \item [ \texttt{export} ]
   exports the current task list to an XML or HTML file.
-
 \texttt{
   \begin{tabbing}
     \textgreater \ export sampletasks.xml \footnotemark\\
@@ -170,9 +169,9 @@ This is helpful when you only want to peek the content of an xml file without re
     <priority> 0 </priority>\\
     <description> Sample task 2 </description>\\
     <group> default </group>\\
-    <isFinished> 0 </isFinished>\<\\
-    </task>\<\\
-    </taskList>
+    <isFinished> 0 </isFinished>\-\\
+    </task>\-\\
+    </taskList>\-\\
   \end{tabbing}
 }
 
@@ -294,7 +293,7 @@ In this section they are introduced in great detail.
 
 \footnotetext{ At least one of letters w/d/h/m should be specified.}
 \item[ \texttt{Unix timestamp} ]
-``Unix timestamp'' means the number of seconds elapsed since Jan 1, 1900 00:00:00. It is not recommended for users, but rather used as the lower-order method for developers.
+``Unix timestamp'' means the number of seconds elapsed since Jan 1, 1970 00:00:00. It is not recommended for users, but rather used as the lower-order method for developers.
 \end{enumerate}
 
 \item[ \texttt{-p} ] add a task with a priority:

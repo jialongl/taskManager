@@ -8,6 +8,7 @@
 time_t currentTime();
 
 bool isNumber(string s);
+bool isDigit(char ch);
 
 int min(int x,int y);
 int max(int x,int y);

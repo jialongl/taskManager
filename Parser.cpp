@@ -83,32 +83,62 @@ void Parser::tokenize_by_space (string s) {
 
 }
 
-void Parser::parse_date (string s, long *seconds) {
+void Parser::parse_date (string s, time_t *seconds) {
   int digit_pos = 0; // to record the position in the string where it is a digit (i.e '0' ~ '9')
+  int this_number;
 
   if (isNumber(s))
     *seconds = StringToNum(s);
 
-  else if (s[0] >= 48 && s[0] <= 57) { // "plus" time format
-    for (int j = 0; j < s.length(); j++) {
-      if (s[j] == 'w') {
-	*seconds += StringToNum( s.substr(digit_pos, j-digit_pos) ) * 604800;
-	digit_pos = j + 1;
+  else if (isDigit(s[0])) {
+	  for (int j = 0; j < s.length(); j++) {
+		  this_number = StringToNum( s.substr(digit_pos, j-digit_pos) );
+		  if (s[j] == 'w') {
+			  *seconds += this_number * 604800;
+			  digit_pos = j + 1;
 
-      } else if (s[j] == 'd') {
-	*seconds += StringToNum( s.substr(digit_pos, j-digit_pos) ) * 86400;
-	digit_pos = j + 1;
+		  } else if (s[j] == 'd') {
+			  *seconds += this_number * 86400;
+			  digit_pos = j + 1;
 
-      } else if (s[j] == 'h') {
-	*seconds += StringToNum( s.substr(digit_pos, j-digit_pos) ) * 3600;
-	digit_pos = j + 1;
+		  } else if (s[j] == 'h') {
+			  *seconds += this_number * 3600;
+			  digit_pos = j + 1;
 
-      } else if (s[j] == 'm') {
-	*seconds += StringToNum( s.substr(digit_pos, j-digit_pos) ) * 60;
-	digit_pos = j + 1;
-      }
-    }
-    *seconds += currentTime();
+		  } else if (s[j] == 'm') {
+			  *seconds += this_number * 60;
+			  digit_pos = j + 1;
+		  }
+	  }
+	  *seconds += currentTime();
+
+  } else if (s[0] == 'b') {
+	  int j=1;
+
+	  time_t now;
+	  time_t temp = 0;
+	  struct tm *now_tm;
+	  time(&now);
+	  now_tm = localtime(&now);
+
+	  while( j < s.length()) {
+		  if (!isDigit(s[j])) { //s[j] is (at least) a letter
+			  break;
+		  }
+		  j++;
+	  }
+
+	  now_tm->tm_sec = 0;
+	  now_tm->tm_min = 0;
+	  now_tm->tm_hour = 0;
+
+	  if (s[j] == 'w')
+		  now_tm->tm_mday -= now_tm->tm_wday ;
+
+	  parse_date(s.substr(1, s.length()-1), &temp);
+	  temp -= currentTime();
+	  *seconds = mktime(now_tm);
+	  *seconds += temp;
   }
 }
 
@@ -120,10 +150,12 @@ void Parser::add_parse() {
   for(iter = args.begin(); iter < args.end(); iter++ ) {
     if ( *iter == "-t" ) {
       string temp = *(++iter);
-      long seconds = 0;
+      time_t seconds = 0;
 
-      parse_date(temp, &seconds);
-      cmd->deadline = seconds;
+      if (temp.length() >= 2) {
+    	  parse_date(temp, &seconds);
+    	  cmd->deadline = seconds;
+      }
     }
 
     else if ( *iter == "-p" ) {
@@ -147,7 +179,6 @@ void Parser::add_parse() {
 }
 
 void Parser::edit_parse() {
-
 
   if (args.size() >= 2) {
     cmd->method = EDIT;
