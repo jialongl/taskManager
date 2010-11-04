@@ -468,7 +468,7 @@ string Parser::matchAlias (string s) {
 
 Command* Parser::inputToCommand (string input) {
 
-  if (input[0] != '\'') {
+  if (input[0] != '\\') {
     //------ check if this command has been alias-ed. -----
     string temp = matchAlias(input);
 
