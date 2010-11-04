@@ -21,7 +21,7 @@ void Parser::tokenize_by_pipe (string s) {
   while (pos < s.size()) {
     if ( s[pos] != '|') {
       if ( s[pos] == '"')
-	inInvertedCommas = !inInvertedCommas;
+    	  inInvertedCommas = !inInvertedCommas;
 
       buf += s[pos];
     }
@@ -31,7 +31,7 @@ void Parser::tokenize_by_pipe (string s) {
       buf = "";
     }
 
-    else { // s[pos] == '"' and inInvertedCommas == true
+    else { // s[pos] == '|' and inInvertedCommas == true
       buf += s[pos];
     }
 
@@ -52,35 +52,41 @@ void Parser::tokenize_by_space (string s) {
   while (pos < s.size() && s[pos] == ' ')
     pos++;
 
+
   while (pos < s.size()) {
-    if ( s[pos] != ' ') {
-      buf += s[pos];
+	  if ( s[pos] != ' ') {
+		  buf += s[pos];
 
-      if (s[pos] == '"') {
-	if (inInvertedCommas == true) {
-	  args.push_back(buf);
-	  buf = "";
-	}
-	inInvertedCommas = !inInvertedCommas;
-      }
-    }
+		  if (s[pos] == '"') {
+			  if (pos > 0 && s[pos-1] == '\\') {
+				  buf = buf.substr(0, buf.length() - 2);
+				  buf += '"';
+			  } else {
+				  // this '"' is not escaped
+				  if (inInvertedCommas == true) {
+					  args.push_back(buf);
+					  buf = "";
+				  }
+				  inInvertedCommas = !inInvertedCommas;
+			  }
+		  }
+	  }
 
-    else {
-      if (inInvertedCommas == true)
-	buf += s[pos];
+	  else {
+		  if (inInvertedCommas == true)
+			  buf += s[pos];
 
-      else if (buf != "") {
-	args.push_back(buf);
-	buf = "";
-      }
-    }
+		  else if (buf != "") {
+			  args.push_back(buf);
+			  buf = "";
+		  }
+	  }
 
-    pos++;
+	  pos++;
   }
 
   if (buf != "")
     args.push_back(buf); // push in the last argument
-
 }
 
 void Parser::parse_date (string s, time_t *seconds) {
