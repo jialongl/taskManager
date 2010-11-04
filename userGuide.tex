@@ -10,6 +10,12 @@
 %\usepackage{setspace}
 %\onehalfspacing
 
+%\usepackage{palatino}
+\usepackage{avant}
+
+\newcommand{\cmd}[1]{{\bf \texttt{\begin{quote} #1 \end{quote}}}}
+\newcommand{\cmdinline}[1]{{\bf \texttt{#1}}}
+
 \begin{document}
 \begin{titlepage}
   \centering
@@ -49,121 +55,119 @@ abc abc
 This section introduces you the minimum amount of commands to get started.
 
 \begin{enumerate}
-\item Start taskManager shell
+\item Start taskManager shell:
 
-On Mac OS and GNU Linux (referred to as ``*nix'' later), taskManager can be started from shell by commands:
+On Mac OS and GNU Linux (referred to as ``*nix'' later), taskManager can be started from shell by commands: \cmd{\$ cd the/folder/containing/taskManager\\ \$ ./taskManager\footnotemark}
 
-\texttt{\$ cd the/folder/containing/taskManager\\
-  \$ ./taskManager \footnotemark}
+On Microsoft Windows, taskManager can be launched in command prompt as well, or simply by double clicking ``taskManager.exe''.
 
-On Microsoft Windows, taskManager can be launched in command prompt as well, or simply by double clicking.
+Once taskManager is launched, you will see a prompt like \cmdinline{"\textgreater\_"}, and you will start typing commands!
 
-Once taskManager is launched, you will see a prompt like ``\textgreater\_'', and you will start typing commands!
+\footnotetext{ *nix version can be run at any directory after installing taskManger -- \cmdinline{"make install"}. See details in section \cmdinline{"Compilation and Installation".}}
 
-\footnotetext{ *nix version can be run at any directory after installing taskManger -- ``make install''. See details in section ``Compilation and Installation''.}
-
-\item Add some tasks
-
-\texttt{\$ ./taskManager\\
-  \textgreater \  add "Sample task 1"\\
-  \textgreater \  add "Sample task 2"\\
+\item Add some tasks:\cmd{\$ ./taskManager\\
+  > \  add "Sample task 1"\\
+  > \  add "Sample task 2"\\
   TaskManager: This task is highly similiar to some existing task, do you really want to add it? \textcolor{blue}{y}}
-
 To add a task, simply use \texttt{add} command followed by the description of the task in a pair of quotation marks.
 
 \emph{If no error messages are shown, the task is successfully added.}
 TaskManager may prompt for confirmation if the task to be added is highly similar to some existing task(s) to help prevent people forget adding tasks, which is the case in the example above.
 
-\item List the existing tasks
+\item List the existing tasks: 
+\cmd{\begin{tabbing}
+    > \ ls\\
+    1 \hspace{0.3in} \= Sample task 1\\
+    2 \>Sample task 2
+  \end{tabbing}
+}
+To see the existing tasks, use \cmdinline{ls} command. By default, the taskManager shows the serial numbers and the descriptions of the tasks.
 
-\texttt{\textgreater \ ls\\
-  1   Sample task 1\\
-  2   Sample task 2}
-
-To see the existing tasks, use \texttt{ls} command. By default, the taskManager shows the serial numbers and the descriptions of the tasks.
-
-\item Mark a task as finished
-
-\texttt{\textgreater \ finish 2\\
-  \textgreater \ ls\\
-  1   Sample task 1\\
-  2 f Sample task 2}
- 
-To finish an existing task, use the finish command followed by the serial number of the task to finish. 
+\item Mark a task as finished:
+\cmd{
+  \begin{tabbing}
+    > \ finish 2\\
+    > \ ls\\
+    1   \hspace{0.3in} \= task 1\\
+    2 f \>task 2
+  \end{tabbing}
+}
+To finish an existing task, use \cmdinline{finish} command followed by the serial number of the task to finish. 
 Notice that for finished task, an `f' is shown between serial number and task description.
 
-\item Remove task(s)
+\item Remove task(s): \cmd{\begin{tabbing}
+    > \ ls\\
+    1 f \hspace{0.16in} \= Sample task 1\\
+    2   \>Sample task 2\\
+    > \ rm 1\\
+    TaskManager: Do you really want to remove this task permanently? \textcolor{blue}{y}\\
+    > \ ls\\
+    2  \>Sample task 2
+  \end{tabbing}
+}
 
-\texttt{\textgreater \ ls\\
-    1 f Sample task 1\\
-    2   Sample task 2\\
-    \textgreater \ rm 1\\
-    TaskManager: Do you really want to remove this task permanently?\textcolor{blue}{y}\\
-    \textgreater \ ls\\
-    2   Sample task 2}
+To remove an existing task, use \cmdinline{rm} command followed by the serial number of the task to remove. TaskManager will prompt for confirmation when removing tasks.
 
-To remove an existing task, use \texttt{rm} command followed by the serial number of the task to remove. TaskManager will prompt for confirmation when removing tasks.
+\item Exit from taskManager:
+\cmd{> \ exit}
 
-\item Exit from taskManager
-
-\texttt{\textgreater \ exit}
-
-To quit from taskManager, use \texttt{exit} command. 
+To quit from taskManager, use \cmdinline{exit} command. 
 All changes to the existing tasks will be automatically saved.
 \end{enumerate}
 
 \subsection{More commands}
 \subsubsection{read, import and export}
 
-TaskManager stores the tasks in an XML file which is by default \texttt{\~{}/record.xml} on *nix, and \texttt{\%USERPROFILE\%\textbackslash record.xml} on Windows.
+TaskManager stores the tasks in an XML file which is by default \cmdinline{\~{}/record.xml} on *nix, and \cmdinline{\%USERPROFILE\%\textbackslash record.xml} on Windows.
 
-TaskManager also supports importing/exporting the existing tasks from/to XML and HTML files. This is done by \texttt{read}, \texttt{import} and \texttt{export} commands.
+TaskManager also supports importing/exporting the existing tasks from/to XML and HTML files. This is done by \cmdinline{read}, \cmdinline{import} and \cmdinline{export} commands.
 
 \begin{enumerate}
-\item [ \texttt{read} ]
-
-  reads an XML file, list all the tasks it contains without affecting the current task list.
+\item [ \cmdinline{read} ] reads an XML file, list all the tasks it contains without affecting the current task list.
 
 This is helpful when you only want to peek the content of an xml file without really importing it.
-
-\texttt{\textgreater \ ls\\
-    1   Sample task 2\\
-    \textgreater \ read thisweek.xml \footnotemark \\
-    1 f CS2103 midTerm Sep 29 06:30 - 07:30 pm MPSH 1B\\
-    2 f CS3230 midTerm Oct 15 06:00 pm\\
-    3 f CS3241 midTerm Oct 07 lecture\\
-    4 f CS3244 midTerm Oct 04 lecture\\
-    5 f ST2132 midTerm Oct 08 LT33 12:15 - 1:30 pm\\
-    \textgreater \ ls\\
-    1   Sample task 2}
+\cmd{
+\begin{tabbing}
+  > \ ls\\
+    1 \hspace{0.3in}\=  Sample task 2\\
+    > \ read thisweek.xml\footnotemark \\
+    1 f \>CS2103 midTerm Sep 29 06:30 - 07:30 pm MPSH 1B\\
+    2 f \>CS3230 midTerm Oct 15 06:00 pm\\
+    3 f \>CS3241 midTerm Oct 07 lecture\\
+    4 f \>CS3244 midTerm Oct 04 lecture\\
+    5 f \>ST2132 midTerm Oct 08 LT33 12:15 - 1:30 pm\\
+    > \ ls\\
+    1 \>Sample task 2
+\end{tabbing}
+}
 
 \footnotetext{ The file name is not quoted. If the file name contains space, please quote it with a pair of quotation marks.}
 
-\item [ \texttt{import} ]
-
-  is similar to \texttt{read} command. It reads the content of the XML file and appends all the tasks in it to current task list.
-
-\texttt{\textgreater \ ls\\
-    1   Sample task 2\\
-    \textgreater \ import mytasks.xml\\
-    1   Sample task 2 \footnotemark\\
-    2 f CS2103 midTerm Sep 29 06:30 - 07:30 pm MPSH 1B\\
-    3 f CS3230 midTerm Oct 15 06:00 pm\\
-    4 f CS3241 midTerm Oct 07 lecture\\
-    5 f CS3244 midTerm Oct 04 lecture\\
-    6 f ST2132 midTerm Oct 08 LT33 12:15 - 1:30 pm}
+\item [ \cmdinline{import} ] is similar to \cmdinline{read} command. It reads the content of the XML file and appends all the tasks in it to current task list.
+\cmd{
+\begin{tabbing}
+  > \ ls\\
+    1  \hspace{0.3in}\=Sample task 2\\
+    > \ import mytasks.xml\\
+    1 \>Sample task 2\footnotemark\\
+    2 f \>CS2103 midTerm Sep 29 06:30 - 07:30 pm MPSH 1B\\
+    3 f \>CS3230 midTerm Oct 15 06:00 pm\\
+    4 f \>CS3241 midTerm Oct 07 lecture\\
+    5 f \>CS3244 midTerm Oct 04 lecture\\
+    6 f \>ST2132 midTerm Oct 08 LT33 12:15 - 1:30 pm
+\end{tabbing}
+}
 
 \footnotetext{ Task 1 is still in task list. Importing tasks will not erase existing tasks.}
 
-\item [ \texttt{export} ]
-  exports the current task list to an XML or HTML file.
-\texttt{
+\item [ \cmdinline{export} ] exports the current task list to an XML or HTML file.
+\cmd{
   \begin{tabbing}
-    \textgreater \ export sampletasks.xml \footnotemark\\
-    \textgreater \ exit\\
-    \$ cat sampletasks.xml\+\\
-    <taskList>\+\\
-    <task>\+\\
+    > \ export sampletasks.xml\footnotemark\\
+    > \ \=exit\\
+    \$ \>cat sampletasks.xml\\
+    \>\+<taskList>\\
+    \>\>\+<task>\\
     <serialNumber> 1 </serialNumber>\\
     <deadline> 1288473083 </deadline>\\
     <priority> 0 </priority>\\
@@ -171,16 +175,15 @@ This is helpful when you only want to peek the content of an xml file without re
     <group> default </group>\\
     <isFinished> 0 </isFinished>\-\\
     </task>\-\\
-    </taskList>\-\\
+    </taskList>
   \end{tabbing}
 }
 
-\footnotetext{ Currently \texttt{export} does not support environmental variables in path. E.g. \texttt{export \~{}/abc.xml} will not export the file to user's home directory /home/username/.}
+\footnotetext{ Currently \cmdinline{export} does not support environmental variables in path. i.e. \cmdinline{export \~{}/abc.xml} will not export the file to user's home directory /home/username/.}
  
-\texttt{export} can also be used to generate an HTML file which is more visually pleasant in your favourate browser.
-
-\texttt{\textgreater \ export -html sampletasks.html\\
-  \textgreater \ exit}
+\cmdinline{export} can also be used to generate an HTML file which is more visually pleasant in your favourate browser.
+\cmd{> \ export -html sampletasks.html\\
+  > \ exit}
 
 \begin{figure}[htbp]
   \centering
@@ -191,12 +194,11 @@ This is helpful when you only want to peek the content of an xml file without re
 \footnotetext{ Page may not render correctly in IE 6 or its earlier versions.}
 \end{enumerate}
 
-\newpage
+%\newpage
 \subsubsection{task}
-
-\noindent \texttt{
+\noindent \cmd{
   \begin{tabbing}
-    \textgreater \ \=task 1 \+\\
+    > \=task 1 \+\\
     Number:  1  \ \ \= Deadline:\=Sun Oct 31 05:11:23 2010\\
     Priority:0 \> Status:\>Doing\\
     Group: \ default\\
@@ -204,17 +206,14 @@ This is helpful when you only want to peek the content of an xml file without re
     \ \ Sample task 2 \footnotemark
   \end{tabbing}
 }
-
 \footnotetext{ Adding tasks with detailed information is covered in section 2.3.1. In this example, default values are shown.}
-
-To show detail information of a task, use \texttt{task} command followed by serial number of the task.
+To show detail information of a task, use \cmdinline{task} command followed by serial number of the task.
 
 \subsubsection{pri}
-
-\noindent \texttt{
+\noindent \cmd{
   \begin{tabbing}
-    \textgreater \  pri 1 10\\
-    \textgreater \ \=task 1 \+\\
+    > \  pri 1 10\\
+    > \ \=task 1 \+\\
     Number:  1 \ \ \= Deadline: \= Sun Oct 31 05:11:23 2010\\
     Priority:10 \> Status: \> Doing\\
     Group: \ default\\
@@ -223,15 +222,14 @@ To show detail information of a task, use \texttt{task} command followed by seri
   \end{tabbing}
 }
 
-To change the priority of a task, use \texttt{pri} command followed by the serial number of a task and its new priority.
+To change the priority of a task, use \cmdinline{pri} command followed by the serial number of a task and its new priority.
 Priority is typically a number between -20 and 20. By default, the priority of a newly added task is 0.
 
 \subsubsection{edit}
-
-\noindent \texttt{
+\noindent \cmd{
   \begin{tabbing}
-    \textgreater \ edit 1 -d "Sample task 3" -p 12 -t 1d\footnotemark \ -g SampleGroup -f yes\\
-    \textgreater \ \=task 1 \+\\
+    > \ edit 1 -d "Sample task 3" -p 12 -t 1d\footnotemark \ -g SampleGroup -f yes\\
+    > \ \=task 1 \+\\
      Number:  1 \ \ \= Deadline: \= Mon Nov  1 05:47:59 2010\\
      Priority:12 \> Status: \> Finished\\
      Group: \ SampleGroup\\
@@ -240,266 +238,220 @@ Priority is typically a number between -20 and 20. By default, the priority of a
   \end{tabbing}
 }
 
-To edit a task, \texttt{edit} command is used like this:\\
-\texttt{edit taskSerialNumber -d newDescription -p newPriority -t newDeadline -g newGroup -f finished\_or\_not}
-
-Only serial number is compulsory. Besides, to finish a task, \texttt{finish 1} is equivalent to \texttt{edit 1 -f yes}.
+To edit a task, \cmdinline{edit} command which has the form: \cmdinline{edit taskSerialNumber -d newDescription -p newPriority -t newDeadline -g newGroup -f finished\_or\_not}. Only \cmdinline{taskSerialNumber} is compulsory. Besides, to finish a task, \cmdinline{finish 1} is equivalent to \cmdinline{edit 1 -f yes}.
 
 \footnotetext{ -t 1d means setting the deadline to be 1 day later. Time formats that taskManager accept are discussed in section 2.3.1.}
 
 \subsubsection{undo and redo}
-\texttt{\textgreater \ undo}
-
-Undo the last command. Note that it has no effect on commands like \texttt{ls}, \texttt{export}, \texttt{tui} and \texttt{undo}.
-
-\texttt{\textgreater \ redo}
-
-Redo the last undo. It can be executed util all the undo's are re-done.
+\noindent \cmd{> \ undo}
+would undo the last command. Note that it has no effect on commands like \cmdinline{ls}, \cmdinline{export}, \cmdinline{tui} and \cmdinline{undo}.
+\cmd{> \ redo}
+redo the last undo. It can be executed util all the undo's are re-done.
 
 \subsection{Using Options}
 
-Like \texttt{edit}, some of the commands come with options to support more functionality.
+Like \cmdinline{edit}, some of the commands come with options to support more functionality.
 In this section they are introduced in great detail.
 
 \subsubsection{add}
+\cmdinline{add} has three flags: \cmdinline{-t} to specify deadline, \cmdinline{-p} to set priority and \cmdinline{-g} to put the group name for a task.
+\begin{enumerate}
+\item [ \cmdinline{-t} ] add a task with a deadline: \cmd{> \ add "some task" -t 3d2h\\
+  > \ add "some task" -t b2d\\
+  > \ add "some task" -t 12345
+}
+TaskManager support 3 types of time format:
 
 \begin{enumerate}
-\item [ \texttt{-t} ] add a task with a deadline:
-
-  \texttt{\textgreater \ add "some task" -t 3d2h\\
-    \textgreater \ add "some task" -t b2d\\
-    \textgreater \ add "some task" -t 12345}
-
-  taskManager support 3 types of time format:
-
-\begin{enumerate}
-\item[ \texttt{"plus" format} ]
+\item[ \cmdinline{"plus" format} ]
   ``Plus'' format specifies the how much time left for the task, and it has form ?w?d?h?m\footnotemark, where each question mark stands for a number (not a digit).\\
   For example, 3d2h means the task will due after 3 days 2 hours the moment the command is executed -- you have 3 days and 2 hours to finish it.
 
 \footnotetext{ At least one of letters w/d/h/m should be specified.}
-% \footnotetext{ At least one of them should be specified.}
 
-\item[ \texttt{"by" format} ]
-  Important: 
+\item[ \cmdinline{"by" format} ]
   ``By'' format has a similar form of ``plus'' format. It is in the form of b?w?d?h?m\footnotemark, where each question mark stands for a number (not a digit). For example:
 \footnotetext{ At least one of letters w/d/h/m should be specified.}
 
 \begin{tabular}{ r | l }
-  \texttt{b0d22h} & by 10:00pm today.\\
-  \texttt{b2d} & by 23:59 tomorrow.\\
-  \texttt{b1w} & by the end of this week. i.e. 23:59 of the Saturday\footnotemark of this week. \\
-  \texttt{b0w5d} & by 23:59 on Friday of this week.\\
-  \texttt{b2w3d8h} & by 8:00am on the Wednesday of the next next week.\\
+  \cmdinline{b0d22h} & by 10:00pm today.\\
+  \cmdinline{b2d} & by 23:59 tomorrow.\\
+  \cmdinline{b1w} & by the end of this week. i.e. 23:59 of the Saturday\footnotemark of this week. \\
+  \cmdinline{b0w5d} & by 23:59 on Friday of this week.\\
+  \cmdinline{b2w3d8h} & by 8:00am on the Wednesday of the next next week.\\
 \end{tabular}
 
 \footnotetext{ Sunday is the first day of a week.}
 
-\item[ \texttt{Unix timestamp} ]
-``Unix timestamp'' means the number of seconds elapsed since Jan 1, 1970 00:00:00. It is not recommended for users, but rather used as the lower-order procedure for developers.
+\item[ \cmdinline{Unix timestamp} ]
+``Unix timestamp'' means the number of seconds elapsed since Jan 1, 1970 00:00:00. It is not recommended for users, but rather used as a lower-order procedure for developers.
 \end{enumerate}
 
-\item[ \texttt{-p} ] add a task with a priority:
-
-\texttt{\textgreater \ add "some important task" -p 20}
-
-\item[ \texttt{-g} ] specify a group for a task:
-
-\texttt{\textgreater \ add "the task with group"\footnotemark \  -g SampleGroup}
+\item[ \cmdinline{-p} ] add a task with a priority: \cmd{> \ add "some important task" -p 20}
+\item[ \cmdinline{-g} ] specify a group for a task: \cmd{> \ add "the task with group"\footnotemark \  -g SampleGroup}
 \end{enumerate}
 
 \footnotetext{ If group name contains spaces, use a pair of quotation marks to quote it.}
-Options are not compulsory. Different options can be used together. For example \texttt{add "some task" -p 10 -g "special task" -t 4d}.
+
+\emph{Options are not compulsory. Different options can be used together.} For example: \cmd{> \ add "CS2103 final exams" -p 10 -g "finals" -t b3w2d} would add a task ``CS2103 final exam'' which has a priority of 10, belongs to group ``finals'' and is held on the Tuesday 3 weeks from now.
 
 \subsubsection{ls}
-
+\cmdinline{ls} has four flags: \cmdinline{-s} to sort tasks, \cmdinline{-k} to search tasks, \cmdinline{-f} to view only (un)finished tasks and \cmdinline{-g} to filter tasks by group name.
 \begin{enumerate}
-\item[ \texttt{-s} ] sorts the existing tasks:
+\item[ \cmdinline{-s} ] sorts the existing tasks: \cmd{> \ ls -s "deadline priority"}
 
-\texttt{\textgreater \ ls -s "deadline priority"}
+A more general format is: \cmdinline{ls -s "keyword1 keyword2" \ldots}
 
-A more general format is: \texttt{ls -s "keyword1 keyword2" \ldots}
-
-The listed tasks will be sorted by keyword1 then keyword2 \ldots
+The listed tasks will be sorted by keyword1 and then keyword2 \ldots
     
-Available search keywords are: deadline, priority and serialnumber. Prefix of a keyword is also acceptable. e.g. \textgreaterls -s "p" will sort the list by priority.
+Available columns are: deadline, priority and serialnumber. Prefix of a keyword is also acceptable. e.g. \cmdinline{ls -s "p"} will sort the tasks by their priorities.
 
-Examples: \texttt{
+Examples: \cmd{
 \begin{tabbing}
-  \textgreater \ ls -s "p d" \+\\
-  1   task 1 highest priorty. \ \=  3  Sun Oct 31 06:49:09 2010\\
-  2   task 2 high priority. \> 2  Mon Nov  1 06:54:42 2010\\
-  3   task 3 default priority. \> 0   Tue Nov  2 06:54:37 2010
+  > \ ls -s "p d" \+\\
+  1 \hspace{0.3in}\= task 1 highest priorty. \ \=  3  Sun Oct 31 06:49:09 2010\\
+  2 \> task 2 high priority. \> 2  Mon Nov  1 06:54:42 2010\\
+  3 \> task 3 default priority. \> 0   Tue Nov  2 06:54:37 2010
 \end{tabbing}
 }
-
-\item [ \texttt{-k} ] filters tasks with a keyword\footnotemark:
-
-\texttt{ls -k *Sam?le*task}, where ? means any single character, * means any string. (including empty string).
+\item [ \cmdinline{-k} ] filters tasks with a keyword\footnotemark where ? means any single character, * means a string of any length (including 0 length).
 \footnotetext{ keyword is case insensitive.}
 
-For example, ``This is a sample with a important task'' will match *Sam?le*task as the first * matches ``This is a '', ? matches `p' and the second * matches `` with a important ''.
+Take command \cmdinline{ls -k *Sam?le*task} as an example, ``This is a sample with a important task'' will match *Sam?le*task as the first * matches ``This is a '', ? matches `p' and the second * matches `` with a important ''.
 
-``samqleTask'' will also match *sam?le*task by letting both * to be empty string and ? to be `q'.
+``samqleTask'' will also match *sam?le*task as both * maps empty string and ? to be `q'.
 
-\item[ \texttt{-f} ] shows finished/unfinished tasks:
+\item[ \cmdinline{-f} ] shows finished/unfinished tasks:
 
-\texttt{ls -f yes} shows only finished tasks.
+  \cmdinline{ls -f yes} shows only finished tasks.\\
+  \cmdinline{ls -f no} shows only unfinished tasks.
 
-\texttt{ls -f no} shows only unfinished tasks.
-
-\item[ \texttt{-g} ] shows tasks of a specific group:
-
-\texttt{ls -g SampleTask} makes tasks only from SampleTask group shown.
-
-\\ {\bf Tip}: Different options can be used together.
-When more then one restrictive options are there, conjuction of these restrictions are used.
-e.g. \texttt{ls -g SampleTask -f y} will show tasks that are finished AND from ``SampleTask'' group. 
+\item[ \cmdinline{-g} ] shows tasks of a specific group: \cmdinline{ls -g SampleTask} makes tasks only from SampleTask group shown.
 \end{enumerate}
 
+{\bf  \textcolor{red}{Important}}:
+\begin{quote}
+Different options can be used together.
+When more then one restrictive options are there, \emph{conjuction} of these restrictions are used. e.g. \cmd{ls -g SampleTask -f y} will show tasks that are finished AND from ``SampleTask'' group. 
+\end{quote}
+
 \subsubsection{rm}
-Use -g option to remove a group of tasks:
+\cmdinline{rm} has basically two usages: remove tasks by a group name or serial number.
 
-\texttt{rm -g SampleTask} removes the entire SampleTask group.
+Use -g option to remove a group of tasks: \cmdinline{rm -g SampleTask} removes the entire SampleTask group.
 
-\texttt{rm} can be used removeS several tasks once as well. e.g. \texttt{rm 1 2 3} removes tasks 1, 2 and 3.
+\cmdinline{rm} can be used remove several tasks once as well. e.g. \cmdinline{rm 1 2 3} removes tasks 1, 2 and 3.
 
 %% \subsubsection{edit}
 %%     This is discussed in section 2.2.4.
 %% \subsubsection{export}
 %%     This is discussed in section 2.2.1.
 
-Notice: Commands like finish, rm, export, etc. do not support all task-selective options like -g -k -f.
+Notice: Commands like finish, \cmdinline{rm}, \cmdinline{export} etc. do not support all task-selective options like -g -k -f.
 Executing these commands on a selected task set can be done with command piping, which is discussed in section 2.5.1.
 
-\subsection{Text Based Interactive User Interface}
-blah blah blah
+\subsection{Text-Based Interactive User Interface}
+The text-based user interface adds \cmd{djsakl}.
 
 \subsection{Advanced Usages}
 \subsubsection{command piping}
-
-\texttt{\textgreater \ ls \textbar \  rm}
-
+\noindent \cmd{> \ ls \textbar \  rm}
 TaskManager supports command piping for most commands though it is a bit different from traditional Unix pipe.
 Piping means if one command selects some tasks, then the selected tasks will be passed to the next command as input. The tasks after the last command will be shown as output.
-Piping in taskManager is done with symbol `\textbar'. When a pipe signs appear in a command, the smaller commands (separated by pipes) are executed one by one from left to right. For examples:
+Piping in taskManager is done with symbol \cmdinline{\textbar}. When a pipe signs appear in a command, the smaller commands (separated by pipes) are executed one by one from left to right. For example:
 
 \begin{enumerate}
-\item finish all tasks\\
-  \texttt{ls \textbar \  finish}
-\item remove all finished tasks\\
-  \texttt{ls -f yes \textbar \  rm}
-\item import from a file and replace current task list\\
-  \texttt{ls \textbar \  rm \textbar \  import newTasks.xml}
-\item import all CS2103 group tasks from a file\\
-  \texttt{read newTasks.xml \textbar \  ls -g CS2103 \textbar \  add}
-\item export all CS2103 related tasks to a html file\\
-  \texttt{ls -k *CS2103* \textbar \  export -html cs2103tasks.html}
-\item show details of CS2103 tasks, sort by priority\\
-  \texttt{ls -g CS2103 \textbar \  sort "pri" \textbar \  task}
+\item finish all tasks:  \cmd{ls \textbar \  finish}
+\item remove all finished tasks:  \cmd{ls -f yes \textbar \  rm}
+\item import from a file and replace current task list:  \cmd{ls \textbar \  rm \textbar \  import newTasks.xml}
+\item import all CS2103 group tasks from a file:  \cmd{read newTasks.xml \textbar \  ls -g CS2103 \textbar \  add}
+\item export all CS2103 related tasks to a html file: \cmd{ls -k *CS2103* \textbar \  export -html cs2103tasks.html}
+\item show details of CS2103 tasks, sort by priority: \cmd{ls -g CS2103 \textbar \  sort "pri" \textbar \  task}
 \end{enumerate}
 
 \subsubsection{command mapping}
+\noindent \cmd{> \ map "ls" "ls -f no"}
+TaskManager supports custom command mapping/aliasing. General format of \cmdinline{map} is: \cmdinline{map "new command" "original command"}
 
-\texttt{\textgreater \ map "ls" "ls -f no"}
-
-TaskManager supports custom command mapping/aliasing. General format of \texttt{map} is:
-
-\texttt{\textgreater \ map "new command" "original command"}
-
-A simple mapping is like the previous example. This maps ``ls'' to ``ls -f no'', which means hide finished tasks when listing.
-To retain the original \texttt{ls} command, map \texttt{ls} to something else. For example:
-
-\texttt{\textgreater \ map "lsa" "ls"}
-
-\texttt{\textgreater \ map "ls" "ls -f no"\footnotemark}
+A simple mapping is like the previous example, which maps ``ls'' to ``ls -f no'', which effectively hides finished tasks when doing \cmdinline{ls}.
+To retain the original \cmdinline{ls} command, map \cmdinline{ls} to something else. For example: \cmd{> \ map "lsa" "ls"\\
+  > \ map "ls" "ls -f no"\footnotemark}
 
 \footnotetext{ The order of mapping matters as commands are executed one by one. Reversing the order of these two mapping will NOT work.}
 
-More complex mapping makes use of symbol \$. There are two kinds of \$ symbols:
+More complex mapping makes use of symbol \cmdinline{\$}. There are two kinds of \cmdinline{\$} symbols:
 
-\texttt{\$0} matches all characters from the current position.
+\cmdinline{\$0} matches all characters from the current position.
 
-\texttt{\$1}, \texttt{\$2}, \texttt{\$3} \ldots corresponds to one token separated by spaces.
+\cmdinline{\$1}, \cmdinline{\$2}, \cmdinline{\$3} \ldots correspond to one token separated by spaces.\\
 
 Examples:
+\begin{enumerate}
+\item \noindent \cmd{> \ map "tomorrow \$1" "add \$1 -t 1d"\\
+  > \ tomorrow "Finish user guide"}    
+The latter command will be parsed as \cmdinline{add "Finish user guide" -t 1d}, and a new task ``Finish user guide'' will be added with the deadline to be 1 days later.
+\item \cmd{> \ map "do \$1 at \$2" "add \$1 -t \$2"\\
+  > \ do "Laundry" at 4h}
+The latter command will be parsed as \cmdinline{add "Laundry" -t 4h}, and a new task called ``Laundry'' will be added with the deadline to be 4hours later.
 
-\texttt{\textgreater \ map "tomorrow \$1" "add \$1 -t 1d"\\
-  \textgreater \ tomorrow "Finish user guide"}
-    
-The latter command will be parsed as \texttt{add "Finish user guide" -t 1d}, and a new task ``Finish user guide'' will be added with the deadline to be 1 days later
+\item \noindent \cmd{> \ map "ls \$0" "ls -f no \$0"
+  > \ ls
+  > \ ls -g cs2103}
+The second command will be parsed as \cmdinline{ls -f no}, and will list out all unfinished tasks.
+The third command will be parsed as \cmdinline{ls -f no -g cs2103}, and will list out all unfinished cs2103 tasks.
+\end{enumerate}
 
-\texttt{\textgreater \ map "do \$1 at \$2" "add \$1 -t \$2"\\
-  \textgreater \ do "Laundry" at 4h}
-    
-The latter command will be parsed as \texttt{add "Laundry" -t 4h}, and a new task called ``Laundry'' will be added with the deadline to be 4hours later.
-
-\texttt{\textgreater \ map "ls \$0" "ls -f no \$0"
-  \textgreater \ ls\\
-  \textgreater \ ls -g cs2103}
-    
-The second command will be parsed as \texttt{ls -f no}, and will list out all unfinished tasks.
-The third command will be parsed as \texttt{ls -f no -g cs2103}, and will list out all unfinished cs2103 tasks.
-
-{\bf \textcolor{red}{Important:}} TUI uses \texttt{ls} to retrieve tasks. Mapping \texttt{ls} to something else will affect behaviour of TUI.}
+{\bf \textcolor{red}{Important:}}
+\begin{quote}
+  TUI uses \cmdinline{ls} to retrieve tasks. Mapping \cmdinline{ls} to something else will affect behaviour of TUI.
+\end{quote}
 
 \subsubsection{taskManager script}
 
-Task manager commands can be saved in a single script file and be executed using run command.
-
-\noindent \texttt{\$ cat tmscript\\
+Task manager commands can be saved in a single script file and be executed using run command. \cmd{
+\begin{tabbing}
+  \$ cat tmscript\\
   ls\\
   map "ls" "ls -f no"\\
   ls\\
   \$ ./taskManager\\
   Task Manager V 0.2\\
-  exit\textless enter\textgreater to quit. help\textless enter\textgreater for more instructions\\
-  =====================================================================\\
-  \textgreater \ run tmscript\\
-  1 f Sample task 1. This also has high priorty\\
-  2   Sample task 2. This has high priority\\
-  3   Sample task 3. This is the latest\\
-  \\2   Sample task 2. This has high priority\\
-  3   Sample task 3. This is the latest}
+  type " exit" to quit, "help" for more instructions\\
+  ==================================================\\
+  > \ run tmscript\\
+  1 f \hspace{0.16in}\=Sample task 1. This also has high priorty\\
+  2 \> Sample task 2. This has high priority\\
+  3 \> Sample task 3. This is the latest\\
+  \\2 \> Sample task 2. This has high priority\\
+  3 \> Sample task 3. This is the latest
+\end{tabbing}
+}
 
 The first 3 tasks are the result of the first ls in the script. The last 2 tasks are the result of the second ls in the script. Because "ls" is mapped to "ls -f no", finished tasks are not shown by the second ls.
 
-TaskManager scripts are plain text files. % ".txt" suffix is omitted here. In windows, suffix is hidden by default. To show it, check corresponding checkbox under Tools -\textgreater \ Folder Options in a file browser. Windows may not know how to open file with no suffix.
+TaskManager scripts are plain text files. % ".txt" suffix is omitted here. In windows, suffix is hidden by default. To show it, check corresponding checkbox under Tools -> \ Folder Options in a file browser. Windows may not know how to open file with no suffix.
 
 \subsubsection{startup script}
 
 By default, taskManager executes a special script everytime when it is started. 
-This script is \texttt{\~{}/.tmrc} on *nix and \texttt{\%USERPROFILE\%\textbackslash tmrc.txt} on Windows.
-
-This file can be editted to include customized settings.
+This script is \cmdinline{\~{}/.tmrc} on *nix and \cmdinline{\%USERPROFILE\%\textbackslash tmrc.txt} on Windows.
+This file can be editted to include customized settings.\\
 
 Examples:
 \begin{enumerate}
-\item To switch to the interactive user interface by default, add this line into tmrc:\\
-  \texttt{tui}
-
-\item To save a backup file when taskManager is started:\\
-  \texttt{export /tmp/backupTasklist.xml}
-
-\item To show tasks when taskManager is started:\\
-  \texttt{ls}
-
-\item To remove finished tasks when taskManager is started:\\
-  \texttt{ls -f yes \textbar \  rm}
-
-\item To run a script with all self-defined mappings when taskManager is started:\\
-  \texttt{run /home/myusername/mymappings}
+\item To switch to the interactive user interface by default, add this line into tmrc: \cmd{tui}
+\item To save a backup file when taskManager is started: \cmd{export /tmp/backupTasklist.xml}
+\item To show tasks when taskManager is started: \cmd{ls}
+\item To remove finished tasks when taskManager is started: \cmd{ls -f yes \textbar \  rm}
+\item To run a script with all self-defined mappings when taskManager is started:  \cmd{run /home/myusername/mymappings}
 \end{enumerate}
 
 \subsubsection{talk to taskManager}
 
 For all inputs that cannot be recognized by taskManager as a command, it will be treated as natural language sentense. 
-TaskManager will try its best to recognize it and give correct response.
+TaskManager will try its best to recognize it and give correct response.\\
 
-Example:\\
-\texttt{\textgreater \ what do I do today?}
-
-All tasks due today will be listed out.    
+Example: \cmd{> \ what do I do today?} All tasks due today will be listed out.    
 
 \subsection{Compilation and Installation}
 \subsubsection{Microsoft Windows}
@@ -523,15 +475,13 @@ Edit the project property to include the pdcurses.lib and in the linker options.
 
 \subsubsection{Unix-like Operating Systems}
 
-In Unix-like operating systems like GNU Linux and Mac OS X, start a shell, change directory to taskManager's source folder and type:
-
-\noindent \texttt{\$ make\\
+In Unix-like operating systems like GNU Linux and Mac OS X, start a shell, change directory to taskManager's source folder and type: \cmd{\$ make\\
   \$ sudo make install}
 
 ``make install'' is optional. It just makes taskManager available system wide by copying the executable and man pages to cooresponding directories.
 
 The text UI is built by default, which requires ncurses library.
-It ships with most Linux distributions and Mac OS. If not, it can be installed with the package manager (\texttt{apt-get}, \texttt{yum}, \texttt{pacman} on various Linux distributions and \texttt{port} on Mac).
+It ships with most Linux distributions and Mac OS. If not, it can be installed with the package manager (\cmdinline{apt-get}, \cmdinline{yum}, \cmdinline{pacman} on various Linux distributions and \cmdinline{port} on Mac).
 
 \section{Developer Guide}
 ahah

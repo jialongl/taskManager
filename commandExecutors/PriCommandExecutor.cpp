@@ -4,5 +4,5 @@ Result* PriCommandExecutor::executeCommand(TaskList* mainTaskList,Command *comma
         int taskNum = (command->serialNumberList)[0];
         mainTaskList->editTaskPriority(taskNum,command->priority);
     }
-    return new Result;
+    return new Result();
 }
