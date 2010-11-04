@@ -109,10 +109,12 @@ vector<Task*> TaskList::sort(Comparer* comp){
 }
 TaskList* TaskList::clone(){
   TaskList* ans = new TaskList();
-  vector<Task*> tasks = sort(new Comparer);
+  Comparer *cp = new Comparer;
+  vector<Task*> tasks = sort(cp);
   for (int i=0;i<tasks.size();i++){
     ans->addTask(tasks[i]->getSerialNumber(),tasks[i]->clone());
   }
+  delete cp;
   return ans;
 }
 
