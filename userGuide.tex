@@ -281,17 +281,20 @@ In this section they are introduced in great detail.
 % \footnotetext{ At least one of them should be specified.}
 
 \item[ \texttt{"by" format} ]
+  Important: 
   ``By'' format has a similar form of ``plus'' format. It is in the form of b?w?d?h?m\footnotemark, where each question mark stands for a number (not a digit). For example:
-
-  \begin{tabular}{ r | l }
-    \texttt{b0d22h} & by 10:00pm today.\\
-    \texttt{b2d} & by 23:59 tomorrow.\\
-    \texttt{b1w} & by the end of this week. i.e. 23:59 of the coming Sunday. \\
-    \texttt{b0w5d} & by 23:59 of the coming Friday.\\
-    \texttt{b2w3d8h} & by 8:00am of the next next Wednesday.\\
-  \end{tabular}
-
 \footnotetext{ At least one of letters w/d/h/m should be specified.}
+
+\begin{tabular}{ r | l }
+  \texttt{b0d22h} & by 10:00pm today.\\
+  \texttt{b2d} & by 23:59 tomorrow.\\
+  \texttt{b1w} & by the end of this week. i.e. 23:59 of the Saturday\footnotemark of this week. \\
+  \texttt{b0w5d} & by 23:59 on Friday of this week.\\
+  \texttt{b2w3d8h} & by 8:00am on the Wednesday of the next next week.\\
+\end{tabular}
+
+\footnotetext{ Sunday is the first day of a week.}
+
 \item[ \texttt{Unix timestamp} ]
 ``Unix timestamp'' means the number of seconds elapsed since Jan 1, 1970 00:00:00. It is not recommended for users, but rather used as the lower-order method for developers.
 \end{enumerate}
@@ -315,8 +318,7 @@ Options are not compulsory. Different options can be used together. For example 
 
 \texttt{\textgreater \ ls -s "deadline priority"}
 
-A more general format is:
-\texttt{\textgreater \ ls -s "keyword1 keyword2 \ldots"}
+A more general format is: \texttt{ls -s "keyword1 keyword2" \ldots}
 
 The listed tasks will be sorted by keyword1 then keyword2 \ldots
     
@@ -399,38 +401,40 @@ Piping in taskManager is done with symbol `\textbar'. When a pipe signs appear i
 
 \subsubsection{command mapping}
 
-\noindent \texttt{\textgreater \ map "ls" "ls -f no"}
+\texttt{\textgreater \ map "ls" "ls -f no"}
 
 TaskManager supports custom command mapping/aliasing. General format of \texttt{map} is:
 
-\noindent \texttt{\textgreater \ map "new command" "original command"}
+\texttt{\textgreater \ map "new command" "original command"}
 
 A simple mapping is like the previous example. This maps ``ls'' to ``ls -f no'', which means hide finished tasks when listing.
 To retain the original \texttt{ls} command, map \texttt{ls} to something else. For example:
 
-\noindent \texttt{\textgreater \ map "lsa" "ls"\\
-  \textgreater \ map "ls" "ls -f no"\footnotemark}
+\texttt{\textgreater \ map "lsa" "ls"}
+
+\texttt{\textgreater \ map "ls" "ls -f no"\footnotemark}
 
 \footnotetext{ The order of mapping matters as commands are executed one by one. Reversing the order of these two mapping will NOT work.}
 
 More complex mapping makes use of symbol \$. There are two kinds of \$ symbols:
 
-\texttt{\$0} matches all characters from the current position.\\
+\texttt{\$0} matches all characters from the current position.
+
 \texttt{\$1}, \texttt{\$2}, \texttt{\$3} \ldots corresponds to one token separated by spaces.
 
 Examples:
 
-\noindent \texttt{\textgreater \ map "tomorrow \$1" "add \$1 -t 1d"\\
+\texttt{\textgreater \ map "tomorrow \$1" "add \$1 -t 1d"\\
   \textgreater \ tomorrow "Finish user guide"}
     
 The latter command will be parsed as \texttt{add "Finish user guide" -t 1d}, and a new task ``Finish user guide'' will be added with the deadline to be 1 days later
 
-\noindent \texttt{\textgreater \ map "do \$1 at \$2" "add \$1 -t \$2"\\
+\texttt{\textgreater \ map "do \$1 at \$2" "add \$1 -t \$2"\\
   \textgreater \ do "Laundry" at 4h}
     
 The latter command will be parsed as \texttt{add "Laundry" -t 4h}, and a new task called ``Laundry'' will be added with the deadline to be 4hours later.
 
-\noindent \texttt{\textgreater \ map "ls \$0" "ls -f no \$0"\\
+\texttt{\textgreater \ map "ls \$0" "ls -f no \$0"
   \textgreater \ ls\\
   \textgreater \ ls -g cs2103}
     
