@@ -11,7 +11,7 @@
 %\onehalfspacing
 
 %\usepackage{palatino}
-\usepackage{avant}
+%\usepackage{avant}
 
 \newcommand{\cmd}[1]{{\bf \texttt{\begin{quote} #1 \end{quote}}}}
 \newcommand{\cmdinline}[1]{{\bf \texttt{#1}}}
@@ -63,7 +63,7 @@ On Microsoft Windows, taskManager can be launched in command prompt as well, or 
 
 Once taskManager is launched, you will see a prompt like \cmdinline{"\textgreater\_"}, and you will start typing commands!
 
-\footnotetext{ *nix version can be run at any directory after installing taskManger -- \cmdinline{"make install"}. See details in section \cmdinline{"Compilation and Installation".}}
+\footnotetext{ *nix version can be run at any directory after installing taskManager -- \cmdinline{"make install"}. See details in section \cmdinline{"Compilation and Installation".}}
 
 \item Add some tasks:\cmd{\$ ./taskManager\\
   > \  add "Sample task 1"\\
@@ -149,7 +149,7 @@ This is helpful when you only want to peek the content of an xml file without re
   > \ ls\\
     1  \hspace{0.3in}\=Sample task 2\\
     > \ import mytasks.xml\\
-    1 \>Sample task 2\footnotemark\\
+    1 \>Sample task 2 \footnotemark\\
     2 f \>CS2103 midTerm Sep 29 06:30 - 07:30 pm MPSH 1B\\
     3 f \>CS3230 midTerm Oct 15 06:00 pm\\
     4 f \>CS3241 midTerm Oct 07 lecture\\
@@ -351,7 +351,7 @@ Notice: Commands like finish, \cmdinline{rm}, \cmdinline{export} etc. do not sup
 Executing these commands on a selected task set can be done with command piping, which is discussed in section 2.5.1.
 
 \subsection{Text-Based Interactive User Interface}
-The text-based user interface adds \cmd{djsakl}.
+The text-based user interface provides a more intuitive way to interact with taskManager. It provides 
 
 \subsection{Advanced Usages}
 \subsubsection{command piping}
@@ -451,36 +451,39 @@ Examples:
 For all inputs that cannot be recognized by taskManager as a command, it will be treated as natural language sentense. 
 TaskManager will try its best to recognize it and give correct response.\\
 
-Example: \cmd{> \ what do I do today?} All tasks due today will be listed out.    
+Example: \cmd{> \ what do I do today?} will list all the tasks due today.
 
 \subsection{Compilation and Installation}
-\subsubsection{Microsoft Windows}
+This section discusses compilation and installation of taskManager.
+One thing to note is that the TUI is build by default, which requires PDcurses library.
+It is free and can be downloaded here:
+\url{http://sourceforge.net/projects/pdcurses/files/}.
 
-On Windows, taskManager can be built with Visual Studio in the following steps:
+Unix-like Operating Systems are likely to have curses library, of which PDcurses is the cross-platform version, installed already.
+For Windows' users convenience, the necessary library files for compilation are included in the zip.
+
+\subsubsection{Microsoft Windows}
+On Windows, taskManager can be built with Visual Studio 2008\registered\footnotemark \ in the following steps:
+
 \begin{enumerate}
 \item Start Visual Studio with ``C++ Development Settings''.
 \item Create a win32 console project.
-\item Drag all source files into the solution folder. Files should be automatically categorized into header files and source files.
-\item Edit project configuration, under general, set character set to be multi-byte characters.
-\item Edit project configuration, under linker, add pdcurses.lib to additional libraries and add the folder containing pdcurses.lib to library search directories.
-\item Copy pdcurses.dll to \%WINDIR\%\textbackslash system32\textbackslash or the directory your executable will be generated.
+\item Drag all the .h and .cpp files (including those in the subdirectories) into the solution folder. Files should be automatically categorized into header files and source files.
+\item Press \cmdinline{Alt + F7} to edit the project properties. Under \cmdinline{"Configuration Properties"->"General"}, set \cmdinline{"Character Set"} to be \cmdinline{"Use Multi-Byte Character Set"}; Under \cmdinline{"Linker"->"Input"}, add pdcurses.lib to \cmdinline{"Additional Dependencies"}. % and add the folder containing pdcurses.lib to library search directories.
+\item Copy pdcurses.dll to \cmdinline{\%WINDIR\%\textbackslash system32\textbackslash} or the directory your executable will be generated.
 \item Build the solution.
 \end{enumerate}
 
-To build taskManager with TUI, pdcurses library is needed.
-It is free and can be downloaded here:
-\url{http://sourceforge.net/projects/pdcurses/files/}
-
-Edit the project property to include the pdcurses.lib and in the linker options.
+\footnotetext{ Menu names mentioned below may vary among different versions of Visual Studio.}
 
 \subsubsection{Unix-like Operating Systems}
 
-In Unix-like operating systems like GNU Linux and Mac OS X, start a shell, change directory to taskManager's source folder and type: \cmd{\$ make\\
+On Unix-like operating systems such as GNU Linux and Mac OS X: start a shell; unzip the zip archive; change directory properly and type: \cmd{\$ make\\
   \$ sudo make install}
 
-``make install'' is optional. It just makes taskManager available system wide by copying the executable and man pages to cooresponding directories.
+``make install'' is optional. It just makes taskManager available system wide by copying the executable and man page to cooresponding directories.
 
-The text UI is built by default, which requires ncurses library.
+The text UI is built by default, which requires curses library.
 It ships with most Linux distributions and Mac OS. If not, it can be installed with the package manager (\cmdinline{apt-get}, \cmdinline{yum}, \cmdinline{pacman} on various Linux distributions and \cmdinline{port} on Mac).
 
 \section{Developer Guide}

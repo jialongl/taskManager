@@ -196,12 +196,11 @@ void Parser::edit_parse() {
   for(iter = args.begin(); iter < args.end(); iter++ ) {
     if ( *iter == "-t" ) {
       string temp = *(++iter);
-      if (isNumber(temp)) cmd->deadline = StringToNum(temp);
-      else {
-          long seconds = 0;
+      time_t seconds = 0;
 
-          parse_date(temp, &seconds);
-          cmd->deadline = currentTime() + seconds;
+      if (temp.length() >= 2) {
+    	  parse_date(temp, &seconds);
+    	  cmd->deadline = seconds;
       }
     }
 
