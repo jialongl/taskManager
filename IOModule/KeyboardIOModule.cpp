@@ -13,14 +13,18 @@ CommandList KeyboardIOModule::getCommand(){
 }
 
 void KeyboardIOModule::showOutput(Result* result){
-    if (!result->isNull){
+    if (result->isNull == false) 
+    {
         string outputString  = parser->resultToOutput(result);
         cout<<outputString<<endl;
+    }
+    else{
+    //    cout<<"NULL"<<endl;
     }
 }
 
 void KeyboardIOModule::showWelcomeMessage(){
-    cout<<" Task Manager V 0.1 "<<endl;
+    cout<<" Task Manager V 0.2 "<<endl;
     cout<<" exit<enter> to quit. help<enter> for more instructions"<<endl;
     cout<<"====================================================================="<<endl;
 }

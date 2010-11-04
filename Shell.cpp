@@ -16,13 +16,13 @@ Shell::Shell(){
     //load saved record.
     try{
         Command* cmd = new Command();
-	cmd->method = IMPORT;
-	executeOneCommand(NULL,cmd);
-	delete cmd;
+        cmd->method = IMPORT;
+        executeOneCommand(NULL,cmd);
+        delete cmd;
 
-	cmd = new Command();
-	cmd->method = RUN;
-	executeOneCommand(NULL,cmd);
+        cmd = new Command();
+        cmd->method = RUN;
+        executeOneCommand(NULL,cmd);
     } catch (exception_e except){
         IOModule->handleException(except);
     }
@@ -120,17 +120,19 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
                         Result *result;
 
                         commandList = parser->inputToCommandList(line);
-                        if (commandList.size()!=0) result = executeCommandList(commandList);
-                        else result = new Result();
 
-//                        if (!(result->isNull))
-                        IOModule->showOutput(result); 
-          
-                        if (toChangeIOModule){
-                             delete IOModule;
-                             IOModule = newIOModule;
-                             toChangeIOModule = false;
+                        if (commandList.size()!=0){
+
+                            result = executeCommandList(commandList);
+                            IOModule->showOutput(result); 
+              
+                            if (toChangeIOModule){
+                                 delete IOModule;
+                                 IOModule = newIOModule;
+                                 toChangeIOModule = false;
+                            }
                         }
+                        else result = new Result();
                     
                         command = new Command();
                         command->method = EXPORT;
@@ -155,11 +157,15 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
                 if (flag) ans =  (result == NULL)?mainCommandExecutor->executeCommand(mainTaskList,command):mainCommandExecutor->executeCommand(mainTaskList,result,command);
                 else ans = new Result();
             }  else ans =  (result == NULL)?mainCommandExecutor->executeCommand(mainTaskList,command):mainCommandExecutor->executeCommand(mainTaskList,result,command);
+//            cout<<command->method<<endl;
     }
 
     if (command->method != LS && command->method != NULLCOMMAND && command->method !=EXPORT && command->method != UNDO && command->method != REDO && command->method != TUI && command->method != NOTUI && command->method != READ){
         backup();
     }
+
+//    if (ans->isNull) cout<<"is null in exe one c"<<endl;
+    
     return ans;
 }
 
@@ -168,9 +174,12 @@ Result* Shell::executeCommandList(CommandList commandList){
     //execute the first command 
     if (commandList.size() != 0 && commandList[0]->method != NULLCOMMAND)
         result = executeOneCommand(NULL, commandList[0]);
-    else 
+    else {
         result = new Result();
+    }
+//    cout<<"cmd 0 execed!!"<<endl;
     //execute rest piped comands
+//    if (result->isNull) cout<<"exec cl is null"<<endl;
     for (int i=1;i<commandList.size();i++){
         result = executeOneCommand(result,commandList[i]);    
     }
@@ -184,20 +193,19 @@ bool Shell::oneIteration(){
     try{
         // get command from IOModule
           commandList = IOModule->getCommand();
+//          cout<<"!!get"<<endl;
         // output the command
-          if (commandList.size()!=0) IOModule->echo(commandList[0]->originalCommand);
-          else IOModule->echo(" Invalid command");
-        // run the command 
-          result = executeCommandList(commandList);
-        // output the command
-//          if (!(result->isNull))
-          IOModule->showOutput(result); 
-        // check if TUI/NOTUI triggled.
-          if (toChangeIOModule){
-              delete IOModule;
-              IOModule = newIOModule;
-              toChangeIOModule = false;
+          if (commandList.size()!=0){
+              IOModule->echo(commandList[0]->originalCommand);
+              result = executeCommandList(commandList);
+              IOModule->showOutput(result); 
+              if (toChangeIOModule){
+                  delete IOModule;
+                  IOModule = newIOModule;
+                  toChangeIOModule = false;
+              }
           }
+          else IOModule->echo(" Invalid command");
         // save record.
           command = new Command();
           command->method = EXPORT;

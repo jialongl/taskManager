@@ -85,7 +85,7 @@ TaskList* TaskList::getTasks(Filter* filter){
   TaskList* ans = new TaskList();
   for (map<int,Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
     if (filter->filter(it->second)){
-      ans->addTask(it->first, it->second);
+      ans->addTask(it->first, (it->second)->clone());
     }
   }
 		

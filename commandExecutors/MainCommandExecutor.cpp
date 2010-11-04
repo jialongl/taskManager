@@ -24,10 +24,15 @@ MainCommandExecutor::MainCommandExecutor(){
 		// executors[CRON] = new CronCommandExecutor();
 	}
 Result* MainCommandExecutor::executeCommand(TaskList* mainTaskList,Command *command){
-	  if ( command->method != NULLCOMMAND)
-	    return executors[command->method]->executeCommand(mainTaskList,command);
-	  else
+	  if ( command->method != NULLCOMMAND){
+          Result* ans;
+	      ans = executors[command->method]->executeCommand(mainTaskList,command);
+//          if (ans->isNull) cout<<"null in mce"<<endl;
+          return ans;
+      }
+	  else{
 	    return new Result();
+      }
 	}
 
 Result* MainCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result,Command *command){

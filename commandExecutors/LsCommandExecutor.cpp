@@ -16,6 +16,7 @@ Result* LsCommandExecutor::executeCommand(TaskList* mainTaskList,Command *comman
         }
 //			cout<<(command->sortKeyword).size()<<endl;
 //			cout<<(command->sortKeyword)[(command->sortKeyword).size()]<<endl;
+//        cout<<"goint to return not null result"<<endl;
         if ((command->sortKeyword).size()==0) return new Result(list, false);
         else return new Result(list,new Comparer(command->sortKeyword));
     }
