@@ -13,8 +13,10 @@ CommandList KeyboardIOModule::getCommand(){
 }
 
 void KeyboardIOModule::showOutput(Result* result){
-    string outputString  = parser->resultToOutput(result);
-    cout<<outputString<<endl;
+    if (!result->isNull){
+        string outputString  = parser->resultToOutput(result);
+        cout<<outputString<<endl;
+    }
 }
 
 void KeyboardIOModule::showWelcomeMessage(){

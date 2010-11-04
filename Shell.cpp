@@ -123,8 +123,8 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
                         if (commandList.size()!=0) result = executeCommandList(commandList);
                         else result = new Result();
 
-                        if (!(result->isNull))
-                            IOModule->showOutput(result); 
+//                        if (!(result->isNull))
+                        IOModule->showOutput(result); 
           
                         if (toChangeIOModule){
                              delete IOModule;
@@ -190,8 +190,8 @@ bool Shell::oneIteration(){
         // run the command 
           result = executeCommandList(commandList);
         // output the command
-          if (!(result->isNull))
-              IOModule->showOutput(result); 
+//          if (!(result->isNull))
+          IOModule->showOutput(result); 
         // check if TUI/NOTUI triggled.
           if (toChangeIOModule){
               delete IOModule;

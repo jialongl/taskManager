@@ -92,10 +92,10 @@ void ListDisplayElement::handleKey(int ch){
     int newTaskSerial;
     switch (ch){
         case (int)'U':
-            displayManager->setCommand(parser->inputToCommandList("undo|ls"));
+            displayManager->setCommand(parser->inputToCommandList("undo"));
             break;
         case (int)'R':
-            displayManager->setCommand(parser->inputToCommandList("redo|ls"));
+            displayManager->setCommand(parser->inputToCommandList("redo"));
             break;
         case (int)'c':
             selectByCalendar();
@@ -109,7 +109,7 @@ void ListDisplayElement::handleKey(int ch){
             break;
         case (int)'d':
             if (tasks.size() != 0){
-                st = "rm " + NumberToString(tasks[selectTask]->getSerialNumber()) + "|ls";
+                st = "rm " + NumberToString(tasks[selectTask]->getSerialNumber());
                 cl = parser->inputToCommandList(st);
                 displayManager->setCommand(cl);
                 if (list != originalList) list->removeTask(tasks[selectTask]->getSerialNumber());
@@ -130,13 +130,13 @@ void ListDisplayElement::handleKey(int ch){
                 newTime = editDetail[1];
                 newPri = editDetail[2];
                 newDetail = editDetail[3];
-                displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri+"|ls"));
+                displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
             }
             break;
         case (int)'a':
             if (list!=originalList) break;
             newTaskSerial = originalList->getSerial()+1;
-            tasks.push_back(new Task(currentTime(), 0, "", 0, false,newTaskSerial, "default"));
+            tasks.push_back(new Task(NO_SPECIFIC_DEADLINE, 0, "", 0, false,newTaskSerial, "default"));
             selectTask = tasks.size()-1;
             showDetail();
             naiveDraw();
@@ -149,7 +149,7 @@ void ListDisplayElement::handleKey(int ch){
             lastNavigateToSelect = taskStartAt[selectTask] - navigateRow;
             selectTask = 100000000;
             delete tasks[tasks.size()-1];
-            displayManager->setCommand(parser->inputToCommandList("add -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri +"|ls"));
+            displayManager->setCommand(parser->inputToCommandList("add -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
             break;
         case (int)'s':
             search();
@@ -190,9 +190,12 @@ void ListDisplayElement::handleKey(int ch){
 void ListDisplayElement::handleConfirm(bool flag){
 }
 void ListDisplayElement::handleResult(Result* result){
-    list = result;
-    originalList = result;
-    draw();
+    if (! result->isNull){
+        list = result;
+        originalList = result;
+        draw();
+    }else
+        displayManager->setCommand(parser->inputToCommandList("ls"));
 }
 string ListDisplayElement::formatDate(time_t t){
     string months[]  = {
@@ -209,17 +212,21 @@ string ListDisplayElement::formatDate(time_t t){
         "Nov",
         "Dec"
     };
-    struct tm* datetime = localtime(&t);
-    string st = "< "+ NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year+1900)+" >  ";
-    time_t curTime = currentTime();
-    datetime = localtime(&curTime);
-    datetime->tm_hour = 0;
-    datetime->tm_min = 0;
-    datetime->tm_sec = 0;
-    curTime = mktime(datetime); 
-    if (t>= curTime && t< curTime+24*60*60) st =  "< ---- Today ---- >  ";
-    if (t>= curTime+24*60*60 && t< curTime+48*60*60) st =  "< -- Tomorrow --- >  ";
-    if (t>= curTime-24*60*60 && t< curTime) st =  "< -- Yesterday -- >  "; 
+    string st;
+    if (t==NO_SPECIFIC_DEADLINE) st = "< Anytime >  "; 
+    else{
+        struct tm* datetime = localtime(&t);
+        st = "< "+ NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year+1900)+" >  ";
+        time_t curTime = currentTime();
+        datetime = localtime(&curTime);
+        datetime->tm_hour = 0;
+        datetime->tm_min = 0;
+        datetime->tm_sec = 0;
+        curTime = mktime(datetime); 
+        if (t>= curTime && t< curTime+24*60*60) st =  "< ---- Today ---- >  ";
+        if (t>= curTime+24*60*60 && t< curTime+48*60*60) st =  "< -- Tomorrow --- >  ";
+        if (t>= curTime-24*60*60 && t< curTime) st =  "< -- Yesterday -- >  "; 
+    }
     int mx,my;
     getmaxyx(stdscr,mx,my);
     st = string((my-2-st.length()),' ') + st; 
@@ -530,16 +537,20 @@ vector<string> ListDisplayElement::editSelect(){
     int theRow = taskStartAt[selectTask]- navigateRow + listWindow->_begy;
     if (theRow + 12 >= mx+listWindow->_begy) theRow= mx+listWindow->_begy-13;
     time_t tt = tasks[selectTask]->getDeadline();
-    struct tm* dd = localtime(&tt);
-    dd->tm_hour =0;
-    dd->tm_sec =0;
-    dd->tm_min =0;
-    tt = mktime(dd);
+    if (tt != NO_SPECIFIC_DEADLINE){
+        struct tm* dd = localtime(&tt);
+        dd->tm_hour =0;
+        dd->tm_sec =0;
+        dd->tm_min =0;
+        tt = mktime(dd);
+    }
     int newTime = datePicker(tt,theRow,45);//editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
     naiveDraw();
     move(taskStartAt[selectTask]+1- navigateRow + listWindow->_begy+1,48);
     attron(_EDITTED);
-    printw(((formatTime(newTime)).substr(0,24)).c_str());
+    string times = (formatTime(newTime)).substr(0,24);
+    while (times.size()<24) times.push_back(' ');
+    printw(times.c_str());
     attroff(_EDITTED);
     move(taskStartAt[selectTask] - navigateRow +listWindow->_begy+1,14);
     attron(_SELECT);
@@ -767,6 +778,14 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
 time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol){
 
 //    time_t curTime = currentTime();
+    if (curTime == NO_SPECIFIC_DEADLINE) {
+        curTime = currentTime();
+        struct tm* dd = localtime(&curTime);
+        dd->tm_hour =0;
+        dd->tm_sec =0;
+        dd->tm_min =0;
+        curTime= mktime(dd);
+    }
     drawCalendar(curTime,startRow,startCol);
     bool flag = false;
 
@@ -842,9 +861,7 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
             case KEY_ESC:
             case 3:
             case 'q':
-                hourMinSec[0] = 0;
-                hourMinSec[1] = 0;
-                hourMinSec[2] = 0;
+                curTime = NO_SPECIFIC_DEADLINE;
             case 10:
             case 13:
             case ' ':

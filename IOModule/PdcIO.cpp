@@ -138,6 +138,7 @@ bool PdcIO::confirm(string prompt){
                 flag = true;
                 finished = true;
                 break;
+            case KEY_ESC:
             case 'n':
                 flag = false;
                 finished = true;

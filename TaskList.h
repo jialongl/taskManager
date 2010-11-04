@@ -15,7 +15,7 @@ class TaskList{
 
  public:
   TaskList();
-  ~TaskList();
+  virtual ~TaskList();
 
   void deleteList();
   int getSerial();
