@@ -1,5 +1,9 @@
-map "lsf" "ls -f all"
 map "lsf" "ls -f yes"
 map "lsgf $1 $2" "ls -g $1 -f $2"
-map "do $1 at $2" "add $1 -t $2"
-#map "do $1 -t by today" "add $1 -t "
+map "do $1 $2" "add $1 -t $2"
+map "do $1 today" "add $1 -t b1d"
+map "do $1 tomorrow" "add $1 -t b2d"
+map "do $1 this week" "add $1 -t b1w"
+map "do $1 next week" "add $1 -t b2w"
+
+# map "tomorrow $0" "add \"$0\""
