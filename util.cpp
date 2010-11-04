@@ -13,8 +13,11 @@ time_t currentTime(){
 }
 
 bool isNumber(string s){
+  if (s[0] == '-')
+    return isNumber(s.substr(1, s.length()-1));
+
     for (int i=0;i<s.length();i++)
-        if ((i==0 && s[i] == '-') || s[i]<48 || s[i]>57) return false;
+      if (!isDigit(s[i])) return false;
     return true;
 }
 
