@@ -248,7 +248,7 @@ To edit a task, \cmdinline{edit} command which has the form: \cmdinline{edit tas
 \noindent \cmd{> \ undo}
 would undo the last command. Note that it has no effect on commands like \cmdinline{ls}, \cmdinline{export}, \cmdinline{tui} and \cmdinline{undo}.
 \cmd{> \ redo}
-redo the last undo. It can be executed util all the undo's are re-done.
+re-does the last undo. It can be executed util all the undo's are re-done.
 
 \subsection{Using Options}
 
@@ -258,21 +258,21 @@ In this section they are introduced in great detail.
 \subsubsection{add}
 \cmdinline{add} has three flags: \cmdinline{-t} to specify deadline, \cmdinline{-p} to set priority and \cmdinline{-g} to put the group name for a task.
 \begin{enumerate}
-\item [ \cmdinline{-t} ] add a task with a deadline: \cmd{> \ add "some task" -t 3d2h\\
-  > \ add "some task" -t b2d\\
-  > \ add "some task" -t 12345
+\item [ \cmdinline{-t} ] adds a task with a deadline: \cmd{> \ add "74 hours from now" -t 3d2h\\
+  > \ add "Tomorrow 2359" -t b2d\\
+  > \ add "due at Jan 2, 1970 00:00 UTC" -t 86400
 }
 TaskManager support 3 types of time format:
 
 \begin{enumerate}
 \item[ \cmdinline{"plus" format} ]
-  ``Plus'' format specifies the how much time left for the task, and it has form ?w?d?h?m\footnotemark, where each question mark stands for a number (not a digit).\\
+  ``Plus'' format specifies the how much time left for the task, and it has form \cmdinline{?w?d?h?m}\footnotemark, where each question mark stands for a number (not a digit).\\
   For example, 3d2h means the task will due after 3 days 2 hours the moment the command is executed -- you have 3 days and 2 hours to finish it.
 
 \footnotetext{ At least one of letters w/d/h/m should be specified.}
 
 \item[ \cmdinline{"by" format} ]
-  ``By'' format has a similar form of ``plus'' format. It is in the form of b?w?d?h?m\footnotemark, where each question mark stands for a number (not a digit). For example:
+  ``By'' format has a similar form of ``plus'' format. It is in the form of \cmdinline{b?w?d?h?m}\footnotemark, where each question mark stands for a number (not a digit). For example:
 \footnotetext{ At least one of letters w/d/h/m should be specified.}
 
 \begin{tabular}{ r | l }
@@ -295,7 +295,7 @@ TaskManager support 3 types of time format:
 
 \footnotetext{ If group name contains spaces, use a pair of quotation marks to quote it.}
 
-\emph{Options are not compulsory. Different options can be used together.} For example: \cmd{> \ add "CS2103 final exams" -p 10 -g "finals" -t b3w2d} would add a task ``CS2103 final exam'' which has a priority of 10, belongs to group ``finals'' and is held on the Tuesday 3 weeks from now.
+\emph{Options are not compulsory. Different options can be used together.} For example: \cmd{> \ add "CS2103 final exam" -p 10 -g "finals" -t b3w2d} would add a task ``CS2103 final exam'' which has a priority of 10, belongs to group ``finals'' and is held on the Tuesday 3 weeks from now.
 
 \subsubsection{ls}
 \cmdinline{ls} has four flags: \cmdinline{-s} to sort tasks, \cmdinline{-k} to search tasks, \cmdinline{-f} to view only (un)finished tasks and \cmdinline{-g} to filter tasks by group name.
@@ -319,9 +319,9 @@ Examples: \cmd{
 \item [ \cmdinline{-k} ] filters tasks with a keyword\footnotemark \ where ? means any single character, * means a string of any length (including 0 length).
 \footnotetext{ keyword is case insensitive.}
 
-Take command \cmdinline{ls -k *Sam?le*task} as an example, ``This is a sample with an important task'' will match \cmdinline{*Sam?le*task} as the first * matches \cmdinline{"This is a "}, \cmdinline{?} matches \cmdinline{'p'} and the second * matches \cmdinline{" with an important "}.
+Take command \cmdinline{ls -k *Sam?le*task} as an example, \cmdinline{"This is a sample with an important task"} will match \cmdinline{*Sam?le*task} as the first \cmdinline{*} matches \cmdinline{"This is a "}, \cmdinline{?} matches \cmdinline{`p'} and the second \cmdinline{*} matches \cmdinline{" with an important "}.
 
-``samqleTask'' will also match *sam?le*task as both * maps empty string and ? to be `q'.
+\cmdinline{"samqleTask"} will also match \cmdinline{*sam?le*task} as both \cmdinline{*} maps empty string and \cmdinline{?} to be \cmdinline{`q'}.
 
 \item[ \cmdinline{-f} ] shows finished/unfinished tasks:
 
@@ -333,8 +333,8 @@ Take command \cmdinline{ls -k *Sam?le*task} as an example, ``This is a sample wi
 
 {\bf  \textcolor{red}{Important}}:
 \begin{quote}
-Different options can be used together.
-When more then one restrictive options are there, \emph{conjuction} of these restrictions are used. e.g. \cmd{ls -g SampleTask -f y} will show tasks that are finished AND from ``SampleTask'' group. 
+As said, different options can be used together when issuing commands.
+When more then one restrictive options are present, \emph{conjuction} of these restrictions are used. e.g. \cmd{ls -g SampleTask -f y} will show tasks that are finished AND from ``SampleTask'' group. 
 \end{quote}
 
 \subsubsection{rm}
@@ -345,9 +345,10 @@ Use -g option to remove a group of tasks: \cmdinline{rm -g SampleTask} removes t
 \cmdinline{rm} can be used remove several tasks once as well. e.g. \cmdinline{rm 1 2 3} removes tasks 1, 2 and 3.
 
 %% \subsubsection{edit}
-%%     This is discussed in section 2.2.4.
+%% This is discussed in section 2.2.4.
+
 %% \subsubsection{export}
-%%     This is discussed in section 2.2.1.
+%% This is discussed in section 2.2.1.
 
 Notice: Commands like finish, \cmdinline{rm}, \cmdinline{export} etc. do not support all task-selective options like -g -k -f.
 Executing these commands on a selected task set can be done with command piping, which is discussed in section 2.5.1.
