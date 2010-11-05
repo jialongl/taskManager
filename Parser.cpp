@@ -221,7 +221,7 @@ void Parser::edit_parse() {
 
     else if ( *iter == "-d" ) {
       string temp = *(++iter);
-      cmd->group = trimInvertedCommas(temp);
+      cmd->taskDescription = trimInvertedCommas(temp);
     }
   }
 }
@@ -398,7 +398,7 @@ string Parser::trimInvertedCommas(string s) {
   if (s[start] == '"' && s[end] == '"')
     return s.substr(start+1, end-start-1); // the string has '"' at the beginning and the end.
   else
-    return s.substr(start, end-start); // the string has '"' at the beginning and the end.
+    return s.substr(start, end-start+1);
 }
 
 string Parser::matchAlias (string s) {
