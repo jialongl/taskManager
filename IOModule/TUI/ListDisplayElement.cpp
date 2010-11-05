@@ -196,16 +196,12 @@ void ListDisplayElement::handleConfirm(bool flag){
 void ListDisplayElement::handleResult(Result* result){
     if (! result->isNull){
         delete list;
-        list = result;
         if (originalList != list) delete originalList;
+        list = result;
         originalList = result;
         draw();
     }else{
-        displayManager->echo("result is null");
-        getch();
         delete result;
-        displayManager->echo("result deleted");
-        getch();
         displayManager->setCommand(parser->inputToCommandList("ls"));
     }
 }
