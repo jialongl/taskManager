@@ -22,13 +22,16 @@ int TaskList::getSerial(){
 }
 
 int TaskList::addTask(Task *task){
+//    cout<<"adding task"<<endl;
   serialNumberLargest++;
-  taskList[serialNumberLargest] = task->clone();
-  task->setSerialNumber(serialNumberLargest);
+  Task* tmpTask = task->clone();
+  taskList[serialNumberLargest] = tmpTask;
+  tmpTask->setSerialNumber(serialNumberLargest);
   return serialNumberLargest;
 }
 
 int TaskList::addTask(int serialNumber, Task* task){
+//    cout<<"adding task with sn "<<serialNumber<<endl;
   if (taskList.find(serialNumber) != taskList.end()) throw EXCEPTION_TASK_EXIST;
   taskList[serialNumber] = task->clone();
   if (serialNumber > serialNumberLargest) serialNumberLargest = serialNumber;
@@ -118,6 +121,7 @@ TaskList* TaskList::clone(){
   for (int i=0;i<tasks.size();i++){
     ans->addTask(tasks[i]->getSerialNumber(),tasks[i]);
   }
+//  cout<<"cloned tl largest sn: "<<ans->getSerial()<<endl;
   delete cp;
   return ans;
 }
