@@ -319,9 +319,13 @@ void Parser::finish_parse() {
 
 void Parser::export_parse() {
   cmd->method = EXPORT;
-  if (args.size() == 2 && args[1] != "-html" )
-    cmd->filename = trimInvertedCommas(args[1]);
- 
+  if (args.size() == 2) {
+    if ( args[1] == "-html" )
+      cmd->filename = "record.html";
+    else
+      cmd->filename = trimInvertedCommas(args[1]);
+  }
+
   else if (args.size() == 3 && args[1] == "-html") {
     cmd->filename = trimInvertedCommas(args[2]);
     cmd->html = 1;
