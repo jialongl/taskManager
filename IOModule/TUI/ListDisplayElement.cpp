@@ -201,7 +201,11 @@ void ListDisplayElement::handleResult(Result* result){
         originalList = result;
         draw();
     }else{
+        displayManager->echo("result is null");
+        getch();
         delete result;
+        displayManager->echo("result deleted");
+        getch();
         displayManager->setCommand(parser->inputToCommandList("ls"));
     }
 }
