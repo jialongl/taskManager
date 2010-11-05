@@ -49,6 +49,7 @@
 \section{Introduction}
 This is the manual for a command-line utility (referred to as taskManager) that manages one's to-do's.
 
+\newpage
 \section{User Guide}
 \subsection{Quick Start}
 
@@ -88,8 +89,8 @@ To see the existing tasks, use \cmdinline{ls} command. By default, the taskManag
   \begin{tabbing}
     > \ finish 2\\
     > \ ls\\
-    1   \hspace{0.3in} \= task 1\\
-    2 f \>task 2
+    1   \hspace{0.3in} \=Sample task 1\\
+    2 f \>Sample task 2
   \end{tabbing}
 }
 To finish an existing task, use \cmdinline{finish} command followed by the serial number of the task to finish. 
@@ -97,12 +98,12 @@ Notice that for finished task, an `f' is shown between serial number and task de
 
 \item Remove task(s): \cmd{\begin{tabbing}
     > \ ls\\
-    1 f \hspace{0.16in} \= Sample task 1\\
-    2   \>Sample task 2\\
+    1 \hspace{0.3in} \= Sample task 1\\
+    2 f \>Sample task 2\\
     > \ rm 1\\
     TaskManager: Do you really want to remove this task permanently? \textcolor{blue}{y}\\
     > \ ls\\
-    2  \>Sample task 2
+    2 f \>Sample task 2
   \end{tabbing}
 }
 
@@ -130,7 +131,7 @@ This is helpful when you only want to peek the content of an xml file without re
 \begin{tabbing}
   > \ ls\\
     1 \hspace{0.3in}\=  Sample task 2\\
-    > \ read thisweek.xml\footnotemark \\
+    > \ read midterms.xml\footnotemark \\
     1 f \>CS2103 midTerm Sep 29 06:30 - 07:30 pm MPSH 1B\\
     2 f \>CS3230 midTerm Oct 15 06:00 pm\\
     3 f \>CS3241 midTerm Oct 07 lecture\\
@@ -167,14 +168,14 @@ This is helpful when you only want to peek the content of an xml file without re
     > \ \=exit\\
     \$ \>cat sampletasks.xml\\
     \>\+<taskList>\\
-    \>\>\+<task>\\
+    <task>\\
     <serialNumber> 1 </serialNumber>\\
     <deadline> 1288473083 </deadline>\\
     <priority> 0 </priority>\\
     <description> Sample task 2 </description>\\
     <group> default </group>\\
-    <isFinished> 0 </isFinished>\-\\
-    </task>\-\\
+    <isFinished> 0 </isFinished>\\
+    </task>\\
     </taskList>
   \end{tabbing}
 }
@@ -356,12 +357,12 @@ It provides visualization of the deadlines and ease of manipulation as well.
 
 TUI can be launched using command \cmdinline{tui} in command-line mode:
 
-%\includegraphics[scale=0.62]{tui-launched}
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[scale=0.62, viewport=50 0 600 450]{tui-launched}
-  \caption{The first screen of TUI}
-\end{figure}
+\includegraphics[scale=0.73]{tui-launched}
+%% \begin{figure}[htbp]
+%%   \centering
+%%   \includegraphics[scale=0.73, viewport=50 0 600 450]{tui-launched}
+%%   \caption{The first screen of TUI}
+%% \end{figure}
 
 The tasks are shown in groups of deadlines. ``Anytime'' basically means the task has no specific deadline -- can finish at ease.
 
@@ -395,12 +396,12 @@ Piping means if one command selects some tasks, then the selected tasks will be 
 Piping in taskManager is done with symbol \cmdinline{\textbar}. When a pipe signs appear in a command, the smaller commands (separated by pipes) are executed one by one from left to right. For example:
 
 \begin{enumerate}
-\item finish all tasks:  \cmd{ls \textbar \  finish}
-\item remove all finished tasks:  \cmd{ls -f yes \textbar \  rm}
-\item import from a file and replace current task list:  \cmd{ls \textbar \  rm \textbar \  import newTasks.xml}
-\item import all CS2103 group tasks from a file:  \cmd{read newTasks.xml \textbar \  ls -g CS2103 \textbar \  add}
-\item export all CS2103 related tasks to a html file: \cmd{ls -k *CS2103* \textbar \  export -html cs2103tasks.html}
-\item show details of CS2103 tasks, sort by priority: \cmd{ls -g CS2103 \textbar \  sort "pri" \textbar \  task}
+\item finish all tasks:  \cmd{> \ ls \textbar \  finish}
+\item remove all finished tasks:  \cmd{> \ ls -f yes \textbar \  rm}
+\item import from a file and replace current task list:  \cmd{> \ ls \textbar \  rm \textbar \  import newTasks.xml}
+\item import all CS2103 group tasks from a file:  \cmd{> \ read newTasks.xml \textbar \  ls -g CS2103 \textbar \  add}
+\item export all CS2103 related tasks to a html file: \cmd{> \ ls -k *CS2103* \textbar \  export -html cs2103tasks.html}
+\item show details of CS2103 tasks, sort by priority: \cmd{> \ ls -g CS2103 \textbar \  sort "pri" \textbar \  task}
 \end{enumerate}
 
 \subsubsection{command mapping}
@@ -520,10 +521,11 @@ On Unix-like operating systems such as GNU Linux and Mac OS X: start a shell; un
 The text UI is built by default, which requires curses library.
 It ships with most Linux distributions and Mac OS. If not, it can be installed with the package manager (\cmdinline{apt-get}, \cmdinline{yum}, \cmdinline{pacman} on various Linux distributions and \cmdinline{port} on Mac).
 
+\newpage
 \section{Developer Guide}
 ahah
 
+\newpage
 \section{Milestones and Individual Work}
-
 
 \end{document}

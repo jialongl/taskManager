@@ -20,7 +20,7 @@ class Parser{
 
   void parse_date (string s, long *seconds);
   string matchAlias(string alias);
-  string trimHeadTailInvertedCommas(string s);
+  string trimInvertedCommas(string s);
 
  public:
   Parser();

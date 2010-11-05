@@ -170,10 +170,7 @@ void Parser::add_parse() {
 
     else if ( *iter == "-g" ) {
       string temp = *(++iter);
-      if (temp[0] == '"' && temp[temp.length()-1] == '"')
-	cmd->group = temp.substr(1, temp.length() - 2);
-      else
-	cmd->group = temp;
+      cmd->group = trimInvertedCommas(temp);
     }
 
     else if ( (*iter)[0] == '"' && *(iter - 1) != "-g") {
@@ -219,18 +216,12 @@ void Parser::edit_parse() {
 
     else if ( *iter == "-g" ) {
       string temp = *(++iter);
-      if (temp[0] == '"' && temp[temp.length()-1] == '"')
-	cmd->group = temp.substr(1, temp.length() - 2);
-      else
-	cmd->group = temp;
+      cmd->group = trimInvertedCommas(temp);
     }
 
     else if ( *iter == "-d" ) {
       string temp = *(++iter);
-      if (temp[0] == '"' && temp[temp.length()-1] == '"')
-	cmd->taskDescription = temp.substr(1, temp.length() - 2);
-      else
-	cmd->taskDescription= temp;
+      cmd->group = trimInvertedCommas(temp);
     }
   }
 }
@@ -255,11 +246,7 @@ void Parser::ls_parse() {
   for(iter = args.begin(); iter < args.end(); iter++ ) {
     if ( *iter == "-g" ) {
       string temp = *(++iter);
-
-      if (temp[0] == '"' && temp[temp.length()-1] == '"')
-	cmd->group = temp.substr(1, temp.length() - 2);
-      else
-	cmd->group = temp; 
+      cmd->group = trimInvertedCommas(temp);
     }
 
     /* else if ( (*iter)[0] == '"' ) { //&& *(iter - 1) != "-g") { */
@@ -284,10 +271,7 @@ void Parser::ls_parse() {
 
     else if ( *iter == "-k") { // got to change later so this "-k" is not necessary
       string temp = *(++iter);
-      if (temp[0] == '"' && temp[temp.length()-1] == '"')
-	cmd->keyword = temp.substr(1, temp.length() - 2);
-      else
-	cmd->keyword = temp;
+      cmd->group = trimInvertedCommas(temp);
     }
 
     else if ( *iter == "-s" ) {
@@ -336,10 +320,10 @@ void Parser::finish_parse() {
 void Parser::export_parse() {
   cmd->method = EXPORT;
   if (args.size() == 2 && args[1] != "-html" )
-    cmd->filename = args[1];
+    cmd->filename = trimInvertedCommas(args[1]);
  
   else if (args.size() == 3 && args[1] == "-html") {
-    cmd->filename = args[2];
+    cmd->filename = trimInvertedCommas(args[2]);
     cmd->html = 1;
   }
 }
@@ -374,13 +358,13 @@ void Parser::task_parse() {
 
 void Parser::run_parse() {
   cmd->method = RUN;
-  if (args.size()!=1) cmd->filename = args[1];
+  if (args.size()!=1) cmd->filename = trimInvertedCommas(args[1]);
 }
 
 void Parser::map_parse() {
 
-  string alias  = trimHeadTailInvertedCommas( args.at(1) );
-  string origin = trimHeadTailInvertedCommas( args.at(2) );
+  string alias  = trimInvertedCommas( args.at(1) );
+  string origin = trimInvertedCommas( args.at(2) );
 
   if (alias != "map")
     commandAliases[alias] = origin;
@@ -394,7 +378,7 @@ void Parser::redo_parse(){
   cmd->method = REDO;
 }
 
-string Parser::trimHeadTailInvertedCommas(string s) {
+string Parser::trimInvertedCommas(string s) {
   int start = 0;
   int end = s.length() - 1;
 
@@ -404,7 +388,10 @@ string Parser::trimHeadTailInvertedCommas(string s) {
   while (end > 0 && s[end] == ' ')
     end--;
 
-  return s.substr(start+1, end-start-1); // the string has '"' at the beginning and the end.
+  if (s[start] == '"' && s[end] == '"')
+    return s.substr(start+1, end-start-1); // the string has '"' at the beginning and the end.
+  else
+    return s.substr(start, end-start); // the string has '"' at the beginning and the end.
 }
 
 string Parser::matchAlias (string s) {
