@@ -180,12 +180,13 @@ This is helpful when you only want to peek the content of an xml file without re
   \end{tabbing}
 }
 
-\footnotetext{ Currently \cmdinline{export} does not support environmental variables in path. i.e. \cmdinline{export \~{}/abc.xml} will not export the file to user's home directory /home/username/.}
+\footnotetext{ Currently \cmdinline{export} does not support environmental variables in path. i.e. \cmdinline{export \~{}/abc.xml} will not export the file to user's home directory \cmdinline{/home/username/}.}
  
 \cmdinline{export} can also be used to generate an HTML file which is more visually pleasant in your favourate browser.
-\cmd{> \ export -html sampletasks.html\\
+\cmd{> \ export -html sampletasks.html\footnotemark\\
   > \ exit}
 
+\footnotetext{ If the name of the HTML file to export is not specified, the default file name \cmdinline{"record.html"} is used.}
 \begin{figure}[htbp]
   \centering
   \includegraphics[scale=0.73, viewport=100 0 600 380]{exporthtml}
@@ -200,9 +201,9 @@ This is helpful when you only want to peek the content of an xml file without re
 \noindent \cmd{
   \begin{tabbing}
     > \=task 1 \+\\
-    Number:  1  \ \ \= Deadline:\=Sun Oct 31 05:11:23 2010\\
-    Priority:0 \> Status:\>Doing\\
-    Group: \ default\\
+    Number: \ \= 1  \ \ \= Deadline: \=Sun Oct 31 05:11:23 2010\\
+    Priority:\>0 \> Status:\>Doing\\
+    Group:\> default\\
     Details:\\
     \ \ Sample task 2 \footnotemark
   \end{tabbing}
@@ -215,9 +216,9 @@ To show detail information of a task, use \cmdinline{task} command followed by s
   \begin{tabbing}
     > \  pri 1 10\\
     > \ \=task 1 \+\\
-    Number:  1 \ \ \= Deadline: \= Sun Oct 31 05:11:23 2010\\
-    Priority:10 \> Status: \> Doing\\
-    Group: \ default\\
+    Number: \ \= 1 \ \ \= Deadline: \= Sun Oct 31 05:11:23 2010\\
+    Priority:\>10 \> Status:\>Doing\\
+    Group: \> default\\
     Details:\\
     \ \ Sample task 2
   \end{tabbing}
@@ -231,9 +232,9 @@ Priority is typically a number between -20 and 20. By default, the priority of a
   \begin{tabbing}
     > \ edit 1 -d "Sample task 3" -p 12 -t 1d\footnotemark \ -g SampleGroup -f yes\\
     > \ \=task 1 \+\\
-     Number:  1 \ \ \= Deadline: \= Mon Nov  1 05:47:59 2010\\
-     Priority:12 \> Status: \> Finished\\
-     Group: \ SampleGroup\\
+     Number: \ \= 1 \ \ \= Deadline: \=Mon Nov  1 05:47:59 2010\\
+     Priority:12 \> Status:\>Finished\\
+     Group: \> SampleGroup\\
      Details:\\
      \ \ Sample task 3
   \end{tabbing}
@@ -318,7 +319,7 @@ Examples: \cmd{
 \item [ \cmdinline{-k} ] filters tasks with a keyword\footnotemark \ where ? means any single character, * means a string of any length (including 0 length).
 \footnotetext{ keyword is case insensitive.}
 
-Take command \cmdinline{ls -k *Sam?le*task} as an example, ``This is a sample with a important task'' will match *Sam?le*task as the first * matches ``This is a '', ? matches `p' and the second * matches `` with a important ''.
+Take command \cmdinline{ls -k *Sam?le*task} as an example, ``This is a sample with an important task'' will match \cmdinline{*Sam?le*task} as the first * matches \cmdinline{"This is a "}, \cmdinline{?} matches \cmdinline{'p'} and the second * matches \cmdinline{" with an important "}.
 
 ``samqleTask'' will also match *sam?le*task as both * maps empty string and ? to be `q'.
 

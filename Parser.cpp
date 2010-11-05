@@ -300,12 +300,13 @@ void Parser::ls_parse() {
 void Parser::pri_parse() {
   cmd->method = PRI;
 
-  if (args.size() == 2)
-    cmd->priority = StringToNum(args.at(1));
-
-  else if (args.size() == 3) {
-    cmd->priority = StringToNum(args.at(2));
+  if (args.size() == 2) {
     cmd->serialNumberList.push_back(StringToNum(args.at(1)));
+    cmd->priority = 20; // elevate the priority directly to 20
+
+  } else if (args.size() == 3) {
+    cmd->serialNumberList.push_back(StringToNum(args.at(1)));
+    cmd->priority = StringToNum(args.at(2));
   }
 
 }
