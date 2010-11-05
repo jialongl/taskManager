@@ -3,21 +3,27 @@
 #include "Result.h"
 
 Result::Result(){
+//    cout<<"newing result!"<<endl;
+    TaskList();
   isNull = true;
   comparer = new Comparer();
 }
 
 Result::Result(TaskList* list, bool detail){
+ //   cout<<"newing result!"<<endl;
+    TaskList();
   isNull = false;
-  TaskList();
   detailed = detail;
-  taskList = list->getTaskMap();
-  serialNumberLargest = list->getSerial(); 
-  // delete list;
   comparer = new Comparer();
+  vector<Task*> tmpV = list->sort(comparer);
+  for (int i=0;i<tmpV.size();i++)
+      addTask(tmpV[i]->getSerialNumber(),tmpV[i]);
+  serialNumberLargest = list->getSerial(); 
+  delete list;
 }
 
 Result::~Result(){
+ //   cout<<"deleting result"<<endl;
   deleteList();
   delete comparer;
 }
@@ -25,9 +31,10 @@ Result::~Result(){
 Result::Result(TaskList* list, Comparer *comp){
   comparer = comp;
   isNull = false;
-  TaskList();
   detailed = false;
-  taskList = list->getTaskMap();
+  vector<Task*> tmpV = list->sort(comparer);
+  for (int i=0;i<tmpV.size();i++)
+      addTask(tmpV[i]->getSerialNumber(),tmpV[i]);
   serialNumberLargest = list->getSerial();
-  // delete list;
+  delete list;
 }

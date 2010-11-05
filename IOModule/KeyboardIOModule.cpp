@@ -21,6 +21,7 @@ void KeyboardIOModule::showOutput(Result* result){
     else{
     //    cout<<"NULL"<<endl;
     }
+    delete result;
 }
 
 void KeyboardIOModule::showWelcomeMessage(){

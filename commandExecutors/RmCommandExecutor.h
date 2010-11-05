@@ -3,6 +3,7 @@
 #define RmCommandExecutorH
 
 #include "CommandExecutor.h"
+#include "../filters/GFilter.h"
 
 class RmCommandExecutor:public CommandExecutor{
 public:

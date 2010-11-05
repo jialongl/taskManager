@@ -6,18 +6,24 @@ Result* FinishCommandExecutor::executeCommand(TaskList* mainTaskList,Command *co
             int x=*it;
             mainTaskList->editTaskIsFinished(x, true);
         }
-        map<int, Task*> tmp = mainTaskList->getTaskMap();
-        for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
-            if ((it->second)->getGroup() == command->group) mainTaskList->editTaskIsFinished(it->first,true);
+        Filter* grp = new GFilter(command->group);
+        TaskList* tmp = mainTaskList->getTasks(grp);
+        Comparer * cmp = new Comparer();
+        vector<Task*> tasks = tmp->sort(cmp);
+        for (int i=0;i<tasks.size();i++){
+            mainTaskList->editTaskIsFinished(tasks[i]->getSerialNumber(),true);
         }
+        delete grp;
+        delete tmp;
+        delete cmp;
     }
     return new Result();
 }
 Result* FinishCommandExecutor::executeCommand(TaskList* mainTaskList,Result* result,Command *command){
     if (command->method == FINISH){
-        map<int, Task*> tmp = mainTaskList->getTaskMap();
-        for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
-           mainTaskList->editTaskIsFinished((it->second)->getSerialNumber() , true);
+        vector<Task*> tasks = result->sort(result->comparer);
+        for (int i=0;i<tasks.size();i++){
+            mainTaskList->editTaskIsFinished(tasks[i]->getSerialNumber(),true);
         }
     }
     return new Result();

@@ -72,6 +72,7 @@ Result* ReadCommandExecutor::executeCommand(TaskList* mainTaskList, Command *com
 
 				Task* task = new Task(deadline, priority, description, 0, isFinished, serialNumber, group);
 				readTaskList->addTask(serialNumber,task);
+                delete task;
 			}
 
 		}/*else{
@@ -83,13 +84,5 @@ Result* ReadCommandExecutor::executeCommand(TaskList* mainTaskList, Command *com
 }
 
 Result* ReadCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result, Command *command){
-	if (command->method == READ){
-		TaskList * readTaskList = new TaskList();
-
-		map<int, Task*> tmp = result->getTaskMap();
-		for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){readTaskList->addTask(it->first, it->second);}
-
-		return new Result(readTaskList,false);
-	}
 	return new Result();
 }

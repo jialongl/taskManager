@@ -3,8 +3,10 @@
 #include "Shell.h"
 Shell::Shell(){
     //initiallize function units.
+    //cout<<"new main task list"<<endl;
     mainTaskList = new TaskList();
     undoStackTop = 1;
+    //cout<<"new undoStack 0"<<endl;
     undoStack[0] = mainTaskList->clone();
     redoStackTop = 0;
     mainCommandExecutor = new MainCommandExecutor();
@@ -12,23 +14,28 @@ Shell::Shell(){
     IOModule = new KeyboardIOModule(parser);
     toChangeIOModule = false;
     IOModule->showWelcomeMessage();
-    
+
+
+    Result* result;
     //load saved record.
     try{
         Command* cmd = new Command();
         cmd->method = IMPORT;
-        executeOneCommand(NULL,cmd);
-        delete cmd;
+        result = executeOneCommand(NULL,cmd);
+        //cout<<"get import result, delete import result"<<endl;
+        delete result;
 
         cmd = new Command();
         cmd->method = RUN;
-        executeOneCommand(NULL,cmd);
+        result = executeOneCommand(NULL,cmd);
+        delete result;
     } catch (exception_e except){
         IOModule->handleException(except);
     }
 
 }
 Shell::~Shell(){
+    //cout<<"deleting main task list"<<endl;
     delete mainTaskList;
     delete mainCommandExecutor;
     delete parser;
@@ -36,13 +43,16 @@ Shell::~Shell(){
     for (int i=0;i<redoStackTop;i++){
         delete redoStack[i];
     }
-    for (int i=0;i<redoStackTop;i++){
+    for (int i=0;i<undoStackTop;i++){
+        //cout<<"deleting undoStack #"<<i<<endl;
         delete undoStack[i];
     }
 }
 
 void Shell::backup(){
+    //cout<<"making backup #"<<undoStackTop<<endl;
     undoStack[undoStackTop++] = mainTaskList->clone();
+    //cout<<"backup finish"<<endl;
     for (int i=0;i<redoStackTop;i++){
         delete redoStack[i];
     }
@@ -72,6 +82,7 @@ void Shell::start(){
 }
 
 Result* Shell::executeOneCommand(Result* result, Command* command){
+    commandMethod mtd = command->method;
     TM_IOModule* newIO ;
     ifstream script;
     Result* ans;
@@ -79,21 +90,32 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
     //handle special command when low level command executor don't have privillige to do it.
     switch (command->method){
        case UNDO:
+            if (result != NULL) delete result;
+            delete command;
             undo();
             ans = new Result();
             break;
         case REDO:
+            if (result != NULL) delete result;
+            delete command;
             redo();
             ans = new Result();
             break;
         case NULLCOMMAND: //invalid command
+            if (result != NULL) delete result;
+            delete command;
             ans =  new Result();
+            break;
         case TUI: //enable text UI
+            if (result != NULL) delete result;
+            delete command;
             newIO = new PdcIO(parser);
             changeIOModule(newIO);
             ans =  new Result();
             break;
         case NOTUI: //disable text UI
+            if (result != NULL) delete result;
+            delete command;
             newIO = new KeyboardIOModule(parser);
             changeIOModule(newIO);
             ans =  new Result();
@@ -107,24 +129,25 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
             break;
         case RUN: //run a TM script
 
-	    if(command->filename == "")
-	      command->filename = RCFILE;
-
+            if(command->filename == "")
+                  command->filename = RCFILE;
             script.open((command->filename).c_str());
+            if (result != NULL) delete result;
+            delete command;
+
             if (script.is_open()){
                 string line;
                 while (getline(script, line) && line[0] != '#'){ // '#' starts a line of comment
                     try{
                         CommandList commandList;
                         Command *command;
-                        Result *result;
+                        Result *result2;
 
                         commandList = parser->inputToCommandList(line);
-
                         if (commandList.size()!=0){
 
-                            result = executeCommandList(commandList);
-                            IOModule->showOutput(result); 
+                            result2 = executeCommandList(commandList);
+                            IOModule->showOutput(result2); 
               
                             if (toChangeIOModule){
                                  delete IOModule;
@@ -132,12 +155,11 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
                                  toChangeIOModule = false;
                             }
                         }
-                        else result = new Result();
                     
                         command = new Command();
                         command->method = EXPORT;
-                        mainCommandExecutor->executeCommand(mainTaskList,command);
-                        delete command;
+                        result2 = mainCommandExecutor->executeCommand(mainTaskList,command);
+                        delete result2;
                     }
 
                     catch (exception_e except){
@@ -154,13 +176,19 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
                 int percentage = testSimilarity(command->taskDescription);    
                 flag = true;
                 if (percentage >= 70) flag = IOModule->confirm("This task is highly similiar to some existing task, do you really want to add it?");
-                if (flag) ans =  (result == NULL)?mainCommandExecutor->executeCommand(mainTaskList,command):mainCommandExecutor->executeCommand(mainTaskList,result,command);
-                else ans = new Result();
-            }  else ans =  (result == NULL)?mainCommandExecutor->executeCommand(mainTaskList,command):mainCommandExecutor->executeCommand(mainTaskList,result,command);
+                if (flag) ans =  (result == NULL)?  mainCommandExecutor->executeCommand(mainTaskList,command):
+                                                mainCommandExecutor->executeCommand(mainTaskList,result,command);
+                else{
+                    delete command;
+                    if (result!=NULL) delete result;
+                    ans = new Result();
+                }
+            } else ans =  (result == NULL)? mainCommandExecutor->executeCommand(mainTaskList,command):
+                                            mainCommandExecutor->executeCommand(mainTaskList,result,command);
 //            cout<<command->method<<endl;
     }
 
-    if (command->method != LS && command->method != NULLCOMMAND && command->method !=EXPORT && command->method != UNDO && command->method != REDO && command->method != TUI && command->method != NOTUI && command->method != READ){
+    if (mtd != LS && mtd != NULLCOMMAND && mtd !=EXPORT && mtd != UNDO && mtd != REDO && mtd != TUI && mtd != NOTUI && mtd != READ && mtd != TASK){
         backup();
     }
 
@@ -172,14 +200,11 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
 Result* Shell::executeCommandList(CommandList commandList){
     Result *result;
     //execute the first command 
-    if (commandList.size() != 0 && commandList[0]->method != NULLCOMMAND)
+    if (commandList.size() != 0 )
         result = executeOneCommand(NULL, commandList[0]);
     else {
         result = new Result();
     }
-//    cout<<"cmd 0 execed!!"<<endl;
-    //execute rest piped comands
-//    if (result->isNull) cout<<"exec cl is null"<<endl;
     for (int i=1;i<commandList.size();i++){
         result = executeOneCommand(result,commandList[i]);    
     }
@@ -209,8 +234,8 @@ bool Shell::oneIteration(){
         // save record.
           command = new Command();
           command->method = EXPORT;
-          mainCommandExecutor->executeCommand(mainTaskList,command);
-          delete command;
+          result = mainCommandExecutor->executeCommand(mainTaskList,command);
+          delete result;
 
         }
         catch (exception_e except){
@@ -234,11 +259,13 @@ void Shell::changeIOModule(TM_IOModule* newIO){
     newIOModule = newIO;
 }
 int Shell::testSimilarity(string st){
-    vector<Task*> list = mainTaskList->sort(new Comparer());
+    Comparer* cp = new Comparer;
+    vector<Task*> list = mainTaskList->sort(cp);
     int max = 0;
     for (int i=0;i<list.size();i++){
         int x = lcs(list[i]->getDescription(),st);
         if (x>max) max = x;
     }
+    delete cp;
     return max;
 }

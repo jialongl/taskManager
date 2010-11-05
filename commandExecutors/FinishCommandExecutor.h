@@ -3,6 +3,7 @@
 #define FinishCommandExecutorH
 
 #include "CommandExecutor.h"
+#include "../filters/GFilter.h"
 class FinishCommandExecutor:public CommandExecutor{
 public:
 	Result *executeCommand(TaskList* mainTaskList,Command *command);

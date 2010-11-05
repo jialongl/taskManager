@@ -13,6 +13,7 @@ Result* LsCommandExecutor::executeCommand(TaskList* mainTaskList,Command *comman
             TaskList* tmp = list->getTasks(*it);
             delete list;
             list = tmp;
+            delete *it;
         }
 //			cout<<(command->sortKeyword).size()<<endl;
 //			cout<<(command->sortKeyword)[(command->sortKeyword).size()]<<endl;
@@ -30,11 +31,12 @@ Result* LsCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result
         if (command->finishFlag == NO) filters.push_back(new FFilter(false));
         if (command->group != "") filters.push_back(new GFilter(command->group));
         if (command->overdue) filters.push_back(new OFilter());
-        TaskList* list = (result->isNull)?mainTaskList->clone():result;
+        TaskList* list = (result->isNull)?mainTaskList->clone():result->clone();
         for (vector<Filter*>::iterator it = filters.begin(); it != filters.end(); it++){
             TaskList* tmp = list->getTasks(*it);
             delete list;
             list = tmp;
+            delete *it;
         }
         if ((command->sortKeyword).size()==0) return new Result(list, false);
         else return new Result(list,new Comparer(command->sortKeyword));

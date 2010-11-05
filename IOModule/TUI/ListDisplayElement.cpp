@@ -22,6 +22,8 @@ ListDisplayElement::ListDisplayElement(TaskList* taskList, Parser* pser,DisplayM
 ListDisplayElement::~ListDisplayElement(){
     wattroff(listWindow, _NORMAL);
     destroy_win(listWindow);
+    delete list;
+    if (originalList != list) delete originalList;
 };
 
 void ListDisplayElement::draw(){
@@ -29,7 +31,9 @@ void ListDisplayElement::draw(){
     getmaxyx(listWindow, mx, my);
     vector<sortKeyword_e> keys;
     keys.push_back(DEADLINE);
-    tasks = list->sort(new Comparer(keys));
+    Comparer* cmp = new Comparer(keys);
+    tasks = list->sort(cmp);
+    delete cmp;
     if (detailList.empty() )
         for (int i=0; i<tasks.size(); i++) detailList[tasks[i]->getSerialNumber()] = false; 
     if (selectTask >= tasks.size()) selectTask = tasks.size()-1;
@@ -191,11 +195,15 @@ void ListDisplayElement::handleConfirm(bool flag){
 }
 void ListDisplayElement::handleResult(Result* result){
     if (! result->isNull){
+        delete list;
         list = result;
+        if (originalList != list) delete originalList;
         originalList = result;
         draw();
-    }else
+    }else{
+        delete result;
         displayManager->setCommand(parser->inputToCommandList("ls"));
+    }
 }
 string ListDisplayElement::formatDate(time_t t){
     string months[]  = {
@@ -598,6 +606,7 @@ void ListDisplayElement::reset(){
 }
 
 void ListDisplayElement::search(){
+    if (list != originalList) delete list;
     list = originalList;
     bool flag = false;
     string keyInSt = "";
@@ -606,11 +615,13 @@ void ListDisplayElement::search(){
     int chLast = 0;
     time_t timeLast;
     time_t timeNow;
+    TaskList* tmpList;
     while (!flag){
         selectTask = 0;
         time(&timeLast);
         int ch = getch();
         time(&timeNow);
+        Filter* kfil;
         switch (ch){
             case KEY_ESC:
             case 3:
@@ -623,6 +634,7 @@ void ListDisplayElement::search(){
             case 13:
                 chLast = ch;
                 if (tasks.size() == 0) {
+                    if (list != originalList) delete list;
                     list = originalList;
                     draw();
                 }
@@ -635,15 +647,19 @@ void ListDisplayElement::search(){
                 if (searchKeyword.size()!=0) searchKeyword = searchKeyword.substr(0,searchKeyword.size() - 1);
                 if (keyInSt.size()!=0) keyInSt = keyInSt.substr(0,keyInSt.size() - 1);
 //                reset();
+                if (list != originalList) delete list;
                 list = originalList;              
                 displayManager->echo("Search: "+keyInSt);
-                list = list -> getTasks(new KFilter("*"+searchKeyword+"*"));
+                kfil = new KFilter("*"+searchKeyword+"*");
+                list = list -> getTasks(kfil);
+                delete kfil;
                 draw(); 
                 break;
             case ' ':
                 if (chLast == ' ' && timeNow <= timeLast+1){
                     flag = true;
                     if (tasks.size() == 0) {
+                        if (list != originalList) delete list;
                         list = originalList;
                         draw();
                     }
@@ -655,7 +671,11 @@ void ListDisplayElement::search(){
                 if (ch == (int)' ') ch = (int)'*';
                 searchKeyword.push_back((char)ch);
                 displayManager->echo("Search: "+keyInSt);
-                list = list -> getTasks(new KFilter("*"+searchKeyword+"*"));
+                kfil = new KFilter("*"+searchKeyword+"*");
+                tmpList = list -> getTasks(kfil);
+                delete kfil;
+                if (list != originalList) delete list;
+                list = tmpList;
                 draw(); 
                 break;
         }
@@ -732,7 +752,12 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
     curRow++;
     vector<sortKeyword_e> keys;
     keys.push_back(DEADLINE);
-    vector<Task*> thetasks = (originalList->getTasks(new IFilter(startTime,startTime+42*24*60*60)))->sort(new Comparer(keys));
+    Filter* ifil = new IFilter(startTime,startTime+42*24*60*60);
+    Comparer* cmp = new Comparer(keys);
+    TaskList* tmpTL = originalList->getTasks(ifil);
+    vector<Task*> thetasks = (tmpTL)->sort(cmp);
+    delete cmp;
+    delete ifil;
     int taskNum = 0; 
     for (int i=0;i<6;i++){
         datetime = localtime(&startTime);
@@ -769,6 +794,7 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
         curRow+=1;
         curCol=startCol;
     }
+    delete tmpTL;
     move(curRow,startCol);
     printw("%34s"," ");
     curRow++;
@@ -1052,7 +1078,10 @@ void ListDisplayElement::selectByCalendar(){
     int startCol = my-1-34;
     int startRow = mx-1-12;
 
-    list = originalList->getTasks(new IFilter(curTime,curTime+24*60*60));
+    Filter* ifil = new IFilter(curTime,curTime+24*60*60);
+    if (list != originalList) delete list;
+    list = originalList->getTasks(ifil);
+    delete ifil;
     draw();
     drawCalendar(curTime,startRow,startCol);
     bool flag = false;
@@ -1106,8 +1135,12 @@ void ListDisplayElement::selectByCalendar(){
             default:
                 break;
         }
-        if (!escFlag) list = originalList->getTasks(new IFilter(curTime,curTime+24*60*60));
+        ifil = new IFilter(curTime,curTime+24*60*60);
+        if (list != originalList) delete list;
+        if (!escFlag)
+            list = originalList->getTasks(ifil);
         else list = originalList;
+        delete ifil;
         draw();
         drawCalendar(curTime,startRow,startCol);
     }

@@ -16,7 +16,7 @@ MainCommandExecutor::MainCommandExecutor(){
 		executors[TASK] = new TaskCommandExecutor();
 		executors[RM] = new RmCommandExecutor();
 		executors[READ] = new ReadCommandExecutor();
-		executors[WRITE] = new WriteCommandExecutor();
+		executors[WRITE] = new ExportCommandExecutor();
 
 		// executors[SELECT] = new SelectCommandExecutor();
 		// executors[SORT] = new SortCommandExecutor();
@@ -28,16 +28,25 @@ Result* MainCommandExecutor::executeCommand(TaskList* mainTaskList,Command *comm
           Result* ans;
 	      ans = executors[command->method]->executeCommand(mainTaskList,command);
 //          if (ans->isNull) cout<<"null in mce"<<endl;
+          delete command;
           return ans;
       }
 	  else{
+          delete command;
 	    return new Result();
       }
 	}
 
 Result* MainCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result,Command *command){
-    if ( command->method != NULLCOMMAND)
-	    return executors[command->method]->executeCommand(mainTaskList,result, command);
-	  else
+    if ( command->method != NULLCOMMAND){
+        Result* ans = executors[command->method]->executeCommand(mainTaskList,result, command);
+        delete result;
+        delete command;
+	    return ans;
+    }
+	else{
+        delete command;
+        delete result;
 	    return new Result();
+    }
 }

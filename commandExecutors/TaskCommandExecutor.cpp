@@ -2,7 +2,10 @@
 Result* TaskCommandExecutor::executeCommand(TaskList* mainTaskList,Command *command){
     if (command->method == TASK){
         int taskNum = (command->serialNumberList)[0];
-        return new Result(mainTaskList->getTasks(new NFilter(taskNum)), true);
+        Filter* nfil = new NFilter(taskNum);
+        Result* result = new Result(mainTaskList->getTasks(nfil), true);
+        delete nfil; 
+        return result;
     }
     return new Result();
 }

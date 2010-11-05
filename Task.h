@@ -17,6 +17,7 @@ class Task{
 
  public:
   Task(time_t deadline, int priority, string description, int cronFreq, bool isFinished, int serialNumber, string group);
+  ~Task();
   void setPriority(int x);
   void setDeadline(time_t t);
   void setDescription(string s);

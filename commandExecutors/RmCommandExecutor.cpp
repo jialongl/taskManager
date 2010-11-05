@@ -5,19 +5,25 @@ Result* RmCommandExecutor::executeCommand(TaskList* mainTaskList,Command *comman
             int x=*it;
             mainTaskList->removeTask(x);
         }
-        map<int, Task*> tmp = mainTaskList->getTaskMap();
-        for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
-            if ((it->second)->getGroup() == command->group) mainTaskList->removeTask(it->first);
+        Filter* grp = new GFilter(command->group);
+        TaskList* tmp = mainTaskList->getTasks(grp);
+        Comparer * cmp = new Comparer();
+        vector<Task*> tasks = tmp->sort(cmp);
+        for (int i=0;i<tasks.size();i++){
+            mainTaskList->removeTask(tasks[i]->getSerialNumber());
         }
+        delete grp;
+        delete tmp;
+        delete cmp;
             
     }
     return new Result();
 }
 Result* RmCommandExecutor::executeCommand(TaskList* mainTaskList,Result* result, Command* command){
     if (command->method == RM){
-        map<int, Task*> tmp = result->getTaskMap();
-        for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
-           mainTaskList->removeTask((it->second)->getSerialNumber());
+        vector<Task*> tasks = result->sort(result->comparer);
+        for (int i=0;i<tasks.size();i++){
+            mainTaskList->removeTask(tasks[i]->getSerialNumber());
         }
     }
     return new Result();

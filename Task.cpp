@@ -3,12 +3,17 @@
 #include "Task.h"
 
 Task::Task(time_t deadline, int priority, string description, int cronFreq, bool isFinished, int serialNumber, string group){
+//    cout<<"newing task"<<endl;
   setDeadline(deadline);
   setPriority(priority);
   setDescription(description);
   setIsFinished(isFinished);
   setSerialNumber(serialNumber);
   setGroup(group);
+}
+
+Task::~Task(){
+//    cout<<"deleting task"<<endl;
 }
 
 void Task::setPriority(int x){

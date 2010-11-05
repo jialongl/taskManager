@@ -5,16 +5,16 @@
 TaskList::TaskList(){
   serialNumberLargest = 0;
   taskList.clear();
+//  cout<<"newing task list"<<endl;
 }
 
 TaskList::~TaskList(){
+//    cout<<"deleting task list"<<endl;
   deleteList();
 }
 
 void TaskList::deleteList(){
-  for (map<int, Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
-    delete it->second;
-  }
+    clearEntries();
 }
 
 int TaskList::getSerial(){
@@ -23,14 +23,14 @@ int TaskList::getSerial(){
 
 int TaskList::addTask(Task *task){
   serialNumberLargest++;
-  taskList[serialNumberLargest] = task;
+  taskList[serialNumberLargest] = task->clone();
   task->setSerialNumber(serialNumberLargest);
   return serialNumberLargest;
 }
 
 int TaskList::addTask(int serialNumber, Task* task){
   if (taskList.find(serialNumber) != taskList.end()) throw EXCEPTION_TASK_EXIST;
-  taskList[serialNumber] = task;
+  taskList[serialNumber] = task->clone();
   if (serialNumber > serialNumberLargest) serialNumberLargest = serialNumber;
   return serialNumber;
 }
@@ -38,7 +38,7 @@ int TaskList::addTask(int serialNumber, Task* task){
 void TaskList::removeTask(int serialNumber){
   if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
   if ((taskList.find(serialNumber))->second) {
-    //delete (taskList.find(serialNumber))->second;
+    delete (taskList.find(serialNumber))->second;
   }
   taskList.erase(taskList.find(serialNumber));	
 }
@@ -76,16 +76,20 @@ void TaskList::editTaskGroup(int serialNumber, string group){
   if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
   taskList[serialNumber]->setGroup(group);
 }
-
+/*
 map<int, Task*> TaskList::getTaskMap(){
-  return taskList;
+    map<int, Task*> ans;
+    for (map<int,Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
+        ans[it->first]= (it->second)->clone();
+    }
+  return ans;
 }
-
+*/
 TaskList* TaskList::getTasks(Filter* filter){
   TaskList* ans = new TaskList();
   for (map<int,Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
     if (filter->filter(it->second)){
-      ans->addTask(it->first, (it->second)->clone());
+      ans->addTask(it->first, (it->second));
     }
   }
 		
@@ -112,7 +116,7 @@ TaskList* TaskList::clone(){
   Comparer *cp = new Comparer;
   vector<Task*> tasks = sort(cp);
   for (int i=0;i<tasks.size();i++){
-    ans->addTask(tasks[i]->getSerialNumber(),tasks[i]->clone());
+    ans->addTask(tasks[i]->getSerialNumber(),tasks[i]);
   }
   delete cp;
   return ans;
@@ -121,6 +125,8 @@ TaskList* TaskList::clone(){
 void TaskList::clearEntries(){
   for (map<int, Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
     delete it->second;
-    taskList.erase(it);
+//    taskList.erase(it);
   }
+  taskList.clear();
 }
+

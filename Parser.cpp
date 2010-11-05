@@ -5,7 +5,7 @@
 //#include "IOModule/TM_IOModule.h"
 
 Parser::Parser() {
-  cmd = new Command();
+  //cmd = new Command();
 }
 
 void Parser::tokenize_by_pipe (string s) {
@@ -492,10 +492,13 @@ Command* Parser::inputToCommand (string input) {
   if (input.length() == 0) {
 
   }
-  else if (args[0] == "exit" || args[0] == "quit")
+  else if (args[0] == "exit" || args[0] == "quit"){
+      delete cmd;
     throw EXCEPTION_HALT;
+  }
     
   else if (args[0] == "help") {
+      delete cmd;
     throw EXCEPTION_HELP;
   }
 
@@ -553,6 +556,7 @@ Command* Parser::inputToCommand (string input) {
     redo_parse();
 
   else {
+      delete cmd;
     throw EXCEPTION_NO_SUCH_COMMAND;
   }
 

@@ -77,24 +77,28 @@ Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Command *c
 
 				Task* task = new Task(deadline, priority, description, 0, isFinished, serialNumber, group);
 				mainTaskList->addTask(serialNumber,task);
+                delete task;
 			}
 
 		}/*else{
 			throw EXCEPTION_FILE_OPEN_FAILED;
 		}*/
-		return new Result(mainTaskList,false);
+        //cout<<"clone main task list in import"<<endl;
+		return new Result(mainTaskList->clone(),false);
 	}
 	return new Result();
 }
 
 Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Result* result, Command *command){
 	if (command->method == IMPORT){
-		map<int, Task*> tmp = result->getTaskMap();
-		for (map<int, Task*>::iterator it = tmp.begin(); it != tmp.end(); it++){
-			it->second->setSerialNumber(mainTaskList->getSerial()+1);
-			mainTaskList->addTask(it->second->getSerialNumber(), it->second);
+        Comparer* cmp = new Comparer();
+		vector<Task*> tmp = result->sort(cmp);
+		for (int i=0;i<tmp.size();i++){
+			tmp[i]->setSerialNumber(mainTaskList->getSerial()+1);
+			mainTaskList->addTask(tmp[i]->getSerialNumber(), tmp[i]);
 		}
-		return new Result(mainTaskList,false);
+        delete cmp;
+		return new Result(mainTaskList->clone(),false);
 	}
 	return new Result();
 }

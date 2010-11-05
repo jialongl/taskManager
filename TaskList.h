@@ -28,7 +28,7 @@ class TaskList{
   void editTaskIsFinished(int serialNumber, bool isFinished);
   void editTaskSerialNumber(int serialNumber, int newSerialNumber);
   void editTaskGroup(int serialNumber, string group);
-  map<int, Task*> getTaskMap();
+  //map<int, Task*> getTaskMap();
   TaskList* getTasks(Filter* filter);
   vector<Task*> sort(Comparer* comp);
   TaskList* clone();
