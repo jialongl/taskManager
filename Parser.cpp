@@ -186,6 +186,7 @@ void Parser::edit_parse() {
   if (args.size() >= 2) {
     cmd->method = EDIT;
     cmd->serialNumberList.push_back( StringToNum(args.at(1)) );
+    cmd->priority = NO_CHANGE;
 
   } else
     return ;
