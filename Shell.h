@@ -12,6 +12,7 @@
 #include "IOModule/PdcIO.h"
 #include "IOModule/KeyboardIOModule.h"
 #include "commandExecutors/MainCommandExecutor.h"
+#include "autocomplete/AutoCompletionAgent.h"
 
 
 class Shell{
@@ -21,6 +22,8 @@ class Shell{
   TaskList* undoStack[MAX_UNDO];
   TaskList* redoStack[MAX_UNDO];
   int undoStackTop,redoStackTop;
+
+  AutoCompletionAgent* agent;
 
   bool toChangeIOModule;
   TM_IOModule* newIOModule;

@@ -1,7 +1,8 @@
 #include "PdcIO.h"
 #include "TUI/DisplayManager.h"
 
-PdcIO::PdcIO(Parser* pser){
+PdcIO::PdcIO(Parser* pser, AutoCompletionAgent* acagent){
+        agent = acagent;
         commandReady = false;
         parser = pser;
         initscr();
@@ -23,7 +24,7 @@ PdcIO::PdcIO(Parser* pser){
         raw();
         keypad(stdscr, TRUE);
         noecho();
-        displayManager = new DisplayManager(this);
+        displayManager = new DisplayManager(this, agent);
 }
 
 PdcIO::~PdcIO(){

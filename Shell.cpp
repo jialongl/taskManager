@@ -33,6 +33,41 @@ Shell::Shell(){
         IOModule->handleException(except);
     }
 
+    agent = new AutoCompletionAgent();
+
+    agent -> analysis(mainTaskList);
+
+    int count = 23;
+    string lexicon[] = {
+        "add",
+        "edit",
+        "task",
+        "pri",
+        "finish",
+        "export",
+        "import",
+        "sort",
+        "run",
+        "read",
+        "tui",
+        "notui",
+        "undo",
+        "redo",
+        "priority",
+        "deadline",
+        "serialnumber",
+        "html",
+        "tomorrow",
+        "today",
+        "week",
+        "month",
+        "year",
+    };
+    for (int i=0; i<count; i++)
+        agent->tell(lexicon[i]);
+
+//    cout<<"analysis finish"<<endl;
+ //   cout<< agent->ask("enabl")<<endl;
 }
 Shell::~Shell(){
     //cout<<"deleting main task list"<<endl;
@@ -109,7 +144,7 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
         case TUI: //enable text UI
             if (result != NULL) delete result;
             delete command;
-            newIO = new PdcIO(parser);
+            newIO = new PdcIO(parser,agent);
             changeIOModule(newIO);
             ans =  new Result();
             break;

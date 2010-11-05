@@ -325,15 +325,27 @@ void ListDisplayElement::reconstructLines(){
     }
 }
 
-void ListDisplayElement::refreshEditArea(WINDOW* win, int row0, int row1, int col0, int col1, string newStr, int startPos,int* cR, int* cC){
+void ListDisplayElement::refreshEditArea(WINDOW* win, int row0, int row1, int col0, int col1, string newStr, int startPos,int* cR, int* cC, string completion,int curPos){
     int tmp = startPos;
     int curRow = row0,curCol = col0;
+    string ss = newStr.substr(0,curPos)+completion+newStr.substr(curPos,newStr.length() - curPos);
+//    string ss = newStr + " :"+NumberToString(curPos);//completion;
     for (int i=row0;i<=row1;i++)
         for (int j=col0;j<=col1;j++){
-            if (tmp == newStr.size()) {curRow = i; curCol = j;tmp++;}
+            if (tmp == newStr.size()) {curRow = i; curCol = j; if (tmp == ss.size()) tmp++;}
             move(i,j);
-            addch(tmp<newStr.size()?newStr[tmp++]:' ');
+            if (tmp == curPos){
+                attroff(_EDIT);
+                attron(_BOLD);
+            }
+            if (tmp == curPos+completion.size()) {
+                attroff(_BOLD);
+                attron(_EDIT);
+            }
+            addch(tmp<ss.size()?ss[tmp++]:' ');
         }
+    attroff(_BOLD);
+    attron(_EDIT);
     move(curRow,curCol);
     *cR = curRow;
     *cC = curCol;
@@ -351,7 +363,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
 //    if (newStr.size()>=msize) startPos = newStr.size() - msize + 1;
     int curPos = newStr.size()>(col1-col0+1)*(row1-row0+1)?(col1-col0+1)*(row1-row0+1):newStr.size();
     int curRow,curCol;
-    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&curRow,&curCol);
+    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&curRow,&curCol,lastTokenComp(newStr,curPos),curPos);
     bool flag = false;
     int tmp;
     int chLast = 0;
@@ -360,6 +372,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
         time(&tLast);
         int ch = getch();
         time(&tNow);
+        string comp;
         switch (ch){
             case 10:
             case 13:
@@ -372,12 +385,13 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                     if (curCol == col0){ curCol = col1; curRow--;}
                     else curCol--;
                     curPos--;
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                     move(curRow,curCol);
                 }else if (curRow == row0 && curCol == col0 && !startPos ==0){
                     startPos-=col1-col0+1;
                     curPos--;
                     curCol = col1;
-                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                     move(curRow,curCol);
                 }
                 break;
@@ -387,12 +401,13 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                     if (curCol == col1){ curCol = col0; curRow++;}
                     else curCol++;
                     curPos++;
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                     move(curRow,curCol);
                 }else if (curRow == row1 && curCol == col1 && curPos<newStr.size()){
                     startPos+=col1-col0+1;
                     curPos++;
                     curCol = col0;
-                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                     move(curRow,curCol);
                 }
                 break;
@@ -401,12 +416,13 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                 if (curPos - (col1-col0+1) >=0 && curRow!=row0){
                     curRow--;
                     curPos-=col1-col0+1;
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                     move(curRow,curCol);
                 }else if( curRow == row0 && startPos>0){
                     tmp = curPos - startPos;
                     startPos = startPos - (col1-col0+1) >0? startPos - (col1-col0+1) : 0;
                     curPos = startPos+tmp;
-                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                     move(curRow,curCol);
                 }
                 break;
@@ -415,6 +431,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                 if (curPos + col1-col0+1 <= newStr.size() && curRow!=row1){
                     curRow++;
                     curPos+=col1-col0+1;
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                     move(curRow,curCol);
                 }else if(curRow == row1 && newStr.size()-startPos >= msize){
                     tmp = curPos - startPos;
@@ -425,7 +442,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                         curPos = newStr.size();
                         curCol -= tmp;
                     }
-                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                     move(curRow,curCol);
                 }
                 break;
@@ -438,7 +455,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                     if (curCol == col0){ curCol = col1; curRow--;}
                     else curCol--;
                     curPos--;
-                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
                     move(curRow,curCol);
                 }else if (curPos !=0){
                     startPos -= col1-col0+1;
@@ -446,7 +463,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
 //                    startPos--;
                     curPos--;
                     curCol = col1;
-                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
                     move(curRow,curCol);
                 }
                 break;
@@ -465,10 +482,21 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                     }
                 flag = true;
                 break;
+            case '\t':
+                chLast = ch;
+                //bug here , fix later
+                //end of a line problem | not typing but press tab 
+                comp = lastTokenComp(newStr, curPos);
+                newStr = newStr.substr(0,curPos) + comp + newStr.substr(curPos,newStr.size()-curPos);
+                curPos += comp.size();
+                refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
+                curCol += comp.size();
+                move(curRow,curCol);
+                break;
             case 'j':
                 if (chLast == 'j' && tLast >= tNow-1 && !numOnly){
                     newStr[curPos-1] = '"';
-                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
                     move(curRow,curCol);
                     chLast = 0;
                     break;
@@ -482,7 +510,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                             if (curCol == col0){ curCol = col1; curRow--;}
                             else curCol--;
                             curPos--;
-                            refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                            refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
                             move(curRow,curCol);
                         }else if (curPos !=0){
                             startPos -= col1-col0+1;
@@ -490,7 +518,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
         //                    startPos--;
                             curPos--;
                             curCol = col1;
-                            refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                            refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
                             move(curRow,curCol);
                         }
                     flag = true;
@@ -501,8 +529,8 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                 if (!numOnly || isDigit(ch))
                     if (curCol < col1){//curPos - startPos + 1<msize){
                         newStr.insert(curPos,(char*)&ch,1);
-                        refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
                         curPos++;
+                        refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
                         curCol++;
                         move(curRow,curCol);
                     }else{
@@ -510,7 +538,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                         startPos+=col1-col0+1;
                         curPos++;
                         curCol = col0;
-                        refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp);
+                        refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
                     }
                 break;
         }
@@ -1163,4 +1191,15 @@ string ListDisplayElement::handleQuo(string s0){
         }else ss.push_back(s0[i]);
     }
     return ss;
+}
+
+string ListDisplayElement::lastTokenComp(string st, int pos){
+   int pos0 = pos-1;
+   int length = 0;
+   while (pos0>=0 && st[pos0]!='"' && st[pos0] != ' ' && st[pos0] != '-' && st[pos0] != '|'){
+         pos0--; 
+         length++;
+   }
+   string s0 = (length == 0)?"":st.substr(pos0+1,length);
+   return (displayManager->agent)->ask(s0);
 }

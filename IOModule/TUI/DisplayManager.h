@@ -24,7 +24,8 @@ class DisplayManager{
     bool initializing;
 
  public:
-    DisplayManager(PdcIO* parentIO);
+    AutoCompletionAgent* agent;
+    DisplayManager(PdcIO* parentIO, AutoCompletionAgent* acagent);
     ~DisplayManager();
     void redraw();
     void releaseForcus();

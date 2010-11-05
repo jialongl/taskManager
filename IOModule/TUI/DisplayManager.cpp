@@ -1,7 +1,8 @@
 #include "DisplayManager.h"
 #include "ListDisplayElement.h"
 
-DisplayManager::DisplayManager(PdcIO* parentIO){
+DisplayManager::DisplayManager(PdcIO* parentIO, AutoCompletionAgent* acagent){
+    agent = acagent;
     parent = parentIO;
     setCommand((parent->parser)->inputToCommandList("ls"));
     escStack[0] = new ListDisplayElement(new TaskList(),(parent->parser),this);

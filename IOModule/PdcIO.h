@@ -11,14 +11,16 @@
 #include "../Command.h"
 #include "../Result.h"
 #include "TM_IOModule.h"
+#include "../autocomplete/AutoCompletionAgent.h"
 
 class PdcIO : public TM_IOModule{
 private:
     bool commandReady;
     CommandList commandList;
+    AutoCompletionAgent* agent;
 public:
     Parser* parser;
-    PdcIO(Parser* pser);
+    PdcIO(Parser* pser, AutoCompletionAgent* acagent);
     ~PdcIO();
 
     CommandList getCommand() ;
