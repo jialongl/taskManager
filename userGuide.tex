@@ -47,7 +47,7 @@
 \newpage
 
 \section{Introduction}
-abc abc
+This is the manual for a command-line utility (referred to as taskManager) that manages one's to-do's.
 
 \section{User Guide}
 \subsection{Quick Start}
@@ -314,7 +314,7 @@ Examples: \cmd{
   3 \> task 3 default priority. \> 0   Tue Nov  2 06:54:37 2010
 \end{tabbing}
 }
-\item [ \cmdinline{-k} ] filters tasks with a keyword\footnotemark where ? means any single character, * means a string of any length (including 0 length).
+\item [ \cmdinline{-k} ] filters tasks with a keyword\footnotemark \ where ? means any single character, * means a string of any length (including 0 length).
 \footnotetext{ keyword is case insensitive.}
 
 Take command \cmdinline{ls -k *Sam?le*task} as an example, ``This is a sample with a important task'' will match *Sam?le*task as the first * matches ``This is a '', ? matches `p' and the second * matches `` with a important ''.
@@ -350,8 +350,42 @@ Use -g option to remove a group of tasks: \cmdinline{rm -g SampleTask} removes t
 Notice: Commands like finish, \cmdinline{rm}, \cmdinline{export} etc. do not support all task-selective options like -g -k -f.
 Executing these commands on a selected task set can be done with command piping, which is discussed in section 2.5.1.
 
-\subsection{Text-Based Interactive User Interface}
-The text-based user interface provides a more intuitive way to interact with taskManager. It provides 
+\subsection{The Text-Based Interactive User Interface}
+The text-based user interface (referred to as TUI later) provides a more intuitive way to interact with taskManager.
+It provides visualization of the deadlines and ease of manipulation as well.
+
+TUI can be launched using command \cmdinline{tui} in command-line mode:
+
+%\includegraphics[scale=0.62]{tui-launched}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.62, viewport=50 0 600 450]{tui-launched}
+  \caption{The first screen of TUI}
+\end{figure}
+
+The tasks are shown in groups of deadlines. ``Anytime'' basically means the task has no specific deadline -- can finish at ease.
+
+This is a summary of the key bindings:\\
+
+\begin{tabular}{c | c}
+  ``SPACE'' or ``Enter'' & show details of the selected task\\
+  ``Down Arrow'' or \cmdinline{j} & select the task one below\\
+  ``Up Arrow'' or \cmdinline{k} & select the task one above\\
+  number n + selection key & select n tasks above/below\\
+  p & previous page / page up\\
+  n & next page / page down\\
+  u & undo\\
+  R & redo\\
+  c & calendar\\
+  C & command\\
+  a & add task\\
+  e & edit task\\
+  d & remove task\\
+  f & finish task\\
+  s & search keywords\\
+\end{tabular}
+
+You can always press ``H'' to read the key bindings.
 
 \subsection{Advanced Usages}
 \subsubsection{command piping}
