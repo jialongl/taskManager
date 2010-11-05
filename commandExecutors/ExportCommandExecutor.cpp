@@ -41,6 +41,7 @@ Result* ExportCommandExecutor::executeCommand (TaskList* mainTaskList, Command* 
 
 		filename = command->filename;
 		//writeFile.open((command->filename).c_str());
+        filename = appendSuffix(filename,command->html);
 		writeFile.open(filename.c_str());
 
 		//cout << command->filename << endl;
@@ -121,7 +122,8 @@ Result* ExportCommandExecutor::executeCommand (TaskList* mainTaskList, Command* 
 		}
 
 		//xml file head
-		writeFile<<"<!--<taskList>"<<endl;
+		if (command->html) writeFile<<"<!--";
+        writeFile<<"<taskList>"<<endl;
 
 		//file body
 		for (int i = 0;i<tasks.size();i++){
@@ -147,7 +149,8 @@ Result* ExportCommandExecutor::executeCommand (TaskList* mainTaskList, Command* 
 		}
 	
 		//file end
-		writeFile<<"</taskList>-->"<<endl;
+		writeFile<<"</taskList>";
+		if (command->html) writeFile<<"-->";
 
 		writeFile.close();
 	}
@@ -167,6 +170,7 @@ Result* ExportCommandExecutor::executeCommand(TaskList* mainTaskList, Result* re
 
 		filename = command->filename;
 		//writeFile.open((command->filename).c_str());
+        filename = appendSuffix(filename,command->html);
 		writeFile.open(filename.c_str());
 
 		if(command->html){
@@ -246,7 +250,8 @@ Result* ExportCommandExecutor::executeCommand(TaskList* mainTaskList, Result* re
 		}
 
 		//file head
-		writeFile<<"<!--<taskList>"<<endl;
+		if (command->html) writeFile<<"<!--";
+        writeFile<<"<taskList>"<<endl;
 
 		//file body
 		for (int i=0;i<tasks.size();i++){
@@ -272,10 +277,26 @@ Result* ExportCommandExecutor::executeCommand(TaskList* mainTaskList, Result* re
 		}
 	
 		//file end
-		writeFile<<"</taskList>-->"<<endl;
+		writeFile<<"</taskList>";
+		if (command->html) writeFile<<"-->";
 
 		writeFile.close();
 	}
 	return new Result();
 }
-
+string ExportCommandExecutor::appendSuffix(string s, bool html){
+    string ans = "";
+    string suf = "";
+    bool flag = false;
+    for (int i=0;i<s.size();i++){
+        if (s[i] == '.'){
+            flag =true;
+            suf = "";
+        }
+        if (flag) suf.push_back(s[i]);
+        ans.push_back(s[i]);
+    }
+    if (html && suf!=".html") ans += ".html";
+    if (!html && suf!=".xml") ans += ".xml";
+    return ans;
+}
