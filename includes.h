@@ -42,6 +42,7 @@ using namespace std;
 #define _TASKDAY COLOR_PAIR(10)
 
 #define NO_SPECIFIC_DEADLINE -1 
+#define NO_CHANGE -100
 
 
 #endif

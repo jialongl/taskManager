@@ -5,7 +5,7 @@ Result* EditCommandExecutor::executeCommand(TaskList* mainTaskList,Command *comm
         int taskNum = (command->serialNumberList)[0];
         if (command->taskDescription != "") mainTaskList->editTaskDescription(taskNum,command->taskDescription);
         if (command->deadline != 0) mainTaskList->editTaskDeadline(taskNum,command->deadline);
-        if (command->priority != -100) mainTaskList->editTaskPriority(taskNum,command->priority);
+        if (command->priority != NO_CHANGE) mainTaskList->editTaskPriority(taskNum,command->priority);
         if (command->group != "") mainTaskList->editTaskGroup(taskNum,command->group);
 
         if (command->finishFlag == YES){
