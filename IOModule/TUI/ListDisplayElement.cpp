@@ -117,6 +117,8 @@ void ListDisplayElement::handleKey(int ch){
                 cl = parser->inputToCommandList(st);
                 displayManager->setCommand(cl);
                 if (list != originalList) list->removeTask(tasks[selectTask]->getSerialNumber());
+                if (selectTask+1 < tasks.size()) selectTask++;
+                else if (selectTask-1 >= 0 ) selectTask--;
             }
             break;
         case (int)'p':
