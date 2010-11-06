@@ -160,6 +160,8 @@ void ListDisplayElement::handleKey(int ch){
         case (int)'s':
             search();
             break;
+        case 'g':
+            selectTask = 0;
         case KEY_UP:
         case 'k':
             if (selectTask > 0) selectTask--;

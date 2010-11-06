@@ -3,18 +3,82 @@
 .\"
 
 .TH taskManager 1 "SEP 2010" Linux/Unix "User Manuals"
+
 .SH NAME
 taskManager \- a command line based to-do list manager
+
 .SH SYNOPSIS
-.B taskManager [ -c
-.I config-file
-.B ] [ -g ] [ -i
-.I xml-file
-.B ]
+.B taskManager [
+.I subcommand1
+.B ] | [
+.I subcommand2 
+.B ] | ...
+
 .SH DESCRIPTION
 .B taskManager
 provides a blah blah blah blah which enables blah blah blah
 It manages blah blah blah.
+
+.SH SUBCOMMANDS
+
+.TP
+.B add description [ -g \fIgroup \fB] [ -t \fItime \fB] [ -p \fIpriority \fB]
+Add a new task to the task list.
+
+\fB-g \fPSpecify a group for the task. Typically it is a string of length less than 10.
+
+\fB-t \fPSpecify a deadline for the task. Time format is discussed in later session. If tasks are added with no \fB-t \fPoption, their deadline appears to be \fB Anytime\fP.
+
+\fB-p \fPSpecify a priority for the task. Typically it is a number between -20 and 20.
+
+.TP
+.B ls [ -s "\fI Keyword1\fP \fIKeyword2\fP ...\fB" ] [ -k \fIKeyword\fB ] [ -f \fIyes/no\fB ] [ -g \fIgroup \fB]\fP
+Provide a list of added tasks. 
+
+\fB-s \fPSort the list with Keyword(s) specified. Available keywords are \fBdeadline\fP, \fBpriority\fP, \fBserialnumber\fP.
+
+\fB-k \fPFilter the list with keyword provided. Keywords can contain \fB*\fP and \fB?\fP.
+
+\fB-g \fPShow only tasks from specific group.
+
+.TP
+.B rm [ \fItaskNumber1\fP \fItaskNumber2\fP \fItaskNumber2\fP \fB... ] [ -g \fIgroup\fB ]
+Remove the tasks with provided searial numbers. 
+
+\fB-g \fPRemove all tasks from a specific group.
+
+.TP
+.B edit \fIserialNumber\fB [ -d \fIdescription\fB ] [ -g \fIgroup \fB] [ -t \fItime \fB] [ -p \fIpriority \fB] [ -f \fIyes/no\fB ]\fP
+Edit the task with specific task number.
+
+\fB-d \fPSpecify a new description for the task.
+
+\fB-g \fPSpecify a new group for the task.
+
+\fB-t \fPSpecify a new deadline for the task. 
+
+\fB-p \fPSpecify a new priority for the task. 
+
+\fB-f \fPSpecify whether the task is finished.
+
+.TP
+.B finish \fIserialNumber\fP
+Mark a task as finished.
+
+.TP
+.B read \fIfilename\fP
+Read tasks from a XML file which by default is ~/record.xml, list all the tasks it contains without affacting current task list.
+
+.TP 
+.B import \fIfilename\fP
+Read the content of the XML file and appends all the tasks in it to current task list
+
+.TP
+.B exit
+Exit taskManager
+
+.SH TIME FORMAT
+
 .SH OPTIONS
 .IP "-c config-file"
 Use the 
