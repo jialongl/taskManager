@@ -262,6 +262,9 @@ re-does the last undo. It can be executed util all the undo's are re-done.
 Like \cmdinline{edit}, some of the commands come with options to support more functionality.
 In this section they are introduced in great detail.
 
+%\cmdinline{export} not support the task-selective options \cmdinline{-g -k -f}.
+%Executing these commands on a selected task set can be done with command piping, which is discussed in section 2.5.1.
+
 \subsubsection{add}
 \cmdinline{add} has three flags: \cmdinline{-t} to specify deadline, \cmdinline{-p} to set priority and \cmdinline{-g} to put the group name for a task.
 \begin{enumerate}
@@ -296,8 +299,8 @@ TaskManager support 3 types of time format:
 ``Unix timestamp'' means the number of seconds elapsed since Jan 1, 1970 00:00:00. It is not recommended for users, but rather used as a lower-order procedure for developers.
 \end{enumerate}
 
-\item[ \cmdinline{-p} ] add a task with a priority: \cmd{> \ add "some important task" -p 20}
-\item[ \cmdinline{-g} ] specify a group for a task: \cmd{> \ add "the task with group"\footnotemark \  -g SampleGroup}
+\item[ \cmdinline{-p} ] adds a task with a priority: \cmd{> \ add "some important task" -p 20}
+\item[ \cmdinline{-g} ] specifies a group for a task: \cmd{> \ add "the task with group"\footnotemark \  -g SampleGroup}
 \end{enumerate}
 
 \footnotetext{ If group name contains spaces, use a pair of quotation marks to quote it.}
@@ -347,7 +350,7 @@ When more then one restrictive options are present, \emph{conjuction} of these r
 \subsubsection{rm}
 \cmdinline{rm} has basically two usages: remove tasks by a group name or serial number.
 
-Use -g option to remove a group of tasks: \cmdinline{rm -g SampleTask} removes the entire SampleTask group.
+Use \cmdinline{-g} option to remove a group of tasks: \cmdinline{rm -g SampleTask} removes the entire SampleTask group.
 
 \cmdinline{rm} can be used remove several tasks once as well. e.g. \cmdinline{rm 1 2 3} removes tasks 1, 2 and 3.
 
@@ -357,8 +360,6 @@ Use -g option to remove a group of tasks: \cmdinline{rm -g SampleTask} removes t
 %% \subsubsection{export}
 %% This is discussed in section 2.2.1.
 
-Notice: Commands like finish, \cmdinline{rm}, \cmdinline{export} etc. do not support all task-selective options like -g -k -f.
-Executing these commands on a selected task set can be done with command piping, which is discussed in section 2.5.1.
 
 \subsection{The Text-Based Interactive User Interface}
 The text-based user interface (referred to as TUI later) provides a more intuitive way to interact with taskManager.
@@ -426,21 +427,20 @@ To retain the original \cmdinline{ls} command, map \cmdinline{ls} to something e
 \footnotetext{ The order of mapping matters as commands are executed one by one. Reversing the order of these two mapping will NOT work.}
 
 More complex mapping makes use of symbol \cmdinline{\$}. There are two kinds of \cmdinline{\$} symbols:
-
-\cmdinline{\$0} matches all characters from the current position.
-
-\cmdinline{\$1}, \cmdinline{\$2}, \cmdinline{\$3} \ldots correspond to one token separated by spaces.\\
-
-Examples:
+\begin{quote}
+\cmdinline{\$0} matches all characters from the current position.\\
+\cmdinline{\$1}, \cmdinline{\$2}, \cmdinline{\$3} \ldots matches one token (i.e. a word or several words .
+\end{quote} Examples:
 \begin{enumerate}
-\item \noindent \cmd{> \ map "tomorrow \$1" "add \$1 -t 1d"\\
+\item \cmd{> \ map "tomorrow \$1" "add \$1 -t 1d"\\
   > \ tomorrow "Finish user guide"}    
-The latter command will be parsed as \cmdinline{add "Finish user guide" -t 1d}, and a new task ``Finish user guide'' will be added with the deadline to be 1 days later.
+The latter command will be parsed as \cmdinline{add "Finish user guide" -t 1d}, and a new task ``Finish user guide'' will be added with the deadline of 24 hours.
+
 \item \cmd{> \ map "do \$1 at \$2" "add \$1 -t \$2"\\
   > \ do "Laundry" at 4h}
-The latter command will be parsed as \cmdinline{add "Laundry" -t 4h}, and a new task called ``Laundry'' will be added with the deadline to be 4hours later.
+The latter command will be parsed as \cmdinline{add "Laundry" -t 4h}, and a new task called ``Laundry'' will be added with the deadline of 4hours.
 
-\item \noindent \cmd{> \ map "ls \$0" "ls -f no \$0"
+\item \cmd{> \ map "ls \$0" "ls -f no \$0"
   > \ ls
   > \ ls -g cs2103}
 The second command will be parsed as \cmdinline{ls -f no}, and will list out all unfinished tasks.
@@ -566,12 +566,22 @@ The purpose of this session is to extract the method declaration to .h and defin
 As we were developping on *nix, we realized that squeezing all the classes in the .h files will fail to compile on Windows using Visual Stdio. After refractoring, we are able to compile taskManager on Windows and write a better Makefile by the way -- the previous Makefile contains only one rule and one command, which is something like \cmd{g++ -o taskManager main.cpp Shell.h Parser.h MainCommandExecutor.h \nolinebreak \ldots}
 We got to know better of C++ compilation process by writing the new Makefile and solving the linking problems and it was worth the stay-up.
 
+\item At media lab \ldots
+
+Date: Oct 29\\
+Members attended: All
+
 \item Feature close shop, testing and documenting. (overnight session)
 
 Date: Nov 4 - 5\\
 Members attended: He Haocong, Liu Jialong
 
+\item Polishing the last bits for submission.
 
+Date: Nov 6\\
+Members attended: All
+
+We met up to do the developer guide, testing on Windows, 
 \end{enumerate}
 
 \end{document}

@@ -52,24 +52,25 @@ void Parser::tokenize_by_space (string s) {
   while (pos < s.size() && s[pos] == ' ')
     pos++;
 
-
   while (pos < s.size()) {
 	  if ( s[pos] != ' ') {
-		  buf += s[pos];
+	    buf += s[pos];
+	    if (s[pos] == '\\' && s[pos-1] == '\\')
+	      buf = buf.substr(0, buf.length() - 1);
 
-		  if (s[pos] == '"') {
-			  if (pos > 0 && s[pos-1] == '\\') {
-				  buf = buf.substr(0, buf.length() - 2);
-				  buf += '"';
-			  } else {
-				  // this '"' is not escaped
-				  if (inInvertedCommas == true) {
-					  args.push_back(buf);
-					  buf = "";
-				  }
-				  inInvertedCommas = !inInvertedCommas;
-			  }
-		  }
+	    if (s[pos] == '"') {
+	      if (pos > 0 && s[pos-1] == '\\') {
+		buf = buf.substr(0, buf.length() - 2);
+		buf += '"';
+	      } else {
+		// this '"' is not escaped
+		if (inInvertedCommas == true) {
+		  args.push_back(buf);
+		  buf = "";
+		}
+		inInvertedCommas = !inInvertedCommas;
+	      }
+	    }
 	  }
 
 	  else {
