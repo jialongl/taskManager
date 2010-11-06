@@ -163,6 +163,7 @@ void Shell::start(string args){
                 if (toChangeIOModule){
                     delete IOModule;
                     IOModule = newIOModule;
+                    IOModule->echo("\n");
                     toChangeIOModule = false;
                 }
             }
