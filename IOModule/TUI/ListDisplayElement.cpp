@@ -269,7 +269,7 @@ void ListDisplayElement::reconstructLines(){
             else lines[lines.size() - 1].append("  ");         
             temps = tasks[i]->getGroup();
             while (temps.length()<9) temps.push_back(' ');
-            if (temps.length()>9) temps = temps.substr(0,9);
+            if (temps.length()>9) temps = temps.substr(0,7)+"..";
             temps.push_back(' ');
             lines[lines.size() - 1].append(temps);
             temps = tasks[i]->getDescription();
