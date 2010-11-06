@@ -914,10 +914,10 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
             default:
                 break;
         }
-        drawCalendar(curTime,startRow,startCol);
+        if (curTime != NO_SPECIFIC_DEADLINE) drawCalendar(curTime,startRow,startCol);
     }
     //naiveDraw();
-    
+    if (curTime == NO_SPECIFIC_DEADLINE) return curTime; 
     curTime += delta;
 
     struct tm* datetime = localtime(&curTime);   
