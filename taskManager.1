@@ -2,7 +2,7 @@
 .\" groff -man -Tascii foo.1
 .\"
 
-.TH taskManager 1 "SEP 2010" Linux/Unix "User Manuals"
+.TH taskManager 1 "NOV 2010" Linux/Unix "User Manuals"
 
 .SH NAME
 taskManager \- a command line based to-do list manager
@@ -32,7 +32,7 @@ Add a new task to the task list.
 \fB-p \fPSpecify a priority for the task. Typically it is a number between -20 and 20.
 
 .TP
-.B ls [ -s "\fI Keyword1\fP \fIKeyword2\fP ...\fB" ] [ -k \fIKeyword\fB ] [ -f \fIyes/no\fB ] [ -g \fIgroup \fB]\fP
+\fBls [ -s "\fI Keyword1\fP \fIKeyword2\fP ...\fB" ] [ -k \fIKeyword\fB ] [ -f \fIyes/no\fB ] [ -g \fIgroup\fB ]\fP
 Provide a list of added tasks. 
 
 \fB-s \fPSort the list with Keyword(s) specified. Available keywords are \fBdeadline\fP, \fBpriority\fP, \fBserialnumber\fP.
@@ -48,7 +48,7 @@ Remove the tasks with provided searial numbers.
 \fB-g \fPRemove all tasks from a specific group.
 
 .TP
-.B edit \fIserialNumber\fB [ -d \fIdescription\fB ] [ -g \fIgroup \fB] [ -t \fItime \fB] [ -p \fIpriority \fB] [ -f \fIyes/no\fB ]\fP
+\fBedit \fIserialNumber\fB [ -d "\fIdescription\fB" ] [ -g \fIgroup \fB] [ -t \fItime \fB] [ -p \fIpriority \fB] [ -f \fIyes/no\fB ]\fP
 Edit the task with specific task number.
 
 \fB-d \fPSpecify a new description for the task.
@@ -74,29 +74,84 @@ Read tasks from a XML file which by default is ~/record.xml, list all the tasks 
 Read the content of the XML file and appends all the tasks in it to current task list
 
 .TP
+.B export [ -html ] \fIfilename\fP
+Export current task list to a XML file which by default is ~/record.xml. If \fB-html\fP option is specified, it exports to a well formatted HTML webpage.
+
+.TP
+.B task \fIserialNumber\fP
+Inspect the detail of a task
+
+.TP
+.B pri \fIserialNumber\fB [ \fIpriority\fB ]\fP
+Modify priority of of a task. If new priority is not specified, the priority is set to 20. 
+
+.TP
+.B undo
+Undo last command. These commands cannot be undo: \fBls\fp, \fBexport\fP, \fBundo\fP, \fBredo\fP, \fBtui\fP, \fBnotui\fP, \fBread\fP, \fBtask\fP.
+
+.TP
+.B redo
+Redo last undo command. It can be executed until all undos are re-done.
+
+.TP
+.B tui
+Start a text based interactive user interface.
+
+.TP
+.B notui
+Stop the interactive user interface and back to command line user interface.
+
+.TP
+\fBmap "\fIoriginal command\fB" "\fIcustomized command\fB"
+Map a existing command to a customized command. $0 and $1,2,3,4... can be used as variable to replace token. Please refer to user guide for more details. Adding \fB\\\fP before a command suppress this functionality.
+
+.TP
+.B run \fIfilename\fP
+Run a taskManager script.
+
+.TP
 .B exit
 Exit taskManager
 
 .SH TIME FORMAT
+TaskManager support 3 time formats: \fB"plus" format\fP, \fB"by" format\fP, \fBunix timestamp\fP.
 
-.SH OPTIONS
-.IP "-c config-file"
-Use the 
-.I config-file
-instead of 
-.IR /etc/taskManager.conf
-.IP -g
-Start taskManager with a TUI
-.IP "-i xml-file"
-Import 
-.I xml-file
-when starting taskManager
+.TP
+\fB "plus" format
+Plus format specifies the amount of time from now.
+
+\fB?w?d?h?m \fPEach question mark stands for a number. E.g. \fB3d2h\fP means 3 days and 2 hours later.
+
+.TP
+\fB "by" format
+By format specifies the amount of time from the start of this hour/day/week.
+
+\fBb?w?d?h?m \fPEach question mark stands for a number. Examples are show below:
+
+\fBb0d22h  \fPby 10:00pm today.
+
+\fBb2d     \fPby 23:59 tomorrow.
+
+\fBb1w     \fPby the end of this week. i.e. 23:59 of the Saturday11of this week.
+
+\fBb0w5d   \fPby 23:59 on Friday of this week.
+
+\fBb2w3d8h \fPby 8:00am on the Wednesday of the next next week.
+
+.TP
+.B UNIX timestamp
+A number specify the number of seconds from 00:00 1/1/1970 UTC.
+
 .SH FILES
-.I /etc/taskManager.conf
-.RS
-The system wide configuration file.
-.I ~/.taskManagerrc
-Per user configuration file.
+
+.TP 
+.I ~/record.xml
+Current task list is stored here by default.
+
+.TP 
+.I ~/.tmrc
+The start up script executed by taskManager before it starts.
+
 .SH AUTHOR
 Liu Jialong, Zhou Biyan, Wang Xiangyu, He Haocong
 

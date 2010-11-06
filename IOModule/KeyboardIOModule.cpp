@@ -37,6 +37,28 @@ void KeyboardIOModule::handleException(exception_e except){
             if (except == EXCEPTION_ILLEGAL_EXPRESSION) cout<<"TaskManager: illegal expression"<<endl;
             if (except == EXCEPTION_HELP) displayHelp();
 }
+void KeyboardIOModule::displayHelp(){
+    cout<<"Usage:"<<endl;
+    cout<<"\ttaskManager [ subcommand1 ] | [ subcommand2 ] | ..."<<endl;
+    cout<<"Subcommands:"<<endl;
+    cout<<"\tls \t[ -s \" Keyword1 Keyword2 ...\" ] [ -k Keyword ] [ -f yes/no ] [ -g group ]"<<endl;
+    cout<<"\trm \t[ taskNumber1 taskNumber2 taskNumber2 ... ] [ -g group ]"<<endl;
+    cout<<"\texport \t[ -html ] filename"<<endl;
+    cout<<"\tpri \tserialNumber [ priority ]"<<endl;
+    cout<<"\tedit \tserialNumber [ -d \"description\" ] [ -g group ] [ -t time ] [ -p priority ] [ -f yes/no ]"<<endl;
+    cout<<"\tmap \t\"original command\" \"customized command\""<<endl;
+    cout<<"\tfinish \tserialNumber"<<endl;
+    cout<<"\tread \tfilename"<<endl;
+    cout<<"\timport \tfilename"<<endl;
+    cout<<"\ttask \tserialNumber"<<endl;
+    cout<<"\trun \tfilename"<<endl;
+    cout<<"\tundo"<<endl;
+    cout<<"\tredo"<<endl;
+    cout<<"\ttui"<<endl;
+    cout<<"\tnotui"<<endl;
+    cout<<"\texit"<<endl;
+}
+
 bool KeyboardIOModule::confirm(string prompt){
     cout<<"TaskManager: "<<prompt<<" ";
     string keyIn;

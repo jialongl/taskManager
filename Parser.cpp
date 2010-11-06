@@ -502,7 +502,7 @@ Command* Parser::inputToCommand (string input) {
     throw EXCEPTION_HALT;
   }
     
-  else if (args[0] == "help") {
+  else if (args[0] == "help" || args[0] == "--help") {
       delete cmd;
     throw EXCEPTION_HELP;
   }

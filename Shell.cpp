@@ -76,10 +76,7 @@ Shell::Shell(){
         //cout<<"get import result, delete import result"<<endl;
         delete result;
 
-        cmd = new Command();
-        cmd->method = RUN;
-        result = executeOneCommand(NULL,cmd);
-        delete result;
+
     } catch (exception_e except){
         IOModule->handleException(except);
     }
@@ -134,8 +131,18 @@ void Shell::redo(){
 }
 
 void Shell::start(string args){
-    if (args == "")
+    if (args == ""){
+        Command* cmd = new Command();
+        Result* result;
+        try{
+            cmd->method = RUN;
+            result = executeOneCommand(NULL,cmd);
+            delete result;
+        } catch (exception_e except){
+            IOModule->handleException(except);
+        }
         mainLoop();
+    }
     else{
         CommandList commandList;
         Result *result;

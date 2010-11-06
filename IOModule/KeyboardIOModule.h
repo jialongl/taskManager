@@ -18,6 +18,7 @@ public:
     void handleException(exception_e except) ;
     bool confirm(string prompt);
     void echo(string s);
+    void displayHelp();
 };
 
 #endif

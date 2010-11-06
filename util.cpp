@@ -74,17 +74,6 @@ bool tryMatch(string st1, string st2){
 	return match[st1.length()][st2.length()];
 }
 
-void displayHelp(){
-	ifstream inf("man");
-	//FILE* inf = fopen("man","r");
-	char ch;
-	//while (fscanf(inf,"%c",&ch) == 1){
-	while (inf.get(ch))
-	{
-		cout<<ch;
-	}
-}
-
 WINDOW *create_newwin(int height, int width, int starty, int startx)
 {   WINDOW *local_win;
 
