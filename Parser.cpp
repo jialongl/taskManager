@@ -314,9 +314,15 @@ void Parser::pri_parse() {
 
 void Parser::finish_parse() {
   cmd->method = FINISH;
+  for(iter = args.begin(); iter < args.end(); iter++ ) {
+    if ( *iter == "-g" ) {
+      cmd->group = *(++iter);
 
-  if (args.size() >= 2)
-    cmd->serialNumberList.push_back(StringToNum(args.at(1)));
+    } else {
+      if ( *iter != "finish")
+	cmd->serialNumberList.push_back( StringToNum(*iter) );
+    }
+  }
 }
 
 void Parser::export_parse() {
@@ -369,6 +375,14 @@ void Parser::run_parse() {
   if (args.size()!=1) cmd->filename = trimInvertedCommas(args[1]);
 }
 
+void Parser::undo_parse(){
+  cmd->method = UNDO;
+}
+
+void Parser::redo_parse(){
+  cmd->method = REDO;
+}
+
 void Parser::map_parse() {
 
   string alias  = trimInvertedCommas( args.at(1) );
@@ -376,14 +390,6 @@ void Parser::map_parse() {
 
   if (alias != "map")
     commandAliases[alias] = origin;
-}
-
-void Parser::undo_parse(){
-  cmd->method = UNDO;
-}
-
-void Parser::redo_parse(){
-  cmd->method = REDO;
 }
 
 string Parser::trimInvertedCommas(string s) {
@@ -396,8 +402,8 @@ string Parser::trimInvertedCommas(string s) {
   while (end > 0 && s[end] == ' ')
     end--;
 
-  if (s[start] == '"' && s[end] == '"')
-    return s.substr(start+1, end-start-1); // the string has '"' at the beginning and the end.
+  if (s[start] == '"' && s[end] == '"') // the string has '"' at the beginning and the end.
+    return s.substr(start+1, end-start-1);
   else
     return s.substr(start, end-start+1);
 }
@@ -420,21 +426,23 @@ string Parser::matchAlias (string s) {
       alias  = (*iter2).first;
       origin = (*iter2).second;
 
-      tokenize_by_space(alias);
+      if (s == alias)
+	return origin; // a perfect match should return straightaway -- it happens mostly there are no $ signs in the alias.
 
-      for (int i = 0; i < args.size(); i++) {
-	// cout << "i=" << i << "origin=" << origin <<endl;
+      tokenize_by_space(alias); // now think of "args" as "args_alias"
 
-	if (  args[i] != args_input[i] ) {
+      for (int i = 0; i < args_input.size(); i++) {
+
+	if ( args_input[i] != args[i] ) {
 	  if ( args[i][0] == '$' ) {
-
 	    dollar_number = StringToNum( args[i].substr(1, args[i].length()-1) );
 
 	    if (dollar_number == 0) {
-	      found = origin.find(args[i]); // args[i] = "$0" at this moment
+	      found = origin.find(args[i]);
 
 	      if (found != string::npos)
-		// replace the whole remaining substring with token_to_insert
+		// args[i] == "$0" at this moment,
+		// so replace the whole remaining substring with $n
 		origin.replace( int(found),
 				origin.length()-1-int(found),
 				args_input[i] );
@@ -442,22 +450,21 @@ string Parser::matchAlias (string s) {
 	      return origin;
 
 	    } else {
-	      // find string '${dollar_number}' in string "origin" and replace it with THIS (the current one) token in "s"
+	      // args[i] != "$0"
+	      // then find string '${dollar_number}' in string "origin" and replace it with THIS (the current one) token in "s"
 	      found = origin.find(args[i]);
 
 	      if (found != string::npos) {
 		origin.replace( int(found),  2, args_input[i] );
-		// cout << "found and replaced in 'origin', origin=" << origin << "-------------------" << endl;
 	      }
 	    }
 
 	  } else { // not a variable ( denoted by $0, $1, $2...) used in "map" command
 	    break;
 	  }
-
 	}
 
-	if (i == args.size() - 1) { // all tokens match
+	if (i == args_input.size()-1 && i == args.size()-1) { // all tokens match -- because i can increment to the args_input.size()-1 and not return.
 	  return origin;
 	}
       }
