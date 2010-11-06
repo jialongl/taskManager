@@ -55,8 +55,8 @@ void Parser::tokenize_by_space (string s) {
   while (pos < s.size()) {
 	  if ( s[pos] != ' ') {
 	    buf += s[pos];
-	    if (s[pos] == '\\' && s[pos-1] == '\\')
-	      buf = buf.substr(0, buf.length() - 1);
+		if (s[pos] == '\\' && s[pos+1] == '\\')
+	      pos++;
 
 	    if (s[pos] == '"') {
 	      if (pos > 0 && s[pos-1] == '\\') {
@@ -70,7 +70,7 @@ void Parser::tokenize_by_space (string s) {
 		}
 		inInvertedCommas = !inInvertedCommas;
 	      }
-	    }
+		}
 	  }
 
 	  else {
