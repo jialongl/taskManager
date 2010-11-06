@@ -434,9 +434,7 @@ string Parser::matchAlias (string s) {
 		  for (int i = 0; i < args_input.size(); i++) {
 			  if (i >= args.size())
 				  return "";
-			  if (i == args_input.size()-1 && i == args.size()-1) { // all tokens match -- because i can increment to the args_input.size()-1 and not return.
-				  return origin;
-			  }
+
 			  if ( args_input[i] != args[i]) {
 				  if ( args[i][0] == '$' ) {
 					  dollar_number = StringToNum( args[i].substr(1, args[i].length()-1) );
@@ -466,6 +464,10 @@ string Parser::matchAlias (string s) {
 				  } else { // not a variable ( denoted by $0, $1, $2...) used in "map" command
 					  break;
 				  }
+			  }
+
+			  if (i == args_input.size()-1 && i == args.size()-1) { // all tokens match -- because i can increment to the args_input.size()-1 and not return.
+				  return origin;
 			  }
 		  }
   }
