@@ -250,6 +250,7 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
                         CommandList commandList;
                         Command *command;
                         Result *result2;
+                        commandMethod mtd;
 
                         commandList = parser->inputToCommandList(line);
                         if (commandList.size()!=0){
@@ -264,10 +265,6 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
                             }
                         }
                     
-                        command = new Command();
-                        command->method = EXPORT;
-                        result2 = mainCommandExecutor->executeCommand(mainTaskList,command);
-                        delete result2;
                     }
 
                     catch (exception_e except){
