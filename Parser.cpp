@@ -397,8 +397,9 @@ void Parser::map_parse() {
 string Parser::trimInvertedCommas(string s) {
   int start = 0;
   int end = s.length() - 1;
+  int tmp = s.size();
 
-  while (start < s.size() && s[start] == ' ')
+  while (start < tmp && s[start] == ' ')
     start++;
 
   while (end > 0 && s[end] == ' ')

@@ -90,10 +90,10 @@ Shell::Shell(){
 }
 Shell::~Shell(){
     //cout<<"deleting main task list"<<endl;
+    delete IOModule;
     delete mainTaskList;
     delete mainCommandExecutor;
     delete parser;
-    delete IOModule;
     for (int i=0;i<redoStackTop;i++){
         delete redoStack[i];
     }
@@ -215,7 +215,7 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
             delete command;
             ans =  new Result();
             if (typeid(*IOModule) == typeid(PdcIO)) break;
-            if (notuiFlag) break;
+            if (notuiFlag == true) break;
             newIO = new PdcIO(parser,agent);
             changeIOModule(newIO);
             break;
