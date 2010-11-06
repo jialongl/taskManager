@@ -34,8 +34,10 @@
   \Large \bfseries Command line task manager
   \\[0.4cm]
   \hrule
-  \\[1.5cm]
+  \\[1.4cm]
 
+\includegraphics[scale=0.73]{on_cover_page}
+\\[1.1cm]
   \begin{tabular}{c | c | c | c}
     \includegraphics[scale=0.72]{U099121H}&
     \includegraphics[scale=0.72]{U099122U}&
@@ -362,18 +364,19 @@ Use \cmdinline{-g} option to remove a group of tasks: \cmdinline{rm -g SampleTas
 
 
 \subsection{The Text-Based Interactive User Interface}
-The text-based user interface (referred to as TUI later) provides a more intuitive way to interact with taskManager.
-It provides visualization of the deadlines and ease of manipulation as well.
+The text-based user interface (referred to as TUI later) makes interaction more intuitive by visualizing the deadlines, groups and simplifying manipulation from issuing commands to moving cursors and pressing keys.
 
-TUI can be launched using command \cmdinline{tui} in command-line mode:
-
+\\TUI can be launched using command \cmdinline{tui} in command-line mode:
+\newpage
 \begin{figure}[htbp]
   \centering
   \includegraphics[scale=0.73]{tui-launched-mac}
   \caption{The first screen of TUI}
 \end{figure}
 
-The tasks are listed in groups according to deadlines. If a task's deadline is ``Anytime'', it means the task has no specific deadline -- you can finish it at ease.
+As seen, the tasks are grouped according to deadlines. If a task's deadline is ``Anytime'', it means the task has no specific deadline -- you can finish it at ease.
+
+Besides, TUI provides some features that are not available in the command line mode. For example auto-completion using \cmdinline{TAB} key, a small calendar at the bottom right corner with the dates that has tasks due highlighted, incremental search of tasks by keyword.n
 
 This is a summary of the key bindings:\\
 
@@ -381,17 +384,19 @@ This is a summary of the key bindings:\\
   \cmdinline{SPACE} or \cmdinline{ENTER} & show details of the selected task\\
   \cmdinline{$\downarrow$} or \cmdinline{j} & select the task below\\
   \cmdinline{$\uparrow$} or \cmdinline{k} & select the task above\\
+  \cmdinline{g} & select the first task \\
+  \cmdinline{G} & select the last task \\
   \cmdinline{number selectionKey}\footnotemark & select \cmdinline{number} tasks above/below\\
   \cmdinline{p} & previous page/page up\\
   \cmdinline{n} & next page/page down\\
   \cmdinline{u} & undo\\
   \cmdinline{R} & redo\\
-  \cmdinline{c} & calendar\\
-  \cmdinline{C} & command\\
-  \cmdinline{a} & add task\\
-  \cmdinline{e} & edit task\\
-  \cmdinline{d} & remove task\\
-  \cmdinline{f} & finish task\\
+  \cmdinline{c} & show the small calendar\\
+  \cmdinline{C} & issue a command without leaving TUI\\
+  \cmdinline{a} & add a task\\
+  \cmdinline{e} & edit a task\\
+  \cmdinline{d} & remove a task\\
+  \cmdinline{f} & finish a task\\
   \cmdinline{s} & search tasks by keywords\\
 \end{tabular}
 \footnotetext{ It means pressing a number key and then press $\uparrow$/$\downarrow$/\cmdinline{j}/\cmdinline{k} key.}
@@ -420,11 +425,14 @@ TaskManager supports custom command mapping/aliasing so you can alias the taskMa
 
 General format of \cmdinline{map} is: \cmdinline{map "new command" "original command"}
 
-A simple mapping is like the previous example, which maps ``ls'' to ``ls -f no'', which effectively hides finished tasks when doing \cmdinline{ls}.
-To retain the original \cmdinline{ls} command, map \cmdinline{ls} to something else. For example: \cmd{> \ map "lsa" "ls"\\
-  > \ map "ls" "ls -f no"\footnotemark}
+A simple mapping is like the previous example, which maps \cmdinline{ls} to \cmdinline{ls -f no}, which effectively hides finished tasks when doing \cmdinline{ls}.
+To retain the original \cmdinline{ls} command, use \cmdinline{\ls}. The command that \cmdinline{ls} maps to will not be executed then.
 
-\footnotetext{ The order of mapping matters as commands are executed one by one. Reversing the order of these two mapping will NOT work.}
+When several \cmdinline{map} commands are executed in sequence : \cmd{> \ map "lsa" "ls"\\
+  > \ map "ls" "ls -f no"}
+Then \cmdinline{ls} will show the unfinished tasks only, while \cmdinline{lsa} lists all the tasks.
+
+The order of mapping matters as commands are executed one by one. Thus reversing the order of \cmdinline{map} commands MIGHT NOT work.
 
 More complex mapping makes use of symbol \cmdinline{\$}. There are two kinds of \cmdinline{\$} symbols:
 \begin{quote}
@@ -448,9 +456,9 @@ The third command will be parsed as \cmdinline{ls -f no -g cs2103}, and will lis
 \end{enumerate}
 
 {\bf \textcolor{red}{Important:}}
-\begin{quote}
-  TUI uses \cmdinline{ls} to retrieve tasks. Mapping \cmdinline{ls} to something else will affect behaviour of TUI.
-\end{quote}
+%\begin{quote}
+TUI uses \cmdinline{ls} to retrieve tasks. Mapping \cmdinline{ls} to something else will affect behaviour of TUI, which may or may not be the case you want.
+%\end{quote}
 
 \subsubsection{taskManager script}
 
@@ -581,7 +589,7 @@ Members attended: He Haocong, Liu Jialong
 Date: Nov 6\\
 Members attended: All
 
-We met up to do the developer guide, testing on Windows, 
+We met up to do the developer guide, compilation on Windows, usability testing and video.
 \end{enumerate}
 
 \end{document}
