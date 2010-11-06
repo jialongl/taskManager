@@ -166,6 +166,8 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
         agent->analysis(command->taskDescription);
         agent->analysis(command->group);
     }
+    int percentage;
+    string similar;
     //handle special command when low level command executor don't have privillige to do it.
     switch (command->method){
        case UNDO:
@@ -253,9 +255,9 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
             break;
         default:
             if (command->method == ADD){
-                int percentage = testSimilarity(command->taskDescription);    
+                percentage = testSimilarity(command->taskDescription, &similar);    
                 flag = true;
-                if (percentage >= 70) flag = IOModule->confirm("This task is highly similiar to some existing task, do you really want to add it?");
+                if (percentage >= 70) flag = IOModule->confirm("This task is highly similiar to some existing task:\n  "+similar+"\nDo you really want to add it?");
                 if (flag) ans =  (result == NULL)?  mainCommandExecutor->executeCommand(mainTaskList,command):
                                                 mainCommandExecutor->executeCommand(mainTaskList,result,command);
                 else{
@@ -339,13 +341,16 @@ void Shell::changeIOModule(TM_IOModule* newIO){
     toChangeIOModule = true;
     newIOModule = newIO;
 }
-int Shell::testSimilarity(string st){
+int Shell::testSimilarity(string st, string* similar){
     Comparer* cp = new Comparer;
     vector<Task*> list = mainTaskList->sort(cp);
     int max = 0;
     for (int i=0;i<list.size();i++){
         int x = lcs(list[i]->getDescription(),st);
-        if (x>max) max = x;
+        if (x>max){
+            max = x;
+            similar->assign(NumberToString(list[i]->getSerialNumber())+" "+list[i]->getDescription());
+        }
     }
     delete cp;
     return max;

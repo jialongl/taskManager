@@ -38,7 +38,7 @@ class Shell{
   void backup();
   void undo();
   void redo();
-  int testSimilarity(string st);
+  int testSimilarity(string st,string* similar);
 
  public:
   Shell();

@@ -83,7 +83,9 @@ bool PdcIO::confirm(string prompt){
     while (prompt.length()>0){
         int x=0,y=0;
         while (x<30 && x<prompt.length()){
+            if (x+1 == prompt.length()) y=x;
             if (prompt[x] == ' ') y=x;
+            if (prompt[x] == '\n'){ y=x; break;}
             x++;
         }
         lines.push_back(prompt.substr(0,y));
