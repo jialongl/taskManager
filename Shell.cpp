@@ -159,6 +159,10 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
     ifstream script;
     Result* ans;
     bool flag;
+    if (mtd == ADD || mtd == EDIT){
+        agent->analysis(command->taskDescription);
+        agent->analysis(command->group);
+    }
     //handle special command when low level command executor don't have privillige to do it.
     switch (command->method){
        case UNDO:

@@ -514,6 +514,8 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                 }
                 chLast = 'j';
             case ' ':
+                if ((chLast>=97 && chLast < 97+26) || (chLast>=65 && chLast<65+26)) 
+                    (displayManager->agent)->tell(lastToken(newStr,curPos));
                 if (chLast == ' ' && tLast >= tNow-1){
                     if (!numOnly)
                         if (!(curCol == col0 && curRow == row0) && curPos != 0){
@@ -574,6 +576,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
     attron(_NORMAL);
     curRow = row0, curCol = col0;
     move(row0,col0);
+//    (displayManager->agent)->analysis(newStr);
     return newStr;
 }
 vector<string> ListDisplayElement::editSelect(){
@@ -1216,7 +1219,7 @@ string ListDisplayElement::handleQuo(string s0){
     return ss;
 }
 
-string ListDisplayElement::lastTokenComp(string st, int pos){
+string ListDisplayElement::lastToken(string st, int pos){
    int pos0 = pos-1;
    int length = 0;
    while (pos0>=0 && st[pos0]!='"' && st[pos0] != ' ' && st[pos0] != '-' && st[pos0] != '|'){
@@ -1224,5 +1227,9 @@ string ListDisplayElement::lastTokenComp(string st, int pos){
          length++;
    }
    string s0 = (length == 0)?"":st.substr(pos0+1,length);
+   return s0;
+}
+string ListDisplayElement::lastTokenComp(string st, int pos){
+   string s0 = lastToken(st,pos);
    return (displayManager->agent)->ask(s0);
 }

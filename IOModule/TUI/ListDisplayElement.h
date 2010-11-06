@@ -59,6 +59,7 @@ public:
     void selectByCalendar();
     string handleQuo(string s0);
     string lastTokenComp(string st,int pos);
+    string lastToken(string st, int pos);
 };
 
 #endif

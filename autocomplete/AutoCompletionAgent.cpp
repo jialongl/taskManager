@@ -59,3 +59,9 @@ void AutoCompletionAgent::analysis(TaskList* list){
             tell(tokens[j]);
     }
 }
+
+void AutoCompletionAgent::analysis(string sentense){
+    vector<string> tokens = tokenize(sentense);
+    for (int j=0;j<tokens.size();j++)
+        tell(tokens[j]);
+}

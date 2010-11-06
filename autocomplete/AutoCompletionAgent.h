@@ -12,6 +12,7 @@ public:
     AutoCompletionAgent();
     ~AutoCompletionAgent();
     void analysis(TaskList* list);
+    void analysis(string sentense);
 private:
     DictTree* tree;
     bool isChar(char ch);
