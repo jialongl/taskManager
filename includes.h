@@ -17,6 +17,7 @@
 #include <vector>
 #include <map>
 #include <fstream>
+#include <typeinfo>
 
 using namespace std;
 
@@ -46,4 +47,3 @@ using namespace std;
 
 
 #endif
-
