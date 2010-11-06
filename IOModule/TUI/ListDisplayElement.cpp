@@ -589,6 +589,7 @@ vector<string> ListDisplayElement::editSelect(){
     move(taskStartAt[selectTask] - navigateRow + 3, 1);
     attron(_SELECT);
     printw("%s",lineWithNewGroup(selectTask,newGrp).c_str());
+    refresh();
     attroff(_SELECT);
     attron(_NORMAL);
     int theRow = taskStartAt[selectTask]- navigateRow + listWindow->_begy;
@@ -761,6 +762,7 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
         "Nov",
         "Dec"
     };
+    startRow -= 2;
     time_t curTime = theTime;
     struct tm* curDate = localtime(&curTime);
     int curMon = curDate->tm_mon;
@@ -776,20 +778,20 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
  //   int startRow = 0;
     int curCol = startCol;
     int curRow = startRow+1;
-    move(curRow,startCol);
+    wmove(listWindow,curRow,startCol);
 //    printw("%34s"," ");
     curRow++;
-    move(curRow,startCol);
-    attron(_REVERSE);
-    printw("%15s %4d              ",months[curMon].c_str(),curYear);
-    attroff(_REVERSE);
-    attron(_NORMAL);
+    wmove(listWindow,curRow,startCol);
+    wattron(listWindow,_REVERSE);
+    wprintw(listWindow,"%15s %4d              ",months[curMon].c_str(),curYear);
+    wattroff(listWindow,_REVERSE);
+    wattron(listWindow,_NORMAL);
     curRow++;
-    move(curRow,startCol);
-    attron(_UNDERLINE); 
-    printw("  Week  | Su Mo Tu We Th Fr Sa    ");
-    attroff(_UNDERLINE);
-    attron(_NORMAL);
+    wmove(listWindow,curRow,startCol);
+    wattron(listWindow,_UNDERLINE); 
+    wprintw(listWindow,"  Week  | Su Mo Tu We Th Fr Sa    ");
+    wattroff(listWindow,_UNDERLINE);
+    wattron(listWindow,_NORMAL);
     curRow++;
     vector<sortKeyword_e> keys;
     keys.push_back(DEADLINE);
@@ -803,43 +805,43 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
     for (int i=0;i<6;i++){
         datetime = localtime(&startTime);
         int numOfWeek = (datetime->tm_yday)/7 + 1;
-        move(curRow,startCol);
-        printw("  %4d  |",numOfWeek);
+        wmove(listWindow,curRow,startCol);
+        wprintw(listWindow,"  %4d  |",numOfWeek);
         curCol += 9;
         for (int j=0;j<7;j++){
-            move(curRow,curCol);
+            wmove(listWindow,curRow,curCol);
             datetime = localtime(&startTime);
-            if (datetime->tm_mon == curMon) attron(_BOLD);
-            if (datetime->tm_mday == curDay && datetime->tm_mon == curMon) attron(_REVERSE);
+            if (datetime->tm_mon == curMon) wattron(listWindow,_BOLD);
+            if (datetime->tm_mday == curDay && datetime->tm_mon == curMon) wattron(listWindow,_REVERSE);
             while (taskNum<thetasks.size() && thetasks[taskNum]->getDeadline()<startTime) taskNum++;
             if (taskNum<thetasks.size() && thetasks[taskNum]->getDeadline()<startTime+24*60*60)
-                attron(_TASKDAY);
-            printw("%3d",datetime->tm_mday);
+                wattron(listWindow,_TASKDAY);
+            wprintw(listWindow,"%3d",datetime->tm_mday);
             if (taskNum<thetasks.size() && thetasks[taskNum]->getDeadline()<startTime+24*60*60){
-                attroff(_TASKDAY);
-                attron(_NORMAL);
+                wattroff(listWindow,_TASKDAY);
+                wattron(listWindow,_NORMAL);
             }
             if (datetime->tm_mday == curDay && datetime->tm_mon == curMon) {
-                attroff(_REVERSE);
-                attron(_NORMAL);
+                wattroff(listWindow,_REVERSE);
+                wattron(listWindow,_NORMAL);
             }
             if (datetime->tm_mon == curMon) {
-                attroff(_BOLD);
-                attron(_NORMAL);
+                wattroff(listWindow,_BOLD);
+                wattron(listWindow,_NORMAL);
             }
             startTime += 24*60*60;
             curCol+=3;
         }
-        move(curRow,curCol);
-        printw("    ");
+        wmove(listWindow,curRow,curCol);
+        wprintw(listWindow,"    ");
         curRow+=1;
         curCol=startCol;
     }
     delete tmpTL;
-    move(curRow,startCol);
-    printw("%34s"," ");
+    wmove(listWindow,curRow,startCol);
+    wprintw(listWindow,"%34s"," ");
     curRow++;
-    refresh();
+    wrefresh(listWindow);
 }
 
 time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol){

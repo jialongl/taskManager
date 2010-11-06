@@ -46,6 +46,18 @@ Shell::Shell(){
     lexicon.push_back("friday");
     lexicon.push_back("saturday");
     lexicon.push_back("sunday");
+    lexicon.push_back("january");
+    lexicon.push_back("february");
+    lexicon.push_back("march");
+    lexicon.push_back("april");
+    lexicon.push_back("may");
+    lexicon.push_back("june");
+    lexicon.push_back("july");
+    lexicon.push_back("august");
+    lexicon.push_back("september");
+    lexicon.push_back("october");
+    lexicon.push_back("november");
+    lexicon.push_back("december");
     int count = lexicon.size();
 
     for (int i=0; i<count; i++)
