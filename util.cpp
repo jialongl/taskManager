@@ -138,7 +138,11 @@ string flaten(int argc, char* argv[]){
     string ans = "";
     for (int i=1;i<argc;i++){
         if (i!=1) ans.push_back(' ');
-        ans = ans + string(argv[i]);
+        string st(argv[i]);
+        if (st.find(" ") == string::npos)
+            ans = ans + st;
+        else
+            ans = ans + "\""+st+"\"";
     }
     return ans;
 }
