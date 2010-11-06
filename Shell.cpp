@@ -14,28 +14,7 @@ Shell::Shell(){
     IOModule = new KeyboardIOModule(parser);
     toChangeIOModule = false;
 
-
-    Result* result;
-    //load saved record.
-    try{
-        Command* cmd = new Command();
-        cmd->method = IMPORT;
-        result = executeOneCommand(NULL,cmd);
-        //cout<<"get import result, delete import result"<<endl;
-        delete result;
-
-        cmd = new Command();
-        cmd->method = RUN;
-        result = executeOneCommand(NULL,cmd);
-        delete result;
-    } catch (exception_e except){
-        IOModule->handleException(except);
-    }
-
     agent = new AutoCompletionAgent();
-
-    agent -> analysis(mainTaskList);
-
     vector<string> lexicon;
     lexicon.push_back("add");
     lexicon.push_back("edit");
@@ -71,6 +50,30 @@ Shell::Shell(){
 
     for (int i=0; i<count; i++)
         agent->tell(lexicon[i]);
+
+    //msterious bug
+    agent->ask("hello there");
+
+
+    Result* result;
+    //load saved record.
+    try{
+        Command* cmd = new Command();
+        cmd->method = IMPORT;
+        result = executeOneCommand(NULL,cmd);
+        //cout<<"get import result, delete import result"<<endl;
+        delete result;
+
+        cmd = new Command();
+        cmd->method = RUN;
+        result = executeOneCommand(NULL,cmd);
+        delete result;
+    } catch (exception_e except){
+        IOModule->handleException(except);
+    }
+
+
+    agent -> analysis(mainTaskList);
 
 //    cout<<"analysis finish"<<endl;
 //   cout<< agent->ask("ls")<<endl;

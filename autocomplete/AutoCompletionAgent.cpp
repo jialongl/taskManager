@@ -15,7 +15,8 @@ void AutoCompletionAgent::tell(string st){
     tree->tell(st);
 }
 string AutoCompletionAgent::ask(string st){
-//    cout<<"nani"<<endl;
+    cout<<"";
+    //misterious
     if (st.length()<2) return "";
     for (int i=0;i<st.length();i++){
         st[i] = toLowerCase(st[i]);
