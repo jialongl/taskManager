@@ -37,32 +37,39 @@ Shell::Shell(){
 
     agent -> analysis(mainTaskList);
 
-    int count = 23;
-    string lexicon[] = {
-        "add",
-        "edit",
-        "task",
-        "pri",
-        "finish",
-        "export",
-        "import",
-        "sort",
-        "run",
-        "read",
-        "tui",
-        "notui",
-        "undo",
-        "redo",
-        "priority",
-        "deadline",
-        "serialnumber",
-        "html",
-        "tomorrow",
-        "today",
-        "week",
-        "month",
-        "year",
-    };
+    vector<string> lexicon;
+    lexicon.push_back("add");
+    lexicon.push_back("edit");
+    lexicon.push_back("task");
+    lexicon.push_back("pri");
+    lexicon.push_back("finish");
+    lexicon.push_back("export");
+    lexicon.push_back("import");
+    lexicon.push_back("sort");
+    lexicon.push_back("run");
+    lexicon.push_back("read");
+    lexicon.push_back("tui");
+    lexicon.push_back("notui");
+    lexicon.push_back("undo");
+    lexicon.push_back("redo");
+    lexicon.push_back("priority");
+    lexicon.push_back("deadline");
+    lexicon.push_back("serialnumber");
+    lexicon.push_back("html");
+    lexicon.push_back("tomorrow");
+    lexicon.push_back("today");
+    lexicon.push_back("week");
+    lexicon.push_back("month");
+    lexicon.push_back("year");
+    lexicon.push_back("monday");
+    lexicon.push_back("tuesday");
+    lexicon.push_back("wednesday");
+    lexicon.push_back("thursday");
+    lexicon.push_back("friday");
+    lexicon.push_back("saturday");
+    lexicon.push_back("sunday");
+    int count = lexicon.size();
+
     for (int i=0; i<count; i++)
         agent->tell(lexicon[i]);
 

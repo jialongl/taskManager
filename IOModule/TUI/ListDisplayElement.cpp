@@ -455,7 +455,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                     if (curCol == col0){ curCol = col1; curRow--;}
                     else curCol--;
                     curPos--;
-                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                     move(curRow,curCol);
                 }else if (curPos !=0){
                     startPos -= col1-col0+1;
@@ -463,7 +463,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
 //                    startPos--;
                     curPos--;
                     curCol = col1;
-                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                     move(curRow,curCol);
                 }
                 break;
@@ -483,20 +483,31 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                 flag = true;
                 break;
             case '\t':
+                if ((chLast>=97 && chLast < 97+26) || (chLast>=65 && chLast<65+26)) 
+                    comp = lastTokenComp(newStr, curPos);
+                else comp = "";
                 chLast = ch;
                 //bug here , fix later
-                //end of a line problem | not typing but press tab 
+                //end of a line problem | 
                 comp = lastTokenComp(newStr, curPos);
                 newStr = newStr.substr(0,curPos) + comp + newStr.substr(curPos,newStr.size()-curPos);
                 curPos += comp.size();
-                refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                 curCol += comp.size();
+                if (curCol > col1){
+                    curCol = curCol - (col1 - col0 +1);
+                    curRow ++;
+                    if (curRow > row1){
+                        curRow = row1;
+                        startPos += (col1 - col0 +1);
+                    }
+                }
+                refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                 move(curRow,curCol);
                 break;
             case 'j':
                 if (chLast == 'j' && tLast >= tNow-1 && !numOnly){
                     newStr[curPos-1] = '"';
-                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
+                    refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                     move(curRow,curCol);
                     chLast = 0;
                     break;
@@ -510,7 +521,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                             if (curCol == col0){ curCol = col1; curRow--;}
                             else curCol--;
                             curPos--;
-                            refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
+                            refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                             move(curRow,curCol);
                         }else if (curPos !=0){
                             startPos -= col1-col0+1;
@@ -518,7 +529,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
         //                    startPos--;
                             curPos--;
                             curCol = col1;
-                            refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
+                            refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,"",curPos);
                             move(curRow,curCol);
                         }
                     flag = true;
@@ -535,10 +546,15 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
                         move(curRow,curCol);
                     }else{
                         newStr.insert(curPos,(char*)&ch,1);
-                        startPos+=col1-col0+1;
-                        curPos++;
                         curCol = col0;
+                        curRow++;
+                        if (curRow > row1){
+                            startPos+=col1-col0+1;
+                            curRow = row1;
+                        }
+                        curPos++;
                         refreshEditArea(win,row0,row1,col0,col1,newStr,startPos,&tmp,&tmp,lastTokenComp(newStr,curPos),curPos);
+                        move(curRow,curCol);
                     }
                 break;
         }
@@ -574,15 +590,7 @@ vector<string> ListDisplayElement::editSelect(){
     attron(_NORMAL);
     int theRow = taskStartAt[selectTask]- navigateRow + listWindow->_begy;
     if (theRow + 12 >= mx+listWindow->_begy) theRow= mx+listWindow->_begy-13;
-    time_t tt = tasks[selectTask]->getDeadline();
-    if (tt != NO_SPECIFIC_DEADLINE){
-        struct tm* dd = localtime(&tt);
-        dd->tm_hour =0;
-        dd->tm_sec =0;
-        dd->tm_min =0;
-        tt = mktime(dd);
-    }
-    int newTime = datePicker(tt,theRow,45);//editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
+    int newTime = datePicker(tasks[selectTask]->getDeadline(),theRow,45);//editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
     naiveDraw();
     move(taskStartAt[selectTask]+1- navigateRow + listWindow->_begy+1,48);
     attron(_EDITTED);
@@ -833,6 +841,19 @@ void ListDisplayElement::drawCalendar(time_t theTime,int startRow, int startCol)
 
 time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol){
 
+    time_t tt = curTime;
+    if (tt != NO_SPECIFIC_DEADLINE){
+        struct tm* dd = localtime(&tt);
+        dd->tm_hour =0;
+        dd->tm_sec =0;
+        dd->tm_min =0;
+        tt = mktime(dd);
+    }
+
+    time_t delta = curTime - tt;
+
+    curTime = tt;
+    
 //    time_t curTime = currentTime();
     if (curTime == NO_SPECIFIC_DEADLINE) {
         curTime = currentTime();
@@ -893,6 +914,8 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
         drawCalendar(curTime,startRow,startCol);
     }
     //naiveDraw();
+    
+    curTime += delta;
 
     struct tm* datetime = localtime(&curTime);   
     int year = datetime->tm_year + 1900;
