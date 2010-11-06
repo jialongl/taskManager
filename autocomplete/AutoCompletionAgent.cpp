@@ -33,15 +33,40 @@ char AutoCompletionAgent::toLowerCase(char ch){
     return ch;
 }
 
+bool AutoCompletionAgent::isSeparator(char ch){
+/*    if (ch == ' ') return ture;
+    if (ch == ',') return ture;
+    if (ch == '.') return ture;
+    if (ch == '|') return ture;
+    if (ch == '-') return ture;
+    if (ch == '"') return ture;
+    if (ch == '\'') return ture;
+    if (ch == '?') return ture;
+    if (ch == '!') return ture;
+    if (ch == '@') return ture;
+    if (ch == '#') return ture;
+    if (ch == '<') return ture;
+    if (ch == '>') return ture;
+    if (ch == '&') return ture;
+    if (ch == '(') return ture;
+    if (ch == ')') return ture;
+    if (ch == '=') return ture;
+    if (ch == '/') return ture;
+    if (ch == ':') return ture;
+    if (ch == ';') return ture;
+    */
+    return !(isChar(ch));
+}
+
 vector<string> AutoCompletionAgent::tokenize(string s){
     vector<string> ans;
     ans.clear();
     int pos = 0;
     while (pos < s.length()){
-        while (pos < s.length() && (s[pos] == ' ' || s[pos] == '"')) pos++;
+        while (pos < s.length() && isSeparator(s[pos])) pos++;
         int pos0 = pos;
         int len = 0;
-        while (pos < s.length() && s[pos] != ' ' && s[pos] != '"'){ pos++; len++; }
+        while (pos < s.length() && !isSeparator(s[pos])){ pos++; len++; }
         if (len!=0) ans.push_back(s.substr(pos0,len));
     }
     return ans;

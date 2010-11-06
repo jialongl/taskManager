@@ -185,9 +185,10 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
         case TUI: //enable text UI
             if (result != NULL) delete result;
             delete command;
+            ans =  new Result();
+            if (typeid(*IOModule) == typeid(PdcIO)) break;
             newIO = new PdcIO(parser,agent);
             changeIOModule(newIO);
-            ans =  new Result();
             break;
         case NOTUI: //disable text UI
             if (result != NULL) delete result;

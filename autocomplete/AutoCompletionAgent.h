@@ -13,6 +13,7 @@ public:
     ~AutoCompletionAgent();
     void analysis(TaskList* list);
     void analysis(string sentense);
+    bool isSeparator(char ch);
 private:
     DictTree* tree;
     bool isChar(char ch);

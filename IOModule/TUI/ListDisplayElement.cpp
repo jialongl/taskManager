@@ -1222,7 +1222,7 @@ string ListDisplayElement::handleQuo(string s0){
 string ListDisplayElement::lastToken(string st, int pos){
    int pos0 = pos-1;
    int length = 0;
-   while (pos0>=0 && st[pos0]!='"' && st[pos0] != ' ' && st[pos0] != '-' && st[pos0] != '|'){
+   while (pos0>=0 && !((displayManager->agent)->isSeparator(st[pos0]))){
          pos0--; 
          length++;
    }
