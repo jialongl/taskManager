@@ -18,7 +18,7 @@ class Parser{
 
   Command *cmd;
 
-  void parse_date (string s, long *seconds);
+  void parse_date (string s, time_t *seconds);
   string matchAlias(string alias);
   string trimInvertedCommas(string s);
 

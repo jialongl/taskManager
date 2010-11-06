@@ -1,5 +1,6 @@
 \documentclass[12pt, a4paper]{article}
 \usepackage{indentfirst}
+%\usepackage{amsmath}
 \usepackage{graphicx}
 \graphicspath{{/home/jialongl/Documents/sem3/se/proposal/}{/home/jialongl/Documents/sem3/se/finalprojScreenshots/}}
 \usepackage{hyperref}
@@ -7,6 +8,12 @@
     colorlinks,
     urlcolor=blue
 }
+
+\usepackage{fullpage}
+
+%\oddsidemargin 0.3in
+%\topmargin -0.3in
+%\textheight 8.0in
 %\usepackage{setspace}
 %\onehalfspacing
 
@@ -189,14 +196,14 @@ This is helpful when you only want to peek the content of an xml file without re
 \footnotetext{ If the name of the HTML file to export is not specified, the default file name \cmdinline{"record.html"} is used.}
 \begin{figure}[htbp]
   \centering
-  \includegraphics[scale=0.73, viewport=100 0 600 380]{exporthtml}
+  \includegraphics[scale=0.73, viewport=80 0 600 380]{exporthtml}
   \caption{tasks exported as webpage \footnotemark}
 \end{figure}
 
 \footnotetext{ Page may not render correctly in IE 6 or its earlier versions.}
 \end{enumerate}
 
-%\newpage
+\newpage
 \subsubsection{task}
 \noindent \cmd{
   \begin{tabbing}
@@ -316,7 +323,7 @@ Examples: \cmd{
   3 \> task 3 default priority. \> 0   Tue Nov  2 06:54:37 2010
 \end{tabbing}
 }
-\item [ \cmdinline{-k} ] filters tasks with a keyword\footnotemark \ where ? means any single character, * means a string of any length (including 0 length).
+\item [ \cmdinline{-k} ] filters tasks with a keyword\footnotemark \ where \cmdinline{?} means any single character, \cmdinline{*} means a string of any length (including 0 length).
 \footnotetext{ keyword is case insensitive.}
 
 Take command \cmdinline{ls -k *Sam?le*task} as an example, \cmdinline{"This is a sample with an important task"} will match \cmdinline{*Sam?le*task} as the first \cmdinline{*} matches \cmdinline{"This is a "}, \cmdinline{?} matches \cmdinline{`p'} and the second \cmdinline{*} matches \cmdinline{" with an important "}.
@@ -359,43 +366,43 @@ It provides visualization of the deadlines and ease of manipulation as well.
 
 TUI can be launched using command \cmdinline{tui} in command-line mode:
 
-\includegraphics[scale=0.73]{tui-launched-mac}
-%% \begin{figure}[htbp]
-%%   \centering
-%%   \includegraphics[scale=0.73, viewport=50 0 600 450]{tui-launched}
-%%   \caption{The first screen of TUI}
-%% \end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.73]{tui-launched-mac}
+  \caption{The first screen of TUI}
+\end{figure}
 
-The tasks are shown in groups of deadlines. ``Anytime'' basically means the task has no specific deadline -- can finish at ease.
+The tasks are listed in groups according to deadlines. If a task's deadline is ``Anytime'', it means the task has no specific deadline -- you can finish it at ease.
 
 This is a summary of the key bindings:\\
 
 \begin{tabular}{c | c}
-  ``SPACE'' or ``Enter'' & show details of the selected task\\
-  ``Down Arrow'' or \cmdinline{j} & select the task one below\\
-  ``Up Arrow'' or \cmdinline{k} & select the task one above\\
-  number n + selection key & select n tasks above/below\\
-  p & previous page / page up\\
-  n & next page / page down\\
-  u & undo\\
-  R & redo\\
-  c & calendar\\
-  C & command\\
-  a & add task\\
-  e & edit task\\
-  d & remove task\\
-  f & finish task\\
-  s & search keywords\\
+  \cmdinline{SPACE} or \cmdinline{ENTER} & show details of the selected task\\
+  \cmdinline{$\downarrow$} or \cmdinline{j} & select the task below\\
+  \cmdinline{$\uparrow$} or \cmdinline{k} & select the task above\\
+  \cmdinline{number selectionKey}\footnotemark & select \cmdinline{number} tasks above/below\\
+  \cmdinline{p} & previous page/page up\\
+  \cmdinline{n} & next page/page down\\
+  \cmdinline{u} & undo\\
+  \cmdinline{R} & redo\\
+  \cmdinline{c} & calendar\\
+  \cmdinline{C} & command\\
+  \cmdinline{a} & add task\\
+  \cmdinline{e} & edit task\\
+  \cmdinline{d} & remove task\\
+  \cmdinline{f} & finish task\\
+  \cmdinline{s} & search tasks by keywords\\
 \end{tabular}
+\footnotetext{ It means pressing a number key and then press $\uparrow$/$\downarrow$/\cmdinline{j}/\cmdinline{k} key.}
 
-You can always press ``H'' to read the key bindings.
+You can always press \cmdinline{H} to read the key bindings.
 
 \subsection{Advanced Usages}
 \subsubsection{command piping}
 \noindent \cmd{> \ ls \textbar \  rm}
 TaskManager supports command piping for most commands though it is a bit different from traditional Unix pipe.
 Piping means if one command selects some tasks, then the selected tasks will be passed to the next command as input. The tasks after the last command will be shown as output.
-Piping in taskManager is done with symbol \cmdinline{\textbar}. When a pipe signs appear in a command, the smaller commands (separated by pipes) are executed one by one from left to right. For example:
+Piping in taskManager is done with symbol \cmdinline{\textbar}. When a pipe signs appear in a command, the broken-up commands (separated by pipes) are executed one by one from left to right. For example:
 
 \begin{enumerate}
 \item finish all tasks:  \cmd{> \ ls \textbar \  finish}
@@ -408,7 +415,9 @@ Piping in taskManager is done with symbol \cmdinline{\textbar}. When a pipe sign
 
 \subsubsection{command mapping}
 \noindent \cmd{> \ map "ls" "ls -f no"}
-TaskManager supports custom command mapping/aliasing. General format of \cmdinline{map} is: \cmdinline{map "new command" "original command"}
+TaskManager supports custom command mapping/aliasing so you can alias the taskManager commands to the format you are more comfortable with.
+
+General format of \cmdinline{map} is: \cmdinline{map "new command" "original command"}
 
 A simple mapping is like the previous example, which maps ``ls'' to ``ls -f no'', which effectively hides finished tasks when doing \cmdinline{ls}.
 To retain the original \cmdinline{ls} command, map \cmdinline{ls} to something else. For example: \cmd{> \ map "lsa" "ls"\\
@@ -445,7 +454,7 @@ The third command will be parsed as \cmdinline{ls -f no -g cs2103}, and will lis
 
 \subsubsection{taskManager script}
 
-Task manager commands can be saved in a single script file and be executed using run command. \cmd{
+Task manager commands can be saved in a text file and be executed using run command. \cmd{
 \begin{tabbing}
   \$ cat tmscript\\
   ls\\
@@ -464,9 +473,9 @@ Task manager commands can be saved in a single script file and be executed using
 \end{tabbing}
 }
 
-The first 3 tasks are the result of the first ls in the script. The last 2 tasks are the result of the second ls in the script. Because "ls" is mapped to "ls -f no", finished tasks are not shown by the second ls.
+The first 3 tasks are the result of the first \cmdinline{ls} in the script. The last 2 tasks are the result of the second \cmdinline{ls} in the script. Because \cmdinline{ls} is mapped to \cmdinline{ls -f no}, finished tasks are not shown by the second \cmdinline{ls}.
 
-TaskManager scripts are plain text files. % ".txt" suffix is omitted here. In windows, suffix is hidden by default. To show it, check corresponding checkbox under Tools -> \ Folder Options in a file browser. Windows may not know how to open file with no suffix.
+% TaskManager scripts are plain text files. ".txt" suffix is omitted here. In windows, suffix is hidden by default. To show it, check corresponding checkbox under Tools -> \ Folder Options in a file browser. Windows may not know how to open file with no suffix.
 
 \subsubsection{startup script}
 
@@ -486,9 +495,7 @@ Examples:
 \subsubsection{talk to taskManager}
 
 For all inputs that cannot be recognized by taskManager as a command, it will be treated as natural language sentense. 
-TaskManager will try its best to recognize it and give correct response.\\
-
-Example: \cmd{> \ what do I do today?} will list all the tasks due today.
+TaskManager will try its best to recognize it and give correct response. For example: \cmd{> \ what do I do today?} will list all the tasks due today.
 
 \subsection{Compilation and Installation}
 This section discusses compilation and installation of taskManager.
@@ -500,15 +507,16 @@ Unix-like Operating Systems are likely to have curses library, of which PDcurses
 For Windows' users convenience, the necessary library files for compilation are included in the zip.
 
 \subsubsection{Microsoft Windows}
-On Windows, taskManager can be built with Visual Studio 2008\registered\footnotemark \ in the following steps:
+On Windows, taskManager can be built with Visual Studio 2008\textsuperscript{\textregistered} \footnotemark \ in the following steps:
 
 \begin{enumerate}
 \item Start Visual Studio with ``C++ Development Settings''.
 \item Create a win32 console project.
 \item Drag all the .h and .cpp files (including those in the subdirectories) into the solution folder. Files should be automatically categorized into header files and source files.
-\item Press \cmdinline{Alt + F7} to edit the project properties. Under \cmdinline{"Configuration Properties"->"General"}, set \cmdinline{"Character Set"} to be \cmdinline{"Use Multi-Byte Character Set"}; Under \cmdinline{"Linker"->"Input"}, add pdcurses.lib to \cmdinline{"Additional Dependencies"}. % and add the folder containing pdcurses.lib to library search directories.
+\item Press \cmdinline{Alt + F7} to edit the project properties. Under \cmdinline{"Configuration Properties" => "General"}, set \cmdinline{"Character Set"} to be \cmdinline{"Use Multi-Byte Character Set"}; Under \cmdinline{"Linker" => "Input"}, add pdcurses.lib to \cmdinline{"Additional Dependencies"}. % and add the folder containing pdcurses.lib to library search directories.
 \item Copy pdcurses.dll to \cmdinline{\%WINDIR\%\textbackslash system32\textbackslash} or the directory your executable will be generated.
 \item Build the solution.
+\item Copy the \cmdinline{tmrc} to your home directory (e.g. \cmdinline{C:\textbackslash Documents and Settings\textbackslash John Doe\textbackslash} on Windows XP) and rename it to \cmdinline{tmrc.txt} in order to use the commands we pre-customized.
 \end{enumerate}
 
 \footnotetext{ Menu names mentioned below may vary among different versions of Visual Studio.}
@@ -520,14 +528,50 @@ On Unix-like operating systems such as GNU Linux and Mac OS X: start a shell; un
 
 ``make install'' is optional. It just makes taskManager available system wide by copying the executable and man page to cooresponding directories.
 
-The text UI is built by default, which requires curses library.
-It ships with most Linux distributions and Mac OS. If not, it can be installed with the package manager (\cmdinline{apt-get}, \cmdinline{yum}, \cmdinline{pacman} on various Linux distributions and \cmdinline{port} on Mac).
+Another option is to copy the \cmdinline{tmrc} to your home directory and rename it to \cmdinline{.tmrc} in order to use the commands we pre-customized.
+
+The curses library should ship with most Linux distributions and Mac OS. If not, it can be installed with the package manager (\cmdinline{apt-get}, \cmdinline{yum}, \cmdinline{pacman} on various Linux distributions and \cmdinline{port} on Mac).
 
 \newpage
 \section{Developer Guide}
-ahah
+
 
 \newpage
 \section{Milestones and Individual Work}
+\begin{enumerate}
+\item Decide project topic and brainstorming.
+
+Date: Sept 17\\
+Members attended: All
+
+We picked task manager as the project topic. There were conflicts among opinions as some of us do not like development on Windows and thus the GUI board game, while others want to have a taste of GUI programming.
+
+\item Design detailed architecture.
+
+Date: Sept 17\\
+Members attended: All
+
+We designed the Shell-Parser-CommmandExecutor architecture. We thought it was an intuitive design and easy to split up work.
+
+\item Integrate v0.1\\
+Date: Oct 4 ~ Oct 8
+
+\item Refractor the code base for Windows Compilation (overnight session)
+
+Date: Oct 22 - 23\\
+Members attended: He Haocong, Liu Jialong
+
+The purpose of this session is to extract the method declaration to .h and definition to .cpp files to make the code adhere to standard.
+
+As we were developping on *nix, we realized that squeezing all the classes in the .h files will fail to compile on Windows using Visual Stdio. After refractoring, we are able to compile taskManager on Windows and write a better Makefile by the way -- the previous Makefile contains only one rule and one command, which is something like \cmd{g++ -o taskManager main.cpp Shell.h Parser.h MainCommandExecutor.h \nolinebreak \ldots}
+We got to know better of C++ compilation process by writing the new Makefile and solving the linking problems and it was worth the stay-up.
+
+\item Feature close shop, testing and documenting. (overnight session)
+
+Date: Nov 4 - 5\\
+Members attended: He Haocong, Liu Jialong
+
+
+\end{enumerate}
 
 \end{document}
