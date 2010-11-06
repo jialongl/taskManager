@@ -73,7 +73,7 @@ Shell::Shell(){
         agent->tell(lexicon[i]);
 
 //    cout<<"analysis finish"<<endl;
- //   cout<< agent->ask("enabl")<<endl;
+//   cout<< agent->ask("ls")<<endl;
 }
 Shell::~Shell(){
     //cout<<"deleting main task list"<<endl;
