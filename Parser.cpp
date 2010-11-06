@@ -432,8 +432,8 @@ string Parser::matchAlias (string s) {
 
 		  tokenize_by_space(alias); // now think of "args" as "args_alias"
 
-		  for (int i = 0; i < args_input.size(); i++) {
-			  if (i >= args.size())
+		  for (int i = 0; i < args.size(); i++) {
+			  if (i >= args_input.size())
 				  return "";
 
 			  if ( args_input[i] != args[i]) {
@@ -442,15 +442,17 @@ string Parser::matchAlias (string s) {
 
 					  if (dollar_number == 0) {
 						  found = origin.find(args[i]);
-
-						  if (found != string::npos)
+						  if (found != string::npos) {
 							  // args[i] == "$0" at this moment,
 							  // so replace the whole remaining substring with $n
-							  origin.replace( int(found),
-							  origin.length()-1-int(found),
-							  args_input[i] );
-
-						  return origin;
+							  string string_dollar_0 = "";
+							  while (i < args_input.size()) {
+							    string_dollar_0 += (args_input[i] + " ");
+							    i++;
+							  }
+							  origin.replace( int(found),  2, string_dollar_0 );
+							  return origin;
+						  }
 
 					  } else {
 						  // args[i] != "$0"
@@ -467,7 +469,7 @@ string Parser::matchAlias (string s) {
 				  }
 			  }
 
-			  if (i == args_input.size()-1 && i == args.size()-1) { // all tokens match -- because i can increment to the args_input.size()-1 and not return.
+			  if (i == args_input.size()-1 && i == args.size()-1) { // all tokens match -- Yes, it MATCHes!
 				  return origin;
 			  }
 		  }
