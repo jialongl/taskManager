@@ -511,10 +511,10 @@ On Windows, taskManager can be built with Visual Studio 2008\textsuperscript{\te
 
 \begin{enumerate}
 \item Start Visual Studio with ``C++ Development Settings''.
-\item Create a win32 console project.
+\item Create a win32 console project called ``taskManager''.
 \item Drag all the .h and .cpp files (including those in the subdirectories) into the solution folder. Files should be automatically categorized into header files and source files.
-\item Press \cmdinline{Alt + F7} to edit the project properties. Under \cmdinline{"Configuration Properties" => "General"}, set \cmdinline{"Character Set"} to be \cmdinline{"Use Multi-Byte Character Set"}; Under \cmdinline{"Linker" => "Input"}, add pdcurses.lib to \cmdinline{"Additional Dependencies"}. % and add the folder containing pdcurses.lib to library search directories.
-\item Copy pdcurses.dll to \cmdinline{\%WINDIR\%\textbackslash system32\textbackslash} or the directory your executable will be generated.
+\item Press \cmdinline{Alt + F7} to edit the project properties. Under \cmdinline{"Configuration Properties" => "General"}, set \cmdinline{"Character Set"} to be \cmdinline{"Use Multi-Byte Character Set"}; Under \cmdinline{"Linker" => "Input"}, add pdcurses.lib to \cmdinline{"Additional Dependencies"} and add the folder containing pdcurses.lib to \cmdinline{"Additional Library Directories"}.
+\item Copy pdcurses.dll to \cmdinline{\%WINDIR\%\textbackslash system32\textbackslash} or the directory your executable will be generated (which would be the ``Debug'' folder).
 \item Build the solution.
 \item Copy the \cmdinline{tmrc} to your home directory (e.g. \cmdinline{C:\textbackslash Documents and Settings\textbackslash John Doe\textbackslash} on Windows XP) and rename it to \cmdinline{tmrc.txt} in order to use the commands we pre-customized.
 \end{enumerate}
