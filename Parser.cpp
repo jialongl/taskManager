@@ -420,54 +420,54 @@ string Parser::matchAlias (string s) {
   args_input = args;
 
   for ( iter2  = commandAliases.begin();
-	iter2 != commandAliases.end();
-	iter2++) {
+	  iter2 != commandAliases.end();
+	  iter2++) {
 
-      alias  = (*iter2).first;
-      origin = (*iter2).second;
+		  alias  = (*iter2).first;
+		  origin = (*iter2).second;
 
-      if (s == alias)
-	return origin; // a perfect match should return straightaway -- it happens mostly there are no $ signs in the alias.
+		  if (s == alias)
+			  return origin; // a perfect match should return straightaway -- it happens mostly there are no $ signs in the alias.
 
-      tokenize_by_space(alias); // now think of "args" as "args_alias"
+		  tokenize_by_space(alias); // now think of "args" as "args_alias"
 
-      for (int i = 0; i < args_input.size(); i++) {
+		  for (int i = 0; i < args_input.size(); i++) {
+			  if (i >= args.size())
+				  return "";
+			  if (i == args_input.size()-1 && i == args.size()-1) { // all tokens match -- because i can increment to the args_input.size()-1 and not return.
+				  return origin;
+			  }
+			  if ( args_input[i] != args[i]) {
+				  if ( args[i][0] == '$' ) {
+					  dollar_number = StringToNum( args[i].substr(1, args[i].length()-1) );
 
-	if ( args_input[i] != args[i] ) {
-	  if ( args[i][0] == '$' ) {
-	    dollar_number = StringToNum( args[i].substr(1, args[i].length()-1) );
+					  if (dollar_number == 0) {
+						  found = origin.find(args[i]);
 
-	    if (dollar_number == 0) {
-	      found = origin.find(args[i]);
+						  if (found != string::npos)
+							  // args[i] == "$0" at this moment,
+							  // so replace the whole remaining substring with $n
+							  origin.replace( int(found),
+							  origin.length()-1-int(found),
+							  args_input[i] );
 
-	      if (found != string::npos)
-		// args[i] == "$0" at this moment,
-		// so replace the whole remaining substring with $n
-		origin.replace( int(found),
-				origin.length()-1-int(found),
-				args_input[i] );
-	      
-	      return origin;
+						  return origin;
 
-	    } else {
-	      // args[i] != "$0"
-	      // then find string '${dollar_number}' in string "origin" and replace it with THIS (the current one) token in "s"
-	      found = origin.find(args[i]);
+					  } else {
+						  // args[i] != "$0"
+						  // then find string '${dollar_number}' in string "origin" and replace it with THIS (the current one) token in "s"
+						  found = origin.find(args[i]);
 
-	      if (found != string::npos) {
-		origin.replace( int(found),  2, args_input[i] );
-	      }
-	    }
+						  if (found != string::npos) {
+							  origin.replace( int(found),  2, args_input[i] );
+						  }
+					  }
 
-	  } else { // not a variable ( denoted by $0, $1, $2...) used in "map" command
-	    break;
-	  }
-	}
-
-	if (i == args_input.size()-1 && i == args.size()-1) { // all tokens match -- because i can increment to the args_input.size()-1 and not return.
-	  return origin;
-	}
-      }
+				  } else { // not a variable ( denoted by $0, $1, $2...) used in "map" command
+					  break;
+				  }
+			  }
+		  }
   }
 
   return "";
