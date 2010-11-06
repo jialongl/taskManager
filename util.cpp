@@ -134,6 +134,15 @@ int lcs(string st1, string st2){
     return f[(st1.size() -1)%2][st2.size()-1]*100/max(st2.size(),st1.size());
 }
 
+string flaten(int argc, char* argv[]){
+    string ans = "";
+    for (int i=1;i<argc;i++){
+        if (i!=1) ans.push_back(' ');
+        ans = ans + string(argv[i]);
+    }
+    return ans;
+}
+
 #ifdef WIN32
 #include <windows.h>
   //#define RCFILE "%USERPROFILE\\.tmrc"

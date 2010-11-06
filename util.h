@@ -29,6 +29,8 @@ void destroy_win(WINDOW *local_win);
 
 int lcs(string st1, string st2);
 
+string flaten(int argc, char* argv[]);
+
 string getRecordDirectory();
 string getRcDirectory();
 

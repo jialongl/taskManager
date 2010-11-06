@@ -13,7 +13,6 @@ Shell::Shell(){
     parser = new Parser();
     IOModule = new KeyboardIOModule(parser);
     toChangeIOModule = false;
-    IOModule->showWelcomeMessage();
 
 
     Result* result;
@@ -119,8 +118,39 @@ void Shell::redo(){
     mainTaskList = undoStack[undoStackTop-1]->clone();
 }
 
-void Shell::start(){
-    mainLoop();
+void Shell::start(string args){
+    if (args == "")
+        mainLoop();
+    else{
+        CommandList commandList;
+        Result *result;
+        Command * command;
+        try{
+            commandList = parser->inputToCommandList(args);
+
+            if (commandList.size()!=0){
+                IOModule->echo(commandList[0]->originalCommand);
+                result = executeCommandList(commandList);
+                IOModule->showOutput(result); 
+                if (toChangeIOModule){
+                    delete IOModule;
+                    IOModule = newIOModule;
+                    toChangeIOModule = false;
+                }
+            }
+            else IOModule->echo(" Invalid command");
+
+            command = new Command();
+            command->method = EXPORT;
+            result = mainCommandExecutor->executeCommand(mainTaskList,command);
+            delete result;
+
+        }
+        catch (exception_e except){
+            if (except == EXCEPTION_HALT) return;
+            IOModule->handleException(except);
+        }
+    }
 }
 
 Result* Shell::executeOneCommand(Result* result, Command* command){
@@ -290,6 +320,7 @@ bool Shell::oneIteration(){
 		
 void Shell::mainLoop(){
 
+    IOModule->showWelcomeMessage();
     while (oneIteration()){
         //run untill exception halt is triggled.
     }

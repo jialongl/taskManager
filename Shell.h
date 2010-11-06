@@ -43,7 +43,7 @@ class Shell{
  public:
   Shell();
   ~Shell();
-  void start();
+  void start(string args);
   void mainLoop();
 
 };

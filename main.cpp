@@ -3,7 +3,8 @@
 
 int main(int argc, char* argv[]){
     Shell* shell = new Shell();
-    shell->start();
+    string args = flaten(argc,argv);
+    shell->start(args);
     delete shell;
 	return 0;
 }
