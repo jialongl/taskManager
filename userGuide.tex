@@ -194,18 +194,17 @@ This is helpful when you only want to peek the content of an xml file without re
 \cmdinline{export} can also be used to generate an HTML file which is more visually pleasant in your favourate browser.
 \cmd{> \ export -html sampletasks.html\footnotemark\\
   > \ exit}
-
 \footnotetext{ If the name of the HTML file to export is not specified, the default file name \cmdinline{"record.html"} is used.}
+
+\newpage
 \begin{figure}[htbp]
   \centering
   \includegraphics[scale=0.73, viewport=80 0 600 380]{exporthtml}
   \caption{tasks exported as webpage \footnotemark}
 \end{figure}
-
-\footnotetext{ Page may not render correctly in IE 6 or its earlier versions.}
 \end{enumerate}
+\footnotetext{ Page may not render correctly in IE 6 or its earlier versions.}
 
-\newpage
 \subsubsection{task}
 \noindent \cmd{
   \begin{tabbing}
@@ -363,11 +362,11 @@ Use \cmdinline{-g} option to remove a group of tasks: \cmdinline{rm -g SampleTas
 %% This is discussed in section 2.2.1.
 
 
-\subsection{The Text-Based Interactive User Interface}
+\subsection{Getting inTUItive -- The Text User Interface}
 The text-based user interface (referred to as TUI later) makes interaction more intuitive by visualizing the deadlines, groups and simplifying manipulation from issuing commands to moving cursors and pressing keys.
 
 \\TUI can be launched using command \cmdinline{tui} in command-line mode:
-\newpage
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[scale=0.73]{tui-launched-mac}
@@ -376,8 +375,16 @@ The text-based user interface (referred to as TUI later) makes interaction more 
 
 As seen, the tasks are grouped according to deadlines. If a task's deadline is ``Anytime'', it means the task has no specific deadline -- you can finish it at ease.
 
-Besides, TUI provides some features that are not available in the command line mode. For example auto-completion using \cmdinline{TAB} key, a small calendar at the bottom right corner with the dates that has tasks due highlighted, incremental search of tasks by keyword.n
+Besides, TUI provides some features that are not available in the command line mode:\begin{enumerate}
+\item auto-completion
+  using \cmdinline{TAB} key.
 
+\item summary of tasks in a calendar
+  a small calendar at the bottom right corner with the dates that has tasks due highlighted
+
+\item incremental search
+  of tasks by keyword.
+\end{enumerate}
 This is a summary of the key bindings:\\
 
 \begin{tabular}{c | c}
@@ -511,7 +518,7 @@ One thing to note is that the TUI is build by default, which requires PDcurses l
 It is free and can be downloaded here:
 \url{http://sourceforge.net/projects/pdcurses/files/}.
 
-Unix-like Operating Systems are likely to have curses library, of which PDcurses is the cross-platform version, installed already.
+Unix-like Operating Systems are likely to have curses (its cross-platform version is PDcurses) library installed already.
 For Windows' users convenience, the necessary library files for compilation are included in the zip.
 
 \subsubsection{Microsoft Windows}
@@ -549,29 +556,63 @@ The curses library should ship with most Linux distributions and Mac OS. If not,
 \begin{enumerate}
 \item Decide project topic and brainstorming.
 
-Date: Sept 17\\
+Date: Sept 17 \footnotemark\\
+Members attended: All
+\footnotetext{ Yes, we started the final project only after submitting CE2. In fact, the initial of the meeting is to polish CE2. :p}
+
+We picked task manager as the project topic. There were conflicts among opinions as some of us do not like the GUI board game as it probably means development on Windows, while others want to have a taste of GUI programming. We finally came to agreement on the point that we were more confident to build a useful task manager that ourselves will use even after the project than a game that we are addicted to.
+
+So we chose task manager.
+
+We then came up with ``cool'' features like \cmdinline{import}, \cmdinline{export} and \cmdinline{cron} (set a regular task) and ended the meet before agreeing to meet tomorrow.
+
+\item Design detailed architecture and develop prototype.
+
+Date: Sept 18\\
 Members attended: All
 
-We picked task manager as the project topic. There were conflicts among opinions as some of us do not like development on Windows and thus the GUI board game, while others want to have a taste of GUI programming.
+We designed the Shell--Parser--CommmandExecutor--TaskList architecture as we thought it was an intuitive design and easy to split up work.
 
-\item Design detailed architecture.
+We sat down together in a quiet lab and created the source files in to just print a welcome message, which is the very first (and rough) prototype. Then we added functions like adding, displaying, editting and removing tasks.
 
-Date: Sept 17\\
+He Haocong was responsible for the command executors of \cmdinline{add} and \cmdinline{ls}.\\
+Liu Jialong was doing the parsing methods for the above commands.\\
+Wang Xiangyu did \\
+Zhou Biyan was coding for 
+
+All members participated equally.
+
+\item Adding more commands to ``taskManager''.
+
+Date: Sept 19\\
 Members attended: All
 
-We designed the Shell-Parser-CommmandExecutor architecture. We thought it was an intuitive design and easy to split up work.
+We found nothing to do so we decided to meet again to further develop the prototype. This time we finished \cmdinline{import} and \cmdinline{export} commands. We decided to store the user's tasks in an XML file. Immediately we came to the problem of storing tasks with characters like \cmdinline{<}, \cmdinline{>} and \cmdinline{/}. We learnt from the way web browsers handles HTML -- store the special characters as \emph{``entities''}.
 
-\item Integrate v0.1\\
-Date: Oct 4 ~ Oct 8
+He Haocong coded command executors \cmdinline{edit} and \cmdinline{rm}.\\
+Wang Xiangyu did the \cmdinline{import} command executor.\\
+Zhou Biyan was responsible for the \cmdinline{export} command executor.\\
+Liu Jialong was doing the parsing methods for \cmdinline{import} and \cmdinline{export}.
+
+\item Integrate v0.1
+
+  Date: Oct 7\\
+  Members attended:
+
+\item After v0.1 demo\ldots
+
+  Date: Oct 9\\
+  Methods attended: All
+
 
 \item Refractor the code base for Windows Compilation (overnight session)
 
 Date: Oct 22 - 23\\
 Members attended: He Haocong, Liu Jialong
 
-The purpose of this session is to extract the method declaration to .h and definition to .cpp files to make the code adhere to standard.
+The purpose of this session is to extract the method declaration to .h and definition to .cpp files to make the code standard.
 
-As we were developping on *nix, we realized that squeezing all the classes in the .h files will fail to compile on Windows using Visual Stdio. After refractoring, we are able to compile taskManager on Windows and write a better Makefile by the way -- the previous Makefile contains only one rule and one command, which is something like \cmd{g++ -o taskManager main.cpp Shell.h Parser.h MainCommandExecutor.h \nolinebreak \ldots}
+As we were developing on *nix, we realized that squeezing all the classes in the .h files will fail to compile on Windows using Visual Stdio. After refractoring, we are able to compile taskManager on Windows and write a better Makefile by the way -- the previous Makefile contains only one rule and one command, which is something like \cmd{g++ -o taskManager main.cpp Shell.h Parser.h MainCommandExecutor.h \nolinebreak \ldots}
 We got to know better of C++ compilation process by writing the new Makefile and solving the linking problems and it was worth the stay-up.
 
 \item At media lab \ldots

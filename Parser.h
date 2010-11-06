@@ -13,8 +13,8 @@ class Parser{
   vector <string> args;
   vector <string>::iterator iter;
 
-  map <string, string> commandAliases;
-  map <string, string>::iterator iter2;
+  vector <string> commandAliases;
+  vector <string> commandOriginals;
 
   Command *cmd;
 
