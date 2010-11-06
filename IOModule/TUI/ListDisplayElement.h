@@ -41,7 +41,7 @@ public:
     void handleResult(Result* result);
     void reconstructLines();
     string editArea(WINDOW* win,int row0,int row1,int col0,int col1,string st0,bool numOnly);
-    void ListDisplayElement::refreshEditArea(WINDOW* win, int row0, int row1, int col0, int col1, string newStr, int startPos,int* cR, int* cC, string completion,int curPos);
+    void refreshEditArea(WINDOW* win, int row0, int row1, int col0, int col1, string newStr, int startPos,int* cR, int* cC, string completion,int curPos);
     vector<string> editSelect();
     void showDetail();
     void hideDetail();
