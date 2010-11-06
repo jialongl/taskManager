@@ -130,8 +130,8 @@ void ListDisplayElement::handleKey(int ch){
             naiveDraw();
             break;
         case (int)'e':
-            editDetail = editSelect();
             if (tasks.size()!=0){
+                editDetail = editSelect();
                 newGrp = editDetail[0];
                 newTime = editDetail[1];
                 newPri = editDetail[2];
