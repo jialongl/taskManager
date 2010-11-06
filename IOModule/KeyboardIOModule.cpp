@@ -69,5 +69,6 @@ bool KeyboardIOModule::confirm(string prompt){
     else return false;
 }
 void KeyboardIOModule::echo(string s){
-    cout<<s<<endl;
+    cout<<s;
+    cout.flush();
 }

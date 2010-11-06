@@ -13,11 +13,12 @@ void Parser::tokenize_by_pipe (string s) {
   int pos = 0;
   string buf = "";
   bool inInvertedCommas = false;
+  int tmp = s.size();
 
-  while (pos < s.size() && s[pos] == '|')
+  while (pos < tmp && s[pos] == '|')
     pos++;
 
-  while (pos < s.size()) {
+  while (pos < tmp) {
     if ( s[pos] != '|') {
       if ( s[pos] == '"')
     	  inInvertedCommas = !inInvertedCommas;
@@ -48,10 +49,12 @@ void Parser::tokenize_by_space (string s) {
   string buf = "";
   bool inInvertedCommas = false;
 
-  while (pos < s.size() && s[pos] == ' ')
+  int tmp = s.size();
+
+  while (pos < tmp && s[pos] == ' ')
     pos++;
 
-  while (pos < s.size()) {
+  while (pos < tmp) {
 	  if ( s[pos] != ' ') {
 	    buf += s[pos];
 		if (s[pos] == '\\' && s[pos+1] == '\\')
@@ -420,6 +423,7 @@ string Parser::matchAlias (string s) {
   vector<string> args_input;
 
   tokenize_by_space(s);
+  if (args.size()>0 && args[0] == "map") return s;
   args_input = args;
 
   for ( int i = commandAliases.size()-1; i>=0; i--) {

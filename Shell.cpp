@@ -67,7 +67,7 @@ Shell::Shell(){
     //msterious bug
     agent->ask("hello there");
 
-
+    IOModule->echo("Importing task list...");
     Result* result;
     //load saved record.
     try{
@@ -81,9 +81,11 @@ Shell::Shell(){
     } catch (exception_e except){
         IOModule->handleException(except);
     }
+    IOModule->echo("Done\n");
 
-
+    IOModule->echo("Initializing auto-complete...");
     agent -> analysis(mainTaskList);
+    IOModule->echo("Done\n");
 
 //    cout<<"analysis finish"<<endl;
 //   cout<< agent->ask("ls")<<endl;
@@ -143,7 +145,7 @@ void Shell::start(string args){
     } catch (exception_e except){
         IOModule->handleException(except);
     }
-    IOModule -> echo("Done");
+    IOModule -> echo("Done\n");
     if (args == ""){
         mainLoop();
     }
