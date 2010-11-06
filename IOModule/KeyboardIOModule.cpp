@@ -46,7 +46,7 @@ void KeyboardIOModule::displayHelp(){
     cout<<"\texport \t[ -html ] filename"<<endl;
     cout<<"\tpri \tserialNumber [ priority ]"<<endl;
     cout<<"\tedit \tserialNumber [ -d \"description\" ] [ -g group ] [ -t time ] [ -p priority ] [ -f yes/no ]"<<endl;
-    cout<<"\tmap \t\"original command\" \"customized command\""<<endl;
+    cout<<"\tmap \t\"customized command\" \"original command\""<<endl;
     cout<<"\tfinish \tserialNumber"<<endl;
     cout<<"\tread \tfilename"<<endl;
     cout<<"\timport \tfilename"<<endl;
@@ -69,5 +69,5 @@ bool KeyboardIOModule::confirm(string prompt){
     else return false;
 }
 void KeyboardIOModule::echo(string s){
-//    cout<<s<<endl;
+    cout<<s<<endl;
 }

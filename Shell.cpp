@@ -2,6 +2,7 @@
 
 #include "Shell.h"
 Shell::Shell(){
+    notuiFlag = false;
     //initiallize function units.
     //cout<<"new main task list"<<endl;
     mainTaskList = new TaskList();
@@ -131,16 +132,19 @@ void Shell::redo(){
 }
 
 void Shell::start(string args){
+    if (args != "") notuiFlag = true;
+    IOModule -> echo("Runing start up script...");
+    Command* cmd = new Command();
+    Result* result;
+    try{
+        cmd->method = RUN;
+        result = executeOneCommand(NULL,cmd);
+        delete result;
+    } catch (exception_e except){
+        IOModule->handleException(except);
+    }
+    IOModule -> echo("Done");
     if (args == ""){
-        Command* cmd = new Command();
-        Result* result;
-        try{
-            cmd->method = RUN;
-            result = executeOneCommand(NULL,cmd);
-            delete result;
-        } catch (exception_e except){
-            IOModule->handleException(except);
-        }
         mainLoop();
     }
     else{
@@ -211,6 +215,7 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
             delete command;
             ans =  new Result();
             if (typeid(*IOModule) == typeid(PdcIO)) break;
+            if (notuiFlag) break;
             newIO = new PdcIO(parser,agent);
             changeIOModule(newIO);
             break;
@@ -322,7 +327,7 @@ bool Shell::oneIteration(){
 //          cout<<"!!get"<<endl;
         // output the command
           if (commandList.size()!=0){
-              IOModule->echo(commandList[0]->originalCommand);
+//              IOModule->echo(commandList[0]->originalCommand);
               result = executeCommandList(commandList);
               IOModule->showOutput(result); 
               if (toChangeIOModule){

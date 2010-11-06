@@ -40,6 +40,8 @@ class Shell{
   void redo();
   int testSimilarity(string st,string* similar);
 
+  bool notuiFlag;
+
  public:
   Shell();
   ~Shell();
