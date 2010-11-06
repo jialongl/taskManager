@@ -876,10 +876,11 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
         int ch = getch();
         if (ch >= 48 && ch < 58) count = count * 10 + ch - 48;
         switch (ch){
+            case 'a':
+                curTime = NO_SPECIFIC_DEADLINE;
             case KEY_ESC:
             case 3:
             case 'q':
-                curTime = NO_SPECIFIC_DEADLINE;
             case 10:
             case 13:
             case ' ':
@@ -942,10 +943,11 @@ time_t ListDisplayElement::datePicker(time_t curTime,int startRow, int startCol)
           hourMinSec[curFoc] = (hourMinSec[curFoc]*10+ch-48)%100;
         }
         switch (ch){
+            case 'a':
+                curTime = NO_SPECIFIC_DEADLINE;
             case KEY_ESC:
             case 3:
             case 'q':
-                curTime = NO_SPECIFIC_DEADLINE;
             case 10:
             case 13:
             case ' ':
