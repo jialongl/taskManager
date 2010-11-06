@@ -421,7 +421,7 @@ string Parser::matchAlias (string s) {
   tokenize_by_space(s);
   args_input = args;
 
-  for ( int i = commandAliases.size()-1; i>=0; i++) {
+  for ( int i = commandAliases.size()-1; i>=0; i--) {
 	alias  = commandAliases[i];
 	origin = commandOriginals[i];
 
