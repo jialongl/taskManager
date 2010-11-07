@@ -16,6 +16,7 @@ Shell::Shell(){
     toChangeIOModule = false;
 
     agent = new AutoCompletionAgent();
+    /*
     vector<string> lexicon;
     lexicon.push_back("morning");
     lexicon.push_back("afternoon");
@@ -68,7 +69,7 @@ Shell::Shell(){
 
     for (int i=0; i<count; i++)
         agent->tell(lexicon[i]);
-
+*/
     //msterious bug
     agent->ask("hello there");
 

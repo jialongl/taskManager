@@ -994,4 +994,8 @@ map "what can i do this week" "ls -i b0w:b1w -f no"
 map "what can i do next week" "ls -i b1w:b2w -f no"
 
 map "all $1" "ls -g \"$1\""
+
+a morning afternoon important this next add edit task pri finish export import sort run read tui notui undo redo priority deadline serialnumber html tomorrow today week mon year monday tuesday wednesday thursday friday saturday sunday january february march april may june july august september october december
+undo
+
 tui
