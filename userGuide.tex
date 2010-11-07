@@ -378,14 +378,16 @@ As seen, the tasks are grouped according to deadlines. If a task's deadline is `
 
 Besides, TUI provides some features that are not available in the command line mode:\begin{enumerate}
 \item auto-completion
-  using \cmdinline{TAB} key.
 
+  TUI helps you complete words (including built-in commands and words you have entered) using \cmdinline{TAB} key. For example, after you typed \cmdinline{"un"}, the word \cmdinline{"do"} will appear right after \cmdinline{"un"} in grey, and now you can complete the word \cmdinline{"undo"} if you press \cmdinline{TAB}.
 \item summary of tasks in a calendar
-  a small calendar at the bottom right corner with the dates that has tasks due highlighted
 
-\item incremental search
-  of tasks by keyword.
+  Press \cmdinline{c} in TUI, a small calendar would appear at the bottom right corner. The dates that has tasks due have a highlighted background. You can navigate dates using arrow keys to see what exactly are the tasks due on that date.
+\item incremental search of tasks by keyword.
+
+  Press \cmdinline{s} in TUI to start incremental search -- tasks become fewer and fewer as you type. Press \cmdinline{ENTER} to end searching and do whatever thing you like on the tasks!
 \end{enumerate}
+
 This is a summary of the key bindings:\\
 
 \begin{tabular}{c | c}
@@ -678,6 +680,7 @@ will call add command executor to carry out the detailed work. If the operation 
 successfully carried out, a result object will be returned to the shell. The shell will then
 call the IO module again with the result object to display the added task on the screen.
 \item Command Executors
+
 The command executor class is a class that deals with underlying data structures, as its
 name implies. It is in fact an abstract class that is extended by MainCommandExecutor
 and SubCommandExecutors. MainCommandExecutor takes in a command object and
@@ -690,6 +693,7 @@ lsCommandExecutor object and asks it to do the actual work. lsCommandExecutor wi
 scan through all the tasks and then a result object containing all the tasks will be
 returned.
 \item Parser
+
 Parser can perform the conversion from input to command, that is, deduce the input text
 and parse it to a command object. The command class’s attributes and operations are
 given as follows.
@@ -698,9 +702,8 @@ The parser is also able to convert a result object to text for output. The resul
 attributes and operations are given as follows.
 
 The following class diagram shows the relationship between command executors.
-\end{enumerate}
-
 \item Filters
+
 The filter classes are designed for selecting tasks with specific characteristics out from the
 task list which stores all the tasks.
 
@@ -709,6 +712,7 @@ actual work. For example, a GFilter uses a string as its keyword. It will filter
 do not have this keyword as its group name.
 
 \item Auto-completion
+
 Auto-completion function is available in the TUI. The implementation of auto-completion is
 through an auto-completion class. The auto-completion agent is a knowledge-based agent.
 Its knowledge base is initialized to be all tokens in existing task descriptions and group names.
@@ -740,28 +744,25 @@ are all done on duplications of the task list object passed in. We want to make 
 task list is safely prevented from being accidentally screwed up.
 \end{enumerate}
 \end{enumerate}
+\end{enumerate}
 
-\subsection{Typical Use Cases Explained}
+\subsection{Typical Use Cases Explained in Sequence Diagrams}
 Assume we are adding a task ``Write developer’s guide'' with deadline ``1d'':
 
 \\The top level sequence diagram looks like:
-\begin{figure}[h]
-  \centering
-  \includegraphics[scale=0.6]{top-level-sequence-diagram}
-\end{figure}
+\begin{center}
+  \includegraphics[scale=0.7]{top-level-sequence-diagram}
+\end{center}
 
 A more detailed sequence diagram inside the Logic:
-\begin{figure}[h]
-  \centering
-  \includegraphics[scale=0.6]{sequence-diagram-inside-logic-part}
-\end{figure}
-
+\begin{center}
+  \includegraphics[scale=0.5]{sequence-diagram-inside-logic-part}
+\end{center}
 
 What happens inside the UI part:
-\begin{figure}[h]
-  \centering
-  \includegraphics[scale=0.6]{sequence-diagram-inside-UI-part}
-\end{figure}
+\begin{center}
+  \includegraphics[scale=0.5]{sequence-diagram-inside-UI-part}
+\end{center}
 
 \subsection{Miscellaneous}
 \begin{enumerate}
@@ -778,10 +779,13 @@ The following figure shows the structure of comparer class.
 
 \item util.cpp
 
-util.cpp is a file that implements some functions that are utilized in the program. These
-functions are ones that are not specifically related to certain classes but are very useful
-in modifying data. The functions are named in such a way that it clearly states what the
-function does. So there is no need to have further explanations here.
+util.cpp, as its name implies, provides utility functions for different classes.
+These functions are not specifically related to certain classes thus we did not wrap it in a ``Util'' class as it increases
+coupling of the software otherwise.
+
+%% but are very useful in modifying data.
+%% The functions are named in such a way that it clearly states what the
+%% function does. So there is no need to have further explanations here.
 %% \item TUI utilities
 
 %% The implementation of the TUI is based on PDcurses (public domain curses). This tool is
