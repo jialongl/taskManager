@@ -14,6 +14,7 @@
 %\oddsidemargin 0.3in
 %\topmargin -0.3in
 %\textheight 8.0in
+
 %\usepackage{setspace}
 %\onehalfspacing
 
@@ -35,9 +36,9 @@
   \\[0.4cm]
   \hrule
   \\[1.4cm]
+  \includegraphics[scale=0.73]{on_cover_page}
+  \\[1.1cm]
 
-\includegraphics[scale=0.73]{on_cover_page}
-\\[1.1cm]
   \begin{tabular}{c | c | c | c}
     \includegraphics[scale=0.72]{U099121H}&
     \includegraphics[scale=0.72]{U099122U}&
@@ -49,7 +50,7 @@
   \end{tabular}
 
   \vfill
-  {\large \today}
+  {\large Group L11\\ \today}
 \end{titlepage}
 
 \tableofcontents
@@ -128,7 +129,7 @@ All changes to the existing tasks will be automatically saved.
 \subsection{More commands}
 \subsubsection{read, import and export}
 
-TaskManager stores the tasks in an XML file which is by default \cmdinline{\~{}/record.xml} on *nix, and \cmdinline{\%USERPROFILE\%\textbackslash record.xml} on Windows.
+TaskManager stores the tasks in an XML file which is by default \cmdinline{$\sim$/record.xml} on *nix, and \cmdinline{\%USERPROFILE\%\textbackslash record.xml} on Windows.
 
 TaskManager also supports importing/exporting the existing tasks from/to XML and HTML files. This is done by \cmdinline{read}, \cmdinline{import} and \cmdinline{export} commands.
 
@@ -189,7 +190,7 @@ This is helpful when you only want to peek the content of an xml file without re
   \end{tabbing}
 }
 
-\footnotetext{ Currently \cmdinline{export} does not support environmental variables in path. i.e. \cmdinline{export \~{}/abc.xml} will not export the file to user's home directory \cmdinline{/home/username/}.}
+\footnotetext{ Currently \cmdinline{export} does not support environmental variables in path. i.e. \cmdinline{export $\sim$/abc.xml} will not export the file to user's home directory \cmdinline{/home/username/}.}
  
 \cmdinline{export} can also be used to generate an HTML file which is more visually pleasant in your favourate browser.
 \cmd{> \ export -html sampletasks.html\footnotemark\\
@@ -495,7 +496,7 @@ The first 3 tasks are the result of the first \cmdinline{ls} in the script. The 
 \subsubsection{startup script}
 
 By default, taskManager executes a special script everytime when it is started. 
-This script is \cmdinline{\~{}/.tmrc} on *nix and \cmdinline{\%USERPROFILE\%\textbackslash tmrc.txt} on Windows.
+This script is \cmdinline{$\sim$/.tmrc} on *nix and \cmdinline{\%USERPROFILE\%\textbackslash tmrc.txt} on Windows.
 This file can be editted to include customized settings.\\
 
 Examples:
@@ -549,8 +550,8 @@ The curses library should ship with most Linux distributions and Mac OS. If not,
 
 \newpage
 \section{Developer Guide}
-This part of the manual is mainly meant for developers. Users who are interested in finding
-out the actual structure behind are also welcome to read this part.
+This part of the manual is mainly meant for developers. Users who are interested in finding out
+the actual structure behind are also welcome to read this part.
 
 \subsection{Overview of Development}
 We strictly followed a top-down approach designing the software. Regarding the software
@@ -566,16 +567,15 @@ target users.
 
 This project aims to build up a task manager program that helps user to keep track of his /her
 to-dos. This program should provide the user with a CLI (command line interface). For example a
-user is able to type in “add "write developer's guide" -t 1d” to add in a new task "write
-developer's guide" which has a deadline of 1 day.
+user is able to type in \cmdinline{add "write developer's guide" -t 1d} to add in a new task ``write
+developer's guide'' which has a deadline of 1 day.
 
-We did some product surveys to find out what are the common features that existing products
+We did some surveys to find out what are the common features that existing products
 already have. By doing this, we also brainstorm together to come up with new features that could
 fill the blanks of existing products and provide users with software of better quality.
 
-The focus group of this project are mainly Windows users. By conducting interviews with typical
-Windows users, we have also decided to make a TUI (text user interface) in order to create a
-more user friendly environment. Details are given in section 2.4.
+As the product should cater Windows users, we have also decided to make a TUI (text user interface) in order to create a
+more user friendly environment after conducting interviews with typical Windows users. (user guide for TUI is given in section 2.4)
 %The TUI supports keyboard operations like arrow keys and screen scrolling. An example is given as below in Figure 1.
 
 \item OO Domain Model
@@ -587,7 +587,7 @@ sub-problems will be discussed later in this manual.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[scale=0.4]{a-condensed-OO-domain-model}
+  \includegraphics[scale=0.5]{a-condensed-OO-domain-model}
   \caption{A condensed OO domain model}
 \end{figure}
 \end{enumerate}
@@ -643,11 +643,16 @@ other components inside the program. For example, showOutput () takes in a resul
 object as an argument asks the parser to convert to text and prints out the result on the screen.
 
 \mbox{\texttt{
-  virtual CommandList getCommand() \{return vector<Command *>();\};\\
-  virtual void showOutput (Result* result);\\
-  virtual void showWelcomMessage() \{\};\\
-  virtual void handleException(exception_e except) \{\};\\
-  virtual void confirm(string prompt) \{return true;\};\\
+  virtual CommandList getCommand() \{return vector<Command *>();\};
+
+  virtual void showOutput (Result* result);
+
+  virtual void showWelcomMessage() \{\};
+
+  virtual void handleException(exception\_e except) \{\};
+
+  virtual void confirm(string prompt) \{return true;\};
+
   virtual void echo (string s)\{\};
 }}
 
@@ -717,38 +722,55 @@ Figure . AutoCompletionAgent class
 \subsection{Underlying Data Structures}
 \begin{enumerate}
 \item Task
-The task class is the main class that stores information for the user. The diagram describing
+
+The \cmdinline{task} class is the main class that stores information for the user. The diagram describing
 task class is given below.
 Figure . Task class
 Just to emphasize one thing, there is a clone () function for Task objects. It is designed for the
 sake of security matters. In order to protect user’s data and privacy, the modification or
 passing of Task objects are all done by duplicating the Task objects.
 \item Task List
-Task List class is a class that links multiple instances of Task objects to form a list which is easy
-to maintain and manipulate. The following diagram illustrates the structure of Task List class.
-For the same reason mentioned before, we specially designed a method called clone (). This
+
+\cmdinline{TaskList} class is a class that is used as a container of \cmdinline{Task} for the ease of manipulation.
+The following diagram illustrates the structure of Task List class.
+For the same reason mentioned before, we specially designed a method called clone(). This
 method basically duplicates the task list object. All manipulations except for “sort” operation
 are all done on duplications of the task list object passed in. We want to make sure that the
 task list is safely prevented from being accidentally screwed up.
 \end{enumerate}
 
-\subsection{Use cases in sequence diagrams}
-Assume we are adding a task ``Write developer’s guide'' with deadline ``1d''.
-Top level:
+\subsection{A typical use case explained}
+Assume we are adding a task ``Write developer’s guide'' with deadline ``1d'':
 
-A more detailed use case inside Logic part is shown as follows:
+\\The top level sequence diagram looks like:
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.6]{top-level-sequence-diagram}
+\end{figure}
 
-The actual use case inside the UI part is given as follows:
+A more detailed sequence diagram inside the Logic:
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.6]{sequence-diagram-inside-logic-part}
+\end{figure}
 
+
+What happens inside the UI part:
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.6]{sequence-diagram-inside-UI-part}
+\end{figure}
 
 \subsection{Miscellaneous}
 \begin{enumerate}
 \item util.cpp
+
 util.cpp is a file that implements some functions that are utilized in the program. These
 functions are ones that are not specifically related to certain classes but are very useful
 in modifying data. The functions are named in such a way that it clearly states what the
 function does. So there is no need to have further explanations here.
-\item 2. TUI utilities
+\item TUI utilities
+
 The implementation of the TUI is based on PDcurses (public domain curses). This tool is
 free and downloadable. “PDCurses is a public domain curses library for DOS, OS/2,
 Win32, X11 and SDL, implementing most of the functions available in X/Open and
