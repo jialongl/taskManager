@@ -224,11 +224,20 @@ string ListDisplayElement::formatDate(time_t t){
         "Nov",
         "Dec"
     };
+    string weekday[] = {
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+    };
     string st;
     if (t==NO_SPECIFIC_DEADLINE) st = "< Anytime >  "; 
     else{
         struct tm* datetime = localtime(&t);
-        st = "< "+ NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year+1900)+" >  ";
+        st = "< "+ weekday[datetime->tm_wday] + " "+ NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year+1900)+" >  ";
         time_t curTime = currentTime();
         datetime = localtime(&curTime);
         datetime->tm_hour = 0;
@@ -1089,10 +1098,19 @@ void ListDisplayElement::drawSelectNumber(){
         "Nov",
         "Dec"
     };
+    string weekday[] = {
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+    };
     time_t now = currentTime();
     struct tm* datetime;
     datetime = localtime(&now);
-    string today = "Today is "+NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year + 1900);
+    string today = "Today is "+weekday[datetime->tm_wday]+" "+NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year + 1900);
     string st =" "+ NumberToString((selectTask+1)>tasks.size()?tasks.size():selectTask+1)+" of "+NumberToString(tasks.size())+" Tasks ";
     int mx,my;
     getmaxyx(listWindow,mx,my);

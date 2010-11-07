@@ -246,24 +246,25 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
 
             if (script.is_open()){
                 string line;
-                while (getline(script, line) && line[0] != '#'){ // '#' starts a line of comment
+                while (getline(script, line)){ // '#' starts a line of comment
                     try{
                         CommandList commandList;
                         Command *command;
                         Result *result2;
                         commandMethod mtd;
+                        if (line[0] != '#'){
+                            commandList = parser->inputToCommandList(line);
+                            if (commandList.size()!=0){
 
-                        commandList = parser->inputToCommandList(line);
-                        if (commandList.size()!=0){
-
-                            result2 = executeCommandList(commandList);
-                            IOModule->showOutput(result2); 
-              
-                            if (toChangeIOModule){
-                                 delete IOModule;
-                                 IOModule = newIOModule;
-                                 IOModule->echo("\nDone\n");
-                                 toChangeIOModule = false;
+                                result2 = executeCommandList(commandList);
+                                IOModule->showOutput(result2); 
+                  
+                                if (toChangeIOModule){
+                                     delete IOModule;
+                                     IOModule = newIOModule;
+                                     IOModule->echo("\nDone\n");
+                                     toChangeIOModule = false;
+                                }
                             }
                         }
                     
@@ -328,7 +329,7 @@ bool Shell::oneIteration(){
 //          cout<<"!!get"<<endl;
         // output the command
           if (commandList.size()!=0){
-//              IOModule->echo(commandList[0]->originalCommand);
+              IOModule->echo(commandList[0]->originalCommand);
               result = executeCommandList(commandList);
               IOModule->showOutput(result); 
               if (toChangeIOModule){

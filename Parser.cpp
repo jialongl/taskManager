@@ -99,9 +99,9 @@ void Parser::parse_date (string s, time_t *seconds) {
   if (isNumber(s))
     *seconds = StringToNum(s);
 
-  else if (isDigit(s[0])) {
+  else if (isDigit(s[0]) || s[0] == '-') {
 	  for (int j = 0; j < s.length(); j++) {
-		  this_number = StringToNum( s.substr(digit_pos, j-digit_pos) );
+		  this_number = StringToNum( s.substr(digit_pos, j - digit_pos) );
 		  if (s[j] == 'w') {
 			  *seconds += this_number * 604800;
 			  digit_pos = j + 1;
@@ -131,7 +131,7 @@ void Parser::parse_date (string s, time_t *seconds) {
 	  now_tm = localtime(&now);
 
 	  while( j < s.length()) {
-		  if (!isDigit(s[j])) { //s[j] is (at least) a letter
+		  if (!(isDigit(s[j])) && s[j] != '-') { //s[j] is (at least) a letter
 			  break;
 		  }
 		  j++;
@@ -411,6 +411,7 @@ void Parser::map_parse() {
   string origin = trimInvertedCommas( args.at(2) );
 
   if (alias != "map") {
+      cout<<"mapping : "<<alias<<" to "<<origin<<endl;
     commandAliases.push_back(alias);
     commandOriginals.push_back(origin);
   }
