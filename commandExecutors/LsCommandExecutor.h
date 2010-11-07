@@ -8,6 +8,7 @@
 #include "../filters/FFilter.h"
 #include "../filters/GFilter.h"
 #include "../filters/OFilter.h"
+#include "../filters/IFilter.h"
 #include "../Comparer.h"
 
 class LsCommandExecutor:public CommandExecutor{

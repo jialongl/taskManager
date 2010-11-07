@@ -12,6 +12,7 @@ class Command{
   commandMethod method;
   string taskDescription;
   time_t deadline;
+  time_t deadline2;
   int priority;
   string group;
   int cronFreq;

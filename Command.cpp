@@ -31,5 +31,6 @@ Command::Command(){
   taskDescription = "";
   filename = "";
   deadline = 0;//currentTime();
+  deadline2 = 0;
   method = NULLCOMMAND;
 }

@@ -298,6 +298,25 @@ void Parser::ls_parse() {
 	  cmd->sortKeyword.push_back(PRIORITY);
       }
     }
+
+    else if (* iter == "-i" && (iter + 1 != args.end())){
+      string times = *(++iter);
+      int pos = 0;
+      for (int i=0;i<times.length();i++){
+          if (times[i] == ':') {
+              pos = i;
+              break;
+          }
+      }
+      if (pos < times.size() && times[pos] == ':'){
+          time_t d0;
+          time_t d1;
+          parse_date(times.substr(0,pos),&d0);
+          parse_date(times.substr(pos+1,times.size() - pos - 1),&d1);
+          cmd->deadline = d0;
+          cmd->deadline2 = d1;
+      }
+    }
   }
 }
 

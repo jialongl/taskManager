@@ -8,6 +8,7 @@ Result* LsCommandExecutor::executeCommand(TaskList* mainTaskList,Command *comman
         if (command->finishFlag == NO) filters.push_back(new FFilter(false));
         if (command->group != "") filters.push_back(new GFilter(command->group));
         if (command->overdue) filters.push_back(new OFilter());
+        if (command->deadline2 != 0) filters.push_back(new IFilter(command->deadline,command->deadline2));
         TaskList* list = mainTaskList->clone();
         for (vector<Filter*>::iterator it = filters.begin(); it != filters.end(); it++){
             TaskList* tmp = list->getTasks(*it);
