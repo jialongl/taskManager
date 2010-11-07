@@ -32,7 +32,7 @@ Add a new task to the task list.
 \fB-p \fPSpecify a priority for the task. Typically it is a number between -20 and 20.
 
 .TP
-\fBls [ -s "\fI Keyword1\fP \fIKeyword2\fP ...\fB" ] [ -k \fIKeyword\fB ] [ -f \fIyes/no\fB ] [ -g \fIgroup\fB ]\fP
+\fBls [ -s "\fI Keyword1\fP \fIKeyword2\fP ...\fB" ] [ -k \fIKeyword\fB ] [ -f \fIyes/no\fB ] [ -g \fIgroup\fB ] [ -i \fIt0\fB:\fIt1\fB ]\fP
 Provide a list of added tasks. 
 
 \fB-s \fPSort the list with Keyword(s) specified. Available keywords are \fBdeadline\fP, \fBpriority\fP, \fBserialnumber\fP.
@@ -40,6 +40,8 @@ Provide a list of added tasks.
 \fB-k \fPFilter the list with keyword provided. Keywords can contain \fB*\fP and \fB?\fP.
 
 \fB-g \fPShow only tasks from specific group.
+
+\fB-i \fPShow a list of tasks with deadline between t0 and t1. (>=t0, <t1)
 
 .TP
 .B rm [ \fItaskNumber1\fP \fItaskNumber2\fP \fItaskNumber2\fP \fB... ] [ -g \fIgroup\fB ]

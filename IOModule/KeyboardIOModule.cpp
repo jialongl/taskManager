@@ -41,7 +41,7 @@ void KeyboardIOModule::displayHelp(){
     cout<<"Usage:"<<endl;
     cout<<"\ttaskManager [ subcommand1 ] | [ subcommand2 ] | ..."<<endl;
     cout<<"Subcommands:"<<endl;
-    cout<<"\tls \t[ -s \" Keyword1 Keyword2 ...\" ] [ -k Keyword ] [ -f yes/no ] [ -g group ]"<<endl;
+    cout<<"\tls \t[ -s \" Keyword1 Keyword2 ...\" ] [ -k Keyword ] [ -f yes/no ] [ -g group ] [ -i t0:t1 ]"<<endl;
     cout<<"\trm \t[ taskNumber1 taskNumber2 taskNumber2 ... ] [ -g group ]"<<endl;
     cout<<"\texport \t[ -html ] filename"<<endl;
     cout<<"\tpri \tserialNumber [ priority ]"<<endl;
