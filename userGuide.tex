@@ -553,7 +553,8 @@ The curses library should ship with most Linux distributions and Mac OS. If not,
 This part of the manual is mainly meant for developers. Users who are interested in finding out
 the actual structure behind are also welcome to read this part.
 
-\subsection{Overview of Development}
+\subsection{Development Process}
+\subsubsection{Overview}
 We strictly followed a top-down approach designing the software. Regarding the software
 development life cycle (SDLC), our team is following the iterative approach on the whole. In each
 iteration, we are following the waterfall approach so that every
@@ -561,13 +562,13 @@ version of our software is a complete and working product that satisfies our
 target users.
 % At the beginning of each iteration of the SDLC, we specify the requirements and functionalities of this iteration.
 
-\subsection{Domain Analysis}
+\subsubsection{Domain Analysis}
 \begin{enumerate} 
 \item Requirements
 
 This project aims to build up a task manager program that helps user to keep track of his /her
 to-dos. This program should provide the user with a CLI (command line interface). For example a
-user is able to type in \cmdinline{add "write developer's guide" -t 1d} to add in a new task ``write
+user is able to type \cmdinline{add "write developer's guide" -t 1d} to add a new task ``write
 developer's guide'' which has a deadline of 1 day.
 
 We did some surveys to find out what are the common features that existing products
@@ -592,7 +593,7 @@ sub-problems will be discussed later in this manual.
 \end{figure}
 \end{enumerate}
 
-\subsection{Architecture}
+\subsubsection{Architecture}
 We have chosen to use a multi-tier architecture. And we have chosen the most widely used
 three-tier architecture to implement the program. Figure 3 shows a diagram representation of
 the architecture. The user can interact with the software through either command line interface
@@ -606,7 +607,7 @@ files which store all the user data.
   \caption{Three-tier Architecture}
 \end{figure}
 
-\subsection{Implementation}
+\subsubsection{Implementation}
 \begin{enumerate}
 \item  Overview of the implementation structure
 \begin{figure}[h]
@@ -698,9 +699,8 @@ attributes and operations are given as follows.
 
 The following class diagram shows the relationship between command executors.
 \end{enumerate}
-\end{enumerate}
 
-\subsection{Filters}
+\item Filters
 The filter classes are designed for selecting tasks with specific characteristics out from the
 task list which stores all the tasks.
 
@@ -708,7 +708,7 @@ The filter super class is basically an interface and the subclass filters are th
 actual work. For example, a GFilter uses a string as its keyword. It will filter out the tasks that
 do not have this keyword as its group name.
 
-\subsection{Auto-completion}
+\item Auto-completion
 Auto-completion function is available in the TUI. The implementation of auto-completion is
 through an auto-completion class. The auto-completion agent is a knowledge-based agent.
 Its knowledge base is initialized to be all tokens in existing task descriptions and group names.
@@ -719,9 +719,10 @@ exists, the agent will answer an empty string.
 The following diagram shows the details of the AutoCompletionAgent class.
 Figure . AutoCompletionAgent class
 
-\subsection{Underlying Data Structures}
+\item Underlying Data Structures
 \begin{enumerate}
 \item Task
+
 
 The \cmdinline{task} class is the main class that stores information for the user. The diagram describing
 task class is given below.
@@ -738,8 +739,9 @@ method basically duplicates the task list object. All manipulations except for �
 are all done on duplications of the task list object passed in. We want to make sure that the
 task list is safely prevented from being accidentally screwed up.
 \end{enumerate}
+\end{enumerate}
 
-\subsection{A typical use case explained}
+\subsection{Typical Use Cases Explained}
 Assume we are adding a task ``Write developer’s guide'' with deadline ``1d'':
 
 \\The top level sequence diagram looks like:
@@ -763,22 +765,33 @@ What happens inside the UI part:
 
 \subsection{Miscellaneous}
 \begin{enumerate}
+\item Comparer.cpp
+
+Comparer class is implemented so as to compare different tasks according to deadline/priority/serial number\ldots
+In fact sorting the tasks is made possible by \cmdinline{Comparer}. When a new comparer object is initialized, the keywords will be given to
+the comparer as arguments. The comparer is then able to sort some given tasks residing
+inside a task list according to the keywords (e.g. sort according to group, priority, etc.). \cmd{vector<Task*> TaskList::sort(Comparer* comp)\{\ldots\};}
+
+The code fragment above shows that sorting TaskList objects requires the presence of
+comparer object.
+The following figure shows the structure of comparer class.
+
 \item util.cpp
 
 util.cpp is a file that implements some functions that are utilized in the program. These
 functions are ones that are not specifically related to certain classes but are very useful
 in modifying data. The functions are named in such a way that it clearly states what the
 function does. So there is no need to have further explanations here.
-\item TUI utilities
+%% \item TUI utilities
 
-The implementation of the TUI is based on PDcurses (public domain curses). This tool is
-free and downloadable. “PDCurses is a public domain curses library for DOS, OS/2,
-Win32, X11 and SDL, implementing most of the functions available in X/Open and
-System V R4 curses. It supports many compilers for these platforms. The X11 port lets
-you recompile existing text-mode curses programs to produce native X11 applications.
-PDCurses is distributed mainly as source code, but some pre-compiled libraries are
-available.” (Quoted from: http://pdcurses.sourceforge.net/) The source files are available
-for download at http://sourceforge.net/projects/pdcurses/files/
+%% The implementation of the TUI is based on PDcurses (public domain curses). This tool is
+%% free and downloadable. “PDCurses is a public domain curses library for DOS, OS/2,
+%% Win32, X11 and SDL, implementing most of the functions available in X/Open and
+%% System V R4 curses. It supports many compilers for these platforms. The X11 port lets
+%% you recompile existing text-mode curses programs to produce native X11 applications.
+%% PDCurses is distributed mainly as source code, but some pre-compiled libraries are
+%% available.” (Quoted from: http://pdcurses.sourceforge.net/) The source files are available
+%% for download at http://sourceforge.net/projects/pdcurses/files/
 \end{enumerate}
 
 
@@ -823,7 +836,7 @@ We found nothing to do so we decided to meet again to further develop the protot
 He Haocong coded command executors \cmdinline{edit} and \cmdinline{rm}.\\
 Wang Xiangyu did the \cmdinline{import} command executor.\\
 Zhou Biyan was responsible for the \cmdinline{export} command executor.\\
-Liu Jialong was doing the parsing methods for \cmdinline{import} and \cmdinline{export}.
+Liu Jialong was doing the parsing methods for the above commands. % \cmdinline{import} and \cmdinline{export} \cmdinline{edit} and \cmdinline{rm}.
 
 \item Integrate v0.1
 
