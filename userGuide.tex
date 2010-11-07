@@ -549,6 +549,215 @@ The curses library should ship with most Linux distributions and Mac OS. If not,
 
 \newpage
 \section{Developer Guide}
+This part of the manual is mainly meant for developers. Users who are interested in finding
+out the actual structure behind are also welcome to read this part.
+
+\subsection{Overview of Development}
+We strictly followed a top-down approach designing the software. Regarding the software
+development life cycle (SDLC), our team is following the iterative approach on the whole. In each
+iteration, we are following the waterfall approach so that every
+version of our software is a complete and working product that satisfies our
+target users.
+% At the beginning of each iteration of the SDLC, we specify the requirements and functionalities of this iteration.
+
+\subsection{Domain Analysis}
+\begin{enumerate} 
+\item Requirements
+
+This project aims to build up a task manager program that helps user to keep track of his /her
+to-dos. This program should provide the user with a CLI (command line interface). For example a
+user is able to type in “add "write developer's guide" -t 1d” to add in a new task "write
+developer's guide" which has a deadline of 1 day.
+
+We did some product surveys to find out what are the common features that existing products
+already have. By doing this, we also brainstorm together to come up with new features that could
+fill the blanks of existing products and provide users with software of better quality.
+
+The focus group of this project are mainly Windows users. By conducting interviews with typical
+Windows users, we have also decided to make a TUI (text user interface) in order to create a
+more user friendly environment. Details are given in section 2.4.
+%The TUI supports keyboard operations like arrow keys and screen scrolling. An example is given as below in Figure 1.
+
+\item OO Domain Model
+
+A condensed object-oriented domain model is given as follows. This model is an overview of the
+problem domain and ignores most of the details. Basically, the problem is modeled by a user
+interacting with a task manager that could manage his/her tasks. More detailed descriptions of
+sub-problems will be discussed later in this manual.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.4]{a-condensed-OO-domain-model}
+  \caption{A condensed OO domain model}
+\end{figure}
+\end{enumerate}
+
+\subsection{Architecture}
+We have chosen to use a multi-tier architecture. And we have chosen the most widely used
+three-tier architecture to implement the program. Figure 3 shows a diagram representation of
+the architecture. The user can interact with the software through either command line interface
+or TUI. The user interfaces will pass whatever command it receives from the user to the logic part.
+The logic unit of the program will then perform its tasks accordingly and manipulate the storage
+files which store all the user data.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{three-tier-architecture}
+  \caption{Three-tier Architecture}
+\end{figure}
+
+\subsection{Implementation}
+\begin{enumerate}
+\item  Overview of the implementation structure
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{architecture}
+  \caption{Architecture}
+\end{figure}
+
+The user input is read into the IO Module. It then calls a parser to parse the text input to a
+command object and returns to the I/O module. The command object is then passed to the
+shell. The shell calls command executors and execute the command accordingly. The storage
+files are then manipulated to record the operation. The command executor will return a
+result object to the shell. I/O module will be called again to receive the result object and
+output to the screen.
+The class diagram of the main components is given below:
+
+\item UI Implementation
+\begin{enumerate}
+\item Command Line User Interface
+
+This user interface basically reads in text input from the users and passes it to the task
+manager’s logic. When the user requires viewing the tasks, it will output the required
+fields to the user.
+\item Text-based User Interface
+
+This user interface basically provides an interactive interface between the user and the
+program. It receives inputs from the user and immediately outputs the corresponding
+changes to the screen.
+The basic input and output is controlled by an IO Module. It takes the user inputs and
+passes it to logic. At the same time, it is also called by the logic with computed results
+and asked to output to the screen. The following codes are pasted from TM\_IOModule.h.
+These are the interfaces of the IO Module. It shows how the IO Module interacts with
+other components inside the program. For example, showOutput () takes in a result
+object as an argument asks the parser to convert to text and prints out the result on the screen.
+
+\mbox{\texttt{
+  virtual CommandList getCommand() \{return vector<Command *>();\};\\
+  virtual void showOutput (Result* result);\\
+  virtual void showWelcomMessage() \{\};\\
+  virtual void handleException(exception_e except) \{\};\\
+  virtual void confirm(string prompt) \{return true;\};\\
+  virtual void echo (string s)\{\};
+}}
+
+
+Figure 6. Code fragments from IO Module
+\end{enumerate}
+
+\item Logic Implementation
+\begin{enumerate}
+\item Shell
+
+The core of this program is a shell that controls its behavior. It is initialized when the
+program starts. Shell does the work of calling command executors and IO Module. The
+shell takes in the command objects and calls the correct command executor to execute
+the command. The shell also deals with the results passed from command executors. It
+calls IO module with the result as an argument. The shell also controls some
+miscellaneous operations like redo (), undo (), backup (), etc.
+
+For example, if the command input is an “add” task operation, the Shell will receive a
+command object with “add” operation and other details about the task. Then the shell
+will call add command executor to carry out the detailed work. If the operation is
+successfully carried out, a result object will be returned to the shell. The shell will then
+call the IO module again with the result object to display the added task on the screen.
+\item Command Executors
+The command executor class is a class that deals with underlying data structures, as its
+name implies. It is in fact an abstract class that is extended by MainCommandExecutor
+and SubCommandExecutors. MainCommandExecutor takes in a command object and
+figures out the type of the command and distributes the work to corresponding
+SubCommandExecutor, which does thins to the underlying data structure and return a
+result object accordingly.
+For example, if the command object passed to main command executor has “ls” as its
+command field. The main command executor will infer this and invoke the
+lsCommandExecutor object and asks it to do the actual work. lsCommandExecutor will
+scan through all the tasks and then a result object containing all the tasks will be
+returned.
+\item Parser
+Parser can perform the conversion from input to command, that is, deduce the input text
+and parse it to a command object. The command class’s attributes and operations are
+given as follows.
+Figure 8. Command class
+The parser is also able to convert a result object to text for output. The result class’s
+attributes and operations are given as follows.
+
+The following class diagram shows the relationship between command executors.
+\end{enumerate}
+\end{enumerate}
+
+\subsection{Filters}
+The filter classes are designed for selecting tasks with specific characteristics out from the
+task list which stores all the tasks.
+
+The filter super class is basically an interface and the subclass filters are the filters that do the
+actual work. For example, a GFilter uses a string as its keyword. It will filter out the tasks that
+do not have this keyword as its group name.
+
+\subsection{Auto-completion}
+Auto-completion function is available in the TUI. The implementation of auto-completion is
+through an auto-completion class. The auto-completion agent is a knowledge-based agent.
+Its knowledge base is initialized to be all tokens in existing task descriptions and group names.
+Tokens are automatically added when a word is typed (only in TUI) or when a tasks is added
+or edited. When querying the agent with a prefix of a token, the agent will answer with the
+smallest suffix such that [prefix | suffix] is a token in the knowledge base. If no such suffix
+exists, the agent will answer an empty string.
+The following diagram shows the details of the AutoCompletionAgent class.
+Figure . AutoCompletionAgent class
+
+\subsection{Underlying Data Structures}
+\begin{enumerate}
+\item Task
+The task class is the main class that stores information for the user. The diagram describing
+task class is given below.
+Figure . Task class
+Just to emphasize one thing, there is a clone () function for Task objects. It is designed for the
+sake of security matters. In order to protect user’s data and privacy, the modification or
+passing of Task objects are all done by duplicating the Task objects.
+\item Task List
+Task List class is a class that links multiple instances of Task objects to form a list which is easy
+to maintain and manipulate. The following diagram illustrates the structure of Task List class.
+For the same reason mentioned before, we specially designed a method called clone (). This
+method basically duplicates the task list object. All manipulations except for “sort” operation
+are all done on duplications of the task list object passed in. We want to make sure that the
+task list is safely prevented from being accidentally screwed up.
+\end{enumerate}
+
+\subsection{Use cases in sequence diagrams}
+Assume we are adding a task ``Write developer’s guide'' with deadline ``1d''.
+Top level:
+
+A more detailed use case inside Logic part is shown as follows:
+
+The actual use case inside the UI part is given as follows:
+
+
+\subsection{Miscellaneous}
+\begin{enumerate}
+\item util.cpp
+util.cpp is a file that implements some functions that are utilized in the program. These
+functions are ones that are not specifically related to certain classes but are very useful
+in modifying data. The functions are named in such a way that it clearly states what the
+function does. So there is no need to have further explanations here.
+\item 2. TUI utilities
+The implementation of the TUI is based on PDcurses (public domain curses). This tool is
+free and downloadable. “PDCurses is a public domain curses library for DOS, OS/2,
+Win32, X11 and SDL, implementing most of the functions available in X/Open and
+System V R4 curses. It supports many compilers for these platforms. The X11 port lets
+you recompile existing text-mode curses programs to produce native X11 applications.
+PDCurses is distributed mainly as source code, but some pre-compiled libraries are
+available.” (Quoted from: http://pdcurses.sourceforge.net/) The source files are available
+for download at http://sourceforge.net/projects/pdcurses/files/
+\end{enumerate}
 
 
 \newpage
