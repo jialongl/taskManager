@@ -103,6 +103,7 @@ vector<Task*> TaskList::sort(Comparer* comp){
   for (map<int,Task*>::iterator it = taskList.begin(); it!=taskList.end(); it++){
     ans.push_back(it->second);
   }
+  if (comp->isNull == true) return ans;
   for (vector<Task*>::iterator it1 = ans.begin(); it1 != ans.end(); it1++){
     for (vector<Task*>::iterator it2 = it1 + 1; it2 < ans.end(); it2++){
       if (!comp->compare(*it1, *it2)) {

@@ -11,6 +11,7 @@ class Comparer{
  private:
 
  public:
+  bool isNull;
   vector<sortKeyword_e> *keywords;
   Comparer(vector<sortKeyword_e> keys);
   Comparer();

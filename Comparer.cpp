@@ -3,6 +3,7 @@
 #include "Comparer.h"
 
 Comparer::Comparer(vector<sortKeyword_e> keys){
+  isNull = false;
   keywords = new vector<sortKeyword_e>;
   for (int i=0;i<keys.size();i++){
     keywords->push_back(keys[i]);
@@ -10,6 +11,7 @@ Comparer::Comparer(vector<sortKeyword_e> keys){
 }
 
 Comparer::Comparer(){
+  isNull = true;
   keywords = new vector<sortKeyword_e>;
   keywords->push_back(SERIAL_NUMBER);
 }

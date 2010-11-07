@@ -163,7 +163,7 @@ void Shell::start(string args){
                 if (toChangeIOModule){
                     delete IOModule;
                     IOModule = newIOModule;
-                    IOModule->echo("\n");
+                    IOModule->echo("\nDone\n");
                     toChangeIOModule = false;
                 }
             }
@@ -262,6 +262,7 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
                             if (toChangeIOModule){
                                  delete IOModule;
                                  IOModule = newIOModule;
+                                 IOModule->echo("\nDone\n");
                                  toChangeIOModule = false;
                             }
                         }
@@ -333,6 +334,7 @@ bool Shell::oneIteration(){
               if (toChangeIOModule){
                   delete IOModule;
                   IOModule = newIOModule;
+                  IOModule->echo("\nDone\n");
                   toChangeIOModule = false;
               }
           }
