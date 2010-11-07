@@ -157,7 +157,7 @@ void Shell::start(string args){
             commandList = parser->inputToCommandList(args);
 
             if (commandList.size()!=0){
-                IOModule->echo(commandList[0]->originalCommand);
+                if (typeid(*IOModule) == typeid(PdcIO)) IOModule->echo(commandList[0]->originalCommand);
                 result = executeCommandList(commandList);
                 IOModule->showOutput(result); 
                 if (toChangeIOModule){
@@ -329,7 +329,7 @@ bool Shell::oneIteration(){
 //          cout<<"!!get"<<endl;
         // output the command
           if (commandList.size()!=0){
-              IOModule->echo(commandList[0]->originalCommand);
+              if (typeid(*IOModule) == typeid(PdcIO)) IOModule->echo(commandList[0]->originalCommand);
               result = executeCommandList(commandList);
               IOModule->showOutput(result); 
               if (toChangeIOModule){
