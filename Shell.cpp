@@ -17,6 +17,11 @@ Shell::Shell(){
 
     agent = new AutoCompletionAgent();
     vector<string> lexicon;
+    lexicon.push_back("morning");
+    lexicon.push_back("afternoon");
+    lexicon.push_back("important");
+    lexicon.push_back("this");
+    lexicon.push_back("next");
     lexicon.push_back("add");
     lexicon.push_back("edit");
     lexicon.push_back("task");
