@@ -178,7 +178,7 @@ void Parser::add_parse() {
 
     else if ( (*iter)[0] == '"' && *(iter - 1) != "-g") {
       string temp = *iter;
-      cmd->taskDescription = temp.substr(1, temp.length() - 2);
+      cmd->taskDescription = trimInvertedCommas(temp);
     }
 
   }

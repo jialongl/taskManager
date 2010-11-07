@@ -11,6 +11,7 @@ all: $(OBJECTS)
 
 install:
 	cp taskManager /usr/bin
+	cp tmrc_hhc ~/.tmrc
 	cp taskManager.1 /usr/share/man/man1
 
 uninstall:

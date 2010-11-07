@@ -15,7 +15,6 @@ void AutoCompletionAgent::tell(string st){
     tree->tell(st);
 }
 string AutoCompletionAgent::ask(string st){
-    cout<<"";
     //misterious
     if (st.length()<2) return "";
     for (int i=0;i<st.length();i++){
@@ -30,7 +29,7 @@ bool AutoCompletionAgent::isChar(char ch){
 }
 
 char AutoCompletionAgent::toLowerCase(char ch){
-    if (ch < 97) ch+=97-65;
+    if (ch < 97) ch += (97-65);
     return ch;
 }
 
@@ -56,7 +55,7 @@ bool AutoCompletionAgent::isSeparator(char ch){
     if (ch == ':') return ture;
     if (ch == ';') return ture;
     */
-    return !(isChar(ch));
+    return !(isChar(toLowerCase(ch)));
 }
 
 vector<string> AutoCompletionAgent::tokenize(string s){
