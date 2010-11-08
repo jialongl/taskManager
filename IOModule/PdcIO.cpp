@@ -35,21 +35,20 @@ PdcIO::~PdcIO(){
 }
 
 CommandList PdcIO::getCommand(){
-    displayManager->redraw();
-    int ch;
+    int ch = 0;
     int mx=0, my=0;
     int count = 0;
     while (!commandReady){
         ch = getch();
         if (ch>=48 && ch<58){
-            count = (count*10+ch-48)%100;
+            count = count*10+ch-48;
         }
         else{
             if (count == 0) count =1;
-            for (int i=0;i<count;i++)
+//            for (int i=0;i<count;i++)
                 if (ch == 3)  setCommand(parser->inputToCommandList("exit"));
                 else if (ch == (int)'Q') setCommand(parser->inputToCommandList("notui"));
-                else displayManager -> handleKey(ch);
+                else displayManager -> handleKey(ch,count);
             count = 0;
         }
     }

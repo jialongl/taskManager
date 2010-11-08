@@ -31,6 +31,7 @@ class DisplayManager{
     void releaseForcus();
     void newElement(DisplayElement* element);
     void handleKey(int ch); 
+    void handleKey(int ch,int count); 
     void handleResult(Result* result);
     void setCommand(CommandList cl);
     void echo(string s);

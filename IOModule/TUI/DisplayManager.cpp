@@ -52,6 +52,13 @@ void DisplayManager::handleKey(int ch){
     }else escStack[escStackTop] -> handleKey(ch);
 }
 
+void DisplayManager::handleKey(int ch, int count){
+    if (count <= 1) handleKey(ch);
+    else if (ch != 'G' && ch != 'g' && ch != 'j' && ch != 'k' && ch != KEY_UP && ch != KEY_DOWN && ch != 'n' && ch != 'p') handleKey(ch);
+    else escStack[escStackTop] -> handleKey(ch,count);
+    
+}
+
 void DisplayManager::enterCommand(){
     int mx,my;
     getmaxyx(stdscr,mx,my);

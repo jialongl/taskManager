@@ -37,6 +37,7 @@ public:
     void draw();
     void naiveDraw();
     void handleKey(int ch);
+    void handleKey(int ch,int count);
     void handleConfirm(bool flag);
     void handleResult(Result* result);
     void reconstructLines();

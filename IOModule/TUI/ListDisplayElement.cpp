@@ -27,6 +27,7 @@ ListDisplayElement::~ListDisplayElement(){
 };
 
 void ListDisplayElement::draw(){
+ //   getch();
     int mx=0, my=0;
     getmaxyx(listWindow, mx, my);
     vector<sortKeyword_e> keys;
@@ -56,11 +57,13 @@ void ListDisplayElement::draw(){
     }
     wattroff(listWindow,_SELECT);
     wattron(listWindow,_NORMAL);
-    wrefresh(listWindow);
     drawSelectNumber();
+    wrefresh(listWindow);
     move(0,my-1);
+    refresh();
 }
 void ListDisplayElement::naiveDraw(){
+//    getch();
     if (navigateRow >= lines.size() && lines.size()>0) navigateRow = lines.size()-1;
     int mx=0, my=0;
     getmaxyx(listWindow, mx, my);
@@ -82,9 +85,65 @@ void ListDisplayElement::naiveDraw(){
     }
     wattroff(listWindow,_SELECT);
     wattron(listWindow,_NORMAL);
-    wrefresh(listWindow);
     drawSelectNumber();
+    wrefresh(listWindow);
     move(0,my-1);
+    refresh();
+}
+void ListDisplayElement::handleKey(int ch, int count){
+    int mx,my;
+    getmaxyx(listWindow,mx,my);
+    switch (ch){
+        case 'G':
+            for (int i=0;i<tasks.size();i++){
+                if (tasks[i]->getSerialNumber() == count){
+                    selectTask = i;
+                    break;
+                }
+            }
+            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
+            if (selectTask >= 0 && selectTask < tasks.size() && taskFinishAt[selectTask]>navigateRow+mx-2) navigateRow = taskFinishAt[selectTask]-mx+2;
+            if (navigateRow !=0 && is_time(lines[navigateRow - 1])) navigateRow--;
+            naiveDraw();
+            break;
+        case 'g':
+            if (count <= tasks.size()) selectTask = count-1;
+            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
+            if (selectTask >= 0 && selectTask < tasks.size() && taskFinishAt[selectTask]>navigateRow+mx-2) navigateRow = taskFinishAt[selectTask]-mx+2;
+            if (navigateRow !=0 && is_time(lines[navigateRow - 1])) navigateRow--;
+            naiveDraw();
+            break;
+        case 'j':
+        case KEY_DOWN:
+            selectTask += count;
+            if (selectTask >= tasks.size()) selectTask = tasks.size()-1;
+            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
+            if (selectTask >= 0 && selectTask < tasks.size() && taskFinishAt[selectTask]>navigateRow+mx-2) navigateRow = taskFinishAt[selectTask]-mx+2;
+            if (navigateRow !=0 && is_time(lines[navigateRow - 1])) navigateRow--;
+            naiveDraw();
+            break;
+        case 'k':
+        case KEY_UP:
+            selectTask -= count;
+            if (selectTask <0) selectTask = 0;
+            if (selectTask >= 0 && selectTask < tasks.size() && taskStartAt[selectTask]<navigateRow) navigateRow = taskStartAt[selectTask];
+            if (selectTask >= 0 && selectTask < tasks.size() && taskFinishAt[selectTask]>navigateRow+mx-2) navigateRow = taskFinishAt[selectTask]-mx+2;
+            if (navigateRow !=0 && is_time(lines[navigateRow - 1])) navigateRow--;
+            naiveDraw();
+            break;
+        case 'n':
+            navigateRow += count;
+            if (navigateRow >= lines.size()) navigateRow = lines.size()-1;
+            naiveDraw();
+            break;
+        case 'p':
+            navigateRow -= count;
+            if (navigateRow <0) navigateRow = 0;
+            naiveDraw();
+            break;
+        default:
+            break;
+    }    
 }
 void ListDisplayElement::handleKey(int ch){
     int mx,my;
@@ -1131,9 +1190,6 @@ void ListDisplayElement::drawSelectNumber(){
     wmove(listWindow,mx-1,2);
     wprintw(listWindow,today.c_str());
     wattroff(listWindow,_TIMELINE);
-    wrefresh(listWindow);
-    move(0,my2-1);
-    refresh();
 }
 string ListDisplayElement::lineWithNewGroup(int i,string group){
 

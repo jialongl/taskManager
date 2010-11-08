@@ -102,6 +102,7 @@ Shell::~Shell(){
     delete mainTaskList;
     delete mainCommandExecutor;
     delete parser;
+    delete agent;
     for (int i=0;i<redoStackTop;i++){
         delete redoStack[i];
     }

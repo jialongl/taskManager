@@ -13,6 +13,7 @@ public:
     void setParent(DisplayElement* element);
     virtual void draw()=0;
     virtual void handleKey(int ch){};
+    virtual void handleKey(int ch,int count){};
     virtual void handleConfirm(bool flag){};
     virtual void handleResult(Result* result){};
     virtual void reset(){};
