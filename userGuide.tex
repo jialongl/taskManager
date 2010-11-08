@@ -621,22 +621,24 @@ files which store all the user data.
   \caption{Three-tier Architecture}
 \end{figure}
 
-
 \subsubsection{Implementation}
 \begin{enumerate}
-\item  Overview of the implementation structure
+\item  Overview of the taskManager workflow:
+\begin{enumerate}
+\item The program starts with a \cmdinline{shell}.
+\item \cmdinline{Shell} asks \cmdinline{IO Module} to get user input.
+\item \cmdinline{IO Module} requests the \cmdinline{Parser} to parse the text input to a \cmdinline{CommandList} object for it. Then \cmdinline{IO Module} returns the \cmdinline{CommandList} to \cmdinline{Shell}.
+\item \cmdinline{Shell} calls \cmdinline{MainCommandExecutor} which will execute the command accordingly.
+\item The \cmdinline{MainCommandExecutor} returns a \cmdinline{Result} object to the \cmdinline{Shell}.
+\item \cmdinline{Shell} requests \cmdinline{IO Module} again to handle screen output using the \cmdinline{Result} object.
+\item \cmdinline{IO Module} uses \cmdinline{Parser} to parse the \cmdinline{Result} to a string and print that string.
+\end{enumerate}
 
-The user input is read into the \cmdinline{IO Module}. It then calls the \cmdinline{Parser} to parse the text input to a
-\cmdinline{Command} object which is  returned to the \cmdinline{IO Module}. Then \cmdinline{IO Module} passes the \cmdinline{Command} object to
-the \cmdinline{Shell} which calls a \cmdinline{Command Executor} and execute the command accordingly, be it manipulation on the storage or adding a command alias.
-
-The \cmdinline{Command Executor} will return a \cmdinline{Result} object to the \cmdinline{Shell}, which asks \cmdinline{IO Module} again to handle the \cmdinline{Result} object and print output, if any.
-
-The class diagram of the main components is given below:
+The flow chart of the above process is given as:
 \begin{figure}[h]
   \centering
-  \includegraphics[scale=0.4]{class-diagram}
-  \caption{Overview of Structure}
+  \includegraphics[scale=0.4]{class-diagram1}
+  \caption{Workflow of taskManager}
 \end{figure}
 
 \newpage
@@ -655,10 +657,10 @@ Thus in our implementation, they are both \cmdinline{IO Module}s  -- The CLI is 
 \end{enumerate}
 
 %\begin{lstlisting}[float=h,language=C++,caption={A "Hello World" program.},label={code:helloworld},captionpos=b,abovecaptionskip=1em,belowcaptionskip=-2em,columns=flexible,frame=single,linewidth=0.8\linewidth]
-
+\newpage
 \begin{center}
   \lstset{
-    caption=abstract methods defined in \cmdinline{TM\_IO\_Module.h},
+    caption=abstract methods in \cmdinline{TM\_IO\_Module.h} to apply polymorphism,
     basicstyle=\ttfamily\footnotesize\bfseries,
     columns=flexible,
     linewidth=0.9\linewidth,
@@ -685,10 +687,17 @@ The Logic part of taskManager is in charge of getting Command
 
 The \cmdinline{shell} is the controller of the whole Logic. Shell is able to start a loop that in each iteration:
 \begin{enumerate}
-\item asks \cmdinline{IO Module} for a \cmdinline{CommandList} object. Why a \cmdinline{CommandList} object instead of a \cmdinline{Command} object? It is because a line read by \cmdinline{IO Module} could contain several \cmdinline{Command}s separated by pipes (which are denoted as `\textbar', see user guide, command piping for details). %Let us not care about how \cmdinline{IO Module} generates that \cmdinline{CommandList} for now.
-\item calls the correct command executor for each \cmdinline{Command} in the \cmdinline{CommandList}. The ``correct command executor'' (referred to as \cmdinline{SubCommandExecutor} in ``Command Executors'') will do the work accordingly and return a \cmdinline{Result} object to \cmdinline{Shell}.
-\item passes the \cmdinline{Result} to \cmdinline{IO Module} and asks it to print thing to screen using the \cmdinline{Result}.
+\item asks \cmdinline{IO Module} for a \cmdinline{CommandList} object. Why a \cmdinline{CommandList} object instead of a \cmdinline{Command} object? It is because a line read by \cmdinline{IO Module} could contain several \cmdinline{Command}s separated by pipes (which are denoted as `\textbar', see section 2.5.1, command piping for details). 
+\item calls the \cmdinline{MainCommandExecutor} to handle each \cmdinline{Command} in the \cmdinline{CommandList}. A \cmdinline{Result} object will be returned to the \cmdinline{Shell}.
+\item passes the \cmdinline{Result} to \cmdinline{IO Module} and asks it to print things to screen using the \cmdinline{Result}.
 \end{enumerate}
+
+We applied the top-down approach when designing this loop so that \cmdinline{Shell} does not need to care about:
+\begin{itemize}
+\item how \cmdinline{IO Module} generates that \cmdinline{CommandList};
+\item how commands are executed -- it just calls \cmdinline{MainCommandExecutor};
+\item how \cmdinline{IO Module} prints to screen.
+\end{itemize}
 
 \cmdinline{Shell} can be considered as the top-level class in the taskManager Logic. It applies the Fa\c cade pattern. It is aware of every other component in the Logic and hides the complexity of the Logic from classes outside.
 %The shell also deals with the results passed from command executors. It
@@ -710,21 +719,57 @@ By the same argument, converting a \cmdinline{Result} object to text for output 
 \item Command Executors
 
 \cmdinline{Command Executor}s is a collection of classes that directly manipulates underlying data structures, as its
-name implies. \cmdinline{Command Executor} is an abstract class that is extended by \cmdinline{MainCommandExecutor} and \cmdinline{SubCommandExecutors} including \cmdinline{AddCommandExecutor}, \cmdinline{LsCommandExecutor}\ldots  \cmdinline{MainCommandExecutor} takes in a \cmdinline{Command} object, figures out the type of the command and distributes the work to corresponding \cmdinline{SubCommandExecutor}. which manipulates (be it add/set/get/remove items in) the underlying data structure and return a \cmdinline{Result} object accordingly.
+name implies. \cmdinline{Command Executor} is an abstract class that is extended by \cmdinline{MainCommandExecutor} and \cmdinline{SubCommandExecutor}s such as \cmdinline{AddCommandExecutor}, \cmdinline{LsCommandExecutor}\footnotemark\ldots \ The relationship between command executors is demonstrated in the  class diagram in Figure 6.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.44]{main-sub-commandexecutors}
+  \caption{MainCommandExecutor and SubCommandExecutors}
+\end{figure}
+
+\cmdinline{MainCommandExecutor} takes in a \cmdinline{Command} object, figures out the type of the command and distributes the work to corresponding \cmdinline{SubCommandExecutor}. which manipulates (be it add/set/get/remove items in) the underlying data structure and return a \cmdinline{Result} object accordingly.
+
+\footnotetext{ Note that we only use \cmdinline{SubCommandExecutor} as a name to refer to these command executors, \cmdinline{SubCommandExecutor} is never in the code.}
 
 For example, if the Command object passed to main command executor has ``ls'' as its
 command field. The main command executor will infer this and invoke the
 lsCommandExecutor object and asks it to do the actual work. lsCommandExecutor will
 scan through all the tasks and then a result object containing all the tasks will be
 returned.
+\item Comparer
 
-The following class diagram shows the relationship between command executors.
+\cmdinline{Comparer} is implemented so as to compare different tasks according to deadline/priority/serial number\ldots
+In fact sorting the tasks is made possible by \cmdinline{Comparer}. When a new comparer object is initialized, the keywords will be given to
+the comparer as arguments. The comparer is then able to sort some given tasks residing
+inside a task list according to the keywords (e.g. sort according to deadline, priority etc).
+
+\begin{center}
+  \lstset{
+    caption=sorting a task list requires a Comparer.
+    basicstyle=\ttfamily\footnotesize\bfseries,
+    columns=flexible,
+    linewidth=0.9\linewidth,
+    abovecaptionskip=0.5em,
+    frame=tb
+  }
+  \begin{lstlisting}
+    vector<Task*> TaskList::sort(Comparer* comp) {};
+  \end{lstlisting}
+\end{center}
+
+The code fragment above shows that sorting a task list objects requires a \cmdinline{Comparer} object.
 
 \item Filters
 
-The filter classes are designed for selecting tasks with specific characteristics out from the
-task list which stores all the tasks.
+\cmdinline{Filter} is an abstract class that is defined for selecting tasks that satisfy some condition from the main task list which stores all the tasks.
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.44]{filter-classes}
+  \caption{The Filter classes}
+\end{figure}
+
+It has subclasses like: 
 The filter super class is basically an interface and the subclass filters are the filters that do the
 actual work. For example, a GFilter uses a string as its keyword. It will filter out the tasks that
 do not have this keyword as its group name.
@@ -747,22 +792,21 @@ For the same reason above, a method \cmdinline{clone()} was implemented. All man
 are all done on duplications of the task list object passed in. We want to make sure that the task list is never screwed up by manipulations in other classes.
 \end{enumerate}
 
-\item Auto-completion
+\item Auto-completion Agent
 
 Auto-completion function is only available in the TUI. The auto-completion agent is a knowledge-based agent.
-Its knowledge base is initialized to be all tokens in existing task descriptions and group names.
+Its knowledge base is initialized to all tokens in existing task descriptions and group names.
 Tokens are automatically added when a word is typed (only in TUI) or when a tasks is added
-or edited. When querying the agent with a prefix of a token, the agent will answer with the
-smallest suffix such that [prefix | suffix] is a token in the knowledge base. If no such suffix
+or edited. When querying the agent with a string, the agent will answer with the
+shortest suffix that forms a know token with that string. If no such suffix
 exists, the agent will answer an empty string.
-The following diagram shows the details of the AutoCompletionAgent class.
 
-
-Figure . AutoCompletionAgent class
+%The following diagram shows the details of the AutoCompletionAgent class.
+%Figure . AutoCompletionAgent class
 \end{enumerate}
 \end{enumerate}
 
-\subsection{Typical Use Cases Explained in Sequence Diagrams}
+\subsection{A Typical Use Cases Explained in Sequence Diagrams}
 Assume we are adding a task ``Write developer’s guide'' with deadline ``1d'':
 
 \\The top level sequence diagram looks like:
@@ -772,27 +816,62 @@ Assume we are adding a task ``Write developer’s guide'' with deadline ``1d'':
 
 A more detailed sequence diagram inside the Logic:
 \begin{center}
-  \includegraphics[scale=0.5]{sequence-diagram-inside-logic-part}
+  \includegraphics[scale=0.7]{sequence-diagram-inside-logic-part}
 \end{center}
 
 What happens inside the UI part:
 \begin{center}
-  \includegraphics[scale=0.5]{sequence-diagram-inside-UI-part}
+  \includegraphics[scale=0.75]{sequence-diagram-inside-UI-part}
 \end{center}
+
+\subsection{Testing}
+In this section, we are going to present some bug reports produced during the development of
+this project. In the later development cycles we did not choose to code an ATD as constrained by time and the complexity of
+our project. However, we did have carried out systematic tests in order to discover bugs.
+
+The following is a part of the bug reports we kept:
+
+\vspace{0.15in}
+\noindent \begin{tabular}{c | c | c}
+  Bug Number & Description & Fixed by\\
+1 & Most exception will still cause memory leak. & He Haocong\\
+2 & Auto completion display bug. & He Haocong\\
+3 & Debug assertion failed when trying to edit in TUI. & He Haocong\\
+4 & Parser is adding extra spaces after \$0 replacement. & He Haocong\\
+5 & possible accessing string index out of range in Parser. & He Haocong\\
+6 & \multilineL{map bug: \$0 does not match arbitray number of tokens.} & Liu Jialong\\
+7 & \multilineL{map bug: misbehavior of ``ls -g default'' after map ``ls'' ``ls -f yes''.} & Liu Jialong\\
+\end{tabular}
+
+\subsection{Possible Extensions}
+Currently the product is a console application. Listed are some possible directions for extension
+of this project.
+\begin{enumerate}
+\item User and Authentication controls
+
+One possible feature that could be implemented is to make this program support multi-user
+environment. In order to make sure the privacy of each user, it is better to include password
+features.
+\item GUI (Graphical User Interface) development
+
+The current product has a command line based user interface together with a TUI.
+Developers can make use of the core of this program to develop a graphical user interface. It
+will possibly make this product more user-friendly and easier to use.
+\item Windows notification application
+
+Currently the product is able to help the user keep track of the tasks. Future improvement
+could involve some alarm-like notifications. The project team has attempted to tackle this
+feature. However, due to the limitation of time and knowledge, we are not able to integrate
+this functionality into current v0.2 product.
+\item Remote control
+
+The current product is only working on independent terminals. In future extensions, it is
+possible to extend this product to a network-support. Users are able to update their tasks
+lists at any terminal with Internet access.
+\end{enumerate}
 
 \subsection{Miscellaneous}
 \begin{enumerate}
-\item Comparer.cpp
-
-Comparer class is implemented so as to compare different tasks according to deadline/priority/serial number\ldots
-In fact sorting the tasks is made possible by \cmdinline{Comparer}. When a new comparer object is initialized, the keywords will be given to
-the comparer as arguments. The comparer is then able to sort some given tasks residing
-inside a task list according to the keywords (e.g. sort according to group, priority, etc.). \cmd{vector<Task*> TaskList::sort(Comparer* comp){\ldots};}
-
-The code fragment above shows that sorting TaskList objects requires the presence of
-comparer object.
-The following figure shows the structure of comparer class.
-
 \item util.cpp
 
 util.cpp, as its name implies, provides utility functions for different classes.
@@ -841,8 +920,8 @@ We sat down together in a quiet lab and created the source files in to just prin
 
 He Haocong was responsible for the \cmdinline{Shell}, which acted as a UI, and the \cmdinline{add} and \cmdinline{ls} command executors.\\
 Liu Jialong was doing the parsing methods for the above commands.\\
-Wang Xiangyu did  \\
-Zhou Biyan was coding for 
+%Wang Xiangyu did  \\
+Zhou Biyan was taking down notes for the design --- including the architecture and class definitions.
 
 All members participated equally.
 
@@ -851,7 +930,7 @@ All members participated equally.
 Date: Sept 19\\
 Members attended: All
 
-We found nothing to do so we decided to meet again to further develop the prototype. This time we finished \cmdinline{import} and \cmdinline{export} commands. We decided to store the user's tasks in an XML file. Immediately we came to the problem of storing tasks with characters like \cmdinline{<}, \cmdinline{>} and \cmdinline{/}. We learnt from the way web browsers handles HTML -- store the special characters as \emph{``entities''}.
+We found nothing to do so we decided to meet again to further develop the prototype. This time we finished \cmdinline{import} and \cmdinline{export} commands. We decided to store the user's tasks in an XML file. Immediately we came to the problem of storing tasks with characters like \cmdinline{<}, \cmdinline{>} and \cmdinline{/}. We learnt from the way web browsers handles HTML -- store the special characters as ``entities''.
 
 He Haocong coded command executors \cmdinline{edit} and \cmdinline{rm}.\\
 Wang Xiangyu did the \cmdinline{import} command executor.\\
@@ -881,7 +960,7 @@ Then the details of the implementation were discussed. The architecture was not 
 Liu Jialong was allocated to code the prasing methods.\\
 He Haocong was responsible for the TUI and \cmdinline{run}, \cmdinline{undo} and \cmdinline{redo} command executors.\\
 Wang Xiangyu was asked to find out how notifications work on Windows.\\
-Zhou Biyan \ldots
+%Zhou Biyan \ldots
 
 \item Rearrange the code to compile on Windows (overnight session)
 
@@ -923,6 +1002,6 @@ We met up to:
 Date: Nov 8\\
 Members attended: He Haocong, Liu Jialong, Zhou Biyan
 
-Amend proj manual.
+Fine tuning the software and proj manual.
 Do video.
 \end{document}
