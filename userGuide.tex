@@ -1,6 +1,5 @@
 \documentclass[12pt, a4paper]{article}
 \usepackage{indentfirst}
-%\usepackage{amsmath}
 \usepackage{graphicx}
 \graphicspath{{/home/jialongl/Documents/sem3/se/proposal/}{/home/jialongl/Documents/sem3/se/finalprojScreenshots/}}
 \usepackage{hyperref}
@@ -8,8 +7,18 @@
     colorlinks,
     urlcolor=blue
 }
-
+\usepackage{verbatim}
 \usepackage{fullpage}
+
+\usepackage{color}
+\definecolor{light-gray}{gray}{0.80}
+
+\usepackage{listings}
+\lstset{breaklines=true,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\scriptsize\sffamily\raggedright,
+  captionpos=b
+}
 
 %\oddsidemargin 0.3in
 %\topmargin -0.3in
@@ -72,14 +81,19 @@ On Mac OS and GNU Linux (referred to as ``*nix'' later), taskManager can be star
 
 On Microsoft Windows, taskManager can be launched in command prompt as well, or simply by double clicking ``taskManager.exe''.
 
-Once taskManager is launched, you will see a prompt like \cmdinline{"\textgreater\_"}, and you will start typing commands!
+Once taskManager is launched, you will see a prompt like \cmdinline{"> \_"}, and you will start typing commands!
 
 \footnotetext{ *nix version can be run at any directory after installing taskManager -- \cmdinline{"make install"}. See details in section \cmdinline{"Compilation and Installation".}}
 
-\item Add some tasks:\cmd{\$ ./taskManager\\
-  > \  add "Sample task 1"\\
-  > \  add "Sample task 2"\\
-  TaskManager: This task is highly similiar to some existing task, do you really want to add it? \textcolor{blue}{y}}
+\item Add some tasks:\cmd{\begin{tabbing}
+    \$ ./taskManager\\
+    > \ \=add "Sample task 1"\\
+    > \ \>add "Sample task 2"\\
+    TaskManager: This task is highly similiar to some existing task:\\
+    \>1 \hspace{0.3in}Sample task 1\\
+  Do you really want to add it? \textcolor{blue}{y}
+  \end{tabbing}
+}
 To add a task, simply use \texttt{add} command followed by the description of the task in a pair of quotation marks.
 
 \emph{If no error messages are shown, the task is successfully added.}
@@ -458,8 +472,8 @@ The latter command will be parsed as \cmdinline{add "Finish user guide" -t 1d}, 
   > \ do "Laundry" at 4h}
 The latter command will be parsed as \cmdinline{add "Laundry" -t 4h}, and a new task called ``Laundry'' will be added with the deadline of 4hours.
 
-\item \cmd{> \ map "ls \$0" "ls -f no \$0"
-  > \ ls
+\item \cmd{> \ map "ls \$0" "ls -f no \$0"\\
+  > \ ls\\
   > \ ls -g cs2103}
 The second command will be parsed as \cmdinline{ls -f no}, and will list out all unfinished tasks.
 The third command will be parsed as \cmdinline{ls -f no -g cs2103}, and will list out all unfinished cs2103 tasks.
@@ -531,10 +545,10 @@ On Windows, taskManager can be built with Visual Studio 2008\textsuperscript{\te
 \item Start Visual Studio with ``C++ Development Settings''.
 \item Create an \emph{empty win32 console project} called ``taskManager''.
 \item Drag all the .h and .cpp files (including those in the subdirectories) into the solution folder. Files should be automatically categorized into header files and source files.
-\item Press \cmdinline{Alt + F7} to edit the project properties. Under \cmdinline{"Configuration Properties" => "General"}, set \cmdinline{"Character Set"} to be \cmdinline{"Use Multi-Byte Character Set"}; Under \cmdinline{"Linker" => "Input"}, add pdcurses.lib to \cmdinline{"Additional Dependencies"} and add the folder containing pdcurses.lib to \cmdinline{"Additional Library Directories"}.
-\item Copy pdcurses.dll to \cmdinline{\%WINDIR\%\textbackslash system32\textbackslash} or the directory your executable will be generated (which would be the ``Debug'' folder).
+\item Press \cmdinline{Alt + F7} to edit the project properties. Under \cmdinline{"Configuration Properties" => "General"}, set \cmdinline{"Character Set"} to be \cmdinline{"Use Multi-Byte Character Set"}; Under \cmdinline{"Linker" => "Input"}, add pdcurses.lib to \cmdinline{"Additional Dependencies"} and add the folder containing \cmdinline{pdcurses.lib} to \cmdinline{"Additional Library Directories"}.
+\item Copy \cmdinline{pdcurses.dll} to \cmdinline{\%WINDIR\%\textbackslash system32\textbackslash} or the directory your executable will be generated (which would probably be ``Debug'' folder).
 \item Build the solution.
-\item Copy the \cmdinline{tmrc} to your home directory (e.g. \cmdinline{C:\textbackslash Documents and Settings\textbackslash John Doe\textbackslash} on Windows XP) and rename it to \cmdinline{tmrc.txt} in order to use the commands we pre-customized. This step is optional.
+\item Copy \cmdinline{tmrc} to your home directory (e.g. \cmdinline{C:\textbackslash Documents and Settings\textbackslash John Doe\textbackslash} on Windows XP) and rename it to \cmdinline{tmrc.txt} in order to use the commands we pre-customized. This step is optional.
 \end{enumerate}
 
 \footnotetext{ Menu names mentioned below may vary among different versions of Visual Studio.}
@@ -570,12 +584,10 @@ target users.
 
 This project aims to build up a task manager program that helps user to keep track of his /her
 to-dos. This program should provide the user with a CLI (command line interface). For example a
-user is able to type \cmdinline{add "write developer's guide" -t 1d} to add a new task ``write
-developer's guide'' which has a deadline of 1 day.
+user is able to type \mbox{\cmdinline{add "write developer's guide" -t 1d}} to add a new task ``write developer's guide'' which has a deadline of 1 day.
 
-We did some surveys to find out what are the common features that existing products
-already have. By doing this, we also brainstorm together to come up with new features that could
-fill the blanks of existing products and provide users with software of better quality.
+We did some surveys to find out what are the common features that existing products have. We also brainstorm together to come up with new features that could
+fill in the blanks of existing products and provide users with software of better quality and experience.
 
 As the product should cater Windows users, we have also decided to make a TUI (text user interface) in order to create a
 more user friendly environment after conducting interviews with typical Windows users. (user guide for TUI is given in section 2.4)
@@ -596,10 +608,10 @@ sub-problems will be discussed later in this manual.
 \end{enumerate}
 
 \subsubsection{Architecture}
-We have chosen to use a multi-tier architecture. And we have chosen the most widely used
-three-tier architecture to implement the program. Figure 3 shows a diagram representation of
+We chose a multi-tier architecture, in fact the most widely used
+three-tier architecture to implement the program. Figure 4 shows the diagram of
 the architecture. The user can interact with the software through either command line interface
-or TUI. The user interfaces will pass whatever command it receives from the user to the logic part.
+or Text user interface. The user interfaces will pass whatever command it receives from the user to the logic part.
 The logic unit of the program will then perform its tasks accordingly and manipulate the storage
 files which store all the user data.
 
@@ -612,56 +624,72 @@ files which store all the user data.
 \subsubsection{Implementation}
 \begin{enumerate}
 \item  Overview of the implementation structure
+
+The user input is read into the \cmdinline{IO Module}. It then calls the \cmdinline{Parser} to parse the text input to a
+\cmdinline{Command} object which is  returned to the \cmdinline{IO Module}. Then \cmdinline{IO Module} passes the \cmdinline{Command} object to
+the \cmdinline{Shell}, which calls a \cmdinline{Command Executor} and execute the command accordingly, be it manipulation on the storage or adding a command alias.
+
+The \cmdinline{Command Executor} will return a \cmdinline{Result} object to the \cmdinline{Shell}, which asks \cmdinline{IO Module} again to handle the \cmdinline{Result} object and print output, if any.
+
+The class diagram of the main components is given below:
 \begin{figure}[h]
   \centering
-  \includegraphics[scale=0.5]{architecture}
+  \includegraphics[scale=0.4]{architecture}
   \caption{Architecture}
 \end{figure}
 
-The user input is read into the IO Module. It then calls a parser to parse the text input to a
-command object and returns to the I/O module. The command object is then passed to the
-shell. The shell calls command executors and execute the command accordingly. The storage
-files are then manipulated to record the operation. The command executor will return a
-result object to the shell. I/O module will be called again to receive the result object and
-output to the screen.
-The class diagram of the main components is given below:
-
+\newpage
 \item UI Implementation
+
+We have implemented two user interfaces -- CLI (Command Line Interface) and TUI (Text User Interface). 
+As user interfaces, they basically reads text input (be it a string or a keystroke) from the user and passes it to the \cmdinline{Logic} and receive \cmdinline{Result} objects and print to screen. 
+
+Thus in our implementation, they are both \cmdinline{IO Module}s  -- The CLI is implemented as \cmdinline{Keyboard IO Module} and the TUI is implemented as \cmdinline{PdcIO}. The advantages of this polymorphism are:
 \begin{enumerate}
-\item Command Line User Interface
+\item the \cmdinline{Logic} does not need to know what is exactly (\cmdinline{Keyboard IO Module} or \cmdinline{PdcIO}) it is talking to it. For example, \cmdinline{Logic} can just call \cmdinline{getCommand()} method and the \cmdinline{Command} will be generated.
 
-This user interface basically reads in text input from the users and passes it to the task
-manager’s logic. When the user requires viewing the tasks, it will output the required
-fields to the user.
-\item Text-based User Interface
+\item it will be easy when you want to implement, say a GUI, for taskManager in the future.
 
-This user interface basically provides an interactive interface between the user and the
-program. It receives inputs from the user and immediately outputs the corresponding
-changes to the screen.
-The basic input and output is controlled by an IO Module. It takes the user inputs and
-passes it to logic. At the same time, it is also called by the logic with computed results
-and asked to output to the screen. The following codes are pasted from TM\_IOModule.h.
-These are the interfaces of the IO Module. It shows how the IO Module interacts with
-other components inside the program. For example, showOutput () takes in a result
-object as an argument asks the parser to convert to text and prints out the result on the screen.
-
-\mbox{\texttt{
-  virtual CommandList getCommand() \{return vector<Command *>();\};
-
-  virtual void showOutput (Result* result);
-
-  virtual void showWelcomMessage() \{\};
-
-  virtual void handleException(exception\_e except) \{\};
-
-  virtual void confirm(string prompt) \{return true;\};
-
-  virtual void echo (string s)\{\};
-}}
-
-
-Figure 6. Code fragments from IO Module
+\item decreases the level of coupling in the software -- the \cmdinline{Logic} does not need to be aware of each \cmdinline{IO Module}.
 \end{enumerate}
+
+%% \item Command Line User Interface
+
+%% %When the user requires viewing the tasks, it will output the required fields to the user.
+%% \item Text User Interface
+
+%% %This user interface provides an interactive interface between the user and the
+%% %program. It receives inputs from the user and immediately outputs the corresponding
+%% %changes to the screen.
+
+%% The basic input and output is controlled by an IO Module. It takes the user inputs and
+%% passes it to logic. At the same time, it is also called by the logic with computed results
+%% and asked to output to the screen. The following codes are pasted from TM\_IOModule.h.
+%% These are the interfaces of the IO Module. It shows the  \cmdinline{IO Module} interacts with
+%% other components inside the program. For example, showOutput () takes in a result
+%% object as an argument asks the parser to convert to text and prints out the result on the screen.
+
+%\begin{lstlisting}[float=h,language=C++,caption={A "Hello World" program.},label={code:helloworld},captionpos=b,abovecaptionskip=1em,belowcaptionskip=-2em,columns=flexible,frame=single,linewidth=0.8\linewidth]
+
+\begin{center}
+  \lstset{
+    caption=abstract methods defined in \cmdinline{TM\_IO\_Module.h},
+    basicstyle=\ttfamily\footnotesize\bfseries,
+    columns=flexible,
+    linewidth=0.9\linewidth,
+    frame=tb
+  }
+  \begin{lstlisting}
+    virtual void showWelcomMessage() {};
+    virtual CommandList getCommand() {return vector<Command *>();};
+    virtual void showOutput (Result* result) {};
+    virtual void handleException(exception_e except) {};
+    virtual void confirm(string prompt) {return true;};
+    virtual void echo (string s) {};
+  \end{lstlisting}
+\end{center}
+
+
 
 \item Logic Implementation
 \begin{enumerate}
@@ -674,8 +702,8 @@ the command. The shell also deals with the results passed from command executors
 calls IO module with the result as an argument. The shell also controls some
 miscellaneous operations like redo (), undo (), backup (), etc.
 
-For example, if the command input is an “add” task operation, the Shell will receive a
-command object with “add” operation and other details about the task. Then the shell
+For example, if the command input is an ``add'' task operation, the Shell will receive a
+command object with ``add'' operation and other details about the task. Then the shell
 will call add command executor to carry out the detailed work. If the operation is
 successfully carried out, a result object will be returned to the shell. The shell will then
 call the IO module again with the result object to display the added task on the screen.
@@ -687,7 +715,7 @@ and SubCommandExecutors. MainCommandExecutor takes in a command object and
 figures out the type of the command and distributes the work to corresponding
 SubCommandExecutor, which does thins to the underlying data structure and return a
 result object accordingly.
-For example, if the command object passed to main command executor has “ls” as its
+For example, if the command object passed to main command executor has ``ls'' as its
 command field. The main command executor will infer this and invoke the
 lsCommandExecutor object and asks it to do the actual work. lsCommandExecutor will
 scan through all the tasks and then a result object containing all the tasks will be
@@ -727,21 +755,18 @@ Figure . AutoCompletionAgent class
 \begin{enumerate}
 \item Task
 
+\cmdinline{Task} is the class that stores various information of one task.
 
-The \cmdinline{task} class is the main class that stores information for the user. The diagram describing
-task class is given below.
-Figure . Task class
-Just to emphasize one thing, there is a clone () function for Task objects. It is designed for the
-sake of security matters. In order to protect user’s data and privacy, the modification or
-passing of Task objects are all done by duplicating the Task objects.
+One thing to note is the clone() function. It is designed for the
+sake of security during development. It returns a copy of the \cmdinline{Task} object thus protects it from modification outside the class.
+
 \item Task List
 
-\cmdinline{TaskList} class is a class that is used as a container of \cmdinline{Task} for the ease of manipulation.
+\cmdinline{TaskList} is a container of \cmdinline{Task} for the ease of manipulation.
+
 The following diagram illustrates the structure of Task List class.
-For the same reason mentioned before, we specially designed a method called clone(). This
-method basically duplicates the task list object. All manipulations except for “sort” operation
-are all done on duplications of the task list object passed in. We want to make sure that the
-task list is safely prevented from being accidentally screwed up.
+For the same reason above, a method \cmdinline{clone()} was implemented. All manipulations except for ``sort'' operation
+are all done on duplications of the task list object passed in. We want to make sure that the task list is never screwed up by manipulations in other classes.
 \end{enumerate}
 \end{enumerate}
 \end{enumerate}
@@ -771,7 +796,7 @@ What happens inside the UI part:
 Comparer class is implemented so as to compare different tasks according to deadline/priority/serial number\ldots
 In fact sorting the tasks is made possible by \cmdinline{Comparer}. When a new comparer object is initialized, the keywords will be given to
 the comparer as arguments. The comparer is then able to sort some given tasks residing
-inside a task list according to the keywords (e.g. sort according to group, priority, etc.). \cmd{vector<Task*> TaskList::sort(Comparer* comp)\{\ldots\};}
+inside a task list according to the keywords (e.g. sort according to group, priority, etc.). \cmd{vector<Task*> TaskList::sort(Comparer* comp){\ldots};}
 
 The code fragment above shows that sorting TaskList objects requires the presence of
 comparer object.
@@ -789,12 +814,12 @@ coupling of the software otherwise.
 %% \item TUI utilities
 
 %% The implementation of the TUI is based on PDcurses (public domain curses). This tool is
-%% free and downloadable. “PDCurses is a public domain curses library for DOS, OS/2,
+%% free and downloadable. ``PDCurses is a public domain curses library for DOS, OS/2,
 %% Win32, X11 and SDL, implementing most of the functions available in X/Open and
 %% System V R4 curses. It supports many compilers for these platforms. The X11 port lets
 %% you recompile existing text-mode curses programs to produce native X11 applications.
 %% PDCurses is distributed mainly as source code, but some pre-compiled libraries are
-%% available.” (Quoted from: http://pdcurses.sourceforge.net/) The source files are available
+%% available.'' (Quoted from: http://pdcurses.sourceforge.net/) The source files are available
 %% for download at http://sourceforge.net/projects/pdcurses/files/
 \end{enumerate}
 
@@ -842,20 +867,29 @@ Wang Xiangyu did the \cmdinline{import} command executor.\\
 Zhou Biyan was responsible for the \cmdinline{export} command executor.\\
 Liu Jialong was doing the parsing methods for the above commands. % \cmdinline{import} and \cmdinline{export} \cmdinline{edit} and \cmdinline{rm}.
 
-\item Integrate v0.1
+\item Prepare for v0.1 demo
 
   Date: Oct 7\\
-  Members attended:
+  Members attended: All
+
+It was just a short meet before the demo for v0.1. We were there devising and rehersing a senario for demo and checking if there are any other bugs. 
 
 \item After v0.1 demo\ldots
 
   Date: Oct 9\\
   Methods attended: All
 
+We decided to:
+\begin{enumerate}
+\item  support TUI, command piping and mapping based on the feedback by the evaluators.
+\item  give up \cmdinline{cron} considering the workload.
+\end{enumerate}
+
+Then the details of the implementation were discussed. The architecture was not changed.
 
 \item Refractor the code base for Windows Compilation (overnight session)
 
-Date: Oct 22 - 23\\
+Date: Oct 18 - 19\\
 Members attended: He Haocong, Liu Jialong
 
 The purpose of this session is to extract the method declaration to .h and definition to .cpp files to make the code standard.
@@ -863,15 +897,18 @@ The purpose of this session is to extract the method declaration to .h and defin
 As we were developing on *nix, we realized that squeezing all the classes in the .h files will fail to compile on Windows using Visual Stdio. After refractoring, we are able to compile taskManager on Windows and write a better Makefile by the way -- the previous Makefile contains only one rule and one command, which is something like \cmd{g++ -o taskManager main.cpp Shell.h Parser.h MainCommandExecutor.h \nolinebreak \ldots}
 We got to know better of C++ compilation process by writing the new Makefile and solving the linking problems and it was worth the stay-up.
 
-\item At media lab \ldots
+\item  \ldots
 
 Date: Oct 29\\
 Members attended: All
+
+\cmdinline{undo}, \cmdinline{redo} were implemented. 
 
 \item Feature close shop, testing and documenting. (overnight session)
 
 Date: Nov 4 - 5\\
 Members attended: He Haocong, Liu Jialong
+
 
 \item Polishing the last bits for submission.
 
