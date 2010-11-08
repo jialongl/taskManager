@@ -635,13 +635,13 @@ string Parser::resultToOutput(Result *result){
 
 	ss<< "\t" << s;
 
-	for (unsigned j=0; j < result->comparer->keywords->size(); j++) {
-	  if (result->comparer->keywords->at(j) == DEADLINE) {
+	for (unsigned j=0; j < result->comparer->keywords.size(); j++) {
+	  if (result->comparer->keywords.at(j) == DEADLINE) {
 	    string s2 = formatTime ( ret.at(i)->getDeadline() );
 	    ss<< "\t" << s2;
 	  }
 
-	  else if (result->comparer->keywords->at(j) == PRIORITY)
+	  else if (result->comparer->keywords.at(j) == PRIORITY)
 	    ss<< "\t" << ret.at(i)->getPriority();
 
 	  // else if (result->comparer->keywords.at(i) == serialNumber)

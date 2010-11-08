@@ -12,12 +12,13 @@ class Comparer{
 
  public:
   bool isNull;
-  vector<sortKeyword_e> *keywords;
+  vector<sortKeyword_e> keywords;
   Comparer(vector<sortKeyword_e> keys);
   Comparer();
   ~Comparer();
   int compareWithKeyword(Task* t1, Task* t2, sortKeyword_e sk);
   bool compare(Task* t1, Task* t2);
+  bool operator() (Task* t1, Task* t2);
 };
 
 #endif

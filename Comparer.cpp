@@ -4,20 +4,22 @@
 
 Comparer::Comparer(vector<sortKeyword_e> keys){
   isNull = false;
-  keywords = new vector<sortKeyword_e>;
+//  keywords = vector<sortKeyword_e>();
+  keywords.clear();
   for (int i=0;i<keys.size();i++){
-    keywords->push_back(keys[i]);
+    keywords.push_back(keys[i]);
   }
 }
 
 Comparer::Comparer(){
   isNull = true;
-  keywords = new vector<sortKeyword_e>;
-  keywords->push_back(SERIAL_NUMBER);
+//  keywords = new vector<sortKeyword_e>;
+  keywords.clear();
+  keywords.push_back(SERIAL_NUMBER);
 }
 
 Comparer::~Comparer(){
-  delete keywords;
+  //delete keywords;
 }
 
 int Comparer::compareWithKeyword(Task* task1, Task* task2, sortKeyword_e sk){
@@ -42,10 +44,18 @@ int Comparer::compareWithKeyword(Task* task1, Task* task2, sortKeyword_e sk){
 }
 
 bool Comparer::compare(Task* task1, Task* task2){
-  for (vector<sortKeyword_e>::iterator it = keywords->begin(); it != keywords->end(); it++){
+  for (vector<sortKeyword_e>::iterator it = keywords.begin(); it != keywords.end(); it++){
     int x = compareWithKeyword(task1, task2, *it);
     if (x<0) return true;
-    if (x>0) return false;
+    if (x>=0) return false;
+  }		
+  return true;
+}
+bool Comparer::operator() (Task* task1, Task* task2){
+  for (vector<sortKeyword_e>::iterator it = keywords.begin(); it != keywords.end(); it++){
+    int x = compareWithKeyword(task1, task2, *it);
+    if (x<0) return true;
+    if (x>=0) return false;
   }		
   return true;
 }

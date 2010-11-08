@@ -108,6 +108,8 @@ vector<Task*> TaskList::sort(Comparer* comp){
     ans.push_back(it->second);
   }
   if (comp->isNull == true) return ans;
+//  std::sort(ans.begin(),ans.end(),*comp);
+  /*
   for (vector<Task*>::iterator it1 = ans.begin(); it1 != ans.end(); it1++){
     for (vector<Task*>::iterator it2 = it1 + 1; it2 < ans.end(); it2++){
       if (!comp->compare(*it1, *it2)) {
@@ -117,8 +119,33 @@ vector<Task*> TaskList::sort(Comparer* comp){
       }
     }
   }
+  */
+  sort(&ans,0,ans.size()-1,comp);
   return ans;
 }
+
+void TaskList::sort(vector<Task*> *a,int l, int r, Comparer* comp){
+//    cout<<l<<" "<<r<<endl;
+    int p, i=l, j=r;
+    if (l<r){
+        p = (l+r+1)/2;
+        Task* x=(*a)[p];
+        while (i<=j){
+            while (i<(*a).size() && comp->compare((*a)[i],x)) i++;
+            while (j>=0 && (comp->compare(x,(*a)[j]))) j--;
+            if (i<=j){
+                Task* tmp = (*a)[i];
+                (*a)[i] = (*a)[j];
+                (*a)[j] = tmp;
+                i++;
+                j--;
+            }
+        }
+        if (l<j) sort(a,l,j,comp);
+        if (i<r) sort(a,i,r,comp);
+    }
+}
+
 TaskList* TaskList::clone(){
   TaskList* ans = new TaskList();
   Comparer *cp = new Comparer;

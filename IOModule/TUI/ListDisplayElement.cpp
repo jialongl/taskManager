@@ -1121,8 +1121,9 @@ void ListDisplayElement::drawSelectNumber(){
     datetime = localtime(&now);
     string today = "Today is "+weekday[datetime->tm_wday]+" "+NumberToString(datetime->tm_mday)+" "+months[datetime->tm_mon]+" "+NumberToString(datetime->tm_year + 1900);
     string st =" "+ NumberToString((selectTask+1)>tasks.size()?tasks.size():selectTask+1)+" of "+NumberToString(tasks.size())+" Tasks ";
-    int mx,my;
+    int mx,my,my2;
     getmaxyx(listWindow,mx,my);
+    my2 = my;
     my -= st.length();
     wmove(listWindow,mx-1,my-2);
     wprintw(listWindow,st.c_str());
@@ -1131,6 +1132,8 @@ void ListDisplayElement::drawSelectNumber(){
     wprintw(listWindow,today.c_str());
     wattroff(listWindow,_TIMELINE);
     wrefresh(listWindow);
+    move(0,my2-1);
+    refresh();
 }
 string ListDisplayElement::lineWithNewGroup(int i,string group){
 

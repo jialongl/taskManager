@@ -18,6 +18,7 @@
 #include <map>
 #include <fstream>
 #include <typeinfo>
+#include <algorithm>
 
 using namespace std;
 

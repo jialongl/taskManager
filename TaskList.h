@@ -34,6 +34,7 @@ class TaskList{
   vector<Task*> sort(Comparer* comp);
   TaskList* clone();
   void clearEntries();
+  void sort(vector<Task*> *a,int l, int r, Comparer* comp);
 
 };
 
