@@ -2,7 +2,7 @@
 
 Result* AddCommandExecutor::executeCommand(TaskList* mainTaskList,Command* command){
     if (command->method == ADD){
-        Task* newT = new Task(command->deadline,command->priority,command->taskDescription,command->cronFreq,command->finished,0,command->group);
+        Task* newT = new Task(command->deadline,command->priority,command->taskDescription,command->cronFreq,command->finished,0,command->group,NO_SPECIFIC_DEADLINE);
         mainTaskList->addTask(newT);
         delete newT;
     }

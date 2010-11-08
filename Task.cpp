@@ -2,7 +2,7 @@
 
 #include "Task.h"
 
-Task::Task(time_t deadline, int priority, string description, int cronFreq, bool isFinished, int serialNumber, string group){
+Task::Task(time_t deadline, int priority, string description, int cronFreq, bool isFinished, int serialNumber, string group, time_t ft){
 //    cout<<"newing task"<<endl;
   setDeadline(deadline);
   setPriority(priority);
@@ -10,6 +10,7 @@ Task::Task(time_t deadline, int priority, string description, int cronFreq, bool
   setIsFinished(isFinished);
   setSerialNumber(serialNumber);
   setGroup(group);
+  setFinishTime(ft);
 }
 
 Task::~Task(){
@@ -25,6 +26,10 @@ void Task::setDescription(string s){
 void Task::setDeadline(time_t t){
   deadline = t;
 }
+void Task::setFinishTime(time_t t){
+  finishTime = t;
+//    cout<<"set finish time "<<NumberToString(finishTime)<<endl;
+}
 void Task::setGroup(string s){
   group = s;
 }
@@ -37,6 +42,10 @@ void Task::setIsFinished(bool f){
 	
 time_t Task::getDeadline(){
   return deadline;
+}
+time_t Task::getFinishTime(){
+//    cout<<"get finish time "<<NumberToString(finishTime)<<endl;
+  return finishTime;
 }
 int Task::getPriority(){
   return priority;
@@ -59,5 +68,5 @@ bool Task::matchKeyword(string keyword){
 }	
 
 Task* Task::clone(){
-    return new Task(deadline,priority,description,0,isFinished,serialNumber,group);
+    return new Task(deadline,priority,description,0,isFinished,serialNumber,group,finishTime);
 }

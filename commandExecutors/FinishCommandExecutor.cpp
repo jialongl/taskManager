@@ -5,6 +5,7 @@ Result* FinishCommandExecutor::executeCommand(TaskList* mainTaskList,Command *co
         for (vector<int>::iterator it = command->serialNumberList.begin(); it<command->serialNumberList.end(); it++){
             int x=*it;
             mainTaskList->editTaskIsFinished(x, true);
+            mainTaskList->editTaskFinishTime(x,currentTime());
         }
         Filter* grp = new GFilter(command->group);
         TaskList* tmp = mainTaskList->getTasks(grp);
@@ -12,6 +13,7 @@ Result* FinishCommandExecutor::executeCommand(TaskList* mainTaskList,Command *co
         vector<Task*> tasks = tmp->sort(cmp);
         for (int i=0;i<tasks.size();i++){
             mainTaskList->editTaskIsFinished(tasks[i]->getSerialNumber(),true);
+            mainTaskList->editTaskFinishTime(tasks[i]->getSerialNumber(),currentTime());
         }
         delete grp;
         delete tmp;
@@ -24,6 +26,7 @@ Result* FinishCommandExecutor::executeCommand(TaskList* mainTaskList,Result* res
         vector<Task*> tasks = result->sort(result->comparer);
         for (int i=0;i<tasks.size();i++){
             mainTaskList->editTaskIsFinished(tasks[i]->getSerialNumber(),true);
+            mainTaskList->editTaskFinishTime(tasks[i]->getSerialNumber(),currentTime());
         }
     }
     return new Result();

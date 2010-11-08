@@ -49,6 +49,10 @@ void TaskList::editTaskDeadline(int serialNumber, time_t deadline){
   if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
   taskList[serialNumber]->setDeadline(deadline);
 }
+void TaskList::editTaskFinishTime(int serialNumber, time_t finishTime){
+  if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;
+  taskList[serialNumber]->setFinishTime(finishTime);
+}
 
 void TaskList::editTaskPriority(int serialNumber, int priority){
   if (taskList.find(serialNumber) == taskList.end()) throw EXCEPTION_NO_SUCH_TASK;

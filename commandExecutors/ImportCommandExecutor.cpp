@@ -58,6 +58,7 @@ Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Command *c
 		//int cronFreq;
 		bool isFinished;
 		string group;
+        time_t finishTime;
 		
 		if (record.is_open()) {
 
@@ -73,9 +74,11 @@ Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Command *c
 				else isFinished = false;
 				group = getNodeContent("group", data);
 
+				finishTime = StringToNum(getNodeContent("finishTime", data));
+
 				data.replace(0, data.find("</task>") + 8, " ");
 
-				Task* task = new Task(deadline, priority, description, 0, isFinished, serialNumber, group);
+				Task* task = new Task(deadline, priority, description, 0, isFinished, serialNumber, group, finishTime);
 				mainTaskList->addTask(serialNumber,task);
                 delete task;
 			}

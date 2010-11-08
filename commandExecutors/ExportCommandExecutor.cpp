@@ -143,6 +143,7 @@ Result* ExportCommandExecutor::executeCommand (TaskList* mainTaskList, Command* 
 			//writeFile<<"		<cronFreq>"<<tasks[i]->getCronFreq()<<"</cronFreq>"<<endl;
 			writeFile<<"		<group>"<<group_dist<<"</group>"<<endl;
 			writeFile<<"		<isFinished>"<<tasks[i]->getIsFinished()<<"</isFinished>"<<endl;
+			writeFile<<"		<finishTime>"<< tasks[i]->getFinishTime() <<"</finishTime>" <<endl;
 
 			//task end
 			writeFile<<"	</task>"<<endl;
@@ -269,8 +270,9 @@ Result* ExportCommandExecutor::executeCommand(TaskList* mainTaskList, Result* re
 			writeFile<<"		<priority>"<<tasks[i]->getPriority()<<"</priority>"<<endl;
 			writeFile<<"		<description>"<<description_dist<<"</description>"<<endl;
 			//writeFile<<"		<cronFreq>"<<tasks[i]->getCronFreq()<<"</cronFreq>"<<endl;
-			writeFile<<"		<isFinished>"<<tasks[i]->getIsFinished()<<"</isFinished>"<<endl;
 			writeFile<<"		<group>"<<group_dist<<"</group>"<<endl;
+			writeFile<<"		<isFinished>"<<tasks[i]->getIsFinished()<<"</isFinished>"<<endl;
+			writeFile<<"		<finishTime>"<< tasks[i]->getFinishTime() <<"</finishTime>" <<endl;
 
 			//task end
 			writeFile<<"	</task>"<<endl;

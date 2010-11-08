@@ -10,6 +10,7 @@ Result* EditCommandExecutor::executeCommand(TaskList* mainTaskList,Command *comm
 
         if (command->finishFlag == YES){
             mainTaskList->editTaskIsFinished(taskNum, true);
+            mainTaskList->editTaskFinishTime(taskNum,currentTime());
         }
         if (command->finishFlag == NO){
             mainTaskList->editTaskIsFinished(taskNum, false);

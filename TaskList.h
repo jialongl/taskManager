@@ -23,6 +23,7 @@ class TaskList{
   int addTask(int serialNumber, Task* task);
   void removeTask(int serialNumber);
   void editTaskDeadline(int serialNumber, time_t deadline);
+  void editTaskFinishTime(int serialNumber, time_t finishTime);
   void editTaskPriority(int serialNumber, int priority);
   void editTaskDescription(int serialNumber, string description);
   void editTaskIsFinished(int serialNumber, bool isFinished);

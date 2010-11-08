@@ -151,7 +151,7 @@ void ListDisplayElement::handleKey(int ch){
         case (int)'a':
             if (list!=originalList) break;
             newTaskSerial = originalList->getSerial()+1;
-            tasks.push_back(new Task(NO_SPECIFIC_DEADLINE, 0, "", 0, false,newTaskSerial, "default"));
+            tasks.push_back(new Task(NO_SPECIFIC_DEADLINE, 0, "", 0, false,newTaskSerial, "default",NO_SPECIFIC_DEADLINE));
             selectTask = tasks.size()-1;
             showDetail();
             naiveDraw();
@@ -323,7 +323,7 @@ void ListDisplayElement::reconstructLines(){
             lines[lines.size() -1].append(temps);
             while (lines[lines.size() - 1].size() < 33) lines[lines.size() - 1].push_back(' ');
             lines[lines.size() -1].append("  Status:     ");
-            lines[lines.size() -1].append(tasks[i]->getIsFinished()?"Finished":"Doing");
+            lines[lines.size() -1].append(tasks[i]->getIsFinished()?"Finished on "+formatTime(tasks[i]->getFinishTime()).substr(13,11):"Doing");
 
 	        lines.push_back("            Details:");
 	        temps = tasks[i]->getDescription();

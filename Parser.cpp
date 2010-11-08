@@ -658,7 +658,7 @@ string Parser::resultToOutput(Result *result){
 	ss << " Priority:\t"<< ret.at(i)->getPriority()<< "\t\t  Status:\t";
 
 	if (ret.at(i)->getIsFinished())
-	  ss<<"Finished"<<endl;	
+	  ss<<"Finished on "+formatTime(ret.at(i)->getFinishTime()).substr(13,11)<<endl;	
 	else
 	  ss<<"Doing"<<endl;
 
