@@ -436,6 +436,8 @@ This is a summary of the key bindings:\\
   \cmdinline{$\uparrow$} or \cmdinline{k} & select the task above\\
   \cmdinline{g} & select the first task \\
   \cmdinline{G} & select the last task \\
+  \cmdinline{number g} & select the \cmdinline{number}th task \\
+  \cmdinline{number G} & select the \cmdinline{number}th task \\
   \cmdinline{number selectionKey}\footnotemark & select \cmdinline{number} tasks above/below\\
   \cmdinline{p} & previous page/page up\\
   \cmdinline{n} & next page/page down\\
@@ -832,25 +834,8 @@ exists, the agent will answer an empty string.
 \end{enumerate}
 \end{enumerate}
 
-\subsection{A Typical Use Cases Explained in Sequence Diagrams}
-Assume we are adding a task ``Write developer’s guide'' with deadline ``1d'':
 
-\\The top level sequence diagram looks like:
-\begin{center}
-  \includegraphics[scale=0.7]{top-level-sequence-diagram}
-\end{center}
-
-A more detailed sequence diagram inside the Logic:
-\begin{center}
-  \includegraphics[scale=0.7]{sequence-diagram-inside-logic-part}
-\end{center}
-
-What happens inside the UI part:
-\begin{center}
-  \includegraphics[scale=0.75]{sequence-diagram-inside-UI-part}
-\end{center}
-
-\subsection{Testing}
+\subsubsection{Testing}
 In this section, we are going to present some bug reports produced during the development of
 this project. In the later development cycles we did not choose to code an ATD as constrained by time and the complexity of
 our project. However, we did have carried out systematic tests in order to discover bugs.
@@ -869,7 +854,7 @@ The following is a part of the bug reports we kept:
 7 & \multilineL{map bug: misbehavior of ``ls -g default'' after map ``ls'' ``ls -f yes''.} & Liu Jialong\\
 \end{tabular}
 
-\subsection{Possible Extensions}
+\subsubsection{Possible Extensions}
 Currently the product is a console application. Listed are some possible directions for extension
 of this project.
 \begin{enumerate}
@@ -895,6 +880,24 @@ The current product is only working on independent terminals. In future extensio
 possible to extend this product to a network-support. Users are able to update their tasks
 lists at any terminal with Internet access.
 \end{enumerate}
+
+\subsection{A Typical Use Cases Explained in Sequence Diagrams}
+Assume we are adding a task ``Write developer’s guide'' with deadline ``1d'':
+
+\\The top level sequence diagram looks like:
+\begin{center}
+  \includegraphics[scale=0.7]{top-level-sequence-diagram}
+\end{center}
+
+A more detailed sequence diagram inside the Logic:
+\begin{center}
+  \includegraphics[scale=0.7]{sequence-diagram-inside-logic-part}
+\end{center}
+
+What happens inside the UI part:
+\begin{center}
+  \includegraphics[scale=0.75]{sequence-diagram-inside-UI-part}
+\end{center}
 
 \subsection{Miscellaneous}
 \begin{enumerate}
