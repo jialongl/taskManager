@@ -3,6 +3,10 @@
 KeyboardIOModule::KeyboardIOModule(Parser* pser){
     parser = pser;
 }
+
+KeyboardIOModule::~KeyboardIOModule(){
+}
+
 CommandList KeyboardIOModule::getCommand(){
     cout<<"> ";
     string str;

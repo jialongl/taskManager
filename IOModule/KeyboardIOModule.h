@@ -12,6 +12,7 @@ private:
 
 public:
     KeyboardIOModule(Parser* pser);
+    ~KeyboardIOModule();
     CommandList getCommand() ;
     void showOutput(Result* result) ;
     void showWelcomeMessage() ;

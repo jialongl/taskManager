@@ -382,7 +382,9 @@ void ListDisplayElement::reconstructLines(){
             lines[lines.size() -1].append(temps);
             while (lines[lines.size() - 1].size() < 33) lines[lines.size() - 1].push_back(' ');
             lines[lines.size() -1].append("  Status:     ");
-            lines[lines.size() -1].append(tasks[i]->getIsFinished()?"Finished on "+formatTime(tasks[i]->getFinishTime()).substr(13,11):"Doing");
+            string fts = formatTime(tasks[i]->getFinishTime());
+            if (fts.size() > 13) fts = fts.substr(13,11);
+            lines[lines.size() -1].append(tasks[i]->getIsFinished()?"Finished on "+fts:"Doing");
 
 	        lines.push_back("            Details:");
 	        temps = tasks[i]->getDescription();

@@ -657,8 +657,10 @@ string Parser::resultToOutput(Result *result){
 	ss << "   Number:\t" << ret.at(i)->getSerialNumber() << "\t\tDeadline:\t" << formatTime(ret.at(i)->getDeadline()) <<endl;
 	ss << " Priority:\t"<< ret.at(i)->getPriority()<< "\t\t  Status:\t";
 
+    string fts = formatTime(ret.at(i)->getFinishTime());
+    if (fts.size() > 13) fts = fts.substr(13,11);
 	if (ret.at(i)->getIsFinished())
-	  ss<<"Finished on "+formatTime(ret.at(i)->getFinishTime()).substr(13,11)<<endl;	
+	  ss<<"Finished on "+fts<<endl;	
 	else
 	  ss<<"Doing"<<endl;
 

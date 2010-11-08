@@ -11,7 +11,7 @@ Result* TaskCommandExecutor::executeCommand(TaskList* mainTaskList,Command *comm
 }
 Result* TaskCommandExecutor::executeCommand(TaskList* mainTaskList,Result *result, Command *command){
     if (command->method == TASK){
-        return new Result(result , true);
+        return new Result(result->clone() , true);
     }
     return new Result();
 }

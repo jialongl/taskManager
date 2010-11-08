@@ -43,27 +43,6 @@ char AutoCompletionAgent::toLowerCase(char ch){
 }
 
 bool AutoCompletionAgent::isSeparator(char ch){
-/*    if (ch == ' ') return ture;
-    if (ch == ',') return ture;
-    if (ch == '.') return ture;
-    if (ch == '|') return ture;
-    if (ch == '-') return ture;
-    if (ch == '"') return ture;
-    if (ch == '\'') return ture;
-    if (ch == '?') return ture;
-    if (ch == '!') return ture;
-    if (ch == '@') return ture;
-    if (ch == '#') return ture;
-    if (ch == '<') return ture;
-    if (ch == '>') return ture;
-    if (ch == '&') return ture;
-    if (ch == '(') return ture;
-    if (ch == ')') return ture;
-    if (ch == '=') return ture;
-    if (ch == '/') return ture;
-    if (ch == ':') return ture;
-    if (ch == ';') return ture;
-    */
     return !(isChar(toLowerCase(ch)));
 }
 

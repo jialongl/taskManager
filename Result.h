@@ -13,7 +13,7 @@ class Result:public TaskList{
 
   Result();
   Result(TaskList* list, bool detail);
-  ~Result();
+  virtual ~Result();
 
   Result(TaskList* list, Comparer *comp);
 };
