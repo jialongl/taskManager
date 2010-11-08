@@ -31,6 +31,7 @@ private:
     int lastNavigateToSelect;
     Parser* parser;
     DisplayManager* displayManager;
+    string lastDetail;
 public:
     ListDisplayElement(TaskList* taskList,Parser* parser,DisplayManager* dm);
     ~ListDisplayElement();

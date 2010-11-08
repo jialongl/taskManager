@@ -18,6 +18,7 @@ ListDisplayElement::ListDisplayElement(TaskList* taskList, Parser* pser,DisplayM
     listWindow = create_newwin(height, width, startx, starty); 
     //draw(); 
     wattron(listWindow, _NORMAL);
+    lastDetail = "";
 }
 ListDisplayElement::~ListDisplayElement(){
     wattroff(listWindow, _NORMAL);
@@ -153,6 +154,7 @@ void ListDisplayElement::handleKey(int ch){
     string newGrp,newDetail,newTime,newPri;
     vector<string> editDetail;
     int newTaskSerial;
+    /*
     if (ch == (int)'t' && selectTask < tasks.size() && detailList[tasks[selectTask]->getSerialNumber()] == false){
         string origS = tasks[selectTask]->getDescription();
         string newS = formatTime(tasks[selectTask]->getDeadline()).substr(0,8) + " | "+ origS;
@@ -162,6 +164,7 @@ void ListDisplayElement::handleKey(int ch){
         tasks[selectTask]->setDescription(origS);
         naiveDraw();
     }
+    */
     switch (ch){
         case (int)'U':
             displayManager->setCommand(parser->inputToCommandList("undo"));
@@ -339,6 +342,10 @@ void ListDisplayElement::reconstructLines(){
         }
         taskStartAt.push_back(lines.size());
         if (! detailList[tasks[i] -> getSerialNumber()] ){
+            string detail;
+            if (i == selectTask) 
+                detail = formatTime(tasks[selectTask]->getDeadline()).substr(0,8) + " | "+ tasks[selectTask] -> getDescription();
+            else detail = tasks[i]->getDescription();
             lines.push_back("   ");
             string temps;
             temps = NumberToString(tasks[i]->getSerialNumber());
@@ -351,7 +358,7 @@ void ListDisplayElement::reconstructLines(){
             if (temps.length()>9) temps = temps.substr(0,7)+"..";
             temps.push_back(' ');
             lines[lines.size() - 1].append(temps);
-            temps = tasks[i]->getDescription();
+            temps = detail;//tasks[i]->getDescription();
             int mlength = my - 5 - 10 - 10;
             if (temps.length() > mlength) 
                 temps = temps.substr(0,mlength-3) + "...";
