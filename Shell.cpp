@@ -73,7 +73,7 @@ Shell::Shell(){
     //msterious bug
     agent->ask("hello there");
 
-    IOModule->echo("Importing task list...");
+    IOModule->echo("\nImporting task list...");
     Result* result;
     //load saved record.
     try{
@@ -174,7 +174,7 @@ void Shell::start(string args){
                     toChangeIOModule = false;
                 }
             }
-            else IOModule->echo(" Invalid command");
+            else IOModule->echo("TaskManager: Invalid command\n");
 
             command = new Command();
             command->method = EXPORT;
@@ -346,7 +346,7 @@ bool Shell::oneIteration(){
                   toChangeIOModule = false;
               }
           }
-          else IOModule->echo(" Invalid command");
+          else IOModule->echo("TaskManager: Invalid command\n");
         // save record.
           command = new Command();
           command->method = EXPORT;

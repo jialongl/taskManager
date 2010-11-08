@@ -10,10 +10,13 @@ KeyboardIOModule::~KeyboardIOModule(){
 CommandList KeyboardIOModule::getCommand(){
     cout<<"> ";
     string str;
-    if ( getline(cin,str))
-      return parser->inputToCommandList(str);
-    else
-      return parser->inputToCommandList("exit");
+    if ( getline(cin,str)){
+        if (str != "")
+            return parser->inputToCommandList(str);
+        else
+            return getCommand();
+    }else
+        return parser->inputToCommandList("exit");
 }
 
 void KeyboardIOModule::showOutput(Result* result){
@@ -29,9 +32,10 @@ void KeyboardIOModule::showOutput(Result* result){
 }
 
 void KeyboardIOModule::showWelcomeMessage(){
+    cout<<endl;
     cout<<" Task Manager V 0.2 "<<endl;
     cout<<" exit<enter> to quit. help<enter> for more instructions"<<endl;
-    cout<<"====================================================================="<<endl;
+    cout<<endl;
 }
     
 void KeyboardIOModule::handleException(exception_e except){

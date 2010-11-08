@@ -144,6 +144,61 @@ By format specifies the amount of time from the start of this hour/day/week.
 .B UNIX timestamp
 A number specify the number of seconds from 00:00 1/1/1970 UTC.
 
+.SH ALIASED COMMANDS
+A number of command mapping is given in the sample tmrc file to enable more intuitive commandline task management.
+
+.TP
+\fBAdding task\fP
+A task can be added using one of the following four way.
+
+\fBa [ for \fP\fIgroup\fP\fB ] \fP\fIdescription\fP 
+
+Add a task that can be done at anytime
+
+\fBimportant [ for \fP\fIgroup\fP\fB ] \fP\fIdescription\fP
+
+Add a task with priority to be 20
+
+\fB[ today/tomorrow ] [ \fP\fItime\fP\fB ] [ for \fP\fIgroup\fP\fB ] \fP\fIdescription\fP
+
+Add a task dues on today or tomorrow. If no today or tomorrow specified, the task is added with due day to be today.
+
+\fBtime\fP can be 8am ~ 11am, noon or 1pm ~ 8pm. 
+
+At least one of time and today/tomorrow must be specified.
+
+\fB[ next ] \fP\fIweekday\fP\fB [ \fP\fItime\fP\fB ][ for \fP\fIgroup\fP\fB ] \fP\fIdescription\fP
+
+Add a task dues on a specific week day. 
+\fBweekday\fP can be \fBSunday, Monday, Tuesday, Wednesday, Thursday, Friday \fPor \fBSaturday.\fP
+
+.TP
+.B Browsering task
+
+\fBall \fP\fIgroup\fP
+
+List all tasks from a specific group
+
+\fBwhat \fP\fIgroup\fP
+
+List all unfinished tasks from a specific group
+
+\fBwhat [ can i do ] today\fP
+
+List all unfinished tasks which due on today or tomorrow
+
+\fBwhat [ can i do ] tomorrow\fP
+
+List all unfinished tasks which due on tomorrow or the day after tomorrow
+
+\fBwhat [ can i do ] this week\fP
+
+List all unfinished tasks which due in this week
+
+\fBwhat [ can i do ] next week\fP
+
+List all unfinished tasks which due in next week
+
 .SH FILES
 
 .TP 
