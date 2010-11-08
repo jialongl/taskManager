@@ -595,7 +595,7 @@ more user friendly environment after conducting interviews with typical Windows 
 
 \item OO Domain Model
 
-A condensed object-oriented domain model is given as follows. This model is an overview of the
+A condensed object-oriented domain model is given in Figure 3. This model is an overview of the
 problem domain and ignores most of the details. Basically, the problem is modeled as a user
 interacting with a task manager that manages his/her tasks. More detailed descriptions about sub-problems like
 how commands are parsed, how tasks are modified and stored, how messages are shown to the screen, as discussed in the following.
@@ -610,9 +610,9 @@ how commands are parsed, how tasks are modified and stored, how messages are sho
 \subsubsection{Design}
 We chose a multi-tier architecture, in fact the most widely used
 three-tier architecture to implement the program. Figure 4 shows the diagram of
-the architecture. The user can interact with the software through either command line interface
-or Text user interface. The user interfaces will pass whatever command it receives from the user to the logic part.
-The logic unit of the program will then perform its tasks accordingly and manipulate the storage
+the architecture. The user can interact with the software through either CLI or TUI.
+The user interfaces will pass whatever command it receives from the user to the Logic.
+The Logic of the program will then perform its tasks accordingly and manipulate the storage
 files which store all the user data.
 
 \begin{figure}[h]
@@ -677,48 +677,49 @@ Thus in our implementation, they are both \cmdinline{IO Module}s  -- The CLI is 
 
 
 \item Logic Implementation
+
 The Logic part of taskManager is in charge of getting Command
-
-
 
 \begin{enumerate}
 \item Shell
 
-The core of this program is a shell that controls its behavior. It is initialized when the
-program starts. Shell does the work of calling command executors and IO Module. The
-shell takes in the command objects and calls the correct command executor to execute
-the command. The shell also deals with the results passed from command executors. It
-calls IO module with the result as an argument. The shell also controls some
-miscellaneous operations like redo (), undo (), backup (), etc.
+The \cmdinline{shell} is the controller of the whole Logic. Shell is able to start a loop that in each iteration:
+\begin{enumerate}
+\item asks \cmdinline{IO Module} for a \cmdinline{CommandList} object. Why a \cmdinline{CommandList} object instead of a \cmdinline{Command} object? It is because a line read by \cmdinline{IO Module} could contain several \cmdinline{Command}s separated by pipes (which are denoted as `\textbar', see user guide, command piping for details). %Let us not care about how \cmdinline{IO Module} generates that \cmdinline{CommandList} for now.
+\item calls the correct command executor for each \cmdinline{Command} in the \cmdinline{CommandList}. The ``correct command executor'' (referred to as \cmdinline{SubCommandExecutor} in ``Command Executors'') will do the work accordingly and return a \cmdinline{Result} object to \cmdinline{Shell}.
+\item passes the \cmdinline{Result} to \cmdinline{IO Module} and asks it to print thing to screen using the \cmdinline{Result}.
+\end{enumerate}
 
-For example, if the command input is an ``add'' task operation, the Shell will receive a
-command object with ``add'' operation and other details about the task. Then the shell
-will call add command executor to carry out the detailed work. If the operation is
-successfully carried out, a result object will be returned to the shell. The shell will then
-call the IO module again with the result object to display the added task on the screen.
+\cmdinline{Shell} can be considered as the top-level class in the taskManager Logic. It applies the Fa\c cade pattern. It is aware of every other component in the Logic and hides the complexity of the Logic from classes outside.
+%The shell also deals with the results passed from command executors. It
+%calls IO module with the result as an argument. The shell also controls some
+%miscellaneous operations like redo (), undo (), backup (), etc.
+
+%% For example, if the command input is an ``add'' task operation, the Shell will receive a
+%% command object with ``add'' operation and other details about the task. Then the shell
+%% will call add command executor to carry out the detailed work. If the operation is
+%% successfully carried out, a result object will be returned to the shell. The shell will then
+%% call the IO module again with the result object to display the added task on the screen.
+\item Parser
+
+By intuition, \cmdinline{Parser} is a class that parse things -- \cmdinline{Command}s and \cmdinline{Result}s. It is used by instances of \cmdinline{IO Module} to do conversion from user input to \cmdinline{Command}s. That is, deduce the input text and return a \cmdinline{Command} object to the caller.
+Why \cmdinline{IO Module} does not parse user input itself? It is because we want \cmdinline{IO Module}s to do their deeds only and do them well. Parsing user input is not the job of UI. The UI is only responsible for getting the user input and printing messages to screen. This is also an application of achieving high cohesion.
+
+By the same argument, converting a \cmdinline{Result} object to text for output is doing by \cmdinline{Parser} as well.
+
 \item Command Executors
 
-The command executor class is a class that deals with underlying data structures, as its
-name implies. It is in fact an abstract class that is extended by MainCommandExecutor
-and SubCommandExecutors. MainCommandExecutor takes in a command object and
-figures out the type of the command and distributes the work to corresponding
-SubCommandExecutor, which does thins to the underlying data structure and return a
-result object accordingly.
-For example, if the command object passed to main command executor has ``ls'' as its
+\cmdinline{Command Executor}s is a collection of classes that directly manipulates underlying data structures, as its
+name implies. \cmdinline{Command Executor} is an abstract class that is extended by \cmdinline{MainCommandExecutor} and \cmdinline{SubCommandExecutors} including \cmdinline{AddCommandExecutor}, \cmdinline{LsCommandExecutor}\ldots  \cmdinline{MainCommandExecutor} takes in a \cmdinline{Command} object, figures out the type of the command and distributes the work to corresponding \cmdinline{SubCommandExecutor}. which manipulates (be it add/set/get/remove items in) the underlying data structure and return a \cmdinline{Result} object accordingly.
+
+For example, if the Command object passed to main command executor has ``ls'' as its
 command field. The main command executor will infer this and invoke the
 lsCommandExecutor object and asks it to do the actual work. lsCommandExecutor will
 scan through all the tasks and then a result object containing all the tasks will be
 returned.
-\item Parser
-
-Parser can perform the conversion from input to command, that is, deduce the input text
-and parse it to a command object. The command class’s attributes and operations are
-given as follows.
-Figure 8. Command class
-The parser is also able to convert a result object to text for output. The result class’s
-attributes and operations are given as follows.
 
 The following class diagram shows the relationship between command executors.
+
 \item Filters
 
 The filter classes are designed for selecting tasks with specific characteristics out from the
