@@ -18,7 +18,6 @@ ListDisplayElement::ListDisplayElement(TaskList* taskList, Parser* pser,DisplayM
     listWindow = create_newwin(height, width, startx, starty); 
     //draw(); 
     wattron(listWindow, _NORMAL);
-    lastDetail = "";
 }
 ListDisplayElement::~ListDisplayElement(){
     wattroff(listWindow, _NORMAL);
