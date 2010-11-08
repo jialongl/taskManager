@@ -44,7 +44,7 @@ CommandList PdcIO::getCommand(){
             count = count*10+ch-48;
         }
         else{
-            if (count == 0) count =1;
+//            if (count == 0) count =1;
 //            for (int i=0;i<count;i++)
                 if (ch == 3)  setCommand(parser->inputToCommandList("exit"));
                 else if (ch == (int)'Q') setCommand(parser->inputToCommandList("notui"));
