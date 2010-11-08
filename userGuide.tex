@@ -66,7 +66,33 @@
 \newpage
 
 \section{Introduction}
-This is the manual for a command-line utility (referred to as taskManager) that manages one's to-do's.
+%% This is the manual for a command-line utility (referred to as taskManager later in this document) that manages one's to-do's.
+
+%% TaskManager is a multi-platform command-line application. It allows users to type
+%% in command to execute various operations. taskManager is designed to help the user to
+%% deal with various tasks. One can do “add”, “remove”, “view” and many other operations to deal
+%% with the tasks. By typing different commands, the user is allowed to create new and modify
+%% existing tasks. In addition to the basic task manager functionalities, taskManager also
+%% includes a Text-User-Interface (TUI). The purpose of applying this dual-UI design is mainly for
+%% the convenience of different user groups. The TUI is hopefully easier for Windows users who are
+%% comfortable with clear and viewing-all user interfaces. While Unix OS users who are more used
+%% to typing commands to control the system can achieve the same goal by typing commands to
+%% the task manager. 
+
+%% TaskManager has powerful functionalities such as auto-completion and
+%% user-define commands. It also supports importing existing to-do lists and exporting to a human-
+%% readable file with a nice formatting for printing out.
+
+TaskManager (referred to as taskManager later in this document) is a multi-platform command-line application that manages one's to-do's.
+
+It maintains a list of tasks and provides a rich collection of
+commands to manipulate them. It comes with a TaskManager shell (which
+features a command-line interface) and an interactive text-based user
+interface (TUI). Besides basic task manager functionalities, it
+supports command aliasing, piping and start up script.  A decent set
+of command aliases are defined in the .tmrc file to enable
+intuitive command line task management. Finally, the auto-completion
+module adds on to the usability and \cmdinline{import}/\cmdinline{export} commands make sharing and visualizing tasks easy.
 
 \newpage
 \section{User Guide}
