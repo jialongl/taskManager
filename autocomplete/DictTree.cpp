@@ -3,12 +3,12 @@
 DictTree::DictTree(){
     hasTerminal = false;
     childrenCount = 0;
-    for (int i=0;i<26;i++)
+    for (int i=0;i<36;i++)
         children[i] = NULL;
 }
 
 DictTree::~DictTree(){
-    for (int i=0;i<26;i++)
+    for (int i=0;i<36;i++)
         if (children[i] != NULL) delete children[i];
 }
 
@@ -17,16 +17,16 @@ string DictTree::ask(string st){
     if (st == ""){
         if (hasTerminal || (childrenCount == 0)) return "";
         else{
-            for (int i=0;i<26;i++)
+            for (int i=0;i<36;i++)
                 if (children[i] != NULL){
                     string ans = children[i]->ask(st);
-                    return ans.insert(0,1,i+97);
+                    return ans.insert(0,1,(i<26)?i+97:i+(48-26));
                     break;
                 }
             return "";
         }
     }else{
-        int ch = st[0] - 97;
+        int ch = (st[0]>=97)?st[0] - 97:st[0] - (48-26);
         if (children[ch] == NULL) return "";
         return children[ch] -> ask(st.substr(1,st.length() - 1));
     }
@@ -37,7 +37,7 @@ void DictTree::tell(string st){
         hasTerminal = true;
         return;
     }
-    int ch = st[0] - 97;
+    int ch = (st[0]>=97)?st[0] - 97:st[0] - (48-26);
     if (children[ch] == NULL){
         children[ch] = new DictTree();
         childrenCount++;

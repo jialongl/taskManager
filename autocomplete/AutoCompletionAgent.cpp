@@ -34,11 +34,11 @@ string AutoCompletionAgent::ask(string st){
 }
 
 bool AutoCompletionAgent::isChar(char ch){
-    return (ch>=97 && ch<97+26); 
+    return ((ch>=97 && ch<97+26) || (ch>=48 && ch<58)); 
 }
 
 char AutoCompletionAgent::toLowerCase(char ch){
-    if (ch < 97) ch += (97-65);
+    if (ch < 97 && ch>=65) ch += (97-65);
     return ch;
 }
 
