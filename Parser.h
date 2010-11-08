@@ -41,6 +41,7 @@ class Parser{
   void run_parse();
   void undo_parse();
   void redo_parse();
+  void sort_parse();
   Command *inputToCommand (string input);
   CommandList inputToCommandList (string input);
   string resultToOutput(Result *result);

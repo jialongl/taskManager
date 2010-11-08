@@ -17,6 +17,7 @@ MainCommandExecutor::MainCommandExecutor(){
 		executors[RM] = new RmCommandExecutor();
 		executors[READ] = new ReadCommandExecutor();
 		executors[WRITE] = new ExportCommandExecutor();
+        executors[SORT] = new SortCommandExecutor();
 
 		// executors[SELECT] = new SelectCommandExecutor();
 		// executors[SORT] = new SortCommandExecutor();

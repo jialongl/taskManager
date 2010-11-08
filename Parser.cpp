@@ -347,6 +347,30 @@ void Parser::finish_parse() {
   }
 }
 
+void Parser::sort_parse(){
+    if (args.size() != 2) return;
+    cmd->method = SORT;
+    string keywords = args.at(1);
+    string buf;
+    stringstream ss(trimInvertedCommas(keywords));//keywords.substr(1, keywords.length() - 2));
+
+    string deadline = "deadline";
+    string serialnumber = "serialnumber";
+    string priority = "priority";
+
+    while ( ss >> buf ) {
+	    if( deadline.find(buf) != string::npos )
+	        cmd->sortKeyword.push_back(DEADLINE);
+
+	    else if( serialnumber.find(buf) != string::npos )
+	        cmd->sortKeyword.push_back(SERIAL_NUMBER);
+
+	    else if( priority.find(buf) != string::npos )
+	        cmd->sortKeyword.push_back(PRIORITY);
+    }
+
+}
+
 void Parser::export_parse() {
   cmd->method = EXPORT;
   if (args.size() == 2) {
@@ -583,6 +607,9 @@ Command* Parser::inputToCommand (string input) {
 
   else if (args[0] == "redo")
     redo_parse();
+
+  else if (args[0] == "sort")
+      sort_parse();
 
   else {
       delete cmd;
