@@ -28,8 +28,11 @@ string ImportCommandExecutor::getNodeContent(string node, string text){
 	/*if(text.find("<" + node + ">") == sting::npos || text.find("</" + node + ">") == string::npos)
 	//throw EXCEPTION_TAG_NOT_FOUND;*/
 
-	start = text.find("<" + node + ">") + node.size() + 2;
+	start = text.find("<" + node + ">");
 	end = text.find("</" + node + ">");
+    if (start == string::npos || end == string::npos) return "";
+    start += node.size() + 2;
+
 	content = restoreString(text.substr(start, end - start));
 
 //		cout<<node<<"!"<<content<<"!"<<endl;
@@ -74,7 +77,9 @@ Result* ImportCommandExecutor::executeCommand(TaskList* mainTaskList, Command *c
 				else isFinished = false;
 				group = getNodeContent("group", data);
 
-				finishTime = StringToNum(getNodeContent("finishTime", data));
+                string tmp =getNodeContent("finishTime", data);
+
+				finishTime = StringToNum((tmp == "")?"-1":tmp);
 
 				data.replace(0, data.find("</task>") + 8, " ");
 

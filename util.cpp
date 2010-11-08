@@ -13,6 +13,7 @@ time_t currentTime(){
 }
 
 bool isNumber(string s){
+  if (s == "") return true;
   if (s[0] == '-')
     return isNumber(s.substr(1, s.length()-1));
 
@@ -39,6 +40,7 @@ string formatTime(int x){
 }
 
 int StringToNum(string s){
+  if (s == "") return 0;
   if (s[0] == '-')
     return -StringToNum(s.substr(1, s.length()-1));
 
