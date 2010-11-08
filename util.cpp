@@ -33,6 +33,8 @@ int max(int x,int y)
 string formatTime(int x){
     if (x == NO_SPECIFIC_DEADLINE) return "Anytime";
 	time_t  t = x;
+    string times(ctime(&t));
+    return times.substr(11,9) + times.substr(0,11) + times.substr(20,4);
 	return ((string)ctime(&t)).substr(0,24);	
 }
 

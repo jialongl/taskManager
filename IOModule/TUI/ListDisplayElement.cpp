@@ -94,6 +94,15 @@ void ListDisplayElement::handleKey(int ch){
     string newGrp,newDetail,newTime,newPri;
     vector<string> editDetail;
     int newTaskSerial;
+    if (ch == (int)'t' && selectTask < tasks.size() && detailList[tasks[selectTask]->getSerialNumber()] == false){
+        string origS = tasks[selectTask]->getDescription();
+        string newS = formatTime(tasks[selectTask]->getDeadline()).substr(0,8) + " | "+ origS;
+        tasks[selectTask]->setDescription(newS);
+        naiveDraw();
+        ch = getch();
+        tasks[selectTask]->setDescription(origS);
+        naiveDraw();
+    }
     switch (ch){
         case (int)'U':
             displayManager->setCommand(parser->inputToCommandList("undo"));
@@ -306,7 +315,7 @@ void ListDisplayElement::reconstructLines(){
             lines[lines.size() -1].append(temps);
             while (lines[lines.size() - 1].size() < 33) lines[lines.size() - 1].push_back(' ');
             lines[lines.size() -1].append("Deadline:     ");
-            lines[lines.size() -1].append(formatTime(tasks[i]->getDeadline()).substr(0,24) );
+            lines[lines.size() -1].append(formatTime(tasks[i]->getDeadline()).substr(0,8) );
 
             lines.push_back("");
             lines[lines.size() -1] = "           Priority:     ";
@@ -664,7 +673,7 @@ void ListDisplayElement::search(){
     bool flag = false;
     string keyInSt = "";
     searchKeyword = "";
-    displayManager->echo("Search: "+searchKeyword);
+    displayManager->echo("Search: "+searchKeyword,_EDIT);
     int chLast = 0;
     time_t timeLast;
     time_t timeNow;
@@ -702,7 +711,7 @@ void ListDisplayElement::search(){
 //                reset();
                 if (list != originalList) delete list;
                 list = originalList;              
-                displayManager->echo("Search: "+keyInSt);
+                displayManager->echo("Search: "+keyInSt,_EDIT);
                 kfil = new KFilter("*"+searchKeyword+"*");
                 list = list -> getTasks(kfil);
                 delete kfil;
@@ -723,7 +732,7 @@ void ListDisplayElement::search(){
                 keyInSt.push_back((char)ch);
                 if (ch == (int)' ') ch = (int)'*';
                 searchKeyword.push_back((char)ch);
-                displayManager->echo("Search: "+keyInSt);
+                displayManager->echo("Search: "+keyInSt,_EDIT);
                 kfil = new KFilter("*"+searchKeyword+"*");
                 tmpList = list -> getTasks(kfil);
                 delete kfil;

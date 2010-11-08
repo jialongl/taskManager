@@ -166,6 +166,21 @@ void DisplayManager::setCommand(CommandList cl){
     parent->setCommand(cl);
 }
 
+void DisplayManager::echo(string s, chtype attr){
+    echoHistory = s;
+    int my,mx;
+    getmaxyx(stdscr,mx,my);
+    if (s.length()>my) s=s.substr(0,my);
+    move(mx - 1,0);
+    hline(' ',my);
+    move(mx - 1,0);
+    attron(attr);
+    printw("%s",s.c_str());
+    attroff(attr);
+    attron(_NORMAL);
+    move(0,my-1);
+    refresh();
+}
 void DisplayManager::echo(string s){
     echoHistory = s;
     int my,mx;
@@ -178,5 +193,6 @@ void DisplayManager::echo(string s){
     printw("%s",s.c_str());
     attroff(_BOLD);
     attron(_NORMAL);
+    move(0,my-1);
     refresh();
 }

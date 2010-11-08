@@ -14,7 +14,10 @@ public:
     void analysis(TaskList* list);
     void analysis(string sentense);
     bool isSeparator(char ch);
+    void disable();
+    void enable();
 private:
+    bool enabled;
     DictTree* tree;
     bool isChar(char ch);
     char toLowerCase(char ch);

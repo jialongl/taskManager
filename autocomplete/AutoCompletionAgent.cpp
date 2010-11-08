@@ -1,10 +1,18 @@
 #include "AutoCompletionAgent.h"
 
 AutoCompletionAgent::AutoCompletionAgent(){
+    enabled = true;
     tree = new DictTree();
 }
 AutoCompletionAgent::~AutoCompletionAgent(){
     delete tree;
+}
+
+void AutoCompletionAgent::disable(){
+    enabled=false;
+}
+void AutoCompletionAgent::enable(){
+    enabled=true;
 }
 
 void AutoCompletionAgent::tell(string st){
@@ -15,6 +23,7 @@ void AutoCompletionAgent::tell(string st){
     tree->tell(st);
 }
 string AutoCompletionAgent::ask(string st){
+    if (enabled=false) return "";
     //misterious
     if (st.length()<2) return "";
     for (int i=0;i<st.length();i++){
