@@ -49,7 +49,7 @@
   \\[1.1cm]
 
   \begin{tabular}{c | c | c | c}
-    \includegraphics[scale=0.72]{U099121H}&
+    \includegraphics[scale=0.96]{U099121H}&
     \includegraphics[scale=0.72]{U099122U}&
     \includegraphics[scale=0.72]{U099120W}&
     \includegraphics[scale=0.72]{U094837M}\\
@@ -393,7 +393,7 @@ As seen, the tasks are grouped according to deadlines. If a task's deadline is `
 Besides, TUI provides some features that are not available in the command line mode:\begin{enumerate}
 \item auto-completion
 
-  TUI helps you complete words (including built-in commands and words you have entered) using \cmdinline{TAB} key. For example, after you typed \cmdinline{"un"}, the word \cmdinline{"do"} will appear right after \cmdinline{"un"} in grey, and now you can complete the word \cmdinline{"undo"} if you press \cmdinline{TAB}.
+  TUI helps you complete words (including built-in commands and words you have entered) using \cmdinline{TAB} key. For example, after you typed \cmdinline{"un"}, the word \cmdinline{"do"} will appear right after \cmdinline{"un"} in cyan, and now you can complete the word \cmdinline{"undo"} if you press \cmdinline{TAB}.
 \item summary of tasks in a calendar
 
   Press \cmdinline{c} in TUI, a small calendar would appear at the bottom right corner. The dates that has tasks due have a highlighted background. You can navigate dates using arrow keys to see what exactly are the tasks due on that date.
@@ -571,23 +571,23 @@ the actual structure behind are also welcome to read this part.
 
 \subsection{Development Process}
 \subsubsection{Overview}
-We strictly followed a top-down approach designing the software. Regarding the software
-development life cycle (SDLC), our team is following the iterative approach on the whole. In each
-iteration, we are following the waterfall approach so that every
-version of our software is a complete and working product that satisfies our
-target users.
-% At the beginning of each iteration of the SDLC, we specify the requirements and functionalities of this iteration.
+We strictly  followed a top-down  approach designing the  software. As
+for the software development life  cycle (SDLC), our team is following
+the  iterative approach so  that every  version of  our software  is a
+complete and working product that  satisfies our target users. In each
+iteration, we  are following the  waterfall approach to save  time and
+energy.
 
 \subsubsection{Domain Analysis}
 \begin{enumerate} 
-\item Requirements
+\item Requirement Study
 
-This project aims to build up a task manager program that helps user to keep track of his /her
-to-dos. This program should provide the user with a CLI (command line interface). For example a
-user is able to type \mbox{\cmdinline{add "write developer's guide" -t 1d}} to add a new task ``write developer's guide'' which has a deadline of 1 day.
+This project aims to build up a task manager program that helps user to manager  his/her
+to-do's. This program should provide the user with a CLI (command line interface), which means a
+user is able to type \mbox{\cmdinline{add "write developer's guide" -t 1d}} at the prompt to add a new task ``write developer's guide'' which has a deadline of 1 day.
 
-We did some surveys to find out what are the common features that existing products have. We also brainstorm together to come up with new features that could
-fill in the blanks of existing products and provide users with software of better quality and experience.
+We did some surveys to find out what are the common features that existing products have -- adding/displaying/editting/removing tasks, setting priorities, search tasks by keywords\ldots
+We then brainstormed together to come up with other features that could possibly fill in the blanks of existing products and provide users with software of better quality and user experience, for example System alert/notification, integration with system calendar (though they are not implemented), natural commands and auto-completion of commands\ldots
 
 As the product should cater Windows users, we have also decided to make a TUI (text user interface) in order to create a
 more user friendly environment after conducting interviews with typical Windows users. (user guide for TUI is given in section 2.4)
@@ -596,9 +596,9 @@ more user friendly environment after conducting interviews with typical Windows 
 \item OO Domain Model
 
 A condensed object-oriented domain model is given as follows. This model is an overview of the
-problem domain and ignores most of the details. Basically, the problem is modeled by a user
-interacting with a task manager that could manage his/her tasks. More detailed descriptions of
-sub-problems will be discussed later in this manual.
+problem domain and ignores most of the details. Basically, the problem is modeled as a user
+interacting with a task manager that manages his/her tasks. More detailed descriptions about sub-problems like
+how commands are parsed, how tasks are modified and stored, how messages are shown to the screen, as discussed in the following.
 
 \begin{figure}[h]
   \centering
@@ -607,7 +607,7 @@ sub-problems will be discussed later in this manual.
 \end{figure}
 \end{enumerate}
 
-\subsubsection{Architecture}
+\subsubsection{Design}
 We chose a multi-tier architecture, in fact the most widely used
 three-tier architecture to implement the program. Figure 4 shows the diagram of
 the architecture. The user can interact with the software through either command line interface
@@ -621,27 +621,28 @@ files which store all the user data.
   \caption{Three-tier Architecture}
 \end{figure}
 
+
 \subsubsection{Implementation}
 \begin{enumerate}
 \item  Overview of the implementation structure
 
 The user input is read into the \cmdinline{IO Module}. It then calls the \cmdinline{Parser} to parse the text input to a
 \cmdinline{Command} object which is  returned to the \cmdinline{IO Module}. Then \cmdinline{IO Module} passes the \cmdinline{Command} object to
-the \cmdinline{Shell}, which calls a \cmdinline{Command Executor} and execute the command accordingly, be it manipulation on the storage or adding a command alias.
+the \cmdinline{Shell} which calls a \cmdinline{Command Executor} and execute the command accordingly, be it manipulation on the storage or adding a command alias.
 
 The \cmdinline{Command Executor} will return a \cmdinline{Result} object to the \cmdinline{Shell}, which asks \cmdinline{IO Module} again to handle the \cmdinline{Result} object and print output, if any.
 
 The class diagram of the main components is given below:
 \begin{figure}[h]
   \centering
-  \includegraphics[scale=0.4]{architecture}
-  \caption{Architecture}
+  \includegraphics[scale=0.4]{class-diagram}
+  \caption{Overview of Structure}
 \end{figure}
 
 \newpage
 \item UI Implementation
 
-We have implemented two user interfaces -- CLI (Command Line Interface) and TUI (Text User Interface). 
+We have implemented two user interfaces -- CLI and TUI.
 As user interfaces, they basically reads text input (be it a string or a keystroke) from the user and passes it to the \cmdinline{Logic} and receive \cmdinline{Result} objects and print to screen. 
 
 Thus in our implementation, they are both \cmdinline{IO Module}s  -- The CLI is implemented as \cmdinline{Keyboard IO Module} and the TUI is implemented as \cmdinline{PdcIO}. The advantages of this polymorphism are:
@@ -653,22 +654,6 @@ Thus in our implementation, they are both \cmdinline{IO Module}s  -- The CLI is 
 \item decreases the level of coupling in the software -- the \cmdinline{Logic} does not need to be aware of each \cmdinline{IO Module}.
 \end{enumerate}
 
-%% \item Command Line User Interface
-
-%% %When the user requires viewing the tasks, it will output the required fields to the user.
-%% \item Text User Interface
-
-%% %This user interface provides an interactive interface between the user and the
-%% %program. It receives inputs from the user and immediately outputs the corresponding
-%% %changes to the screen.
-
-%% The basic input and output is controlled by an IO Module. It takes the user inputs and
-%% passes it to logic. At the same time, it is also called by the logic with computed results
-%% and asked to output to the screen. The following codes are pasted from TM\_IOModule.h.
-%% These are the interfaces of the IO Module. It shows the  \cmdinline{IO Module} interacts with
-%% other components inside the program. For example, showOutput () takes in a result
-%% object as an argument asks the parser to convert to text and prints out the result on the screen.
-
 %\begin{lstlisting}[float=h,language=C++,caption={A "Hello World" program.},label={code:helloworld},captionpos=b,abovecaptionskip=1em,belowcaptionskip=-2em,columns=flexible,frame=single,linewidth=0.8\linewidth]
 
 \begin{center}
@@ -677,6 +662,7 @@ Thus in our implementation, they are both \cmdinline{IO Module}s  -- The CLI is 
     basicstyle=\ttfamily\footnotesize\bfseries,
     columns=flexible,
     linewidth=0.9\linewidth,
+    abovecaptionskip=0.5em,
     frame=tb
   }
   \begin{lstlisting}
@@ -690,8 +676,11 @@ Thus in our implementation, they are both \cmdinline{IO Module}s  -- The CLI is 
 \end{center}
 
 
-
 \item Logic Implementation
+The Logic part of taskManager is in charge of getting Command
+
+
+
 \begin{enumerate}
 \item Shell
 
@@ -739,25 +728,13 @@ The filter super class is basically an interface and the subclass filters are th
 actual work. For example, a GFilter uses a string as its keyword. It will filter out the tasks that
 do not have this keyword as its group name.
 
-\item Auto-completion
-
-Auto-completion function is available in the TUI. The implementation of auto-completion is
-through an auto-completion class. The auto-completion agent is a knowledge-based agent.
-Its knowledge base is initialized to be all tokens in existing task descriptions and group names.
-Tokens are automatically added when a word is typed (only in TUI) or when a tasks is added
-or edited. When querying the agent with a prefix of a token, the agent will answer with the
-smallest suffix such that [prefix | suffix] is a token in the knowledge base. If no such suffix
-exists, the agent will answer an empty string.
-The following diagram shows the details of the AutoCompletionAgent class.
-Figure . AutoCompletionAgent class
-
 \item Underlying Data Structures
 \begin{enumerate}
 \item Task
 
 \cmdinline{Task} is the class that stores various information of one task.
 
-One thing to note is the clone() function. It is designed for the
+One thing to note is the \cmdinline{clone()} function. It is designed for the
 sake of security during development. It returns a copy of the \cmdinline{Task} object thus protects it from modification outside the class.
 
 \item Task List
@@ -768,6 +745,19 @@ The following diagram illustrates the structure of Task List class.
 For the same reason above, a method \cmdinline{clone()} was implemented. All manipulations except for ``sort'' operation
 are all done on duplications of the task list object passed in. We want to make sure that the task list is never screwed up by manipulations in other classes.
 \end{enumerate}
+
+\item Auto-completion
+
+Auto-completion function is only available in the TUI. The auto-completion agent is a knowledge-based agent.
+Its knowledge base is initialized to be all tokens in existing task descriptions and group names.
+Tokens are automatically added when a word is typed (only in TUI) or when a tasks is added
+or edited. When querying the agent with a prefix of a token, the agent will answer with the
+smallest suffix such that [prefix | suffix] is a token in the knowledge base. If no such suffix
+exists, the agent will answer an empty string.
+The following diagram shows the details of the AutoCompletionAgent class.
+
+
+Figure . AutoCompletionAgent class
 \end{enumerate}
 \end{enumerate}
 
@@ -829,9 +819,9 @@ coupling of the software otherwise.
 \begin{enumerate}
 \item Decide project topic and brainstorming.
 
-Date: Sept 17 \footnotemark\\
+Date: Sept 17 \\
 Members attended: All
-\footnotetext{ Yes, we started the final project only after submitting CE2. In fact, the initial of the meeting is to polish CE2. :p}
+%\footnotetext{ Yes, we started the final project only after submitting CE2. In fact, the initial of the meeting is to polish CE2. :p}
 
 We picked task manager as the project topic. There were conflicts among opinions as some of us do not like the GUI board game as it probably means development on Windows, while others want to have a taste of GUI programming. We finally came to agreement on the point that we were more confident to build a useful task manager that ourselves will use even after the project than a game that we are addicted to.
 
@@ -848,9 +838,9 @@ We designed the Shell--Parser--CommmandExecutor--TaskList architecture as we tho
 
 We sat down together in a quiet lab and created the source files in to just print a welcome message, which is the very first (and rough) prototype. Then we added functions like adding, displaying, editting and removing tasks.
 
-He Haocong was responsible for the command executors of \cmdinline{add} and \cmdinline{ls}.\\
+He Haocong was responsible for the \cmdinline{Shell}, which acted as a UI, and the \cmdinline{add} and \cmdinline{ls} command executors.\\
 Liu Jialong was doing the parsing methods for the above commands.\\
-Wang Xiangyu did \\
+Wang Xiangyu did  \\
 Zhou Biyan was coding for 
 
 All members participated equally.
@@ -869,53 +859,69 @@ Liu Jialong was doing the parsing methods for the above commands. % \cmdinline{i
 
 \item Prepare for v0.1 demo
 
-  Date: Oct 7\\
-  Members attended: All
+Date: Oct 7\\
+Members attended: All
 
 It was just a short meet before the demo for v0.1. We were there devising and rehersing a senario for demo and checking if there are any other bugs. 
 
 \item After v0.1 demo\ldots
 
-  Date: Oct 9\\
-  Methods attended: All
+Date: Oct 9\\
+Methods attended: All
 
 We decided to:
 \begin{enumerate}
-\item  support TUI, command piping and mapping based on the feedback by the evaluators.
+\item  support \cmdinline{undo}, \cmdinline{redo}, \cmdinline{run}, TUI, command piping and mapping based on the feedback by the evaluators.
 \item  give up \cmdinline{cron} considering the workload.
 \end{enumerate}
 
 Then the details of the implementation were discussed. The architecture was not changed.
 
-\item Refractor the code base for Windows Compilation (overnight session)
+Liu Jialong was allocated to code the prasing methods.\\
+He Haocong was responsible for the TUI and \cmdinline{run}, \cmdinline{undo} and \cmdinline{redo} command executors.\\
+Wang Xiangyu was asked to find out how notifications work on Windows.\\
+Zhou Biyan \ldots
+
+\item Rearrange the code to compile on Windows (overnight session)
 
 Date: Oct 18 - 19\\
 Members attended: He Haocong, Liu Jialong
 
 The purpose of this session is to extract the method declaration to .h and definition to .cpp files to make the code standard.
 
-As we were developing on *nix, we realized that squeezing all the classes in the .h files will fail to compile on Windows using Visual Stdio. After refractoring, we are able to compile taskManager on Windows and write a better Makefile by the way -- the previous Makefile contains only one rule and one command, which is something like \cmd{g++ -o taskManager main.cpp Shell.h Parser.h MainCommandExecutor.h \nolinebreak \ldots}
+As we were developing on *nix, we realized that squeezing all the classes in the .h files will fail to compile on Windows using Visual Stdio. After reconstrcuting the codes, we are able to compile taskManager on Windows and write a better Makefile by the way -- the previous Makefile contains only one rule and one command, which is something like \cmd{g++ -o taskManager main.cpp Shell.h Parser.h MainCommandExecutor.h \nolinebreak \ldots}
 We got to know better of C++ compilation process by writing the new Makefile and solving the linking problems and it was worth the stay-up.
-
-\item  \ldots
-
-Date: Oct 29\\
-Members attended: All
-
-\cmdinline{undo}, \cmdinline{redo} were implemented. 
 
 \item Feature close shop, testing and documenting. (overnight session)
 
 Date: Nov 4 - 5\\
 Members attended: He Haocong, Liu Jialong
 
+Things done:
+\begin{enumerate}
+\item Memory leak was fixed.
+\item User guide was compiled.
+\item We went throught the user guide to make sure the commands work.
+\item The taskManager startup script (\cmdinline{tmrc}) was enriched to provide some more natural commands.
+\end{enumerate}
 
-\item Polishing the last bits for submission.
+\item Finish the last requirements for submission.
 
 Date: Nov 6\\
 Members attended: All
 
-We met up to do the developer guide, compilation on Windows, usability testing and video.
+We met up to:
+\begin{enumerate}
+\item compile the developer guide
+\item usability testing
+\item brainstorming for demo video
 \end{enumerate}
 
+\item Finish the last requirements for submission.
+
+Date: Nov 8\\
+Members attended: He Haocong, Liu Jialong, Zhou Biyan
+
+Amend proj manual.
+Do video.
 \end{document}
