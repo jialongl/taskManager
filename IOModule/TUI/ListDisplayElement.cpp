@@ -663,7 +663,7 @@ string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int c
     attron(_NORMAL);
     curRow = row0, curCol = col0;
     move(row0,col0);
-//    (displayManager->agent)->analysis(newStr);
+    (displayManager->agent)->analysis(newStr);
     return newStr;
 }
 vector<string> ListDisplayElement::editSelect(){

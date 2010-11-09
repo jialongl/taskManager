@@ -431,6 +431,8 @@ void Parser::redo_parse(){
 
 void Parser::map_parse() {
 
+    if (args.size()!=3) return;
+
   string alias  = trimInvertedCommas( args.at(1) );
   string origin = trimInvertedCommas( args.at(2) );
 
