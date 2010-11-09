@@ -47,8 +47,6 @@ void DisplayManager::handleKey(int ch){
         redraw();
     }else if(ch == 'H'){
         showHelp(); 
-    }else if (ch == 67){
-        enterCommand();
     }else escStack[escStackTop] -> handleKey(ch);
 }
 
@@ -59,17 +57,6 @@ void DisplayManager::handleKey(int ch, int count){
     
 }
 
-void DisplayManager::enterCommand(){
-    int mx,my;
-    getmaxyx(stdscr,mx,my);
-    move(mx-1,0);
-    printw("> ");
-    string st = dynamic_cast<ListDisplayElement*>(escStack[0]) -> editArea(stdscr, mx-2,mx-2,1,my-2,"",false); 
-    if (st!=""){
-        setCommand((parent->parser)->inputToCommandList(st));
-    }else
-        echo("TaskManager: Canceled by user");
-}
 
 void DisplayManager::showHelp(){
 

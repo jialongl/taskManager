@@ -31,6 +31,8 @@ private:
     int lastNavigateToSelect;
     Parser* parser;
     DisplayManager* displayManager;
+    vector<string> commandHistory;
+    int currentCommand;
 public:
     ListDisplayElement(TaskList* taskList,Parser* parser,DisplayManager* dm);
     ~ListDisplayElement();
@@ -61,6 +63,7 @@ public:
     string handleQuo(string s0);
     string lastTokenComp(string st,int pos);
     string lastToken(string st, int pos);
+    void enterCommand();
 };
 
 #endif

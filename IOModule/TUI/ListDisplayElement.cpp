@@ -1,6 +1,9 @@
 #include "ListDisplayElement.h"
 #include "../../filters/KFilter.h"
 ListDisplayElement::ListDisplayElement(TaskList* taskList, Parser* pser,DisplayManager* dm){
+    commandHistory.clear();
+    commandHistory.push_back("");
+    currentCommand = 0;
     parser = pser;
     displayManager = dm;
     detailList.clear();
@@ -165,6 +168,17 @@ void ListDisplayElement::handleKey(int ch){
     }
     */
     switch (ch){
+        case 'P':
+            if (currentCommand != 0) currentCommand--;
+            displayManager->echo("History : "+commandHistory[currentCommand]);
+            break;
+        case 'N':
+            if (currentCommand < commandHistory.size()-1) currentCommand++;
+            displayManager->echo("History : "+commandHistory[currentCommand]);
+            break;
+        case (int)'C':
+            enterCommand();
+            break;
         case (int)'U':
             displayManager->setCommand(parser->inputToCommandList("undo"));
             break;
@@ -1332,4 +1346,19 @@ string ListDisplayElement::lastToken(string st, int pos){
 string ListDisplayElement::lastTokenComp(string st, int pos){
    string s0 = lastToken(st,pos);
    return (displayManager->agent)->ask(s0);
+}
+
+void ListDisplayElement::enterCommand(){
+    int mx,my;
+    getmaxyx(stdscr,mx,my);
+    move(mx-1,0);
+    printw("> ");
+    string st = editArea(stdscr, mx-2,mx-2,1,my-2,commandHistory[currentCommand],false); 
+    if (st!=""){
+        commandHistory[commandHistory.size()-1] = st;
+        currentCommand = commandHistory.size();
+        commandHistory.push_back("");
+        displayManager->setCommand(parser->inputToCommandList(st));
+    }else
+        displayManager->echo("TaskManager: Canceled by user");
 }
