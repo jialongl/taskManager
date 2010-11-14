@@ -41,6 +41,7 @@ void ListDisplayElement::draw(){
     if (detailList.empty() )
         for (int i=0; i<tasks.size(); i++) detailList[tasks[i]->getSerialNumber()] = false; 
     if (selectTask >= tasks.size()) selectTask = tasks.size()-1;
+    restoreLastView();
     reconstructLines();
     if (navigateRow >= lines.size() && lines.size()>0) navigateRow = lines.size()-1;
     werase(listWindow);
@@ -203,6 +204,7 @@ void ListDisplayElement::handleKey(int ch){
                 if (list != originalList) list->removeTask(tasks[selectTask]->getSerialNumber());
                 if (selectTask+1 < tasks.size()) selectTask++;
                 else if (selectTask-1 >= 0 ) selectTask--;
+//                if (selectTask<tasks.size()) lastSelectedSn = tasks[selectTask] -> getSerialNumber();
             }
             break;
         case (int)'p':
@@ -213,7 +215,7 @@ void ListDisplayElement::handleKey(int ch){
             if (navigateRow+1 < lines.size()) navigateRow++;
             naiveDraw();
             break;
-        case (int)'e':
+        case (int)'E':
             if (tasks.size()!=0){
                 editDetail = editSelect();
                 newGrp = editDetail[0];
@@ -223,7 +225,7 @@ void ListDisplayElement::handleKey(int ch){
                 displayManager->setCommand(parser->inputToCommandList("edit "+NumberToString(tasks[selectTask]->getSerialNumber())+" -d \""+newDetail+"\""+" -g \""+newGrp+"\" -t " + newTime + " -p " + newPri));
             }
             break;
-        case (int)'a':
+        case (int)'A':
             if (list!=originalList) break;
             newTaskSerial = originalList->getSerial()+1;
             tasks.push_back(new Task(NO_SPECIFIC_DEADLINE, 0, "", 0, false,newTaskSerial, "default",NO_SPECIFIC_DEADLINE));
@@ -835,7 +837,7 @@ void ListDisplayElement::restoreLastView(){
             break;
         }
     }
-    naiveDraw();
+//    naiveDraw();
 }
 void ListDisplayElement::resize(int row0){
     destroy_win(listWindow);
@@ -1359,6 +1361,7 @@ void ListDisplayElement::enterCommand(){
         currentCommand = commandHistory.size();
         commandHistory.push_back("");
         displayManager->setCommand(parser->inputToCommandList(st));
+        displayManager->echo(st);
     }else
         displayManager->echo("TaskManager: Canceled by user");
 }

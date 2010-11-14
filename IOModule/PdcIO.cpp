@@ -158,6 +158,7 @@ bool PdcIO::confirm(string prompt){
         if (!flag) attroff(_REVERSE);
     } 
     move(0,my);
+    if (!flag) displayManager->redraw();
     return flag;
 }
 

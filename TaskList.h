@@ -19,6 +19,7 @@ class TaskList{
 
   void deleteList();
   int getSerial();
+  void setSerial(int sn);
   int addTask(Task *task);
   int addTask(int serialNumber, Task* task);
   void removeTask(int serialNumber);

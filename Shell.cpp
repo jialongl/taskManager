@@ -238,9 +238,11 @@ Result* Shell::executeOneCommand(Result* result, Command* command){
             break;
         case RM: //remove a task, ask for confirmation
 
-            if (IOModule->confirm("Do you really want to remove this task permanently? "))
+//            if (IOModule->confirm("Do you really want to remove this task permanently? "))
                 ans =  (result == NULL)?mainCommandExecutor->executeCommand(mainTaskList,command):mainCommandExecutor->executeCommand(mainTaskList,result,command);
-            else throw EXCEPTION_CANCEL;
+//            else throw EXCEPTION_CANCEL;
+            
+            IOModule->echo("TaskManager: task(s) removed. You can undo this operation with \"undo\" command.\n");
 
             break;
         case RUN: //run a TM script
@@ -336,7 +338,7 @@ bool Shell::oneIteration(){
 //          cout<<"!!get"<<endl;
         // output the command
           if (commandList.size()!=0){
-              if (typeid(*IOModule) == typeid(PdcIO)) IOModule->echo(commandList[0]->originalCommand);
+              if (typeid(*IOModule) == typeid(PdcIO) && !(commandList.size() == 1 && commandList[0]->method == LS)) IOModule->echo(commandList[0]->originalCommand);
               result = executeCommandList(commandList);
               IOModule->showOutput(result); 
               if (toChangeIOModule){

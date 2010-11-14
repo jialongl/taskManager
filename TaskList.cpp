@@ -99,7 +99,7 @@ TaskList* TaskList::getTasks(Filter* filter){
       ans->addTask(it->first, (it->second));
     }
   }
-		
+  ans -> setSerial(serialNumberLargest);
   return ans;
 }
 vector<Task*> TaskList::sort(Comparer* comp){
@@ -155,7 +155,12 @@ TaskList* TaskList::clone(){
   }
 //  cout<<"cloned tl largest sn: "<<ans->getSerial()<<endl;
   delete cp;
+  ans -> setSerial(serialNumberLargest);
   return ans;
+}
+
+void TaskList::setSerial(int sn){
+    serialNumberLargest = sn;
 }
 
 void TaskList::clearEntries(){
