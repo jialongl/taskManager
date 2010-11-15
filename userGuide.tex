@@ -1,5 +1,6 @@
 \documentclass[12pt, a4paper]{article}
 \usepackage{indentfirst}
+\usepackage{fullpage}
 \usepackage{graphicx}
 \graphicspath{{/home/jialongl/Documents/sem3/se/proposal/}{/home/jialongl/Documents/sem3/se/finalprojScreenshots/}}
 \usepackage{hyperref}
@@ -8,10 +9,9 @@
     urlcolor=blue
 }
 \usepackage{verbatim}
-\usepackage{fullpage}
 
-\usepackage{color}
-\definecolor{light-gray}{gray}{0.80}
+%\usepackage{color}
+%\definecolor{light-gray}{gray}{0.80}
 
 \usepackage{listings}
 \lstset{breaklines=true,
@@ -237,10 +237,9 @@ This is helpful when you only want to peek the content of an xml file without re
   > \ exit}
 \footnotetext{ If the name of the HTML file to export is not specified, the default file name \cmdinline{"record.html"} is used.}
 
-\newpage
 \begin{figure}[htbp]
   \centering
-  \includegraphics[scale=0.73, viewport=80 0 600 380]{exporthtml}
+  \includegraphics[scale=0.73, viewport=120 0 600 380]{exporthtml}
   \caption{tasks exported as webpage \footnotemark}
 \end{figure}
 \end{enumerate}
@@ -383,7 +382,7 @@ Take command \cmdinline{ls -k *Sam?le*task} as an example, \cmdinline{"This is a
 \item[ \cmdinline{-g} ] shows tasks of a specific group: \cmdinline{ls -g SampleTask} makes tasks only from SampleTask group shown.
 \end{enumerate}
 
-{\bf  \textcolor{red}{Important}}:
+{\bf  \textcolor{red}{Important}}
 \begin{quote}
 As said, different options can be used together when issuing commands.
 When more then one restrictive options are present, \emph{conjuction} of these restrictions are used. e.g. \cmd{ls -g SampleTask -f y} will show tasks that are finished AND from ``SampleTask'' group. 
@@ -436,8 +435,8 @@ This is a summary of the key bindings:\\
   \cmdinline{$\uparrow$} or \cmdinline{k} & select the task above\\
   \cmdinline{g} & select the first task \\
   \cmdinline{G} & select the last task \\
-  \cmdinline{number g} & select the \cmdinline{number}th task \\
-  \cmdinline{number G} & select the \cmdinline{number}th task \\
+  \cmdinline{number g} & select the \cmdinline{number}th task displayed in the list\\
+  \cmdinline{number G} & select the task whose serial number is \cmdinline{number}\\
   \cmdinline{number selectionKey}\footnotemark & select \cmdinline{number} tasks above/below\\
   \cmdinline{p} & previous page/page up\\
   \cmdinline{n} & next page/page down\\
@@ -507,10 +506,10 @@ The second command will be parsed as \cmdinline{ls -f no}, and will list out all
 The third command will be parsed as \cmdinline{ls -f no -g cs2103}, and will list out all unfinished cs2103 tasks.
 \end{enumerate}
 
-{\bf \textcolor{red}{Important:}}
-%\begin{quote}
+{\bf  \textcolor{red}{Important}}
+\begin{quote}
 TUI uses \cmdinline{ls} to retrieve tasks. Mapping \cmdinline{ls} to something else will affect behaviour of TUI, which may or may not be the case you want.
-%\end{quote}
+\end{quote}
 
 \subsubsection{taskManager script}
 
@@ -554,9 +553,10 @@ Examples:
 
 \subsubsection{talk to taskManager}
 
-For all inputs that cannot be recognized by taskManager as a command, it will be treated as natural language sentense. 
+For all inputs that cannot be recognized by taskManager as a command, it will be treated as natural language sentence. 
 TaskManager will try its best to recognize it and give correct response. For example: \cmd{> \ what do I do today?} will list all the tasks due today.
 
+\newpage
 \subsection{Compilation and Installation}
 This section discusses compilation and installation of taskManager.
 One thing to note is that the TUI is build by default, which requires PDcurses library.
@@ -619,7 +619,6 @@ We then brainstormed together to come up with other features that could possibly
 
 As the product should cater Windows users, we have also decided to make a TUI (text user interface) in order to create a
 more user friendly environment after conducting interviews with typical Windows users. (user guide for TUI is given in section 2.4)
-%The TUI supports keyboard operations like arrow keys and screen scrolling. An example is given as below in Figure 1.
 
 \item OO Domain Model
 
@@ -728,15 +727,7 @@ We applied the top-down approach when designing this loop so that \cmdinline{She
 \end{itemize}
 
 \cmdinline{Shell} can be considered as the top-level class in the taskManager Logic. It applies the Fa\c cade pattern. It is aware of every other component in the Logic and hides the complexity of the Logic from classes outside.
-%The shell also deals with the results passed from command executors. It
-%calls IO module with the result as an argument. The shell also controls some
-%miscellaneous operations like redo (), undo (), backup (), etc.
 
-%% For example, if the command input is an ``add'' task operation, the Shell will receive a
-%% command object with ``add'' operation and other details about the task. Then the shell
-%% will call add command executor to carry out the detailed work. If the operation is
-%% successfully carried out, a result object will be returned to the shell. The shell will then
-%% call the IO module again with the result object to display the added task on the screen.
 \item Parser
 
 By intuition, \cmdinline{Parser} is a class that parse things -- \cmdinline{Command}s and \cmdinline{Result}s. It is used by instances of \cmdinline{IO Module} to do conversion from user input to \cmdinline{Command}s. That is, deduce the input text and return a \cmdinline{Command} object to the caller.
@@ -829,8 +820,6 @@ or edited. When querying the agent with a string, the agent will answer with the
 shortest suffix that forms a know token with that string. If no such suffix
 exists, the agent will answer an empty string.
 
-%The following diagram shows the details of the AutoCompletionAgent class.
-%Figure . AutoCompletionAgent class
 \end{enumerate}
 \end{enumerate}
 
@@ -906,10 +895,6 @@ What happens inside the UI part:
 util.cpp, as its name implies, provides utility functions for different classes.
 These functions are not specifically related to certain classes thus we did not wrap it in a ``Util'' class as it increases
 coupling of the software otherwise.
-
-%% but are very useful in modifying data.
-%% The functions are named in such a way that it clearly states what the
-%% function does. So there is no need to have further explanations here.
 %% \item TUI utilities
 
 %% The implementation of the TUI is based on PDcurses (public domain curses). This tool is
@@ -964,7 +949,7 @@ We found nothing to do so we decided to meet again to further develop the protot
 He Haocong coded command executors \cmdinline{edit} and \cmdinline{rm}.\\
 Wang Xiangyu did the \cmdinline{import} command executor.\\
 Zhou Biyan was responsible for the \cmdinline{export} command executor.\\
-Liu Jialong was doing the parsing methods for the above commands. % \cmdinline{import} and \cmdinline{export} \cmdinline{edit} and \cmdinline{rm}.
+Liu Jialong was doing the parsing methods for the above commands.
 
 \item Prepare for v0.1 demo
 
