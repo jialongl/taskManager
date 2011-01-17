@@ -455,10 +455,10 @@ void ListDisplayElement::refreshEditArea(WINDOW* win, int row0, int row1, int co
 }
 string ListDisplayElement::editArea(WINDOW* win,int row0,int row1,int col0,int col1,string st0,bool numOnly){
     attron(_EDIT);
-    row0+=win->_begy+1;
-    row1+=win->_begy+1;
-    col0+=win->_begx+1;
-    col1+=win->_begx+1;
+    row0+=getbegy(win)+1;
+    row1+=getbegy(win)+1;
+    col0+=getbegx(win)+1;
+    col1+=getbegx(win)+1;
     curs_set(1);
     string newStr = st0;
     int startPos = 0;
@@ -695,17 +695,17 @@ vector<string> ListDisplayElement::editSelect(){
     refresh();
     attroff(_SELECT);
     attron(_NORMAL);
-    int theRow = taskStartAt[selectTask]- navigateRow + listWindow->_begy;
-    if (theRow + 12 >= mx+listWindow->_begy) theRow= mx+listWindow->_begy-13;
+    int theRow = taskStartAt[selectTask]- navigateRow + getbegy(listWindow);
+    if (theRow + 12 >= mx+getbegy(listWindow)) theRow= mx+getbegy(listWindow)-13;
     int newTime = datePicker(tasks[selectTask]->getDeadline(),theRow,45);//editArea(listWindow,taskStartAt[selectTask]+1- navigateRow,taskStartAt[selectTask]+1- navigateRow,47,71,formatTime(tasks[selectTask]->getDeadline()).substr(0,24));
     naiveDraw();
-    move(taskStartAt[selectTask]+1- navigateRow + listWindow->_begy+1,48);
+    move(taskStartAt[selectTask]+1- navigateRow + getbegy(listWindow)+1,48);
     attron(_EDITTED);
     string times = (formatTime(newTime)).substr(0,24);
     while (times.size()<24) times.push_back(' ');
     printw(times.c_str());
     attroff(_EDITTED);
-    move(taskStartAt[selectTask] - navigateRow +listWindow->_begy+1,14);
+    move(taskStartAt[selectTask] - navigateRow +getbegy(listWindow)+1,14);
     attron(_SELECT);
     printw("%s------------------",newGrp.c_str());
     attroff(_SELECT);
